@@ -1,0 +1,171 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                              xmlns:mx = "library://ns.adobe.com/flex/mx"
+                              xmlns:s = "library://ns.adobe.com/flex/spark"
+                              xmlns:view = "com.langcollab.languagementor.view.*"
+                              creationComplete = "onCreationComplete()"
+                              title = "Play Lessons">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Log;
+            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+            import com.langcollab.languagementor.view.supportClasses.ViewContext;
+
+            import mx.controls.Spacer;
+
+            import spark.transitions.ViewTransitionBase;
+
+            private var _isDisposed:Boolean = false;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+            }
+
+            override public function doGoBack():void
+            {
+                appStatePersistenceManager.persistHelp_LastViewDate_PlayLessons(new Date());
+                switch (contextType)
+                {
+                    case ViewContext.CONTEXT_TYPE__HELP:
+                        navigator.popView(transition_SlideView_Right);
+                        break;
+                    case ViewContext.CONTEXT_TYPE__SCREEN_INTRO:
+                        navigator.popView(transition_SlideView_Up);
+                        break;
+                    default:
+                        Log.error("View_Help_Play_Lessons.doGoBack(): No case for: " + contextType);
+                }
+            }
+
+            override public function doGoHome():void
+            {
+                appStatePersistenceManager.persistHelp_LastViewDate_PlayLessons(new Date());
+                switch (contextType)
+                {
+                    case ViewContext.CONTEXT_TYPE__HELP:
+                        super.doGoHome();
+                        break;
+                    case ViewContext.CONTEXT_TYPE__SCREEN_INTRO:
+                        navigator.popView(transition_SlideView_Up);
+                        break;
+                    default:
+                        Log.error("View_Help_Play_Lessons.doGoHome(): No case for: " + contextType);
+                }
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Protected Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override protected function goToNextScreen(transition:ViewTransitionBase = null):void
+            {
+                super.goToNextScreen(transition_SlideView_Down);
+            }
+
+            override protected function onPrimaryBottomButtonClick(event:MouseEvent):void
+            {
+                appStatePersistenceManager.persistHelp_LastViewDate_PlayLessons(new Date());
+                super.onPrimaryBottomButtonClick(event);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function onCreationComplete():void
+            {
+                var textWidget:IUIWidget_Text
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Using the Play Lessons screen";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__HELP))
+                {
+                    textWidget = new UIWidget_Viewlet__Bullet_Text();
+                    textWidget.text = "On the Home screen, press Play Lessons";
+                    viewletGroup.addElement(textWidget);
+                }
+                else if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__SCREEN_INTRO))
+                {
+                    textWidget = new UIWidget_Viewlet__Text();
+                    textWidget.text = 'This "how to" screen contains a fair amount of information, but we recommend that you take a few seconds and read it now. It will be time well spent.\n\nAlternatively, you can return to these instructions later by going to More > Help from the Home screen.';
+                    viewletGroup.addElement(textWidget);
+                }
+                else
+                {
+                    Log.warn(["View_Help_Play_Lessons.onCreationComplete(): Context not handled", navigator.context]);
+                }
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Lessons are divided into chunks.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "You can move between chunks with the < and > buttons, and between lessons with the << and >> buttons.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "To start a lesson, press the Play button. To pause, press it again.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "If you select Loop, each chunk will be repeated until you press < or >.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "To practice pronunciation, select Record & Playback.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "You'll notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Once you've mastered a chunk, you can press the I Know This! button. Language Mentor will no longer drill you on that chunk.";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = 'To clear a lesson of these "I Know This" settings and return it to its original state, select or deselect it in the Select Lessons screen.';
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Once you're familiar with this screen, we suggest that you start experimenting with different learning modes. You can do this by going to the Home screen, pressing Select Mode, and changing the current mode.";
+                viewletGroup.addElement(textWidget);
+
+            }
+        ]]>
+    </fx:Script>
+</view:View_Base_BottomButtons>

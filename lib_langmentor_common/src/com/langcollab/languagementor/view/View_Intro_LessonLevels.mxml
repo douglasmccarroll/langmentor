@@ -1,0 +1,115 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                      xmlns:mx = "library://ns.adobe.com/flex/mx"
+                      xmlns:s = "library://ns.adobe.com/flex/spark"
+                      xmlns:view = "com.langcollab.languagementor.view.*"
+                      creationComplete = "onCreationComplete()"
+                      title = "Intro &amp; Setup: Select Levels">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.component.mobilealert.MobileDialog;
+            import com.brightworks.util.Log;
+            import com.brightworks.util.Utils_Layout;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+
+            import flash.events.MouseEvent;
+
+            import mx.controls.Spacer;
+
+            import spark.components.VGroup;
+
+            private var _lessonLevelsViewlet:Viewlet_LessonLevels;
+            private var _isDisposed:Boolean = false;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                _lessonLevelsViewlet.dispose();
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Protected Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override protected function onNextButtonClick(event:MouseEvent):void
+            {
+                Log.info("View_Intro_LessonLevels.onNextButtonClick()");
+                if (_lessonLevelsViewlet.selectedLevels.length == 0)
+                {
+                    MobileDialog.open("Please select at least one level.");
+                    return;
+                }
+                model.selectedLessonDownloadLevels_PrimaryLevels = _lessonLevelsViewlet.selectedLevels;
+                super.onNextButtonClick(event);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function onCreationComplete():void
+            {
+                var textGroup:VGroup = new VGroup();
+                textGroup.paddingTop = Utils_Layout.getStandardPadding();
+                textGroup.paddingBottom = Utils_Layout.getStandardPadding();
+                textGroup.paddingRight = Utils_Layout.getStandardPadding();
+                textGroup.paddingLeft = Utils_Layout.getStandardPadding();
+                textGroup.percentWidth = 100;
+                var widget:UIWidget_Viewlet__Bold_Text = new UIWidget_Viewlet__Bold_Text();
+                widget.text = "Please select the lesson levels that you'd like to download. We suggest that you start with one or two levels. You can change these settings later.";
+                textGroup.addElement(widget);
+                viewletGroup.addElement(textGroup);
+                var spacer:Spacer = new Spacer();
+                viewletGroup.addElement(spacer);
+                _lessonLevelsViewlet = new Viewlet_LessonLevels();
+                _lessonLevelsViewlet.percentHeight = 100;
+                viewletGroup.addElement(_lessonLevelsViewlet);
+            }
+        ]]>
+    </fx:Script>
+</view:View_Intro_Base>
+
+
+
+
+
+
+
+
+
+

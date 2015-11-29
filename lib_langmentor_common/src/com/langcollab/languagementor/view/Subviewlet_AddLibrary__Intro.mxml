@@ -1,0 +1,92 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:Subviewlet_AddLibrary__Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                                  xmlns:mx = "library://ns.adobe.com/flex/mx"
+                                  xmlns:s = "library://ns.adobe.com/flex/spark"
+                                  xmlns:button = "com.brightworks.component.button.*"
+                                  xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
+                                  xmlns:view = "com.langcollab.languagementor.view.*">
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Utils_Layout;
+            private var _isDisposed:Boolean;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                uiWidget_Viewlet__Heading.dispose();
+                uiWidget_Viewlet__Text.dispose();
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        ]]>
+    </fx:Script>
+
+    <s:Scroller horizontalScrollPolicy = "off"
+                skinClass = "com.brightworks.component.scroll.InitialFadeScrollerSkin"
+                height = "100%"
+                width = "{width}">
+        <s:VGroup height = "100%"
+                  width = "100%"
+                  paddingLeft = "{Utils_Layout.getStandardPadding() * 2}"
+                  paddingRight = "{Utils_Layout.getStandardPadding() * 2}">
+            <s:Spacer />
+            <s:Spacer />
+            <s:VGroup width = "100%"
+                      horizontalAlign = "center">
+                <uiwidget:UIWidget_Viewlet__Heading id = "uiWidget_Viewlet__Heading"
+                                                    text = "Add Libraries" />
+                <s:Spacer />
+                <uiwidget:UIWidget_Viewlet__Text id = "uiWidget_Viewlet__Text"
+                                                 text = "You can add libraries by entering a URL or scanning a QR code. Typically, you would obtain these from the library’s website, your teacher, etc." />
+            </s:VGroup>
+            <s:VGroup width = "100%"
+                      verticalAlign = "middle">
+                <s:VGroup width = "100%"
+                          horizontalAlign = "center">
+                    <button:NormalButton id = "enterURLButton"
+                                         click = "{showEnterURLViewCallback()}"
+                                         label = "Enter Library URL"
+                                         width = "75%" />
+                    <s:Spacer />
+                    <s:Spacer />
+                    <s:Spacer />
+                    <button:NormalButton id = "scanQRCodeButton"
+                                         click = "{showScanQRCodeViewCallback()}"
+                                         label = "Scan QR Code"
+                                         width = "75%" />
+                </s:VGroup>
+            </s:VGroup>
+        </s:VGroup>
+    </s:Scroller>
+</view:Subviewlet_AddLibrary__Base>

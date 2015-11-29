@@ -1,0 +1,211 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:mx = "library://ns.adobe.com/flex/mx"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                implements = "com.brightworks.interfaces.IDisposable"
+                title = ""
+                viewActivate = "onViewActivate()">
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Log;
+            import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
+            import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
+            import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
+            import com.langcollab.languagementor.event.Event_LessonVersionList;
+
+            import mx.core.FlexGlobals;
+
+            private var _isDisposed:Boolean = false;
+            private var _lessonSelectorList:LessonVersionList;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                if (_lessonSelectorList)
+                {
+                    _lessonSelectorList.removeEventListener(Event_LessonVersionList.LEVEL_CHANGE, onLessonSelectionListLevelChange);
+                    _lessonSelectorList.removeEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
+                    _lessonSelectorList.dispose();
+                    removeElement(_lessonSelectorList);
+                    _lessonSelectorList = null;
+                }
+            }
+
+            override public function doGoBack():void
+            {
+                Log.info("View_SelectLessons.doGoBack()");
+                if (_lessonSelectorList.isListAtTopLevel())
+                {
+                    if (model.getCurrentLearningModeVO().isDualLanguage)
+                    {
+                        if ((currentLessons.getSelectedSingleLanguageLessonVersionCount() > 0) && !model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed)
+                        {
+                            var message:String = 
+                                createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
+                            (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message, doGoBack_LeaveSelectLessons);
+                            model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
+                        }
+                        else
+                        {
+                            doGoBack_LeaveSelectLessons();
+                        }
+                    }
+                    else
+                    {
+                        doGoBack_LeaveSelectLessons();
+                    }
+                }
+                else
+                {
+                    _lessonSelectorList.handleBackButton();
+                }
+            }
+
+            public function doGoBack_LeaveSelectLessons():void
+            {
+                navigator.pushView(View_Home, null, null, transition_SlideView_Right);
+            }
+
+            override public function doGoHome():void
+            {
+                Log.info("View_SelectLessons.doGoHome()");
+                if (model.getCurrentLearningModeVO().isDualLanguage)
+                {
+                    if ((currentLessons.getSelectedSingleLanguageLessonVersionCount() > 0) && !model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed)
+                    {
+                        var message:String = 
+                            createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
+                        (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message, doGoHome_Continued);
+                        model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
+                    }
+                    else
+                    {
+                        doGoBack_LeaveSelectLessons()
+                    }
+                }
+                else
+                {
+                    doGoBack_LeaveSelectLessons()
+                }
+            }
+
+            public function doGoHome_Continued():void
+            {
+                doGoBack_LeaveSelectLessons()
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            private function createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected():String
+            {
+                var repeatNativeModeString:String = model.getLearningModeDisplayNameFromLabelToken(Constant_LearningModeLabels.REPEAT_TARGET);
+                return 'The current learning mode is a dual-language mode. Single-language lessons will be played in ' + repeatNativeModeString + ' mode.';
+            /*var isAllSelectedLessonsSingleMode:Boolean =
+                (model.getLessonVersionCount_SingleLanguage() == currentLessons.length);
+            var isMultipleLessonsSelected:Boolean = (currentLessons.length > 1);
+            var isMultipleSingleLangLessonsSelected:Boolean = (currentLessons.getSelectedSingleLanguageLessonVersionCount() > 1);
+            var doNotString:String = isMultipleSingleLangLessonsSelected ? "don't" : "doesn't";
+            var isAreSingleLanguageLessonString:String = isMultipleSingleLangLessonsSelected ? "are single-language lessons" : "is a single-language lesson";
+            var itTheyString:String = isMultipleSingleLangLessonsSelected ? "they" : "it";
+            var lessonString:String = isMultipleLessonsSelected ? "lessons" : "lesson";
+            var nativeLanguageString:String = model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
+            var thisLessonString:String = isMultipleSingleLangLessonsSelected ? "These lessons" : "This lesson";
+            var result:String =
+                "The learning mode that is currently selected provides " +
+                nativeLanguageString +
+                " translations for lesson content, but " +
+                currentLessons.getSelectedSingleLanguageLessonVersionCount() +
+                " selected lesson " +
+                isAreSingleLanguageLessonString +
+                ", i.e. " +
+                itTheyString +
+                " " +
+                doNotString +
+                " offer " + nativeLanguageString + " translation. " +
+                thisLessonString +
+                " will be played using " +
+                repeatNativeModeString +
+                " mode.";
+            return result;*/
+            }
+
+            private function createLessonSelectorList():void
+            {
+                if (_lessonSelectorList)
+                {
+                    _lessonSelectorList.dispose();
+                    removeElement(_lessonSelectorList);
+                }
+                _lessonSelectorList = new LessonVersionList(model.getDownloadedLessonSelectionTreeData(), currentLessons.currentLessons);
+                _lessonSelectorList.allowMultipleSelection = true;
+                _lessonSelectorList.percentHeight = 100;
+                _lessonSelectorList.percentWidth = 100;
+                _lessonSelectorList.addEventListener(Event_LessonVersionList.LEVEL_CHANGE, onLessonSelectionListLevelChange);
+                _lessonSelectorList.addEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
+                addElement(_lessonSelectorList);
+                updateTitle();
+            }
+
+            private function onLessonSelectionListLevelChange(event:Event_LessonVersionList):void
+            {
+                updateTitle();
+            }
+
+            private function onLessonSelectionListToggleLessonSelected(event:Event_LessonVersionList):void
+            {
+                // Allow list to update before starting process
+                callLater(onLessonSelectionListToggleLessonSelected_Continued, [event]);
+            }
+
+            private function onLessonSelectionListToggleLessonSelected_Continued(event:Event_LessonVersionList):void
+            {
+                Log.info("View_SelectLessons.onLessonSelectionListToggleLessonSelected(): " + event.lessonVersionVO.publishedLessonVersionId);
+                var c:Command_AddOrRemoveSelectedLessonVersion = new Command_AddOrRemoveSelectedLessonVersion(event.lessonVersionVO);
+                c.execute();
+            }
+
+            private function onViewActivate():void
+            {
+                createLessonSelectorList();
+            }
+
+            private function updateTitle():void
+            {
+                title = "Select " + _lessonSelectorList.currentLevelDisplayName;
+            }
+        ]]>
+    </fx:Script>
+</view:View_Base>

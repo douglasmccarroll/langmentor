@@ -1,0 +1,206 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base_BottomButtons xmlns:fx="http://ns.adobe.com/mxml/2009"
+                              xmlns:view="com.langcollab.languagementor.view.*"
+                              creationComplete="onCreationComplete()"
+                              initialize="onInitialize()"
+                              softKeyboardActivating="onSoftKeyboardActivating()"
+                              softKeyboardDeactivate="onSoftKeyboardDeactivate()"
+                              title="Report Problem">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+        import com.brightworks.constant.Constant_PlatformName;
+        import com.brightworks.util.Log;
+        import com.brightworks.util.Utils_System;
+        import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+        import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+        import com.langcollab.languagementor.view.supportClasses.ViewContext;
+
+        import mx.controls.Spacer;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+
+        import spark.components.TextArea;
+        import spark.components.ViewMenuItem;
+
+        private static const _BUTTON_LABEL__CLOSE:String = "Close App";
+        private static const _BUTTON_LABEL__SEND_INFO:String = "Send Info";
+        private static const _HEADING__FATAL_ERROR:String = "We're sorry - Language Mentor has encountered a problem";
+        private static const _HEADING__THANKS_FOR_HELPING:String = "Thanks for helping us improve Language Mentor!";
+        private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. " + _MESSAGE__OPTIONAL + " Thanks!";
+        private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "Please press " + _BUTTON_LABEL__SEND_INFO + " to send us diagnostic information. " + _MESSAGE__OPTIONAL;
+        private static const _MESSAGE__ONCLICK__CLOSING_APP:String = "Closing...";
+        private static const _MESSAGE__ONCLICK__SENDING_REPORT:String = "Sending Diagnostic Information";
+        private static const _MESSAGE__LOG_RESULT__COMPLETE:String = "Diagnostic information sent. Thanks!";
+        private static const _MESSAGE__LOG_RESULT__FAILURE:String = "We're sorry, Language Mentor is unable to send diagnostic information. Please ensure that your device is connected to the Internet and try again. If you continue to encounter this problem " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US;
+        private static const _MESSAGE__OPTIONAL:String = "Optional: Give us some details on the problem and what you were doing when it occurred.";
+
+        private var _headingWidget:UIWidget_Viewlet__Heading;
+        private var _isDisposed:Boolean = false;
+        private var _isLogAttemptDone:Boolean;
+        private var _messageTextWidget:UIWidget_Viewlet__Text;
+        private var _timer:Timer;
+        private var _userCommentTextArea:TextArea;
+        private var _viewMenuItem_ViewLogInfo:ViewMenuItem;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //
+        //          Public Methods
+        //
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        override public function dispose():void {
+            super.dispose();
+            if (_isDisposed)
+                return;
+            _isDisposed = true;
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //
+        //          Protected Methods
+        //
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        override protected function onAddedToStage(event:Event = null):void {
+            super.onAddedToStage();
+            removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+            stage.autoOrients = true;
+        }
+
+        override protected function onBaseDoubleClick(event:MouseEvent):void {
+            navigator.pushView(View_Diagnostics, null, null, transition_SlideView_Left);
+        }
+
+        override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
+            Log.info("View_SendProblemReport.onPrimaryBottomButtonClick()");
+            if (_isLogAttemptDone) {
+                doGoBack();
+            }
+            else {
+                primaryBottomButton.enabled = false;
+                _userCommentTextArea.enabled = false;
+                _messageTextWidget.text =
+                        isInUserClosesAppMode() ?
+                                _MESSAGE__ONCLICK__CLOSING_APP :
+                                _MESSAGE__ONCLICK__SENDING_REPORT;
+                Log.userInitiatedLogToServer(createUserMessage(), logErrorCallback);
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //
+        //          Private Methods
+        //
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        private function closeApp(event:Event = null):void {
+            if (!Utils_System.isRunningOnDesktop())
+                currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+            //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
+            NativeApplication.nativeApplication.exit();
+        }
+
+        private function createUserMessage():String {
+            var result:String;
+            if ((_userCommentTextArea.text) && (_userCommentTextArea.text.length > 0 ))
+                result = _userCommentTextArea.text;
+            else
+                result = "User sent report, but entered no message.";
+            return result;
+        }
+
+        private function isInUserClosesAppMode():Boolean {
+            return ((contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) && (Utils_System.platformName != Constant_PlatformName.IOS));
+        }
+
+        private function logErrorCallback(event:Event = null):void {
+            primaryBottomButton.enabled = true;
+            primaryBottomButton.label = BUTTON_LABEL__OK;
+            _isLogAttemptDone = true;
+            if (isInUserClosesAppMode()) {
+                if (!Utils_System.isRunningOnDesktop())
+                    currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+                //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
+                NativeApplication.nativeApplication.exit();
+            }
+            else {
+                if (event is ResultEvent) {
+                    _messageTextWidget.text = _MESSAGE__LOG_RESULT__COMPLETE;
+                }
+                else if (event is FaultEvent) {
+                    _messageTextWidget.text = _MESSAGE__LOG_RESULT__FAILURE
+                }
+            }
+        }
+
+        private function onCreationComplete():void {
+            if (isInUserClosesAppMode())
+                primaryBottomButton.label = _BUTTON_LABEL__CLOSE;
+            else
+                primaryBottomButton.label = _BUTTON_LABEL__SEND_INFO;
+            _headingWidget = new UIWidget_Viewlet__Heading();
+            _headingWidget.text =
+                    (contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) ?
+                            _HEADING__FATAL_ERROR :
+                            _HEADING__THANKS_FOR_HELPING;
+            viewletGroup.addElement(_headingWidget);
+            viewletGroup.addElement(new Spacer());
+            _messageTextWidget = new UIWidget_Viewlet__Text();
+            if (isInUserClosesAppMode())
+                _messageTextWidget.text = _MESSAGE__INITIAL__PLEASE_RESTART;
+            else
+                _messageTextWidget.text = _MESSAGE__INITIAL__PLEASE_SEND;
+            viewletGroup.addElement(_messageTextWidget);
+            viewletGroup.addElement(new Spacer());
+            viewletGroup.addElement(new Spacer());
+            _userCommentTextArea = new TextArea();
+            _userCommentTextArea.percentWidth = 100;
+            _userCommentTextArea.height = Math.round(Capabilities.screenResolutionY / 5);
+            _userCommentTextArea.editable = true;
+            viewletGroup.addElement(_userCommentTextArea);
+        }
+
+        private function onInitialize():void {
+            if (isInUserClosesAppMode())
+                navigationContent = [];
+        }
+
+        private function onSoftKeyboardActivating():void {
+            _headingWidget.visible = false;
+            _headingWidget.includeInLayout = false;
+            _messageTextWidget.visible = false;
+            _messageTextWidget.includeInLayout = false;
+        }
+
+        private function onSoftKeyboardDeactivate():void {
+            _headingWidget.visible = true;
+            _headingWidget.includeInLayout = true;
+            _messageTextWidget.visible = true;
+            _messageTextWidget.includeInLayout = true;
+        }
+        ]]>
+    </fx:Script>
+</view:View_Base_BottomButtons>

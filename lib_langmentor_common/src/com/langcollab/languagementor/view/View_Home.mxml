@@ -1,0 +1,378 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:mx = "library://ns.adobe.com/flex/mx"
+                xmlns:comps = "com.langcollab.languagementor.component.*"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                actionBarVisible = "false"
+                creationComplete = "onCreationComplete()"
+                initialize = "onInitialize()"
+                preinitialize = "onPreinitialize()"
+                resize = "onResize()"
+                title = "Home">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Log;
+            import com.langcollab.languagementor.util.Utils_LangCollab;
+            import com.langcollab.languagementor.view.supportClasses.HomeScreenRealEstateManager;
+            import com.langcollab.languagementor.view.supportClasses.ViewContext;
+
+            import mx.binding.utils.ChangeWatcher;
+            import mx.core.FlexGlobals;
+
+            [Bindable]
+            private var _columnWidth:int;
+            private var _isCreationCompleteCalled:Boolean;
+            private var _isDisposed:Boolean = false;
+            private var _isPostInitStuffDone:Boolean;
+            private var _realEstateManager:HomeScreenRealEstateManager;
+            private var _watcher_IsModelDataInitialized:ChangeWatcher;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override public function dispose():void
+            {
+                Log.debug("View_Home.dispose()");
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                if (_realEstateManager)
+                {
+                    _realEstateManager.dispose();
+                    _realEstateManager = null;
+                }
+                if (_watcher_IsModelDataInitialized)
+                {
+                    _watcher_IsModelDataInitialized.unwatch();
+                    _watcher_IsModelDataInitialized = null;
+                }
+            }
+
+            override public function doGoBack():void
+            {
+                // do nothing
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Protected Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override protected function onGestureSwipe_Down():void
+            {
+                Log.debug("View_Home.onGestureSwipe_Down()");
+                moveDown();
+            }
+
+            override protected function onGestureSwipe_Left():void
+            {
+                Log.debug("View_Home.onGestureSwipe_Left()");
+                moveLeft();
+            }
+
+            override protected function onGestureSwipe_Right():void
+            {
+                Log.debug("View_Home.onGestureSwipe_Right()");
+                moveRight();
+            }
+
+            override protected function onGestureSwipe_Up():void
+            {
+                Log.debug("View_Home.onGestureSwipe_Up()");
+                moveUp();
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function activateBusyIndicator():void
+            {
+                Log.debug("View_Home.activateBusyIndicator()");
+                busyIndicator.visible = true;
+                busyIndicator.x = (this.width - busyIndicator.width) / 2;
+                busyIndicator.y = (this.height - busyIndicator.width) / 2;
+            }
+
+            private function doPostInitStuff():void
+            {
+                if ((!_isCreationCompleteCalled) || (!model.isDataInitialized))
+                {
+                    Log.debug("View_Home.doPostInitStuff(): Not ready yet");
+                    return;
+                }
+                Log.debug("View_Home.doPostInitStuff(): Doing init stuff");
+                _realEstateManager = new HomeScreenRealEstateManager();
+                if (_watcher_IsModelDataInitialized)
+                {
+                    _watcher_IsModelDataInitialized.unwatch();
+                    _watcher_IsModelDataInitialized = null;
+                }
+                busyIndicator.visible = false;
+                if (appStatePersistenceManager.retrieveIsHomeScreenDisplayCountSaved())
+                    appStatePersistenceManager.persistHomeScreenDisplayCount(appStatePersistenceManager.retrieveHomeScreenDisplayCount() + 1);
+                else
+                    appStatePersistenceManager.persistHomeScreenDisplayCount(1);
+                _isPostInitStuffDone = true;
+                callLater(doPostPostInitStuff);
+            }
+
+            private function doPostPostInitStuff():void
+            {
+                _realEstateManager.populateScreenAreaGroup(group_PlayLessonsButton, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP, onButtonClick_PlayLessons);
+                _realEstateManager.populateScreenAreaGroup(group_SelectModeButton, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__LEFT, onButtonClick_SelectMode);
+                _realEstateManager.populateScreenAreaGroup(group_SelectLessonsButton, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__RIGHT, onButtonClick_SelectLessons);
+                _realEstateManager.populateScreenAreaGroup(group_MoreButton, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM, onButtonClick_More);
+                _realEstateManager.populateScreenAreaGroup(group_TopLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_LEFT, onButtonClick_NewDownloads);
+                _realEstateManager.populateScreenAreaGroup(group_TopRight, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_RIGHT, onButtonClick_NewsUpdate);
+                _realEstateManager.populateScreenAreaGroup(group_BottomLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_LEFT, onButtonClick_Share);
+                _realEstateManager.populateScreenAreaGroup(group_BottomRight, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_RIGHT, onButtonClick_Credits);
+            }
+
+            private function isCurrScreenDisplayFirstForApp():Boolean
+            {
+                var result:Boolean = true;
+                if (appStatePersistenceManager.retrieveIsCurrAppVersionSaved())
+                {
+                    var savedAppVerson:Number = appStatePersistenceManager.retrieveCurrAppVersion();
+                    if (savedAppVerson > 0)
+                        result = false;
+                }
+                return result;
+            }
+
+            private function moveDown():void
+            {
+                Log.debug("View_Home.moveDown()");
+                currentLessons.ensureStateIntegrity();
+                if (model.getLessonVersionCount() < 1)
+                {
+                    // No downloaded lessons
+                    var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
+                    (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message);
+                    return;
+                }
+                if (currentLessons.length == 0)
+                {
+                    // No selected lessons
+                    (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog("No lessons are currently selected."); /// Localize               
+                    return;
+                }
+                if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_PlayLessons_Saved())
+                {
+                    navigator.pushView(View_PlayLessons, null, null, transition_SlideView_Down);
+                }
+                else
+                {
+                    var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
+                    ctxt.nextViewClass = View_PlayLessons;
+                    navigator.pushView(View_Help_Play_Lessons, null, ctxt, transition_SlideView_Down);
+                }
+            }
+
+            private function moveLeft():void
+            {
+                Log.debug("View_Home.moveLeft()");
+                if (model.getLessonVersionCount() < 1)
+                {
+                    var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
+                    (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message);
+                    return;
+                }
+                if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_SelectLessons_Saved())
+                {
+                    navigator.pushView(View_SelectLessons, null, null, transition_SlideView_Left);
+                }
+                else
+                {
+                    var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
+                    ctxt.nextViewClass = View_SelectLessons;
+                    navigator.pushView(View_Help_Select_Lessons, null, ctxt, transition_SlideView_Left);
+                }
+            }
+
+            private function moveRight():void
+            {
+                Log.debug("View_Home.moveRight()");
+                navigator.pushView(View_SelectMode, null, null, transition_SlideView_Right);
+            }
+
+            private function moveUp():void
+            {
+                Log.debug("View_Home.moveUp()");
+                navigator.pushView(View_More, null, null, transition_SlideView_Up);
+            }
+
+            private function onButtonClick_Credits(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_Credits()");
+                var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+                navigator.pushView(View_Credits, null, ctxt, transition_SlideView_Left);
+            }
+
+            private function onButtonClick_More(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_More()");
+                moveUp();
+            }
+
+            private function onButtonClick_Share(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_NagLink()");
+                var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+                navigator.pushView(View_Share, null, ctxt, transition_SlideView_Right);
+            }
+
+            private function onButtonClick_NewDownloads(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_NewDownloads()");
+                var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+                navigator.pushView(View_NewDownloads, null, ctxt, transition_SlideView_Right);
+            }
+
+            private function onButtonClick_NewsUpdate(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_NewsUpdate()");
+                var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+                navigator.pushView(View_NewsUpdate, null, ctxt, transition_SlideView_Left);
+            }
+
+            private function onButtonClick_PlayLessons(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_PlayLessons()");
+                moveDown();
+            }
+
+            private function onButtonClick_SelectMode(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_SelectMode()");
+                moveRight();
+            }
+
+            private function onButtonClick_SelectLessons(event:Event):void
+            {
+                Log.debug("View_Home.onButtonClick_SelectLessons()");
+                moveLeft();
+            }
+
+            private function onCreationComplete():void
+            {
+                Log.debug("View_Home.onCreationComplete()");
+                _isCreationCompleteCalled = true;
+                doPostInitStuff();
+                if (!_isPostInitStuffDone)
+                    activateBusyIndicator();
+            }
+
+            private function onInitialize():void
+            {
+                Log.debug("View_Home.onInitialize()");
+            }
+
+            private function onModelDataInitialized(event:Event):void
+            {
+                Log.debug("View_Home.onModelDataInitialized()");
+                if (_watcher_IsModelDataInitialized)
+                {
+                    _watcher_IsModelDataInitialized.unwatch();
+                    _watcher_IsModelDataInitialized = null;
+                }
+                doPostInitStuff();
+            }
+
+            private function onPreinitialize():void
+            {
+                Log.debug("View_Home.onPreinitialize()");
+                _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDataInitialized", onModelDataInitialized); //// do we really still need this?
+            }
+
+            private function onSelectModeAlertCallback():void
+            {
+                Log.debug("View_Home.onSelectModeAlertCallback()");
+                navigator.pushView(View_SelectMode, null, null, transition_SlideView_Right);
+            }
+        ]]>
+    </fx:Script>
+
+    <s:BusyIndicator id = "busyIndicator"
+                     visible = "false"
+                     symbolColor = "0xCCCCCC" />
+    <s:VGroup id = "mainGroup"
+              width = "97%"
+              height = "97%"
+              horizontalCenter = "0"
+              verticalCenter = "0">
+        <s:HGroup height = "100%"
+                  width = "100%">
+            <s:Group id = "group_TopLeft"
+                     height = "100%"
+                     width = "100%" />
+            <s:Group id = "group_PlayLessonsButton"
+                     height = "100%"
+                     width = "100%">
+            </s:Group>
+            <s:Group id = "group_TopRight"
+                     height = "100%"
+                     width = "100%" />
+        </s:HGroup>
+        <s:HGroup height = "100%"
+                  width = "100%">
+            <s:Group id = "group_SelectModeButton"
+                     height = "100%"
+                     width = "100%">
+            </s:Group>
+            <s:Group height = "100%"
+                     width = "100%">
+            </s:Group>
+            <s:Group id = "group_SelectLessonsButton"
+                     height = "100%"
+                     width = "100%">
+            </s:Group>
+        </s:HGroup>
+        <s:HGroup id = "bottomGroup"
+                  height = "100%"
+                  width = "100%">
+            <s:Group id = "group_BottomLeft"
+                     height = "100%"
+                     width = "100%" />
+            <s:Group id = "group_MoreButton"
+                     height = "100%"
+                     width = "100%">
+            </s:Group>
+            <s:Group id = "group_BottomRight"
+                     height = "100%"
+                     width = "100%">
+            </s:Group>
+        </s:HGroup>
+    </s:VGroup>
+</view:View_Base>

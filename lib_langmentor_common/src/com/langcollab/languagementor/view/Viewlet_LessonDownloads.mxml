@@ -1,0 +1,229 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:Viewlet_Base xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   xmlns:view="com.langcollab.languagementor.view.*"
+                   implements="com.brightworks.interfaces.IDisposable"
+                   creationComplete="onCreationComplete()">
+
+    <fx:Script>
+        <![CDATA[
+        import com.brightworks.event.BwEvent;
+        import com.brightworks.util.Log;
+        import com.brightworks.util.Utils_Layout;
+        import com.brightworks.util.Utils_Text;
+        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+        import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
+        import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController_LessonDownloadProcessResultsInfo;
+
+        private static const _INDENT:String = "    ";
+        private static const _MESSAGE__APP_UPDATE_REQUIRED:String =
+                "Please Upgrade\n\nA new version of Language Mentor is available, and an upgrade is necessary before more new lessons can be downloaded.\n\n" +
+                'Please go to More > Community & Support > Upgrade Language Mentor, then follow the directions on that screen.';
+        private static const _MESSAGE__NO_INTERNET_CONNECTION:String =
+                "Hmmm... Language Mentor is having trouble accessing the Internet... If you continue to see this message, please check your device's Internet access.";
+        private static const _MESSAGE__NO_NEW_LESSONS_FOUND:String =
+                "No new lessons found.";
+        private static const _MESSAGE__UNEXPLAINED:String =
+                "We're sorry, we're unable to obtain new lesson info. Please " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US + ".";
+        private static const _MESSAGE__ZERO_LIBRARIES_CHECKED:String =
+                "We're sorry, we're unable to download lessons because no libraries have been specified.\n\nLibraries can be specified in two ways:\n\n1. By adding specific libraries in More > Manage Libraries > Add Lesson Libraries.\n\n2. By activating the " +
+                '"Use Recommended Libraries" option in Manage Libraries > Recommended Libraries.';
+
+
+        public var startLessonDownloads:Boolean = false;
+
+        private var _downloadLessonsUpdateTimer:Timer;
+        private var _isDisposed:Boolean;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //
+        //          Public Methods
+        //
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        override public function dispose():void {
+            super.dispose();
+            if (_isDisposed)
+                return;
+            _isDisposed = true;
+            lessonDownloadController.removeEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //
+        //          Private Methods
+        //
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        private function onCreationComplete():void {
+            Log.debug("Viewlet_LessonDownloads.onCreationComplete()");
+            lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+            if ((startLessonDownloads) &&
+                    (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive)) &&
+                    (lessonDownloadController.isSufficientLessonStorageSpaceAvailable())) {
+                // No processes active in controller
+                callLater(startDownloadProcess);
+            }
+            updateUI();
+        }
+
+        private function onLessonDownloadsNewInfo(event:BwEvent):void {
+            updateUI();
+        }
+
+        private function startDownloadProcess():void {
+            lessonDownloadController.startUserInitiatedDownloadProcess();
+            updateUI();
+        }
+
+        private function updateUI():void {
+            if (_isDisposed) {
+                Log.warn("Viewlet_LessonDownloads.updateUI(): isDisposed == true");
+                return;
+            }
+            var message:String = "";
+            message += "Downloaded Lessons: " + model.getLessonVersionCount() + "\n\n";
+            if (lessonDownloadController.previousLessonDownloadProcessResultsInfo) {
+                message += updateUI_CreatePreviousLessonDownloadInfoString();
+            }
+            if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
+                message += "We're sorry, this device has insufficient space available in its file system to store new lessons.";
+            }
+            else if (lessonDownloadController.isLessonDownloadProcessActive) {
+                message += updateUI_CreateLessonDownloadInProcessString();
+            }
+            else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
+                // The "update info" process is finished, but no lesson downloads are in progress. While this is a perfectly normal state of affairs,
+                // it's possible that a problem occurred the last time the "update info" process ran.
+                var explanation:String;
+                var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
+                        lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
+                if (updateInfoCommandReport) {
+                    if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess) {
+                        explanation = _MESSAGE__APP_UPDATE_REQUIRED;
+                    }
+                    else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
+                        explanation = _MESSAGE__NO_INTERNET_CONNECTION;
+                    }
+                    else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage ||
+                            updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
+                        explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
+                    }
+                    updateInfoCommandReport.dispose();
+                }
+                if (!explanation) {
+                    if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
+                        explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
+                    else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0)
+                        explanation = _MESSAGE__NO_NEW_LESSONS_FOUND;
+                }
+                if (explanation) {
+                    message += explanation + "\n\n";
+                }
+                else {
+                    var foo:int = 0; // for debugging
+                }
+            }
+            if ((lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) &&
+                    (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.count_LessonUpdatesNotDownloadedBecauseInSelectedLessons > 0)) {
+                var updateWasOrUpdatesWere:String =
+                        (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.count_LessonUpdatesNotDownloadedBecauseInSelectedLessons == 1) ?
+                                "update was" :
+                                "updates were";
+                var lessonIsOrLessonsAre:String =
+                        (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.count_LessonUpdatesNotDownloadedBecauseInSelectedLessons == 1) ?
+                                "lesson is" :
+                                "lessons are";
+                message +=
+                        lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.count_LessonUpdatesNotDownloadedBecauseInSelectedLessons +
+                        " lesson " + updateWasOrUpdatesWere + " postponed because the " + lessonIsOrLessonsAre + " currently selected.\n\n"
+            }
+            textDisplayLabel.text = message;
+        }
+
+        private function updateUI_CreateLessonDownloadInProcessString():String {
+            var message:String = "";
+            message += "Currently Downloading:\n";
+            var downloadInfo:LessonDownloadController_LessonDownloadProcessResultsInfo = lessonDownloadController.currentLessonDownloadProcessResultsInfo;
+            message += _INDENT + "Available: " + downloadInfo.lessonCount_DownloadsAttempted + "\n";
+            message += _INDENT + "Downloaded: " + downloadInfo.lessonCount_DownloadsSucceeded + "\n\n";
+            message += "You can continue using Language Mentor, and can return to this screen at any time to view download progress.\n\n";
+            return message;
+        }
+
+        private function updateUI_CreatePreviousLessonDownloadInfoString():String {
+            var message:String = "Most Recent Download:\n";
+            var downloadInfo:LessonDownloadController_LessonDownloadProcessResultsInfo = lessonDownloadController.previousLessonDownloadProcessResultsInfo;
+            message += _INDENT + "Attempted: " + downloadInfo.lessonCount_DownloadsAttempted + "\n";
+            message += _INDENT + "Successful: " + downloadInfo.lessonCount_DownloadsSucceeded + "\n";
+            message += _INDENT + "Completed: " + updateUI_CreateTimeSinceDownloadsCompleteString() + "\n\n";
+            return message;
+        }
+
+        private function updateUI_CreateTimeSinceDownloadsCompleteString():String {
+            var message:String;
+            var hours:uint = Math.round(lessonDownloadController.getHoursSinceLessonDownloadsCompleted());
+            if (hours < 50) {
+                var hoursString:String = (hours == 1) ? "hour" : "hours";
+                message = hours + " " + hoursString + " ago";
+            }
+            else {
+                var days:uint = Math.floor(hours / 24);
+                message = days + " days"
+            }
+            return message;
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup height = "100%"
+              width = "100%">
+        <s:Label id = "textDisplayLabel"
+                 fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.15)}"
+                 height = "100%"
+                 width = "100%"
+                 paddingBottom = "{Utils_Layout.getStandardPadding()}"
+                 paddingLeft = "{Utils_Layout.getStandardPadding()}"
+                 paddingRight = "{Utils_Layout.getStandardPadding()}"
+                 paddingTop = "{Utils_Layout.getStandardPadding()}" />
+    </s:VGroup>
+</view:Viewlet_Base>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

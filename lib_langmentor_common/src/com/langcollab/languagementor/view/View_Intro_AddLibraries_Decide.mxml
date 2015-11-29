@@ -1,0 +1,147 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                      xmlns:mx = "library://ns.adobe.com/flex/mx"
+                      xmlns:s = "library://ns.adobe.com/flex/spark"
+                      xmlns:view = "com.langcollab.languagementor.view.*"
+                      creationComplete = "onCreationComplete()"
+                      title = "Intro &amp; Setup: Add Libraries">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.component.checkbox.NormalCheckBox;
+            import com.brightworks.util.Log;
+            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+
+            import flash.events.MouseEvent;
+
+            import mx.controls.Spacer;
+
+            private var _isDisposed:Boolean = false;
+            private var _addLibrariesCheckbox:NormalCheckBox;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Protected Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override protected function onNextButtonClick(event:MouseEvent):void
+            {
+                Log.info("View_Intro_AddLibraries_Decide.onNextButtonClick()");
+                if (!_addLibrariesCheckbox)
+                    return; // User clicked before checkbox instantiated?!
+                if (_addLibrariesCheckbox.selected)
+                {
+                    View_Intro_Base.isUserStartedAddLibraryProcess = true;
+                    if (View_Intro_Base.isUserCompletedAddLibraryProcess)
+                    {
+                        navigator.pushView(View_Intro_AddLibraries);
+                    }
+                    else
+                    {
+                        navigator.pushView(View_Intro_AddLibraries_Warning);
+                    }
+                }
+                else
+                {
+                    navigator.pushView(View_Intro_LessonLevels);
+                }
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function onCreationComplete():void
+            {
+                var textWidget:IUIWidget_Text
+                textWidget = new UIWidget_Viewlet__Heading();
+                if (View_Intro_Base.isUserCompletedAddLibraryProcess)
+                    textWidget.text = "Add More Libraries?";
+                else
+                    textWidget.text = "Add Libraries?";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Text();
+                if (View_Intro_Base.isUserStartedAddLibraryProcess)
+                {
+                    if (View_Intro_Base.isUserCompletedAddLibraryProcess)
+                        textWidget.text = "Would you like to add another libary or libraries?";
+                    else
+                        textWidget.text = "Would you like to try again?";
+                }
+                else
+                {
+                    textWidget.text = "You can add libraries by entering a URL or scanning a QR code. Typically, you would obtain these from the library’s website, your teacher, etc.";
+                }
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                _addLibrariesCheckbox = new NormalCheckBox();
+                _addLibrariesCheckbox.label = 
+                    (View_Intro_Base.isUserCompletedAddLibraryProcess) ?
+                    "Yes, Add More" :
+                    "Add Library or Libraries";
+                viewletGroup.addElement(_addLibrariesCheckbox);
+                textWidget = new UIWidget_Viewlet__Text();
+                textWidget.text = "Select this option if you'd like to specify one or more libraries for Language Mentor to download lessons from.";
+                viewletGroup.addElement(textWidget);
+            }
+        ]]>
+    </fx:Script>
+</view:View_Intro_Base>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

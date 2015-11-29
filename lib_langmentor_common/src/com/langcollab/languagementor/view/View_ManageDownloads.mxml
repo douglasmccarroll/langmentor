@@ -1,0 +1,126 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:list = "com.brightworks.component.list.*"
+                xmlns:mx = "library://ns.adobe.com/flex/mx"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:swiz = "org.swizframework.core.*"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                implements = "com.brightworks.interfaces.IDisposable"
+                title = "Manage Downloads"
+                viewActivate = "onViewActivate()">
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Log;
+            import com.brightworks.util.Utils_Dispose;
+
+            import mx.collections.ArrayCollection;
+
+            //private static const _LIST_OPTION__:String = "";
+            private static const _LIST_OPTION__AUTOMATIC_DOWNLOADS:String = "Automatic Downloads";
+            private static const _LIST_OPTION__LESSON_DOWNLOADS_INFO:String = "Lesson Download Info";
+            private static const _LIST_OPTION__LESSON_LEVELS:String = "Select Lesson Levels";
+            private static const _LIST_OPTION__START_LESSON_DOWNLOADS:String = "Start Lesson Downloads";
+
+            private var _isDisposed:Boolean = false;
+            private var _listDataProvider:ArrayCollection;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                if (_listDataProvider)
+                {
+                    Utils_Dispose.disposeArrayCollection(_listDataProvider, true);
+                    _listDataProvider = null;
+                }
+            }
+
+            override public function doGoBack():void
+            {
+                Log.info("View_ManageDownloads.doGoBack()");
+                navigator.pushView(View_More, null, null, transition_SlideView_Right);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function onListChange():void
+            {
+                Log.info("View_ManageDownloads.onListChange(): " + list.selectedItem);
+                switch (list.selectedItem)
+                {
+                    case _LIST_OPTION__AUTOMATIC_DOWNLOADS:
+                    {
+                        navigator.pushView(View_AutomaticDownloads, null, null, transition_SlideView_Left);
+                        break;
+                    }
+                    case _LIST_OPTION__LESSON_DOWNLOADS_INFO:
+                    {
+                        navigator.pushView(View_LessonDownloadInfo, null, null, transition_SlideView_Left);
+                        break;
+                    }
+                    case _LIST_OPTION__LESSON_LEVELS:
+                    {
+                        navigator.pushView(View_LessonLevels, null, null, transition_SlideView_Left);
+                        break;
+                    }
+                    case _LIST_OPTION__START_LESSON_DOWNLOADS:
+                    {
+                        navigator.pushView(View_StartLessonDownloads, null, null, transition_SlideView_Left);
+                        break;
+                    }
+                    default:
+                    {
+                        Log.fatal("View_ManageDownloads.onListChange(): No case for " + list.selectedItem);
+                    }
+                }
+            }
+
+            private function onViewActivate():void
+            {
+                _listDataProvider = new ArrayCollection();
+                _listDataProvider.addItem(_LIST_OPTION__AUTOMATIC_DOWNLOADS);
+                _listDataProvider.addItem(_LIST_OPTION__LESSON_DOWNLOADS_INFO);
+                _listDataProvider.addItem(_LIST_OPTION__LESSON_LEVELS);
+                _listDataProvider.addItem(_LIST_OPTION__START_LESSON_DOWNLOADS);
+                list.dataProvider = _listDataProvider;
+            }
+        ]]>
+    </fx:Script>
+
+    <list:NormalList id = "list"
+                     change = "onListChange()"
+                     itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
+                     height = "100%"
+                     width = "100%" />
+</view:View_Base>

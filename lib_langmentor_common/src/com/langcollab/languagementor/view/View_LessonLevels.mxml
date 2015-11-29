@@ -1,0 +1,159 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:mx = "library://ns.adobe.com/flex/mx"
+                xmlns:button = "com.brightworks.component.button.*"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                title = "Lesson Levels"
+                viewActivate = "onViewActivate()">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.component.mobilealert.MobileAlert;
+            import com.brightworks.component.mobilealert.MobileDialog;
+            import com.brightworks.util.Log;
+            import com.brightworks.util.Utils_ArrayVectorEtc;
+            import com.brightworks.util.Utils_Layout;
+            import com.langcollab.languagementor.vo.LevelVO;
+            private var _isDisposed:Boolean = false;
+            private var _levelsSelectedAtStartup:Array = [];
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                viewlet.dispose();
+            }
+
+            override public function doGoBack():void
+            {
+                Log.info("View_LessonLevels.doGoBack()");
+                if (isSelectedLevelsChanged())
+                    MobileAlert.open("Changes have not been saved.", true);
+                dispose();
+                super.doGoBack();
+            }
+
+            override public function doGoHome():void
+            {
+                Log.info("View_LessonLevels.doGoHome()");
+                if (isSelectedLevelsChanged())
+                    MobileAlert.open("Changes have not been saved.", true);
+                dispose();
+                super.doGoHome();
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function isSelectedLevelsChanged():Boolean
+            {
+                // Are all previous selections in current?
+                for each (var vo:LevelVO in _levelsSelectedAtStartup)
+                {
+                    if (Utils_ArrayVectorEtc.useVoEqualsFunctionToGetIndexOfVoInArray(vo, viewlet.selectedLevels) == -1)
+                        return true;
+                }
+                // Are all current selections in previous?
+                for each (vo in viewlet.selectedLevels)
+                {
+                    if (Utils_ArrayVectorEtc.useVoEqualsFunctionToGetIndexOfVoInArray(vo, _levelsSelectedAtStartup) == -1)
+                        return true;
+                }
+                return false;
+            }
+
+            private function onCancelButtonClick():void
+            {
+                Log.info("View_LessonLevels.onCancelButtonClick()");
+                dispose();
+                super.doGoBack();
+            }
+
+            private function onSubmitButtonClick():void
+            {
+                Log.info("View_LessonLevels.onSubmitButtonClick()");
+                if (viewlet.selectedLevels.length == 0)
+                {
+                    MobileDialog.open("Please select at least one level.");
+                    return;
+                }
+                model.selectedLessonDownloadLevels_PrimaryLevels = viewlet.selectedLevels;
+                if (isSelectedLevelsChanged())
+                    lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
+                dispose();
+                super.doGoBack();
+            }
+
+            private function onViewActivate():void
+            {
+                for each (var vo:LevelVO in model.selectedLessonDownloadLevels_PrimaryLevels)
+                {
+                    _levelsSelectedAtStartup.push(vo);
+                }
+                viewlet.selectedLevels = _levelsSelectedAtStartup;
+                //viewlet.height = Math.round((height * .92) - (textGroup.height + buttonGroup.height));
+            }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup id = "mainGroup"
+              width = "100%"
+              height = "100%">
+        <s:VGroup id = "textGroup"
+                  width = "100%"
+                  paddingTop = "{Utils_Layout.getStandardPadding() * 2}"
+                  paddingLeft = "{Utils_Layout.getStandardPadding() * 2}"
+                  paddingRight = "{Utils_Layout.getStandardPadding() * 2}">
+            <uiwidget:UIWidget_Viewlet__Bold_Text text = "Select the levels that you'd like to download. Future downloads will include the levels that you specify." />
+        </s:VGroup>
+        <view:Viewlet_LessonLevels id = "viewlet"
+                                   height = "100%"
+                                   width = "100%" />
+        <s:HGroup id = "buttonGroup"
+                  horizontalAlign = "center"
+                  width = "100%">
+            <button:NormalButton label = "Cancel"
+                                 click = "onCancelButtonClick()"
+                                 width = "40%" />
+            <button:NormalButton label = "Submit"
+                                 click = "onSubmitButtonClick()"
+                                 width = "40%" />
+        </s:HGroup>
+        <s:Spacer />
+    </s:VGroup>
+
+</view:View_Base>

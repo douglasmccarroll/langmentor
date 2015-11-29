@@ -1,0 +1,357 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                      xmlns:mx = "library://ns.adobe.com/flex/mx"
+                      xmlns:s = "library://ns.adobe.com/flex/spark"
+                      xmlns:view = "com.langcollab.languagementor.view.*"
+                      creationComplete = "onCreationComplete()"
+                      title = "Intro &amp; Setup">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.event.BwEvent;
+            import com.brightworks.util.Log;
+            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+            import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
+
+            import mx.controls.Spacer;
+
+            private var _isDisposed:Boolean = false;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                lessonDownloadController.removeEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Protected Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override protected function onViewActivate():void
+            {
+                // super.onViewActivate() enables the Next button, which we don't want. We want this subclass to control whether
+                // or not this button is enabled. This is kludgy, but it should work...  :)
+                var b:Boolean = nextButton.enabled;
+                super.onViewActivate();
+                nextButton.enabled = b;
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function displayContent_Downloading_Failure():void
+            {
+                Log.info("View_Intro_SetupComplete.displayContent_Downloading_Failure()");
+                nextButton.enabled = true;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Err ... we’re having a bit of a problem ...";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "We're sorry, Language Mentor is unable to access the Internet and download lessons";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "We suggest that you try again at some time when this device has a better internet connection";
+                viewletGroup.addElement(textWidget);
+                if (model.autoDownloadLessons)
+                {
+                    textWidget = new UIWidget_Viewlet__Bullet_Text();
+                    textWidget.text = "Language Mentor will attempt to download lessons each time it is opened";
+                    viewletGroup.addElement(textWidget);
+                }
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "To manually initiate downloads, or to view the status of current downloads, press the More button on Language Mentor’s Home screen, then select Manage Downloads";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_Downloading_FirstLessonFinished():void
+            {
+                title = "Intro & Setup: Setup Complete";
+                nextButton.enabled = true;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Setup is complete!";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "Your first lesson has been downloaded. You can now start using Language Mentor. Lessons will continue to be downloaded in the background.";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "To start, follow these steps:";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Click the Next button to go to Language Mentor's Home screen";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "On the Home screen, press the Select Lessons button and select lessons";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "On the Home screen, press the Play Lessons button";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Enjoy!";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_Downloading_FirstLessonInProgress():void
+            {
+                title = "Intro & Setup: Downloading";
+                nextButton.enabled = false;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Setup is almost complete - downloading lessons";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "Please wait - 0 of " + lessonDownloadController.currentLessonDownloadProcessResultsInfo.lessonCount_DownloadsAttempted + " lessons downloaded ...";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "Once your first lesson has downloaded you can start using Language Mentor.";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_Downloading_UpdatingAvailableLessonInfo():void
+            {
+                title = "Intro & Setup: Downloading";
+                nextButton.enabled = false;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Setup is almost complete - downloading lessons";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "Please wait - searching for new lessons...";
+                viewletGroup.addElement(textWidget);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                textWidget = new UIWidget_Viewlet__Bold_Text();
+                textWidget.text = "Once your first lesson has downloaded you can start using Language Mentor.";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_InsuffientLessonStorageSpaceAvailable():void
+            {
+                nextButton.enabled = true;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "We're sorry, but this device doesn't have sufficient space available to store downloaded lessons";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "You may be able to resolve this problem by adding additional storage, then restarting Language Mentor";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "If you have enabled automatic downloads, Language Mentor will attempt to download lessons each time it is opened";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "To manually initiate downloads, press the More button on Language Mentor’s Home screen, then select Manage Downloads";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_LibrariesAvailableButNoLessonsEligibleForDownload():void
+            {
+                title = "Intro & Setup: Next Steps";
+                nextButton.enabled = true;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Setup is complete but no lessons are available for the levels that you've selected";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Text();
+                textWidget.text = "You can add more libraries and/or select more levels. To do this, follow these steps:";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Click the Next button to go to the Home screen, then go to the More menu";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "From there, select Manage Downloads > Select Lesson Levels, and/or ...";
+                viewletGroup.addElement(textWidget);
+                if (!model.useRecommendedLibraries)
+                {
+                    textWidget = new UIWidget_Viewlet__Bullet_Text();
+                    textWidget.text = "Select Manage Libraries > Recommended Libraries, and/or ...";
+                    viewletGroup.addElement(textWidget);
+                }
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Select Manage Libraries > Add Lesson Libraries";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Once you've made changes, go to Manage Downloads > Start Lesson Downloads, and see if lessons are downloading";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "If so, you're all set. Once the first lesson is downloaded, go to the Home screen, Select Lessons, then Play Lessons";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Enjoy!";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function displayContent_NoLibrariesAvailableForDownload():void
+            {
+                title = "Intro & Setup: Next Steps";
+                nextButton.enabled = true;
+                var textWidget:IUIWidget_Text;
+                textWidget = new UIWidget_Viewlet__Heading();
+                textWidget.text = "Setup is almost complete. To start using Language Mentor, please follow these steps:";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Click the Next button to go to Language Mentor's Home screen, then go to the More menu";
+                viewletGroup.addElement(textWidget);
+                if ((!model.useRecommendedLibraries) && (model.getLibraryCount() == 0))
+                {
+                    textWidget = new UIWidget_Viewlet__Bullet_Text();
+                    textWidget.text = "Select Manage Libraries > Add Libraries and specify one or more libraries that you'd like to use";
+                    if (model.doesCurrentTargetLanguageHaveRecommendedLibraries())
+                        textWidget.text += ", and/or select Manage Libraries > Recommended Libraries"
+                    viewletGroup.addElement(textWidget);
+                }
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Select Manage Downloads > Start Lesson Downloads, and see if lessons start downloading";
+                if (!model.autoDownloadLessons)
+                    textWidget.text += " (you haven't enabled auto-downloading, so you'll probably want to repeat this step occasionally in the future)";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "If so, you're all set. Once the first lesson is downloaded, go to the Home screen, Select Lessons, then Play Lessons";
+                viewletGroup.addElement(textWidget);
+                textWidget = new UIWidget_Viewlet__Bullet_Text();
+                textWidget.text = "Enjoy!";
+                viewletGroup.addElement(textWidget);
+            }
+
+            private function isAnyLibrariesAvailableForDownloading():Boolean
+            {
+                if (!model.autoDownloadLessons)
+                    return false;
+                if (!((model.useRecommendedLibraries) || (model.getLibraryCount() > 0)))
+                    return false;
+                return true;
+            }
+
+            private function onCreationComplete():void
+            {
+                Log.debug("View_Intro_SetupComplete.onCreationComplete()");
+                lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+                if (isAnyLibrariesAvailableForDownloading())
+                {
+                    if ((!lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) &&
+                        (!lessonDownloadController.isLessonDownloadProcessActive) &&
+                        (model.getLessonVersionCount() == 0))
+                    {
+                        // This is a pretty unlikely case - auto-downloads are enabled and should have triggered a download by now
+                        if (lessonDownloadController.isSufficientLessonStorageSpaceAvailable())
+                            lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
+                    }
+                }
+                updateUI();
+            }
+
+            private function onLessonDownloadsNewInfo(event:BwEvent):void
+            {
+                updateUI();
+            }
+
+            private function updateUI():void
+            {
+                viewletGroup.removeAllElements();
+                nextButton.enabled = false;
+                if (isAnyLibrariesAvailableForDownloading())
+                {
+                    if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable())
+                    {
+                        displayContent_InsuffientLessonStorageSpaceAvailable();
+                    }
+                    else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive)
+                    {
+                        displayContent_Downloading_UpdatingAvailableLessonInfo();
+                    }
+                    else if (model.getLessonVersionCount() > 0)
+                    {
+                        displayContent_Downloading_FirstLessonFinished();
+                    }
+                    else if (lessonDownloadController.isLessonDownloadProcessActive)
+                    {
+                        displayContent_Downloading_FirstLessonInProgress();
+                    }
+                    else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo)
+                    {
+                        // The "update info" process is finished, but no lesson downloads are in progress or complete. 
+                        // It's possible that a problem occurred the last time the "update info" process ran.
+                        if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
+                            displayContent_Downloading_Failure();
+                        else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0)
+                            displayContent_LibrariesAvailableButNoLessonsEligibleForDownload();
+                        else
+                        {
+                            var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport = 
+                                lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
+                            if (updateInfoCommandReport)
+                            {
+                                if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess)
+                                    displayContent_Downloading_Failure();
+                                else if (updateInfoCommandReport.isLoadConfigFileInfoFailure || 
+                                    updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage || 
+                                    updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)
+                                {
+                                    displayContent_Downloading_Failure();
+                                }
+                            }
+                            updateInfoCommandReport.dispose();
+                        }
+                    }
+                    else
+                    {
+                        displayContent_Downloading_Failure();
+                    }
+                }
+                else
+                {
+                    displayContent_NoLibrariesAvailableForDownload();
+                }
+            }
+        ]]>
+    </fx:Script>
+</view:View_Intro_Base>

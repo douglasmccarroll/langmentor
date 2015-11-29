@@ -1,0 +1,158 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                   xmlns:list = "com.brightworks.component.list.*"
+                   xmlns:mx = "library://ns.adobe.com/flex/mx"
+                   xmlns:s = "library://ns.adobe.com/flex/spark"
+                   xmlns:view = "com.langcollab.languagementor.view.*"
+                   creationComplete = "onCreationComplete()"
+                   implements = "com.brightworks.interfaces.IDisposable">
+
+    <fx:Metadata> 
+        [Event( name="complete", type="flash.events.Event") ] 
+    </fx:Metadata>
+
+    <fx:Script>
+        <![CDATA[
+            import com.brightworks.util.Log;
+            import com.brightworks.util.Utils_ArrayVectorEtc;
+            import com.brightworks.util.Utils_Dispose;
+            import com.langcollab.languagementor.vo.LevelVO;
+
+            import mx.collections.ArrayCollection;
+
+            [Bindable]
+            private var _dataProvider:ArrayCollection = new ArrayCollection();
+            private var _isDisposed:Boolean = false;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Getters / Setters
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private var _selectedLevels:Array = [];
+
+            public function get selectedLevels():Array
+            {
+                return _selectedLevels;
+            }
+
+            public function set selectedLevels(value:Array):void
+            {
+                _selectedLevels = value;
+                var selectedIndices:Vector.<int> = new Vector.<int>();
+                for each (var vo:LevelVO in _selectedLevels)
+                {
+                    var index:int = Utils_ArrayVectorEtc.useVoEqualsFunctionToGetIndexOfVoInArrayCollection(vo, _dataProvider);
+                    if (index == -1)
+                        Log.error("Viewlet_LessonLevels.set selectedLevels(): VO with id of " + vo.id + " isn't in data provider");
+                    else
+                        selectedIndices.push(index);
+                }
+                levelList.selectedIndices = selectedIndices;
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+                Utils_Dispose.disposeArray(_selectedLevels, false);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function levelListLabelFunction(item:Object):String
+            {
+                var result:String = model.getNativeLanguageLevelLabelFromLevelId(LevelVO(item).id);
+                return result;
+            }
+
+            private function onCreationComplete():void
+            {
+                _dataProvider.addItem(model.getLevelVOFromID(1));
+                _dataProvider.addItem(model.getLevelVOFromID(2));
+                _dataProvider.addItem(model.getLevelVOFromID(6));
+                _dataProvider.addItem(model.getLevelVOFromID(10));
+            }
+
+            private function onLevelListChange():void
+            {
+                Log.info("Viewlet_LessonLevels.onLevelListChange()");
+                _selectedLevels = [];
+                for each (var listIndex:int in levelList.selectedIndices)
+                {
+                    _selectedLevels.push(_dataProvider.getItemAt(listIndex));
+                }
+            }
+        ]]>
+    </fx:Script>
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <s:VGroup horizontalAlign = "left"
+              height = "100%"
+              width = "100%">
+        <list:DisplayAllItemsList id = "levelList"
+                                  width = "100%"
+                                  height = "100%"
+                                  dataProvider = "{_dataProvider}"
+                                  borderVisible = "true"
+                                  labelFunction = "{levelListLabelFunction}"
+                                  itemRenderer = "com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LevelSelectionList"
+                                  allowMultipleSelection = "true"
+                                  change = "onLevelListChange()" />
+
+    </s:VGroup>
+</view:Viewlet_Base>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

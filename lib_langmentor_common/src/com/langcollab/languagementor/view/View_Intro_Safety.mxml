@@ -1,0 +1,73 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2008 - 2013 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                      xmlns:mx = "library://ns.adobe.com/flex/mx"
+                      xmlns:s = "library://ns.adobe.com/flex/spark"
+                      xmlns:view = "com.langcollab.languagementor.view.*"
+                      creationComplete = "onCreationComplete()"
+                      title = "Intro &amp; Setup: Safety">
+
+    <fx:Declarations>
+    </fx:Declarations>
+
+    <fx:Script>
+        <![CDATA[
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+
+            import mx.controls.Spacer;
+
+            private var _isDisposed:Boolean = false;
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Public Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+            override public function dispose():void
+            {
+                super.dispose();
+                if (_isDisposed)
+                    return;
+                _isDisposed = true;
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            //
+            //          Private Methods
+            //
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            private function onCreationComplete():void
+            {
+                var heading:UIWidget_Viewlet__Heading = new UIWidget_Viewlet__Heading();
+                heading.text = "Warning!";
+                viewletGroup.addElement(heading);
+                viewletGroup.addElement(new Spacer());
+                viewletGroup.addElement(new Spacer());
+                var textWidget:UIWidget_Viewlet__Bold_Text = new UIWidget_Viewlet__Bold_Text();
+                textWidget.fontSizeMultiplier = 1.3;
+                textWidget.text = "Using Language Mentor while driving, or while operating heavy equipment, may cause DEATH or INJURY to yourself or others. Please don't do this.";
+                viewletGroup.addElement(textWidget);
+            }
+        ]]>
+    </fx:Script>
+</view:View_Intro_Base>

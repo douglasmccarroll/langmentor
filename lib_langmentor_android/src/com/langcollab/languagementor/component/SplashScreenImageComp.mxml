@@ -1,0 +1,17 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<s:SplashScreenImage xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                     xmlns:s = "library://ns.adobe.com/flex/spark">
+
+    <fx:Script>
+        <![CDATA[
+            // Override getImageClass() to return an image for iOS.
+            override public function getImageClass(aspectRatio:String, dpi:Number, resolution:Number):Class
+            {
+                return lowResImage.source;
+            }
+        ]]>
+    </fx:Script>
+
+    <s:SplashScreenImageSource id = "lowResImage"
+                               source = "@Embed('//assets/images/splash_1000x1333.png')" />
+</s:SplashScreenImage>
