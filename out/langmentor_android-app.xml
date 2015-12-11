@@ -1,9 +1,5 @@
-<?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/17.0">
-  
-  
-  
-  
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://ns.adobe.com/air/application/17.0">
   <!-- ############################################################################################### -->
   <!--                                                                                                 -->
   <!--                                                                                                 -->
@@ -26,48 +22,30 @@
   <!--                                                                                                 -->
   <!--                                                                                                 -->
   <!-- ############################################################################################### -->
-
-
-
-    <id>com.brightworks.LangMentor.standard</id>
-
-    <filename>LangMentor</filename>
-
-    <name>LangMentor</name>
-
-    <versionNumber>1.26.0</versionNumber>
-
-    <versionLabel>1.26</versionLabel>
-
-
-
-
-
-
-    <!-- Settings for the application's initial window. Required. -->
-    <initialWindow>
-        <!-- The main SWF or HTML file of the application. Required. -->
-        <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
-        <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
-
-        <aspectRatio>portrait</aspectRatio>
-        <fullScreen>false</fullScreen>
-        <visible>true</visible>
-        <softKeyboardBehavior>none</softKeyboardBehavior>
-        <autoOrients>false</autoOrients>
-    </initialWindow>
-
-    <icon>
-        <image36x36>assets/icons/app_icon_36x36.png</image36x36>
-        <image48x48>assets/icons/app_icon_48x48.png</image48x48>
-        <image72x72>assets/icons/app_icon_72x72.png</image72x72>
-    </icon>
-
-    <android>
-        <colorDepth>16bit</colorDepth>
-        <manifestAdditions>
-            <![CDATA[
-            <manifest android:installLocation="preferExternal">
+  <id>com.brightworks.LangMentor.standard</id>
+  <filename>LangMentor</filename>
+  <name>LangMentor</name>
+  <versionNumber>1.26.0</versionNumber>
+  <versionLabel>1.26</versionLabel>
+  <!-- Settings for the application's initial window. Required. -->
+  <initialWindow>
+    <!-- The main SWF or HTML file of the application. Required. -->
+    <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
+    <content>langmentor_android.swf</content>
+    <aspectRatio>portrait</aspectRatio>
+    <fullScreen>false</fullScreen>
+    <visible>true</visible>
+    <softKeyboardBehavior>none</softKeyboardBehavior>
+    <autoOrients>false</autoOrients>
+  </initialWindow>
+  <icon>
+    <image36x36>assets/icons/app_icon_36x36.png</image36x36>
+    <image48x48>assets/icons/app_icon_48x48.png</image48x48>
+    <image72x72>assets/icons/app_icon_72x72.png</image72x72>
+  </icon>
+  <android>
+    <colorDepth>16bit</colorDepth>
+    <manifestAdditions><![CDATA[<manifest android:installLocation="preferExternal">
                 <application>
                   <!-- for xzing native extension -->
                   <activity android:name="com.sbhave.nativeExtension.ui.CameraActivity"/>
@@ -117,26 +95,21 @@
                 <uses-permission android:name="android.permission.VIBRATE"/>
                 <uses-sdk android:targetSdkVersion="19"/>
                 <uses-sdk android:minSdkVersion="8"/>
-            </manifest>
-        ]]>
-        </manifestAdditions>
-    </android>
-    <iPhone>
-        <InfoAdditions>
-            <![CDATA[
-            <key>UIDeviceFamily</key>
+            </manifest>]]></manifestAdditions>
+  </android>
+  <iPhone>
+    <InfoAdditions><![CDATA[<key>UIDeviceFamily</key>
             <array>
                 <string>1</string>
                 <string>2</string>
-            </array>
-        ]]>
-        </InfoAdditions>
-        <requestedDisplayResolution>high</requestedDisplayResolution>
-    </iPhone>
-    <extensions>
-        <extensionID>com.milkmangames.extensions.GoViral</extensionID>
-        <extensionID>com.milkmangames.extensions.RateBox</extensionID>
-        <extensionID>com.adobe.Vibration</extensionID>
-        <extensionID>com.sbhave.nativeExtensions.zbar</extensionID>
-    </extensions>
+            </array>]]></InfoAdditions>
+    <requestedDisplayResolution>high</requestedDisplayResolution>
+  </iPhone>
+  <extensions>
+    <extensionID>com.milkmangames.extensions.GoViral</extensionID>
+    <extensionID>com.milkmangames.extensions.RateBox</extensionID>
+    <extensionID>com.adobe.Vibration</extensionID>
+    <extensionID>com.sbhave.nativeExtensions.zbar</extensionID>
+  </extensions>
 </application>
+
