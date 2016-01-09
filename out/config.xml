@@ -127,7 +127,7 @@
       <paymentCurrency>renminbi</paymentCurrency>
       <paymentPerOrderBaseRate>60</paymentPerOrderBaseRate>
       <paymentPerOrderMinimum>0</paymentPerOrderMinimum>
-      <paymentPerUnitRate>.054</paymentPerUnitRate>
+      <paymentPerUnitRate>.096</paymentPerUnitRate>
     </voiceTalent>
     <voiceTalent>
       <displayName>Tony Pettit</displayName>
@@ -170,6 +170,15 @@
       <paymentCurrency>usa_dollars</paymentCurrency>
       <paymentPerOrderBaseRate>11</paymentPerOrderBaseRate>
       <paymentPerUnitRate>.024</paymentPerUnitRate>
+    </voiceTalent>
+    <voiceTalent>
+      <displayName>Transtar Media - Lulu</displayName>
+      <familyName>Transtar</familyName>
+      <givenName>Lulu</givenName>
+      <displayFullPaymentDetail>false</displayFullPaymentDetail>
+      <paymentCurrency>usa_dollars</paymentCurrency>
+      <paymentPerOrderBaseRate>11</paymentPerOrderBaseRate>
+      <paymentPerUnitRate>.018</paymentPerUnitRate>
     </voiceTalent>
     <voiceTalent>
       <displayName>Transtar Media - Sam</displayName>
@@ -1155,7 +1164,7 @@
               </translation>
               <translation>
                 <from>xiang3</from>
-                <to>think,thinking,would like to,I'd like to,would you like to,wouldn't you like to,not - like to,don't you - like to,you'd like to</to>
+                <to>think,thinking,would like to,I'd like,I'd like to,would you like,would you like to,wouldn't you like to,not - like to,don't you - like to,you'd like to</to>
               </translation>
               <translation>
                 <from>xiang3yao4</from>
