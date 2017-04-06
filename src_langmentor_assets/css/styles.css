@@ -69,16 +69,12 @@ langmentorlessonversionlist|ItemRenderer_LessonVersionList {
 }
 
 mobilecomp|MobileButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton");
+    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton_Bevelled");
     color: #DDDDFF;
 }
 
-mobilecompskin|MobileSkin_MobileButton {
-    textAlign: center;
-}
-
 mobilecomp|MobileToggleButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton");
+    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton_Bevelled");
     fontWeight: bold;
     color: #DDDDFF;
 }
@@ -97,11 +93,11 @@ langmentoruiwidget|UIWidget_TextArea_NonEditable {
 }
 
 langmentorview|View_Home {
-    backgroundColor: #111144;
+    backgroundColor: #333374; /*#111144 #eae8d9*/
 }
 
 langmentorview|View_PlayLessons {
-    backgroundColor: #000000;
+    backgroundColor: #333374; /* #000000 */
 }
 
 s|ActionBar #titleDisplay {
@@ -112,10 +108,6 @@ s|ActionBar #titleDisplay {
 s|Button {
     fontWeight: "bold";
     skinClass: ClassReference("spark.skins.mobile.ButtonSkin");
-}
-
-.mobileButton {
-    colorFill: #000000;
 }
 
 .playLessonsScreenButton {
