@@ -318,7 +318,7 @@ package com.langcollab.languagementor.controller
                 return;
             Log.debug("Command_UpdateLibraryInfoBase.onTimeoutTimerComplete()");
             techReport.isProcessTimedOut = true;
-            techReport.list_LibraryURLs_UnfinishedLibraryInfoDownloadsAtTimeout = new Vector.<String>();
+            techReport.list_LibraryURLs_UnfinishedLibraryInfoDownloadsAtTimeout = [];
             for (var libraryFolderUrl:String in _index_LibraryFolderUrls_To_LibraryInfoDownloadStati)
             {
                 var downloadStatus:String = _index_LibraryFolderUrls_To_LibraryInfoDownloadStati[libraryFolderUrl];
