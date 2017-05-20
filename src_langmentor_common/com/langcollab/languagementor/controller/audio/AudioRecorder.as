@@ -93,10 +93,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    }
 
    public function attemptToActivateMicrophone():void {
-
-      attemptToActivateMicrophone_Continued(true);
-
-      // Utils_NativeExtensions.requestMicrophonePermission(attemptToActivateMicrophone_Continued);
+      Utils_NativeExtensions.requestMicrophonePermission(attemptToActivateMicrophone_Continued);
    }
 
    private function attemptToActivateMicrophone_Continued(permissionGranted:Boolean):void {

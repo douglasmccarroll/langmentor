@@ -94,8 +94,13 @@ public class HomeScreenRealEstateManager {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function populateScreenAreaGroup_Bottom(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
-      bttn.text = "More";
+
+
+      //var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
+
+
+      var bttn:Button_Standard = new Button_Standard();
+      bttn.label = "More";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
       group.addElement(bttn);
@@ -126,24 +131,24 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_Left(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
-      bttn.text = "Select\nMode";
+      var bttn:Button_Standard = new Button_Standard();
+      bttn.label = "Select\nMode";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
       group.addElement(bttn);
    }
 
    private function populateScreenAreaGroup_Right(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
-      bttn.text = "Select\nLessons";
+      var bttn:Button_Standard = new Button_Standard();
+      bttn.label = "Select\nLessons";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
       group.addElement(bttn);
    }
 
    private function populateScreenAreaGroup_Top(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
-      bttn.text = "Play\nLessons";
+      var bttn:Button_Standard = new Button_Standard();
+      bttn.label = "Play\nLessons";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
       group.addElement(bttn);
