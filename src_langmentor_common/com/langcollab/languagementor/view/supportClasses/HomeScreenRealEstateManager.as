@@ -2,7 +2,7 @@ package com.langcollab.languagementor.view.supportClasses {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_Dispose;
 import com.langcollab.languagementor.component.button.Button_Standard;
-import com.langcollab.languagementor.component.text.HomeScreenBackgroundButton;
+import com.langcollab.languagementor.component.button.HomeScreenBackgroundButton;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;

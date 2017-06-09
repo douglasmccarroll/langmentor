@@ -1,5 +1,5 @@
 
-package com.langcollab.languagementor.component.text
+package com.langcollab.languagementor.component.button
 {
 import com.brightworks.component.text.CenteredMobileText;
 import com.brightworks.resource.Resources_Audio;
