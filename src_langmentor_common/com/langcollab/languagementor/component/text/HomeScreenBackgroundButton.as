@@ -46,7 +46,7 @@ public class HomeScreenBackgroundButton extends CenteredMobileText
         override protected function doInitTextField():void
         {
             super.doInitTextField();
-            textField.setStyle("color", 0xBBBBFF);
+            textField.setStyle("color", 0x444499);
             textField.setStyle("fontSize", Math.round(Utils_Text.getStandardFontSize() * 1));
         }
 

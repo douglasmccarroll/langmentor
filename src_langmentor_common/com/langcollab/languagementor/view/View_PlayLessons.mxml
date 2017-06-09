@@ -19,20 +19,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx="http://ns.adobe.com/mxml/2009"
                 xmlns:s="library://ns.adobe.com/flex/spark"
+                xmlns:text="com.brightworks.component.text.*"
                 xmlns:view="com.langcollab.languagementor.view.*"
                 actionBarVisible="{Utils_System.platformName != Constant_PlatformName.ANDROID}"
                 title="Play Lessons"
                 initialize="onInitialize()"
                 preinitialize="onPreinitialize()"
                 viewActivate="onViewActivate()"
-                viewDeactivate="onViewDeactivate()"
-                xmlns:text="com.langcollab.languagementor.component.text.*">
+                viewDeactivate="onViewDeactivate()">
 
     <fx:Script>
         <![CDATA[
         import com.brightworks.base.Callbacks;
-        import com.brightworks.component.mobile.MobileButton;
-        import com.brightworks.component.mobile.MobileToggleButton;
         import com.brightworks.component.mobilealert.MobileAlert;
         import com.brightworks.constant.Constant_Misc;
         import com.brightworks.constant.Constant_PlatformName;
@@ -42,8 +40,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         import com.brightworks.util.Utils_DateTime;
         import com.brightworks.util.Utils_System;
         import com.brightworks.util.Utils_Text;
-        import com.langcollab.languagementor.component.button.Button_PlayPause;
-        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+        import com.langcollab.languagementor.component.button.Button_Standard;
+        import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
         import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
         import com.langcollab.languagementor.controller.Command_DoIKnowThis;
         import com.langcollab.languagementor.controller.audio.AudioRecorder;
@@ -67,15 +65,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
         private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
 
-        private var _button_IKnowThis:MobileButton;
-        private var _button_Loop:MobileToggleButton;
-        private var _button_NextChunk:MobileButton;
-        private var _button_NextLesson:MobileButton;
-        private var _button_PlayPause:Button_PlayPause;
-        private var _button_PreviousChunk:MobileButton;
-        private var _button_PreviousLesson:MobileButton;
-        private var _button_Record:MobileToggleButton;
-        private var _button_Translate:MobileButton;
+        private var _button_IKnowThis:Button_Standard;
+        private var _button_Loop:Button_Toggle_Standard;
+        private var _button_NextChunk:Button_Standard;
+        private var _button_NextLesson:Button_Standard;
+        private var _button_PlayPause:Button_Toggle_Standard;
+        private var _button_PreviousChunk:Button_Standard;
+        private var _button_PreviousLesson:Button_Standard;
+        private var _button_Record:Button_Toggle_Standard;
+        private var _button_Translate:Button_Standard;
         [Bindable]
         private var _columnWidth:int;
         private var _currentLessonsLengthDirty:Boolean = false;
@@ -554,16 +552,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
         private function onPreinitialize():void {
             Log.debug("View_PlayLessons.onPreinitialize()");
-            _button_IKnowThis = new MobileButton();
-            _button_Loop = new MobileToggleButton();
-            _button_NextChunk = new MobileButton();
-            _button_NextLesson = new MobileButton();
-            _button_PlayPause = new Button_PlayPause();
-            _button_PreviousChunk = new MobileButton();
-            _button_PreviousLesson = new MobileButton();
-            _button_Record = new MobileToggleButton();
-            _button_Translate = new MobileButton();
-            _button_IKnowThis.clickSoundEnabled = false;
+            _button_IKnowThis = new Button_Standard();
+            _button_Loop = new Button_Toggle_Standard();
+            _button_NextChunk = new Button_Standard();
+            _button_NextLesson = new Button_Standard();
+            _button_PlayPause = new Button_Toggle_Standard();
+            _button_PreviousChunk = new Button_Standard();
+            _button_PreviousLesson = new Button_Standard();
+            _button_Record = new Button_Toggle_Standard();
+            _button_Translate = new Button_Standard();
             _button_IKnowThis.label = _BUTTON_LABEL__I_KNOW_THIS;
             _button_Loop.label = _BUTTON_LABEL__LOOP;
             _button_NextChunk.label = _BUTTON_LABEL__NEXT_CHUNK;
@@ -584,14 +581,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _button_Translate.addEventListener(MouseEvent.CLICK, onButtonClick_Translate);
             Log.debug("View_PlayLessons.onPreinitialize(): starting buttonList loop");
             for each (var b:UIComponent in buttonList) {
+                if (!b)
+                      continue;
                 b.percentHeight = 100;
                 b.percentWidth = 100;
                 b.styleName = ".playLessonsScreenButton";
             }
             for each (b in buttonList_ArrowButtons) {
+                if (!b)
+                    continue;
                 b.setStyle("fontSize", Utils_Text.getStandardFontSize() * 2);
             }
             for each (b in buttonList_TextButtons) {
+                if (!b)
+                    continue;
                 b.setStyle("fontSize", Utils_Text.getStandardFontSize());
             }
             _button_PlayPause.percentHeight = 100;
@@ -836,7 +839,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                         caps = "square" />
                 </s:stroke>
             </s:Line>-->
-            <text:WhiteCenteredText id = "textField_LessonTitle"
+            <text:CenteredMobileText id = "textField_LessonTitle"
                                     height = "20%"
                                     width = "100%" />
             <s:Line xFrom = "0"
@@ -859,7 +862,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                              alpha = "0"
                              horizontalCenter = "0" />
                 </s:VGroup>
-                <text:WhiteCenteredText id = "textField_ChunkText"
+                <text:CenteredMobileText id = "textField_ChunkText"
                                         height = "100%"
                                         width = "100%"
                                         mouseDown = "onGroup_ChunkText_Click()" />
@@ -880,7 +883,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      height = "100%"
                      width = "29%">
             </s:Group>
-            <text:WhiteCenteredText id = "textField_ChunkStatus"
+            <text:CenteredMobileText id = "textField_ChunkStatus"
                                     fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.1)}"
                                     height = "100%"
                                     width = "42%" />

@@ -41,15 +41,6 @@ langmentorbutton|Button_ActionBar_LeftArrow {
     icon: Embed(source='/assets/icons/arrow_left_icon.png');
 }
 
-langmentorbutton|Button_PlayPause {
-    colorFill: #99CCCC;
-}
-
-langmentorbutton|Button_PlayPause:upAndSelected,
-langmentorbutton|Button_PlayPause:downAndSelected {
-    color: #DDDDFF;
-}
-
 langmentorlearningmodelist|ItemRenderer_LearningModeList {
     background: Embed(source='/assets/backgrounds/item_renderer_background_up.png', scaleGridLeft=10, scaleGridTop=20, scaleGridRight=11, scaleGridBottom=21);
     background-selected: Embed(source='/assets/backgrounds/item_renderer_background_down.png', scaleGridLeft=50, scaleGridTop=20, scaleGridRight=51, scaleGridBottom=21);
@@ -97,7 +88,7 @@ langmentorview|View_Home {
 }
 
 langmentorview|View_PlayLessons {
-    backgroundColor: #333374; /* #000000 */
+    backgroundColor: #FFFFFF; /* #000000 */
 }
 
 s|ActionBar #titleDisplay {

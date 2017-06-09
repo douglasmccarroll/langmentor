@@ -7,9 +7,9 @@ import flash.events.MouseEvent;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
-import spark.components.Button;
+import spark.components.ToggleButton;
 
-public class Button_Standard extends Button{
+public class Button_Toggle_Standard extends ToggleButton{
 
    public var color:uint;
 
@@ -23,7 +23,7 @@ public class Button_Standard extends Button{
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   public function Button_Standard() {
+   public function Button_Toggle_Standard() {
       super();
       percentHeight = 100;
       percentWidth = 100;
