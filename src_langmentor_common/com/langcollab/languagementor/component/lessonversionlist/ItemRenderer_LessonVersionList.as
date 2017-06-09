@@ -37,7 +37,6 @@ package com.langcollab.languagementor.component.lessonversionlist {
 
       private var _contentField:TextField;
       private var _contentFieldTextHeight:int = 0;
-      private var _fadeEffect:Fade;
       private var _singleOrDualLanguageIndicator:Bitmap;
       private var _unscaledHeight:int = 0;
       private var _unscaledWidth:int = 0;
@@ -73,7 +72,7 @@ package com.langcollab.languagementor.component.lessonversionlist {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
       override protected function createChildren():void {
-         _contentField  = Utils_Text.createSimpleTextField(Math.round(Utils_Text.getStandardFontSize() * 1.3));
+         _contentField  = Utils_Text.createSimpleTextField(Math.round(Utils_Text.getStandardFontSize() * 1.15));
          _contentField.wordWrap = true;
          _contentField.multiline = true;
          addChild(_contentField);
@@ -160,6 +159,7 @@ package com.langcollab.languagementor.component.lessonversionlist {
             return;
          _contentFieldTextHeight = _contentField.textHeight;
          _contentField.y = (_unscaledHeight - _contentField.textHeight) / 2;
+         _contentField.height = _contentField.textHeight + 20;
       }
 
    }
