@@ -22,7 +22,6 @@ import com.brightworks.component.mobilealert.MobileDialog;
 import com.brightworks.resource.Resources_Audio;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
-import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
@@ -133,6 +132,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       if (Utils_System.isRunningOnDesktop()) {
          // See comment in onDeactivateApp()
          return;
+      } else {
+         Log.info("App_LanguageMentor_Base.onActivateApp() *************************");
       }
       //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.MEDIA;
    }
@@ -151,14 +152,16 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onDeactivateApp(event:Event):void {
-      // This happens when the device sends the app into the background.
+      // This happens when the device sends the app into the background - i.e. when 
+      // the phone rings, when a clock alarm goes off, etc...
       if (Utils_System.isRunningOnDesktop()) {
          // When running on desktop, a deactivate event indicates that the app's window has lost
          // focus, but the app continues to execute. So we haven't really deactivated.
          return;
-      }
-      if (!Utils_System.isRunningOnDesktop())
+      } else {
+         Log.info("App_LanguageMentor_Base.onDeactivateApp() *************************");
          _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+      }
       //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
    }
 
