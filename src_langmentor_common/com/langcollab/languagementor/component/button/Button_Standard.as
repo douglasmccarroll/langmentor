@@ -11,6 +11,7 @@ import spark.components.Button;
 
 public class Button_Standard extends Button{
 
+   public var clickSoundEnabled:Boolean = true;
    public var color:uint;
 
    private var _isClickActive:Boolean;
@@ -50,7 +51,8 @@ public class Button_Standard extends Button{
          return;
       event.stopImmediatePropagation();
       event.preventDefault();
-      Resources_Audio.CLICK.play();
+      if (clickSoundEnabled)
+         Resources_Audio.CLICK.play();
       _isClickActive = true;
       _timer = new Timer(200);
       _timer.addEventListener(TimerEvent.TIMER, onTimer);

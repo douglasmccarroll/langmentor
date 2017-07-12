@@ -176,7 +176,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    public function stopRecording(recordingStopDelayDuration:uint = 0):void {
       Log.info("AudioRecorder.stopRecording(): _recordedAudio's size: " + getSize(_recordedAudio));
       if (!isMicrophoneAvailable()) {
-         Log.error("AudioRecorder.stopRecording: Microphone not available - check isMicrophoneAvailable() before calling this method")
+         // We call this method from at least on of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
          return;
       }
       if (!_isCurrentlyRecording)

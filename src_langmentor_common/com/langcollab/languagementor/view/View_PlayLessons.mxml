@@ -69,7 +69,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         private var _button_Loop:Button_Toggle_Standard;
         private var _button_NextChunk:Button_Standard;
         private var _button_NextLesson:Button_Standard;
-        private var _button_PlayPause:Button_Toggle_Standard;
+        private var _button_PlayPause:Button_Standard;
         private var _button_PreviousChunk:Button_Standard;
         private var _button_PreviousLesson:Button_Standard;
         private var _button_Record:Button_Toggle_Standard;
@@ -295,7 +295,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             setButtonEnabled_PreviousChunk_IfNotFirstChunk();
             if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
                 _button_PlayPause.enabled = false;
-                _button_PlayPause.selected = false;
                 _button_PlayPause.label = _BUTTON_LABEL__PLAY;
             } else {
                 if (!_button_PlayPause.enabled) {
@@ -428,8 +427,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
             currentLessons.togglePlayPause();
-            if (_button_PlayPause.selected != currentLessons.isLessonPaused)
-                _button_PlayPause.selected == currentLessons.isLessonPaused;
             if (currentLessons.isLessonPaused) {
                 _button_PlayPause.label = _BUTTON_LABEL__PLAY;
                 audioPlayer.stop();
@@ -553,10 +550,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         private function onPreinitialize():void {
             Log.debug("View_PlayLessons.onPreinitialize()");
             _button_IKnowThis = new Button_Standard();
+            _button_IKnowThis.clickSoundEnabled = false; // Because we handle that here, i.e. either click or thud, in onDo_IKnowThis()
             _button_Loop = new Button_Toggle_Standard();
             _button_NextChunk = new Button_Standard();
             _button_NextLesson = new Button_Standard();
-            _button_PlayPause = new Button_Toggle_Standard();
+            _button_PlayPause = new Button_Standard();
             _button_PreviousChunk = new Button_Standard();
             _button_PreviousLesson = new Button_Standard();
             _button_Record = new Button_Toggle_Standard();
@@ -650,7 +648,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
         private function onViewActivate():void {
             Log.debug("View_PlayLessons.onViewActivate()");
-            _button_PlayPause.selected = false;
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
             showHideMicrophoneImage();
             updateTextBoxesText();
