@@ -557,6 +557,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                 // dmccarroll 20130826
                 // Initial testing of this 'check' code shows this condition occurring fairly frequently. This makes no sense, yet it's
                 // occurring nonetheless. 
+                // dmccarroll 20170609
+                // This occurs when a) the app is interrupted, e.g. by a phone call, b) control returns to the app (at which point the
+                // audio doesn't play, c) the user goes to the phone's home screen, and d) the user returns to this app. But chances
+                // are good that I'll have fixed the bug in (b) by the time you read this, so this comment may no longer be true.
                 Log.warn("AudioController.onTimer_LeafFinishChecker() called, but _currentLessonVersionAudioSequence.isPaused == true");
                 stopLeafFinishCheckProcess();
                 return;
