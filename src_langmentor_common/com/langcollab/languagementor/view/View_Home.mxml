@@ -36,6 +36,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_NativeExtensions;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.util.Utils_LangCollab;
       import com.langcollab.languagementor.view.supportClasses.HomeScreenRealEstateManager;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
@@ -313,9 +314,23 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   height = "100%"
                   width = "100%">
          </s:Group>
-         <s:Group height = "100%"
+         <s:VGroup height = "100%"
                   width = "100%">
-         </s:Group>
+            <s:Spacer height = "100%"/>
+            <s:HGroup height="100%"
+                      width="100%">
+               <s:Spacer width = "100%"/>
+               <s:Image id = "brightworksLogo">
+                  <s:source>
+                     <s:MultiDPIBitmapSource source160dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_160}"
+                                             source240dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_240}"
+                                             source320dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_320}" />
+                  </s:source>
+               </s:Image>
+               <s:Spacer width = "100%"/>
+            </s:HGroup>
+            <s:Spacer height = "100%"/>
+         </s:VGroup>
          <s:Group id = "group_SelectLessonsButton"
                   height = "100%"
                   width = "100%">

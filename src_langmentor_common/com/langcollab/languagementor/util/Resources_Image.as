@@ -10,6 +10,15 @@ package com.langcollab.languagementor.util {
       [Embed(source="/assets/images/brightworks_logo_320.png")]
       public static const IMAGE__BRIGHTWORKS_LOGO_320:Class;
 
+      [Embed(source="/assets/images/langmentor_logo_160.png")]
+      public static const IMAGE__LANGMENTOR_LOGO_160:Class;
+
+      [Embed(source="/assets/images/langmentor_logo_240.png")]
+      public static const IMAGE__LANGMENTOR_LOGO_240:Class;
+
+      [Embed(source="/assets/images/langmentor_logo_320.png")]
+      public static const IMAGE__LANGMENTOR_LOGO_320:Class;
+
       [Embed(source="/assets/images/microphone_100x120.png")]
       public static const IMAGE__MICROPHONE:Class;
 

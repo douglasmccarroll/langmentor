@@ -73,7 +73,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 var textArea:TextArea;
                 textArea = new TextArea();
                 textArea.percentWidth = 100;
-                textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2013 - Brightworks, Inc.";
+                textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2017 - Brightworks, Inc.";
                 textArea.editable = false;
                 textArea.selectable = false;
                 textArea.setStyle("skinClass", TextAreaSkin);
