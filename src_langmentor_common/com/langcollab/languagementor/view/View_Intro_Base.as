@@ -58,7 +58,7 @@ package com.langcollab.languagementor.view {
          //else if (this is View_Intro_Safety)
          //navigator.pushView(View_Intro_Agreement);
          else if (this is View_Intro_Safety) {
-            if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__STANDARD) {
+            if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
                navigator.pushView(View_Intro_SelectLanguage);
             } else {
                navigator.pushView(View_Intro_RecommendedLibraries_Decide);

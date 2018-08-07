@@ -27,12 +27,12 @@ package com.langcollab.languagementor.constant
         public static const APP_NAME:String = "Language Mentor";
         public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.23;
 
-        public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__STANDARD;
-        public static const CURRENT_MENTOR_TYPE__DISPLAY_NAME:String = Constant_MentorTypes.MENTOR_TYPE_DISPLAY_NAME__STANDARD;
+        public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL;
+        public static const CURRENT_MENTOR_TYPE__DISPLAY_NAME:String = Constant_MentorTypes.MENTOR_TYPE_DISPLAY_NAME__GLOBAL;
 
         public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;
         public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__DESKTOP:Number = 100;
-        public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__IOS:Number = 2;
+        public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__IOS:Number = 10;
         public static const BANDWIDTH_LIMITING__TIME_PERIOD_IN_MINUTES:uint = 5;
 
         public static const LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE:String = "eng";

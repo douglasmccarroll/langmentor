@@ -29,68 +29,65 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
     <fx:Script>
         <![CDATA[
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-            import com.langcollab.languagementor.constant.Constant_AppConfiguration;
-            import com.langcollab.languagementor.constant.Constant_MentorTypes;
+       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+       import com.langcollab.languagementor.constant.Constant_MentorTypes;
 
-            import mx.controls.Spacer;
+       import mx.controls.Spacer;
 
-            private var _isDisposed:Boolean = false;
+       private var _isDisposed:Boolean = false;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       //
+       //          Public Methods
+       //
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+       override public function dispose():void {
+          super.dispose();
+          if (_isDisposed)
+             return;
+          _isDisposed = true;
+       }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       //
+       //          Private Methods
+       //
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Language Mentor setup overview:";
-                viewletGroup.addElement(textWidget);
-                viewletGroup.addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Privacy Policy";
-                viewletGroup.addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Safety";
-                viewletGroup.addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Agreement";
-                viewletGroup.addElement(textWidget);
-                if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__STANDARD)
-                {
-                    textWidget = new UIWidget_Viewlet__Bullet_Text();
-                    textWidget.text = "Select Language";
-                    viewletGroup.addElement(textWidget);
-                }
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Select Lesson Libraries";
-                viewletGroup.addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Download Lessons";
-                viewletGroup.addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Start Learning!";
-                viewletGroup.addElement(textWidget);
-            }
-        ]]>
+       private function onCreationComplete():void {
+          var textWidget:IUIWidget_Text
+          textWidget = new UIWidget_Viewlet__Heading();
+          textWidget.text = "Language Mentor setup overview:";
+          viewletGroup.addElement(textWidget);
+          viewletGroup.addElement(new Spacer());
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Privacy Policy";
+          viewletGroup.addElement(textWidget);
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Safety";
+          viewletGroup.addElement(textWidget);
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Agreement";
+          viewletGroup.addElement(textWidget);
+          if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
+             textWidget = new UIWidget_Viewlet__Bullet_Text();
+             textWidget.text = "Select Language";
+             viewletGroup.addElement(textWidget);
+          }
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Select Lesson Libraries";
+          viewletGroup.addElement(textWidget);
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Download Lessons";
+          viewletGroup.addElement(textWidget);
+          textWidget = new UIWidget_Viewlet__Bullet_Text();
+          textWidget.text = "Start Learning!";
+          viewletGroup.addElement(textWidget);
+       }
+       ]]>
     </fx:Script>
 </view:View_Intro_Base>

@@ -22,7 +22,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 implements = "com.brightworks.interfaces.IDisposable"
-                title = "Credits &amp; License"
+                title = "Credits &amp; Copyright"
                 viewActivate = "onViewActivate()">
 
     <fx:Script>
