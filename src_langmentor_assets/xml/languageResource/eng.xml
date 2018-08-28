@@ -1,22 +1,25 @@
 <languageResource>
-    <languageExample>Hello</languageExample>
-    <label_LearningFeedback_IKnowThis>I Know This</label_LearningFeedback_IKnowThis>
-    <label_LearningMode_ListenToTarget>Listen to %target_language_name%</label_LearningMode_ListenToTarget>
-    <label_LearningMode_NativeToTargetLearning>%native_language_name% to %target_language_name% Learning</label_LearningMode_NativeToTargetLearning>
-    <label_LearningMode_NativeToTargetTranslation>%native_language_name% to %target_language_name% Translation</label_LearningMode_NativeToTargetTranslation>
-    <label_LearningMode_RepeatTarget>Repeat %target_language_name%</label_LearningMode_RepeatTarget>
-    <label_LearningMode_TargetToNativeTranslation>%target_language_name% to %native_language_name% Translation</label_LearningMode_TargetToNativeTranslation>
-    <label_Level_Introductory>Newbie</label_Level_Introductory>
-    <label_Level_Beginner>Beginner</label_Level_Beginner>
-    <label_Level_Beginner_Lower>Beginner, Lower</label_Level_Beginner_Lower>
-    <label_Level_Beginner_Middle>Beginner, Middle</label_Level_Beginner_Middle>
-    <label_Level_Beginner_Upper>Beginner, Upper</label_Level_Beginner_Upper>
-    <label_Level_Intermediate>Intermediate</label_Level_Intermediate>
-    <label_Level_Intermediate_Lower>Intermediate, Lower</label_Level_Intermediate_Lower>
-    <label_Level_Intermediate_Middle>Intermediate, Middle</label_Level_Intermediate_Middle>
-    <label_Level_Intermediate_Upper>Intermediate, Upper</label_Level_Intermediate_Upper>
-    <label_Level_Advanced>Advanced</label_Level_Advanced>
-    <label_Level_Advanced_Lower>Advanced, Lower</label_Level_Advanced_Lower>
-    <label_Level_Advanced_Middle>Advanced, Middle</label_Level_Advanced_Middle>
-    <label_Level_Advanced_Upper>Advanced, Upper</label_Level_Advanced_Upper>
+   <languageExample>Hello</languageExample>
+   <label_LearningFeedback_IKnowThis>I Know This</label_LearningFeedback_IKnowThis>
+   <label_LearningMode_ListenToTarget>Listen to %target_language_name%</label_LearningMode_ListenToTarget>
+   <label_LearningMode_NativeToTargetLearning>%native_language_name% to %target_language_name% Learning
+   </label_LearningMode_NativeToTargetLearning>
+   <label_LearningMode_NativeToTargetTranslation>%native_language_name% to %target_language_name% Translation
+   </label_LearningMode_NativeToTargetTranslation>
+   <label_LearningMode_RepeatTarget>Repeat %target_language_name%</label_LearningMode_RepeatTarget>
+   <label_LearningMode_TargetToNativeTranslation>%target_language_name% to %native_language_name% Translation
+   </label_LearningMode_TargetToNativeTranslation>
+   <label_Level_Introductory>Newbie</label_Level_Introductory>
+   <label_Level_Beginner>Beginner</label_Level_Beginner>
+   <label_Level_Beginner_Lower>Beginner, Lower</label_Level_Beginner_Lower>
+   <label_Level_Beginner_Middle>Beginner, Middle</label_Level_Beginner_Middle>
+   <label_Level_Beginner_Upper>Beginner, Upper</label_Level_Beginner_Upper>
+   <label_Level_Intermediate>Intermediate</label_Level_Intermediate>
+   <label_Level_Intermediate_Lower>Intermediate, Lower</label_Level_Intermediate_Lower>
+   <label_Level_Intermediate_Middle>Intermediate, Middle</label_Level_Intermediate_Middle>
+   <label_Level_Intermediate_Upper>Intermediate, Upper</label_Level_Intermediate_Upper>
+   <label_Level_Advanced>Advanced</label_Level_Advanced>
+   <label_Level_Advanced_Lower>Advanced, Lower</label_Level_Advanced_Lower>
+   <label_Level_Advanced_Middle>Advanced, Middle</label_Level_Advanced_Middle>
+   <label_Level_Advanced_Upper>Advanced, Upper</label_Level_Advanced_Upper>
 </languageResource>

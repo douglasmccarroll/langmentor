@@ -31,8 +31,9 @@
 }
 
 langmentorview|App_LanguageMentor_Base {
-    backgroundColor: #000000;  /* In iOS 7 and higher, controls color of status bar at top */
+    backgroundColor: #000000; /* In iOS 7 and higher, controls color of status bar at top */
 }
+
 langmentorbutton|Button_ActionBar_Home {
     icon: Embed(source='/assets/icons/home_icon.png');
 }
