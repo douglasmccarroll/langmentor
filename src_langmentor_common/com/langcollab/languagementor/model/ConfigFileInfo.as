@@ -13,6 +13,7 @@ import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.Utils_XML;
 import com.brightworks.util.download.FileDownloader;
+import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -479,7 +480,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider
         private function onRootConfigFileDownloadFailure(event:BwEvent):void
         {
             // Is Tomcat started?
-            Log.info("ConfigFileInfo.onRootConfigFileDownloadFailure()");
+            Log.info("ConfigFileInfo.onRootConfigFileDownloadFailure() - " + FileDownloaderErrorReport(event.techReport).ioErrorEventText);
 
             _model.downloadBandwidthRecorder.reportFileDownloader(_fileDownloader_RootConfigFile);
             _downloadFailureCount++;
