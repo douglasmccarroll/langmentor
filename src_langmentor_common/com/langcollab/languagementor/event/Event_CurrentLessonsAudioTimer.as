@@ -16,18 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.event
-{
-	import com.brightworks.event.BwEvent;
-	import com.brightworks.techreport.ITechReport;
+package com.langcollab.languagementor.event {
+import com.brightworks.event.BwEvent;
+import com.brightworks.techreport.ITechReport;
 
-	public class Event_CurrentLessonsAudioTimer extends BwEvent
-	{
-		public static const AUDIO_PLAY_ALLOWED:String = "event_CurrentLessonsAudioTimer_AudioPlayAllowed";
+public class Event_CurrentLessonsAudioTimer extends BwEvent {
+   public static const AUDIO_PLAY_ALLOWED:String = "event_CurrentLessonsAudioTimer_AudioPlayAllowed";
 
-		public function Event_CurrentLessonsAudioTimer(type:String, techReport:ITechReport = null, info:Object = null)
-		{
-			super(type, techReport, info);
-		}
-	}
+   public function Event_CurrentLessonsAudioTimer(type:String, techReport:ITechReport = null, info:Object = null) {
+      super(type, techReport, info);
+   }
+}
 }

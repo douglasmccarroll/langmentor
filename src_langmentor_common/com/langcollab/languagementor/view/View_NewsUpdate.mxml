@@ -17,70 +17,70 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<view:View_Base_BottomButtons xmlns:fx="http://ns.adobe.com/mxml/2009"
-                              xmlns:view="com.langcollab.languagementor.view.*"
-                              title="News Update">
+<view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                              xmlns:view = "com.langcollab.languagementor.view.*"
+                              title = "News Update">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-        import com.brightworks.util.Log;
-        import com.brightworks.util.Utils_String;
-        import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-        import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
-        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_String;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
-        private var _isDisposed:Boolean = false;
-        private var _stageWebView:StageWebView;
+      private var _isDisposed:Boolean = false;
+      private var _stageWebView:StageWebView;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        override public function dispose():void {
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (_stageWebView) {
-                _stageWebView.dispose();
-                _stageWebView = null;
-            }
-        }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_stageWebView) {
+            _stageWebView.dispose();
+            _stageWebView = null;
+         }
+      }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Protected Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        override protected function onViewActivate():void {
-            var widget:IUIWidget_Text;
-            if (model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay()) {
-                var padding:int = 10;
-                _stageWebView = new StageWebView();
-                _stageWebView.stage = stage;
-                _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, viewletGroup.width - padding, height - (buttonContainer.height + padding));
-                var htmlString:String = model.configFileInfo.getMostRecentNewsUpdateHTML();
-                htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);
-                htmlString = Utils_String.removeLineBreaks(htmlString);
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "6");
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "5");
-                _stageWebView.loadString(htmlString);
-                appStatePersistenceManager.persistMostRecent_NewsUpdate_DateViewed(new Date());
-            }
-            else {
-                Log.error("View_NewsUpdate.onCreationComplete(): ConfigFileInfo.isMostRecentNewsUpdateAvailableForDisplay() returns false");
-                widget = new UIWidget_Viewlet__Text();
-                widget.text = "Oops... Please accept our abject apologies - we can't seem to find any news updates.";
-                viewletGroup.addElement(widget);
-            }
-        }
-        ]]>
+      override protected function onViewActivate():void {
+         var widget:IUIWidget_Text;
+         if (model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay()) {
+            var padding:int = 10;
+            _stageWebView = new StageWebView();
+            _stageWebView.stage = stage;
+            _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, viewletGroup.width - padding, height - (buttonContainer.height + padding));
+            var htmlString:String = model.configFileInfo.getMostRecentNewsUpdateHTML();
+            htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);
+            htmlString = Utils_String.removeLineBreaks(htmlString);
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "6");
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "5");
+            _stageWebView.loadString(htmlString);
+            appStatePersistenceManager.persistMostRecent_NewsUpdate_DateViewed(new Date());
+         }
+         else {
+            Log.error("View_NewsUpdate.onCreationComplete(): ConfigFileInfo.isMostRecentNewsUpdateAvailableForDisplay() returns false");
+            widget = new UIWidget_Viewlet__Text();
+            widget.text = "Oops... Please accept our abject apologies - we can't seem to find any news updates.";
+            viewletGroup.addElement(widget);
+         }
+      }
+      ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>
 

@@ -16,19 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
-    import com.brightworks.db.ISQLiteOperation;
-    import com.brightworks.techreport.ITechReport;
-    import com.brightworks.techreport.TechReport;
+package com.langcollab.languagementor.model {
+import com.brightworks.db.ISQLiteOperation;
+import com.brightworks.techreport.ITechReport;
+import com.brightworks.techreport.TechReport;
 
-    public class DataErrorReport extends TechReport implements ITechReport
-    {
-        public var currentQueryDataList:Array;
-        public var previousSQLiteOperation:ISQLiteOperation;
+public class DataErrorReport extends TechReport implements ITechReport {
+   public var currentQueryDataList:Array;
+   public var previousSQLiteOperation:ISQLiteOperation;
 
-        public function DataErrorReport()
-        {
-        }
-    }
+   public function DataErrorReport() {
+   }
+}
 }

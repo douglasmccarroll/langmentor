@@ -16,26 +16,22 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.audio
-{
+package com.langcollab.languagementor.controller.audio {
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_AlphaReviewVersion extends SequenceStrategy_Chunk implements ISequenceStrategy
-    {
-        public function SequenceStrategy_AlphaReviewVersion():void
-        {
-            orderSpecList = new ArrayCollection();
-            orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE);
-            orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET);
-        }
+public class SequenceStrategy_AlphaReviewVersion extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_AlphaReviewVersion():void {
+      orderSpecList = new ArrayCollection();
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET);
+   }
 
-        public function clone():ISequenceStrategy
-        {
-            var instance:SequenceStrategy_AlphaReviewVersion = new SequenceStrategy_AlphaReviewVersion();
-            instance.orderSpecList = this.orderSpecList;
-            return instance;
-        }
-    }
+   public function clone():ISequenceStrategy {
+      var instance:SequenceStrategy_AlphaReviewVersion = new SequenceStrategy_AlphaReviewVersion();
+      instance.orderSpecList = this.orderSpecList;
+      return instance;
+   }
+}
 }

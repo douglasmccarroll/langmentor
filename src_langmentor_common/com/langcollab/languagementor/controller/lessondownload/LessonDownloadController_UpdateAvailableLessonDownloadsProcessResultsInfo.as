@@ -16,32 +16,27 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.lessondownload
-{
-    import com.brightworks.util.Utils_Dispose;
-    import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
+package com.langcollab.languagementor.controller.lessondownload {
+import com.brightworks.util.Utils_Dispose;
+import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
 
-    public class LessonDownloadController_UpdateAvailableLessonDownloadsProcessResultsInfo
-    {
-        public var availableUndownloadedLessonsCount:uint = 0;
-        public var checkedLibraryCount:uint = 0;
-        public var command_UpdateAvailableLessonDownloadsInfoTechReport:Command_UpdateAvailableLessonDownloadsInfoTechReport;
-        public var count_LessonUpdatesNotDownloadedBecauseInSelectedLessons:uint = 0;
-        public var problematicLibraryCount:uint = 0;
-        public var problematicLibraryNameList:Array;
+public class LessonDownloadController_UpdateAvailableLessonDownloadsProcessResultsInfo {
+   public var availableUndownloadedLessonsCount:uint = 0;
+   public var checkedLibraryCount:uint = 0;
+   public var command_UpdateAvailableLessonDownloadsInfoTechReport:Command_UpdateAvailableLessonDownloadsInfoTechReport;
+   public var count_LessonUpdatesNotDownloadedBecauseInSelectedLessons:uint = 0;
+   public var problematicLibraryCount:uint = 0;
+   public var problematicLibraryNameList:Array;
 
-        public function dispose():void
-        {
-            if (command_UpdateAvailableLessonDownloadsInfoTechReport)
-            {
-                command_UpdateAvailableLessonDownloadsInfoTechReport.dispose();
-                command_UpdateAvailableLessonDownloadsInfoTechReport = null;
-            }
-            if (problematicLibraryNameList)
-            {
-                Utils_Dispose.disposeArray(problematicLibraryNameList, true);
-                problematicLibraryNameList = null;
-            }
-        }
-    }
+   public function dispose():void {
+      if (command_UpdateAvailableLessonDownloadsInfoTechReport) {
+         command_UpdateAvailableLessonDownloadsInfoTechReport.dispose();
+         command_UpdateAvailableLessonDownloadsInfoTechReport = null;
+      }
+      if (problematicLibraryNameList) {
+         Utils_Dispose.disposeArray(problematicLibraryNameList, true);
+         problematicLibraryNameList = null;
+      }
+   }
+}
 }

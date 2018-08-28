@@ -16,28 +16,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller
-{
-    import com.brightworks.interfaces.IDisposable;
-    import com.brightworks.techreport.ITechReport;
-    import com.brightworks.util.Log;
+package com.langcollab.languagementor.controller {
+import com.brightworks.interfaces.IDisposable;
+import com.brightworks.techreport.ITechReport;
+import com.brightworks.util.Log;
 
-    public class Command_GetRecommendedLibariesInfoTechReport extends Command_UpdateLibraryInfoBaseTechReport implements ITechReport, IDisposable
-    {
-        private var _isDisposed:Boolean = false;
+public class Command_GetRecommendedLibariesInfoTechReport extends Command_UpdateLibraryInfoBaseTechReport implements ITechReport, IDisposable {
+   private var _isDisposed:Boolean = false;
 
-        public function Command_GetRecommendedLibariesInfoTechReport()
-        {
-            Log.debug("Command_GetRecommendedLibariesInfoTechReport - Constructor");
-        }
+   public function Command_GetRecommendedLibariesInfoTechReport() {
+      Log.debug("Command_GetRecommendedLibariesInfoTechReport - Constructor");
+   }
 
-        override public function dispose():void
-        {
-            Log.debug("Command_GetRecommendedLibariesInfoTechReport.dispose()");
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true
-        }
-    }
+   override public function dispose():void {
+      Log.debug("Command_GetRecommendedLibariesInfoTechReport.dispose()");
+      super.dispose();
+      if (_isDisposed)
+         return;
+      _isDisposed = true
+   }
+}
 }

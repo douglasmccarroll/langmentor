@@ -18,68 +18,64 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "We respect your privacy";
-                addElement(textWidget);
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "We don’t collect any of your personal information.";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "We don’t share the personal information that we don’t collect. :)";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "We do collect anonymous information. Specifically…";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "We track which lessons and libraries are being used, how often, and where. The location data that we collect only tells us which cities our users are in or near - nothing more specific.";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "We collect technical information so that we can improve performance and fix bugs. This information includes what kind of device you are using, the device's default language, the network that you are using to connect to the internet, and diagnostic information from within Language Mentor.";
-                addElement(textWidget);
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "We respect your privacy";
+         addElement(textWidget);
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "We don’t collect any of your personal information.";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "We don’t share the personal information that we don’t collect. :)";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "We do collect anonymous information. Specifically…";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "We track which lessons and libraries are being used, how often, and where. The location data that we collect only tells us which cities our users are in or near - nothing more specific.";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "We collect technical information so that we can improve performance and fix bugs. This information includes what kind of device you are using, the device's default language, the network that you are using to connect to the internet, and diagnostic information from within Language Mentor.";
+         addElement(textWidget);
+      }
+      ]]>
     </fx:Script>
 
 </view:Viewlet_Base>

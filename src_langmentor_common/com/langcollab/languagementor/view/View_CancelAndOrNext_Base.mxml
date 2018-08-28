@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:button = "com.brightworks.component.button.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
@@ -29,106 +28,106 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       <s:Fade id = "fadeEffect"
               alphaFrom = "0"
               alphaTo = "1"
-              duration = "600" />
+              duration = "600"/>
    </fx:Declarations>
 
 
    <fx:Script>
       <![CDATA[
-         import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_Layout;
 
-         private static const _BUTTON_WIDTH_PERCENT__DUAL_BUTTON:uint = 40;
-         private static const _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON:uint = 60;
+      private static const _BUTTON_WIDTH_PERCENT__DUAL_BUTTON:uint = 40;
+      private static const _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON:uint = 60;
 
-         protected var isDisplayCancelButton:Boolean = false;
-         protected var isDisplayNextButton:Boolean = true;
-         protected var viewletGroup_Scrollable:Boolean = true;
-         protected var viewletGroup_UsePadding:Boolean = true;
+      protected var isDisplayCancelButton:Boolean = false;
+      protected var isDisplayNextButton:Boolean = true;
+      protected var viewletGroup_Scrollable:Boolean = true;
+      protected var viewletGroup_UsePadding:Boolean = true;
 
-         private var _isDisposed:Boolean = false;
+      private var _isDisposed:Boolean = false;
 
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Public Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-         override public function dispose():void {
-            super.dispose();
-            if (_isDisposed)
-               return;
-            _isDisposed = true;
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      protected function onCancelButtonClick(event:MouseEvent):void {
+         doGoBack();
+      }
+
+      protected function onNextButtonClick(event:MouseEvent):void {
+         // Subclasses should override this method
+      }
+
+      protected function onNextButtonDoubleClick(event:MouseEvent):void {
+         // Subclasses can override this method
+         onNextButtonClick(event);
+      }
+
+      protected function onViewActivate():void {
+         if (isDisplayCancelButton) {
+            cancelButton.enabled = true;
+         } else {
+            cancelButton.includeInLayout = false;
          }
-
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Protected Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-         protected function onCancelButtonClick(event:MouseEvent):void {
-            doGoBack();
+         if (isDisplayNextButton) {
+            nextButton.enabled = true;
+         } else {
+            nextButton.includeInLayout = false;
          }
+         callLater(displayButtons);
+      }
 
-         protected function onNextButtonClick(event:MouseEvent):void {
-            // Subclasses should override this method
-         }
-
-         protected function onNextButtonDoubleClick(event:MouseEvent):void {
-            // Subclasses can override this method
-            onNextButtonClick(event);
-         }
-
-         protected function onViewActivate():void {
-            if (isDisplayCancelButton) {
-               cancelButton.enabled = true;
-            } else {
-               cancelButton.includeInLayout = false;
-            }
-            if (isDisplayNextButton) {
-               nextButton.enabled = true;
-            } else {
-               nextButton.includeInLayout = false;
-            }
-            callLater(displayButtons);
-         }
-
-         override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-            super.updateDisplayList(unscaledWidth, unscaledHeight);
-            viewletGroup.height = 
+      override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+         super.updateDisplayList(unscaledWidth, unscaledHeight);
+         viewletGroup.height =
                unscaledHeight - buttonContainer.height;
-         }
+      }
 
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Private Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-         private function displayButtons():void {
-            var buttonList:Array = [];
-            if (isDisplayCancelButton) {
-               cancelButton.visible = true;
-               cancelButton.percentWidth = isDisplayNextButton ? _BUTTON_WIDTH_PERCENT__DUAL_BUTTON : _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON;
-               buttonList.push(cancelButton);
-            }
-            if (isDisplayNextButton) {
-               nextButton.visible = true;
-               nextButton.percentWidth = isDisplayCancelButton ? _BUTTON_WIDTH_PERCENT__DUAL_BUTTON : _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON;
-               buttonList.push(nextButton);
-            }
-            fadeEffect.play(buttonList);
+      private function displayButtons():void {
+         var buttonList:Array = [];
+         if (isDisplayCancelButton) {
+            cancelButton.visible = true;
+            cancelButton.percentWidth = isDisplayNextButton ? _BUTTON_WIDTH_PERCENT__DUAL_BUTTON : _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON;
+            buttonList.push(cancelButton);
          }
+         if (isDisplayNextButton) {
+            nextButton.visible = true;
+            nextButton.percentWidth = isDisplayCancelButton ? _BUTTON_WIDTH_PERCENT__DUAL_BUTTON : _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON;
+            buttonList.push(nextButton);
+         }
+         fadeEffect.play(buttonList);
+      }
 
-         private function onCreationComplete():void {
-            viewletGroup.clipAndEnableScrolling = viewletGroup_Scrollable;
-            if (viewletGroup_UsePadding) {
-               var padding:int = Utils_Layout.getStandardPadding() * 2;
-               viewletGroup.paddingLeft = padding;
-               viewletGroup.paddingRight = padding;
-               viewletGroup.paddingTop = padding;
-            }
+      private function onCreationComplete():void {
+         viewletGroup.clipAndEnableScrolling = viewletGroup_Scrollable;
+         if (viewletGroup_UsePadding) {
+            var padding:int = Utils_Layout.getStandardPadding() * 2;
+            viewletGroup.paddingLeft = padding;
+            viewletGroup.paddingRight = padding;
+            viewletGroup.paddingTop = padding;
          }
+      }
       ]]>
    </fx:Script>
 
@@ -140,7 +139,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   height = "100%"
                   width = "100%">
          <s:VGroup id = "viewletGroup"
-                   width = "100%" />
+                   width = "100%"/>
       </s:Scroller>
       <s:BorderContainer id = "buttonContainer"
                          width = "100%"
@@ -148,20 +147,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          <s:layout>
             <s:HorizontalLayout horizontalAlign = "center"
                                 paddingTop = "{Utils_Layout.getStandardPadding()}"
-                                paddingBottom = "{Utils_Layout.getStandardPadding() + 4}" />
+                                paddingBottom = "{Utils_Layout.getStandardPadding() + 4}"/>
          </s:layout>
          <button:NormalButton id = "cancelButton"
                               label = "Cancel"
                               enabled = "false"
                               visible = "false"
-                              click = "onCancelButtonClick(event)" />
+                              click = "onCancelButtonClick(event)"/>
          <button:NormalButton id = "nextButton"
                               label = "Next"
                               enabled = "false"
                               visible = "false"
                               click = "onNextButtonClick(event)"
                               doubleClick = "onNextButtonDoubleClick(event)"
-                              doubleClickEnabled = "true" />
+                              doubleClickEnabled = "true"/>
       </s:BorderContainer>
    </s:VGroup>
 </view:View_Base>

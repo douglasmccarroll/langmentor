@@ -16,111 +16,94 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.vo
-{
-    import com.brightworks.vo.IVO;
-    import com.brightworks.vo.VO;
+package com.langcollab.languagementor.vo {
+import com.brightworks.vo.IVO;
 
-    import flash.events.Event;
-    import flash.utils.Dictionary;
+import flash.events.Event;
+import flash.utils.Dictionary;
 
-    [Bindable(event = "valueChange")]
-    [RemoteClass(alias = "com.langcollab.languagementor.db.ChunkFileVO")]
-    public class ChunkFileVO extends ChunkReferencingVO implements IVO
-    {
+[Bindable(event="valueChange")]
+[RemoteClass(alias="com.langcollab.languagementor.db.ChunkFileVO")]
+public class ChunkFileVO extends ChunkReferencingVO implements IVO {
 
-        private static var _associatedTableName:String;
-        private static var _propInfoList:Dictionary;
+   private static var _associatedTableName:String;
+   private static var _propInfoList:Dictionary;
 
-        public var iso639_3Code:String;
+   public var iso639_3Code:String;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Getters & Setters
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Getters & Setters
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        private var _duration:int;
+   private var _duration:int;
 
-        public function get duration():int
-        {
-            return _duration;
-        }
+   public function get duration():int {
+      return _duration;
+   }
 
-        public function set duration(value:int):void
-        {
-            setPropList.push("duration");
-            if (_duration != value)
-            {
-                _duration = value;
-                dispatchEvent(new Event("valueChange"));
-            }
-        }
+   public function set duration(value:int):void {
+      setPropList.push("duration");
+      if (_duration != value) {
+         _duration = value;
+         dispatchEvent(new Event("valueChange"));
+      }
+   }
 
-        private var _languageId:int;
+   private var _languageId:int;
 
-        public function get languageId():int
-        {
-            return _languageId;
-        }
+   public function get languageId():int {
+      return _languageId;
+   }
 
-        public function set languageId(value:int):void
-        {
-            setPropList.push("languageId");
-            if (_languageId != value)
-            {
-                _languageId = value;
-                dispatchEvent(new Event("valueChange"));
-            }
-        }
+   public function set languageId(value:int):void {
+      setPropList.push("languageId");
+      if (_languageId != value) {
+         _languageId = value;
+         dispatchEvent(new Event("valueChange"));
+      }
+   }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Public Methods
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        public function ChunkFileVO()
-        {
-            super();
-        }
+   public function ChunkFileVO() {
+      super();
+   }
 
-        public function equals(v:IVO):Boolean
-        {
-            if (!(v is ChunkFileVO))
-                return false;
-            return doKeyPropsMatch(v);
-        }
+   public function equals(v:IVO):Boolean {
+      if (!(v is ChunkFileVO))
+         return false;
+      return doKeyPropsMatch(v);
+   }
 
-        override public function getAssociatedTableName():String
-        {
-            if (!_associatedTableName)
-            {
-                _associatedTableName = extractAssociatedTableName();
-            }
-            return _associatedTableName;
-        }
+   override public function getAssociatedTableName():String {
+      if (!_associatedTableName) {
+         _associatedTableName = extractAssociatedTableName();
+      }
+      return _associatedTableName;
+   }
 
-        override public function getClass():Class
-        {
-            return ChunkFileVO;
-        }
+   override public function getClass():Class {
+      return ChunkFileVO;
+   }
 
-        override public function getPropInfoList():Dictionary
-        {
-            if (!_propInfoList)
-            {
-                _propInfoList = extractPropInfoList();
-            }
-            return _propInfoList;
-        }
+   override public function getPropInfoList():Dictionary {
+      if (!_propInfoList) {
+         _propInfoList = extractPropInfoList();
+      }
+      return _propInfoList;
+   }
 
-        override public function getPropNameList_KeyProps():Array
-        {
-            var result:Array = super.getPropNameList_KeyProps();
-            result.push("languageId");
-            return result;
-        }
+   override public function getPropNameList_KeyProps():Array {
+      var result:Array = super.getPropNameList_KeyProps();
+      result.push("languageId");
+      return result;
+   }
 
-    }
+}
 }

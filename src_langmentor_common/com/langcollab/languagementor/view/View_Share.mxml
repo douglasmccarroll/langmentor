@@ -18,236 +18,213 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                              xmlns:mx = "library://ns.adobe.com/flex/mx"
-                              xmlns:s = "library://ns.adobe.com/flex/spark"
                               xmlns:view = "com.langcollab.languagementor.view.*"
                               creationComplete = "onCreationComplete()"
                               title = "Share">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_Dispose;
-            import com.brightworks.util.Utils_NativeExtensions;
-            import com.brightworks.util.Utils_System;
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
-            import com.langcollab.languagementor.constant.Constant_AppConfiguration;
-            import com.langcollab.languagementor.view.supportClasses.ViewContext;
-            
-            import mx.controls.Spacer;
-            
-            import spark.components.Button;
-            import spark.components.CheckBox;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Dispose;
+      import com.brightworks.util.Utils_NativeExtensions;
+      import com.brightworks.util.Utils_System;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
-            private var _index_Buttons_to_ClickFunctions:Dictionary = new Dictionary();
-            private var _isDisposed:Boolean;
-            private var _isFacebookInviteInProgress:Boolean;
-            private var _isTweetInProgress:Boolean;
-            private var _naggingOptOutCheckbox:CheckBox;
+      import mx.controls.Spacer;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      import spark.components.Button;
+      import spark.components.CheckBox;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                if (_index_Buttons_to_ClickFunctions)
-                {
-                    for (var o:Object in _index_Buttons_to_ClickFunctions)
-                    {
-                        var btn:Button = Button(o);
-                        var func:Function = _index_Buttons_to_ClickFunctions[o];
-                        btn.removeEventListener(MouseEvent.CLICK, func);
-                    }
-                    Utils_Dispose.disposeDictionary(_index_Buttons_to_ClickFunctions, true);
-                    _index_Buttons_to_ClickFunctions = null;
-                }
+      private var _index_Buttons_to_ClickFunctions:Dictionary = new Dictionary();
+      private var _isDisposed:Boolean;
+      private var _isFacebookInviteInProgress:Boolean;
+      private var _isTweetInProgress:Boolean;
+      private var _naggingOptOutCheckbox:CheckBox;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_index_Buttons_to_ClickFunctions) {
+            for (var o:Object in _index_Buttons_to_ClickFunctions) {
+               var btn:Button = Button(o);
+               var func:Function = _index_Buttons_to_ClickFunctions[o];
+               btn.removeEventListener(MouseEvent.CLICK, func);
             }
+            Utils_Dispose.disposeDictionary(_index_Buttons_to_ClickFunctions, true);
+            _index_Buttons_to_ClickFunctions = null;
+         }
+      }
 
-            override public function doGoBack():void
-            {
-                Log.info("View_Share.doGoBack()");
-                handleOptOutCheckboxState();
-                if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
-                    navigator.pushView(View_Home, null, null, transition_SlideView_Left);
-                else
-                    super.doGoBack();
-            }
+      override public function doGoBack():void {
+         Log.info("View_Share.doGoBack()");
+         handleOptOutCheckboxState();
+         if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
+            navigator.pushView(View_Home, null, null, transition_SlideView_Left);
+         else
+            super.doGoBack();
+      }
 
-            override public function doGoHome():void
-            {
-                handleOptOutCheckboxState();
-                super.doGoHome();
-            }
+      override public function doGoHome():void {
+         handleOptOutCheckboxState();
+         super.doGoHome();
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Protected Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override protected function onPrimaryBottomButtonClick(event:MouseEvent):void
-            {
-                Log.info("View_Share.onPrimaryBottomButtonClick()");
-                handleOptOutCheckboxState();
-                if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
-                    navigator.pushView(View_Home, null, null, transition_SlideView_Left);
-                else
-                    super.onPrimaryBottomButtonClick(event);
-            }
+      override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
+         Log.info("View_Share.onPrimaryBottomButtonClick()");
+         handleOptOutCheckboxState();
+         if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
+            navigator.pushView(View_Home, null, null, transition_SlideView_Left);
+         else
+            super.onPrimaryBottomButtonClick(event);
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function displayButtons(buttonLabelList:Array, clickFunctionList:Array):void
-            {
-                if (buttonLabelList.length != clickFunctionList.length)
-                {
-                    Log.error("View_Giving.displayButtons(): List args are different lengths");
-                    return;
-                }
-                for (var i:int = 0; i < buttonLabelList.length; i++)
-                {
-                    var btn:Button = new Button();
-                    var func:Function = clickFunctionList[i];
-                    btn.label = buttonLabelList[i];
-                    btn.percentWidth = 100;
-                    btn.addEventListener(MouseEvent.CLICK, func);
-                    _index_Buttons_to_ClickFunctions[btn] = func;
-                    viewletGroup.addElement(btn);
-                    viewletGroup.addElement(new Spacer());
-                }
-            }
+      private function displayButtons(buttonLabelList:Array, clickFunctionList:Array):void {
+         if (buttonLabelList.length != clickFunctionList.length) {
+            Log.error("View_Giving.displayButtons(): List args are different lengths");
+            return;
+         }
+         for (var i:int = 0; i < buttonLabelList.length; i++) {
+            var btn:Button = new Button();
+            var func:Function = clickFunctionList[i];
+            btn.label = buttonLabelList[i];
+            btn.percentWidth = 100;
+            btn.addEventListener(MouseEvent.CLICK, func);
+            _index_Buttons_to_ClickFunctions[btn] = func;
+            viewletGroup.addElement(btn);
+            viewletGroup.addElement(new Spacer());
+         }
+      }
 
-            private function displayNaggingOptOut():void
-            {
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                _naggingOptOutCheckbox = new CheckBox();
-                _naggingOptOutCheckbox.label = "Nagging Opt-Out";
-                _naggingOptOutCheckbox.selected = appStatePersistenceManager.retrieveNaggingDisabled();
-                viewletGroup.addElement(_naggingOptOutCheckbox);
-                var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
-                textWidget.text = "Select this checkbox if you don't " + 'want Language Mentor to display the "Share" link on the Home screen.';
-                viewletGroup.addElement(textWidget);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-            }
+      private function displayNaggingOptOut():void {
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         _naggingOptOutCheckbox = new CheckBox();
+         _naggingOptOutCheckbox.label = "Nagging Opt-Out";
+         _naggingOptOutCheckbox.selected = appStatePersistenceManager.retrieveNaggingDisabled();
+         viewletGroup.addElement(_naggingOptOutCheckbox);
+         var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
+         textWidget.text = "Select this checkbox if you don't " + 'want Language Mentor to display the "Share" link on the Home screen.';
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+      }
 
-            private function handleOptOutCheckboxState():void
-            {
-               if (_naggingOptOutCheckbox)
-                  appStatePersistenceManager.persistNaggingDisabled(_naggingOptOutCheckbox.selected);
-            }
+      private function handleOptOutCheckboxState():void {
+         if (_naggingOptOutCheckbox)
+            appStatePersistenceManager.persistNaggingDisabled(_naggingOptOutCheckbox.selected);
+      }
 
-            private function onButtonClick_FacebookInvite(event:MouseEvent):void
-            {
-                Log.info("View_Share.onButtonClick_FacebookInvite()");
-                if (!_isFacebookInviteInProgress)
-                {
-                    _isFacebookInviteInProgress = true;
-                    Utils_NativeExtensions.facebookInvite(Constant_AppConfiguration.SHARING__FACEBOOK_INVITE_TEXT, onFacebookInviteResult);
-                }
-            }
+      private function onButtonClick_FacebookInvite(event:MouseEvent):void {
+         Log.info("View_Share.onButtonClick_FacebookInvite()");
+         if (!_isFacebookInviteInProgress) {
+            _isFacebookInviteInProgress = true;
+            Utils_NativeExtensions.facebookInvite(Constant_AppConfiguration.SHARING__FACEBOOK_INVITE_TEXT, onFacebookInviteResult);
+         }
+      }
 
-            private function onButtonClick_OpenAppStoreToRate(event:MouseEvent):void
-            {
-                Log.info("View_Share.onButtonClick_OpenAppStoreToRate()");
-                Utils_NativeExtensions.showRatingsPrompt();
-            }
+      private function onButtonClick_OpenAppStoreToRate(event:MouseEvent):void {
+         Log.info("View_Share.onButtonClick_OpenAppStoreToRate()");
+         Utils_NativeExtensions.showRatingsPrompt();
+      }
 
-            private function onButtonClick_Tweet(event:MouseEvent):void
-            {
-                Log.info("View_Share.onButtonClick_Tweet()");
-                if (!_isTweetInProgress)
-                {
-                    _isTweetInProgress = true;
-                    Utils_NativeExtensions.tweet(Constant_AppConfiguration.SHARING__TWEET, onTweetResult);
-                }
-            }
+      private function onButtonClick_Tweet(event:MouseEvent):void {
+         Log.info("View_Share.onButtonClick_Tweet()");
+         if (!_isTweetInProgress) {
+            _isTweetInProgress = true;
+            Utils_NativeExtensions.tweet(Constant_AppConfiguration.SHARING__TWEET, onTweetResult);
+         }
+      }
 
-            private function onCreationComplete():void
-            {
-                var widget:IUIWidget_Text;
-                widget = new UIWidget_Viewlet__Heading();
-                widget.text = "If you like Language Mentor, please let others know about us!";
-                viewletGroup.addElement(widget);
-                viewletGroup.addElement(new Spacer());
-                widget = new UIWidget_Viewlet__Text();
-                widget.text = "Language Mentor is an open platform supported by its users and developers. Please help us spread the word!";
-                viewletGroup.addElement(widget);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                widget = new UIWidget_Viewlet__Bold_Text();
-                widget.text = "Give us a positive rating on the " + Utils_System.getAppStoreName();
-                viewletGroup.addElement(widget);
-                viewletGroup.addElement(new Spacer());
-                displayButtons(["Rate Language Mentor" ], [onButtonClick_OpenAppStoreToRate]);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                widget = new UIWidget_Viewlet__Bold_Text();
-                if (Utils_NativeExtensions.isFacebookSupported())
-                    widget.text = "Facebook & Twitter";
-                else
-                    widget.text = "Tweet";
-                viewletGroup.addElement(widget);
-                viewletGroup.addElement(new Spacer());
-                if (Utils_NativeExtensions.isFacebookSupported())
-                {
-                    displayButtons(
-                        [
-                        "Invite Friends",
-                        "Tweet @langmentor" ], 
-                        [
-                        onButtonClick_FacebookInvite,
-                        onButtonClick_Tweet]);
-                }
-                else
-                {
-                    displayButtons(
-                        [
-                        "Tweet @langmentor" ], 
-                        [
-                        onButtonClick_Tweet]);
-                }
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                widget = new UIWidget_Viewlet__Bold_Text();
-                widget.text = "Thanks!  :)";
-                viewletGroup.addElement(widget);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                displayNaggingOptOut();
-            }
+      private function onCreationComplete():void {
+         var widget:IUIWidget_Text;
+         widget = new UIWidget_Viewlet__Heading();
+         widget.text = "If you like Language Mentor, please let others know about us!";
+         viewletGroup.addElement(widget);
+         viewletGroup.addElement(new Spacer());
+         widget = new UIWidget_Viewlet__Text();
+         widget.text = "Language Mentor is an open platform supported by its users and developers. Please help us spread the word!";
+         viewletGroup.addElement(widget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         widget = new UIWidget_Viewlet__Bold_Text();
+         widget.text = "Give us a positive rating on the " + Utils_System.getAppStoreName();
+         viewletGroup.addElement(widget);
+         viewletGroup.addElement(new Spacer());
+         displayButtons(["Rate Language Mentor"], [onButtonClick_OpenAppStoreToRate]);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         widget = new UIWidget_Viewlet__Bold_Text();
+         if (Utils_NativeExtensions.isFacebookSupported())
+            widget.text = "Facebook & Twitter";
+         else
+            widget.text = "Tweet";
+         viewletGroup.addElement(widget);
+         viewletGroup.addElement(new Spacer());
+         if (Utils_NativeExtensions.isFacebookSupported()) {
+            displayButtons(
+                  [
+                     "Invite Friends",
+                     "Tweet @langmentor"],
+                  [
+                     onButtonClick_FacebookInvite,
+                     onButtonClick_Tweet]);
+         }
+         else {
+            displayButtons(
+                  [
+                     "Tweet @langmentor"],
+                  [
+                     onButtonClick_Tweet]);
+         }
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         widget = new UIWidget_Viewlet__Bold_Text();
+         widget.text = "Thanks!  :)";
+         viewletGroup.addElement(widget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         displayNaggingOptOut();
+      }
 
-            private function onFacebookInviteResult(success:Boolean):void
-            {
-                _isFacebookInviteInProgress = false;
-            }
+      private function onFacebookInviteResult(success:Boolean):void {
+         _isFacebookInviteInProgress = false;
+      }
 
-            private function onTweetResult():void
-            {
-                _isTweetInProgress = false;
-            }
-        ]]>
+      private function onTweetResult():void {
+         _isTweetInProgress = false;
+      }
+      ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

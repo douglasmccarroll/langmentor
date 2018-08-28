@@ -16,67 +16,57 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.audio
-{
+package com.langcollab.languagementor.controller.audio {
 
-    public class AudioSequenceLeaf_Silence_Initial extends AudioSequenceLeaf_Timer
-    {
-        private var _durationProviderFunction:Function;
+public class AudioSequenceLeaf_Silence_Initial extends AudioSequenceLeaf_Timer {
+   private var _durationProviderFunction:Function;
 
-        private static var _availableInstancePool:Array = [];
+   private static var _availableInstancePool:Array = [];
 
-        // ****************************************************
-        //
-        //          Public Methods
-        //
-        // ****************************************************
+   // ****************************************************
+   //
+   //          Public Methods
+   //
+   // ****************************************************
 
-        public function AudioSequenceLeaf_Silence_Initial(enforcer:Class)
-        {
-            super();
-            if (enforcer != InstancePoolEnforcer)
-                throw new Error("AudioSequenceLeaf_Silence_Initial: create instances with acquireReusable()");
-        }
+   public function AudioSequenceLeaf_Silence_Initial(enforcer:Class) {
+      super();
+      if (enforcer != InstancePoolEnforcer)
+         throw new Error("AudioSequenceLeaf_Silence_Initial: create instances with acquireReusable()");
+   }
 
-        public static function acquireReusable(id:Object, duration:uint, durationProviderFunction:Function):AudioSequenceLeaf_Silence_Initial
-        {
-            var result:AudioSequenceLeaf_Silence_Initial;
-            if (_availableInstancePool.length > 0)
-            {
-                result = _availableInstancePool.pop();
-                result.isDisposed = false;
-            }
-            else
-            {
-                result = new AudioSequenceLeaf_Silence_Initial(InstancePoolEnforcer);
-            }
-            result.id = id;
-            result.duration = duration;
-            result._durationProviderFunction = durationProviderFunction;
-            return result;
-        }
+   public static function acquireReusable(id:Object, duration:uint, durationProviderFunction:Function):AudioSequenceLeaf_Silence_Initial {
+      var result:AudioSequenceLeaf_Silence_Initial;
+      if (_availableInstancePool.length > 0) {
+         result = _availableInstancePool.pop();
+         result.isDisposed = false;
+      }
+      else {
+         result = new AudioSequenceLeaf_Silence_Initial(InstancePoolEnforcer);
+      }
+      result.id = id;
+      result.duration = duration;
+      result._durationProviderFunction = durationProviderFunction;
+      return result;
+   }
 
-        override public function dispose():void
-        {
-            super.dispose();
-            AudioSequenceLeaf_Silence_Initial.releaseReusable(this);
-        }
+   override public function dispose():void {
+      super.dispose();
+      AudioSequenceLeaf_Silence_Initial.releaseReusable(this);
+   }
 
-        public static function releaseReusable(instance:AudioSequenceLeaf_Silence_Initial):void
-        {
-            if (_availableInstancePool.indexOf(instance) != -1)
-                _availableInstancePool.push(instance);
-        }
+   public static function releaseReusable(instance:AudioSequenceLeaf_Silence_Initial):void {
+      if (_availableInstancePool.indexOf(instance) != -1)
+         _availableInstancePool.push(instance);
+   }
 
-        override public function startFromBeginning():void
-        {
-            duration = _durationProviderFunction();
-            super.startFromBeginning();
-        }
+   override public function startFromBeginning():void {
+      duration = _durationProviderFunction();
+      super.startFromBeginning();
+   }
 
-    }
+}
 }
 
-class InstancePoolEnforcer
-{
+class InstancePoolEnforcer {
 }

@@ -33,9 +33,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.util.Log;
-      import com.brightworks.util.Utils_AIR;
-      import com.brightworks.util.Utils_NativeExtensions;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.util.Utils_LangCollab;
       import com.langcollab.languagementor.view.supportClasses.HomeScreenRealEstateManager;
@@ -283,7 +280,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.debug("View_Home.onSelectModeAlertCallback()");
          navigator.pushView(View_SelectMode, null, null, transition_SlideView_Right);
       }
-
       ]]>
     </fx:Script>
 
@@ -315,16 +311,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   width = "100%">
          </s:Group>
          <s:VGroup height = "100%"
-                  width = "100%">
+                   width = "100%">
             <s:Spacer height = "100%"/>
-            <s:HGroup height="100%"
-                      width="100%">
+            <s:HGroup height = "100%"
+                      width = "100%">
                <s:Spacer width = "100%"/>
                <s:Image id = "brightworksLogo">
                   <s:source>
                      <s:MultiDPIBitmapSource source160dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_160}"
                                              source240dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_240}"
-                                             source320dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_320}" />
+                                             source320dpi = "{Resources_Image.IMAGE__LANGMENTOR_LOGO_320}"/>
                   </s:source>
                </s:Image>
                <s:Spacer width = "100%"/>

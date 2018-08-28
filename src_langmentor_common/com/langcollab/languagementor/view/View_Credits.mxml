@@ -18,119 +18,102 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
-                xmlns:comps = "com.langcollab.languagementor.component.*"
                 implements = "com.brightworks.interfaces.IDisposable"
                 title = "Credits"
                 creationComplete = "onCreationComplete()"
                 viewActivate = "onViewActivate()"
                 xmlns:list = "com.brightworks.component.list.*">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.component.itemrenderer.BwLabelItemRenderer;
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_Dispose;
-            import com.langcollab.languagementor.util.Utils_LangCollab;
-            import com.langcollab.languagementor.view.supportClasses.ViewContext;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Dispose;
+      import com.langcollab.languagementor.util.Utils_LangCollab;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
-            import mx.collections.ArrayCollection;
-            import mx.core.FlexGlobals;
+      import mx.collections.ArrayCollection;
+      import mx.core.FlexGlobals;
 
-            private static const LIST_OPTION__LESSONS:String = "Lessons";
-            private static const LIST_OPTION__TECHNOLOGY:String = "Technology";
+      private static const LIST_OPTION__LESSONS:String = "Lessons";
+      private static const LIST_OPTION__TECHNOLOGY:String = "Technology";
 
-            [Bindable]
-            private var _creditsTypeListDataProvider:ArrayCollection;
-            private var _isDisposed:Boolean = false;
+      [Bindable]
+      private var _creditsTypeListDataProvider:ArrayCollection;
+      private var _isDisposed:Boolean = false;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                if (_creditsTypeListDataProvider)
-                {
-                    Utils_Dispose.disposeArrayCollection(_creditsTypeListDataProvider, true);
-                    _creditsTypeListDataProvider = null;
-                }
-                model = null;
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_creditsTypeListDataProvider) {
+            Utils_Dispose.disposeArrayCollection(_creditsTypeListDataProvider, true);
+            _creditsTypeListDataProvider = null;
+         }
+         model = null;
+      }
+
+      override public function doGoBack():void {
+         Log.info("View_Credits.doGoBack()");
+         navigator.popView(transition_SlideView_Right);
+      }
+
+      override public function doGoHome():void {
+         Log.info("View_Credits.doGoHome()");
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__MORE:
+               navigator.pushView(View_Home, null, navigator.context, transition_SlideView_Left);
+               break;
+            case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
+               navigator.popView(transition_SlideView_Right);
+               break;
+            default:
+               Log.error("View_Credits.doGoBack(): No case for: " + contextType);
+         }
+      }
+
+      private function onCreationComplete():void {
+         _creditsTypeListDataProvider = new ArrayCollection();
+         _creditsTypeListDataProvider.addItem({label: LIST_OPTION__LESSONS, value: LIST_OPTION__LESSONS});
+         _creditsTypeListDataProvider.addItem({label: LIST_OPTION__TECHNOLOGY, value: LIST_OPTION__TECHNOLOGY})
+      }
+
+      private function onCreditsTypeListChange():void {
+         Log.info("View_Credits.onCreditsTypeListChange(): " + creditsTypeList.selectedItem.value);
+         switch (creditsTypeList.selectedItem.value) {
+            case LIST_OPTION__LESSONS: {
+               if (model.getLessonVersionCount() < 1) {
+                  var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
+                  (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message);
+                  return;
+               }
+               navigator.pushView(View_Credits_Lessons, null, navigator.context);
+               break;
             }
-
-            override public function doGoBack():void
-            {
-                Log.info("View_Credits.doGoBack()");
-                navigator.popView(transition_SlideView_Right);
+            case LIST_OPTION__TECHNOLOGY: {
+               navigator.pushView(View_Credits_Technology, null, navigator.context);
+               break;
             }
-
-            override public function doGoHome():void
-            {
-                Log.info("View_Credits.doGoHome()");
-                switch (contextType)
-                {
-                    case ViewContext.CONTEXT_TYPE__MORE:
-                        navigator.pushView(View_Home, null, navigator.context, transition_SlideView_Left);
-                        break;
-                    case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
-                        navigator.popView(transition_SlideView_Right);
-                        break;
-                    default:
-                        Log.error("View_Credits.doGoBack(): No case for: " + contextType);
-                }
+            default: {
+               Log.error("View_Credits.onCreditsTypeListChange(): no case for: " + creditsTypeList.selectedItem.value);
             }
+         }
+      }
 
-            private function onCreationComplete():void
-            {
-                _creditsTypeListDataProvider = new ArrayCollection();
-                _creditsTypeListDataProvider.addItem({label:LIST_OPTION__LESSONS, value:LIST_OPTION__LESSONS});
-                _creditsTypeListDataProvider.addItem({label:LIST_OPTION__TECHNOLOGY, value:LIST_OPTION__TECHNOLOGY})
-            }
-
-            private function onCreditsTypeListChange():void
-            {
-                Log.info("View_Credits.onCreditsTypeListChange(): " + creditsTypeList.selectedItem.value);
-                switch (creditsTypeList.selectedItem.value)
-                {
-                    case LIST_OPTION__LESSONS:
-                    {
-                        if (model.getLessonVersionCount() < 1)
-                        {
-                            var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
-                            (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message);
-                            return;
-                        }
-                        navigator.pushView(View_Credits_Lessons, null, navigator.context);
-                        break;
-                    }
-                    case LIST_OPTION__TECHNOLOGY:
-                    {
-                        navigator.pushView(View_Credits_Technology, null, navigator.context);
-                        break;
-                    }
-                    default:
-                    {
-                        Log.error("View_Credits.onCreditsTypeListChange(): no case for: " + creditsTypeList.selectedItem.value);
-                    }
-                }
-            }
-
-            private function onViewActivate():void
-            {
-            }
-        ]]>
+      private function onViewActivate():void {
+      }
+      ]]>
     </fx:Script>
 
-    <list:NormalList id = "creditsTypeList"
-                     dataProvider = "{_creditsTypeListDataProvider}"
-                     change = "onCreditsTypeListChange()"
-                     itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
-                     width = "100%"
-                     height = "100%" />
+   <list:NormalList id = "creditsTypeList"
+                    dataProvider = "{_creditsTypeListDataProvider}"
+                    change = "onCreditsTypeListChange()"
+                    itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
+                    width = "100%"
+                    height = "100%"/>
 
 </view:View_Base>

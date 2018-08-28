@@ -18,62 +18,57 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                      xmlns:mx = "library://ns.adobe.com/flex/mx"
-                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
                       title = "Intro &amp; Setup: Library Preferences Saved">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _isDisposed:Boolean = false;
+      private var _isDisposed:Boolean = false;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text;
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Great! - we've saved your preferences";
-                viewletGroup.addElement(textWidget);
-                viewletGroup.addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Text();
-                textWidget.text = 'You can change these options later in the "More" menu' + "'s Manage Downloads and Manage Libraries sections";
-                viewletGroup.addElement(textWidget);
-                if (!model.autoDownloadLessons)
-                {
-                    textWidget = new UIWidget_Viewlet__Text();
-                    textWidget.text = "To initiate lesson downloading, go to More > Manage Downloads > Start Lesson Downloads";
-                    viewletGroup.addElement(textWidget);
-                }
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text;
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "Great! - we've saved your preferences";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Text();
+         textWidget.text = 'You can change these options later in the "More" menu' + "'s Manage Downloads and Manage Libraries sections";
+         viewletGroup.addElement(textWidget);
+         if (!model.autoDownloadLessons) {
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = "To initiate lesson downloading, go to More > Manage Downloads > Start Lesson Downloads";
+            viewletGroup.addElement(textWidget);
+         }
+      }
+      ]]>
     </fx:Script>
 </view:View_Intro_Base>

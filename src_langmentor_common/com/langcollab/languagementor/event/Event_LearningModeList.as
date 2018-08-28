@@ -16,19 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.event
-{
-    import com.brightworks.event.BwEvent;
+package com.langcollab.languagementor.event {
+import com.brightworks.event.BwEvent;
 
-    public class Event_LearningModeList extends BwEvent
-    {
-        public static const DISPLAY_LEARNING_MODE_HELP:String = "event_LearningModeList_DisplayLearningModeHelp";
+public class Event_LearningModeList extends BwEvent {
+   public static const DISPLAY_LEARNING_MODE_HELP:String = "event_LearningModeList_DisplayLearningModeHelp";
 
-        public var learningModeId:int;
+   public var learningModeId:int;
 
-        public function Event_LearningModeList(type:String)
-        {
-            super(type);
-        }
-    }
+   public function Event_LearningModeList(type:String) {
+      super(type);
+   }
+}
 }

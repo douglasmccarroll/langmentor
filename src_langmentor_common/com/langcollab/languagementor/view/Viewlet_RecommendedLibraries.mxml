@@ -18,155 +18,137 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:list = "com.brightworks.component.list.*"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
                    xmlns:s = "library://ns.adobe.com/flex/spark"
-                   xmlns:swiz = "org.swizframework.core.*"
                    xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()"
                    implements = "com.brightworks.interfaces.IDisposable"
                    xmlns:checkbox = "com.brightworks.component.checkbox.*">
 
-    <fx:Metadata> 
-        [Event( name="complete", type="flash.events.Event") ] 
-    </fx:Metadata>
+   <fx:Metadata>
+      [Event(name="complete", type="flash.events.Event")]
+   </fx:Metadata>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.event.BwEvent;
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_ArrayVectorEtc;
-            import com.langcollab.languagementor.model.LessonDownloadInfo_Library;
+      import com.brightworks.event.BwEvent;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_ArrayVectorEtc;
+      import com.langcollab.languagementor.model.LessonDownloadInfo_Library;
 
-            private static const INDENT:String = "    ";
+      private static const INDENT:String = "    ";
 
-            public var displayRecommendedLibrariesHeading:Boolean = true;
-            [Bindable]
-            public var displayUseRecommendedLibrariesCheckbox:Boolean = false;
+      public var displayRecommendedLibrariesHeading:Boolean = true;
+      [Bindable]
+      public var displayUseRecommendedLibrariesCheckbox:Boolean = false;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                lessonDownloadController.removeEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         lessonDownloadController.removeEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function isLibraryUserEntered(libraryInfo:LessonDownloadInfo_Library):Boolean {
+         /// This is a bit of a kludge - at present it is true that all user-entered libraries are
+         //   in the DB, and no non-user-entered (aka recommended) libraries are in the DB, but this
+         //   may change. LibraryVO may need a new 'isUserEntered' prop.
+         return model.isLibraryWithLibraryURLExists(libraryInfo.libraryFolderUrl);
+      }
+
+      private function onCreationComplete():void {
+         Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
+         lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
+         if (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive)) {
+            lessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess();
+         }
+      }
+
+      private function onLessonDownloadsNewInfo(event:BwEvent):void {
+         updateUI();
+      }
+
+      private function updateUI():void {
+         if (lessonDownloadController.isGetRecommendedLibrariesInfoProcessActive) {
+            infoDisplayViewlet.text = "Searching for recommended libraries......";
+         }
+         else {
+            var foundLibraryCount:Number = 0;
+            var isInternetConnectionProblem:Boolean = false;
+            if ((lessonDownloadController) &&
+                  (lessonDownloadController.lessonDownloadInfo_Libraries) &&
+                  (lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) &&
+                  (Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) > 0)) {
+               foundLibraryCount =
+                     Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library);
             }
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            private function isLibraryUserEntered(libraryInfo:LessonDownloadInfo_Library):Boolean
-            {
-                /// This is a bit of a kludge - at present it is true that all user-entered libraries are
-                //   in the DB, and no non-user-entered (aka recommended) libraries are in the DB, but this
-                //   may change. LibraryVO may need a new 'isUserEntered' prop.
-                return model.isLibraryWithLibraryURLExists(libraryInfo.libraryFolderUrl);
+            else if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
+               isInternetConnectionProblem = true;
             }
-
-            private function onCreationComplete():void
-            {
-                Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
-                lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
-                if (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive))
-                {
-                    lessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess();
-                }
+            if (foundLibraryCount > 0) {
+               var text:String = "";
+               if (displayRecommendedLibrariesHeading)
+                  text += "Recommended Libraries:\n";
+               var recommendedLibraryCount:uint = 0;
+               for each (var libraryInfo:LessonDownloadInfo_Library in lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) {
+                  if (!isLibraryUserEntered(libraryInfo)) {
+                     recommendedLibraryCount++;
+                     text += INDENT + recommendedLibraryCount + ": " + libraryInfo.libraryName + "\n";
+                  }
+               }
+               infoDisplayViewlet.text = text;
             }
-
-            private function onLessonDownloadsNewInfo(event:BwEvent):void
-            {
-                updateUI();
+            else {
+               if (isInternetConnectionProblem) {
+                  infoDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
+               }
+               else {
+                  infoDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
+               }
             }
-
-            private function updateUI():void
-            {
-                if (lessonDownloadController.isGetRecommendedLibrariesInfoProcessActive)
-                {
-                    infoDisplayViewlet.text = "Searching for recommended libraries......";
-                }
-                else
-                {
-                    var foundLibraryCount:Number = 0;
-                    var isInternetConnectionProblem:Boolean = false;
-                    if ((lessonDownloadController) && 
-                        (lessonDownloadController.lessonDownloadInfo_Libraries) && 
-                        (lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) && 
-                        (Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) > 0))
-                    {
-                        foundLibraryCount = 
-                            Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library);
-                    }
-                    else if (!model.configFileInfo.isDataLoaded_MentorTypeFile)
-                    {
-                        isInternetConnectionProblem = true;
-                    }
-                    if (foundLibraryCount > 0)
-                    {
-                        var text:String = "";
-                        if (displayRecommendedLibrariesHeading)
-                            text += "Recommended Libraries:\n";
-                        var recommendedLibraryCount:uint = 0;
-                        for each (var libraryInfo:LessonDownloadInfo_Library in lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library)
-                        {
-                            if (!isLibraryUserEntered(libraryInfo))
-                            {
-                                recommendedLibraryCount ++;
-                                text += INDENT + recommendedLibraryCount + ": " + libraryInfo.libraryName + "\n";
-                            }
-                        }
-                        infoDisplayViewlet.text = text;
-                    }
-                    else
-                    {
-                        if (isInternetConnectionProblem)
-                        {
-                            infoDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
-                        }
-                        else
-                        {
-                            infoDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
-                        }
-                    }
-                }
-            }
-        ]]>
+         }
+      }
+      ]]>
     </fx:Script>
 
-    <fx:Declarations>
-        <s:RadioButtonGroup id = "radioButtonGroup" />
-    </fx:Declarations>
+   <fx:Declarations>
+      <s:RadioButtonGroup id = "radioButtonGroup"/>
+   </fx:Declarations>
 
-    <s:VGroup horizontalAlign = "left"
-              height = "100%"
-              width = "100%">
-        <s:VGroup visible = "{displayUseRecommendedLibrariesCheckbox}"
-                  includeInLayout = "{displayUseRecommendedLibrariesCheckbox}">
-            <checkbox:NormalCheckBox id = "useRecommendedLibrariesCheckbox"
-                                     label = "Use Recommended Libraries"
-                                     change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
-                                     selected = "{model.useRecommendedLibraries}" />
-            <s:Spacer />
-            <uiwidget:UIWidget_Viewlet__Text text = "If you select this option, Language Mentor will use the libraries listed below." />
-            <s:Spacer />
-            <s:Spacer />
-        </s:VGroup>
-        <uiwidget:UIWidget_Viewlet__Text id = "infoDisplayViewlet"
-                                         text = "Searching for recommended libraries..."
-                                         height = "100%" />
-    </s:VGroup>
+   <s:VGroup horizontalAlign = "left"
+             height = "100%"
+             width = "100%">
+      <s:VGroup visible = "{displayUseRecommendedLibrariesCheckbox}"
+                includeInLayout = "{displayUseRecommendedLibrariesCheckbox}">
+         <checkbox:NormalCheckBox id = "useRecommendedLibrariesCheckbox"
+                                  label = "Use Recommended Libraries"
+                                  change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
+                                  selected = "{model.useRecommendedLibraries}"/>
+         <s:Spacer/>
+         <uiwidget:UIWidget_Viewlet__Text
+               text = "If you select this option, Language Mentor will use the libraries listed below."/>
+         <s:Spacer/>
+         <s:Spacer/>
+      </s:VGroup>
+      <uiwidget:UIWidget_Viewlet__Text id = "infoDisplayViewlet"
+                                       text = "Searching for recommended libraries..."
+                                       height = "100%"/>
+   </s:VGroup>
 </view:Viewlet_Base>
 
 

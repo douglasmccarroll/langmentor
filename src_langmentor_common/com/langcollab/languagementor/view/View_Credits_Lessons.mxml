@@ -18,105 +18,92 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 implements = "com.brightworks.interfaces.IDisposable"
                 title = "Credits &amp; Copyright"
                 viewActivate = "onViewActivate()">
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
-            import com.langcollab.languagementor.event.Event_LessonVersionList;
-            import com.langcollab.languagementor.view.supportClasses.ViewContext;
-            import com.langcollab.languagementor.vo.LessonVersionVO;
+      import com.brightworks.util.Log;
+      import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
+      import com.langcollab.languagementor.event.Event_LessonVersionList;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
+      import com.langcollab.languagementor.vo.LessonVersionVO;
 
-            private var _isDisposed:Boolean = false;
-            private var _lessonSelectorList:LessonVersionList;
+      private var _isDisposed:Boolean = false;
+      private var _lessonSelectorList:LessonVersionList;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                if (_lessonSelectorList)
-                {
-                    _lessonSelectorList.removeEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
-                    _lessonSelectorList.dispose();
-                    removeElement(_lessonSelectorList);
-                    _lessonSelectorList = null;
-                }
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_lessonSelectorList) {
+            _lessonSelectorList.removeEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
+            _lessonSelectorList.dispose();
+            removeElement(_lessonSelectorList);
+            _lessonSelectorList = null;
+         }
+      }
 
-            override public function doGoBack():void
-            {
-                Log.info("View_Credits_Lessons.doGoBack()");
-                if (_lessonSelectorList.isListAtTopLevel())
-                {
-                    navigator.popView(transition_SlideView_Right);
-                }
-                else
-                {
-                    _lessonSelectorList.handleBackButton();
-                }
-            }
+      override public function doGoBack():void {
+         Log.info("View_Credits_Lessons.doGoBack()");
+         if (_lessonSelectorList.isListAtTopLevel()) {
+            navigator.popView(transition_SlideView_Right);
+         }
+         else {
+            _lessonSelectorList.handleBackButton();
+         }
+      }
 
-            override public function doGoHome():void
-            {
-                Log.info("View_Credits_Lessons.doGoHome()");
-                switch (contextType)
-                {
-                    case ViewContext.CONTEXT_TYPE__MORE:
-                        navigator.pushView(View_Home, null, null, transition_SlideView_Left);
-                        break;
-                    case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
-                        navigator.pushView(View_Home, null, null, transition_SlideView_Right);
-                        break;
-                    default:
-                        Log.error("View_Credits_Technology.doGoBack(): No case for: " + contextType);
-                }
-            }
+      override public function doGoHome():void {
+         Log.info("View_Credits_Lessons.doGoHome()");
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__MORE:
+               navigator.pushView(View_Home, null, null, transition_SlideView_Left);
+               break;
+            case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
+               navigator.pushView(View_Home, null, null, transition_SlideView_Right);
+               break;
+            default:
+               Log.error("View_Credits_Technology.doGoBack(): No case for: " + contextType);
+         }
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function createLessonSelectorList():void
-            {
-                if (_lessonSelectorList)
-                {
-                    _lessonSelectorList.dispose();
-                    removeElement(_lessonSelectorList);
-                }
-                _lessonSelectorList = new LessonVersionList(model.getDownloadedLessonSelectionTreeData(), []);
-                _lessonSelectorList.allowMultipleSelection = false;
-                _lessonSelectorList.percentHeight = 100;
-                _lessonSelectorList.percentWidth = 100;
-                _lessonSelectorList.addEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
-                addElement(_lessonSelectorList);
-            }
+      private function createLessonSelectorList():void {
+         if (_lessonSelectorList) {
+            _lessonSelectorList.dispose();
+            removeElement(_lessonSelectorList);
+         }
+         _lessonSelectorList = new LessonVersionList(model.getDownloadedLessonSelectionTreeData(), []);
+         _lessonSelectorList.allowMultipleSelection = false;
+         _lessonSelectorList.percentHeight = 100;
+         _lessonSelectorList.percentWidth = 100;
+         _lessonSelectorList.addEventListener(Event_LessonVersionList.TOGGLE_LESSON_SELECTED, onLessonSelectionListToggleLessonSelected);
+         addElement(_lessonSelectorList);
+      }
 
-            private function onLessonSelectionListToggleLessonSelected(event:Event_LessonVersionList):void
-            {
-                var vo:LessonVersionVO = event.lessonVersionVO;
-                navigator.pushView(View_Credits_Lesson, vo, navigator.context);
-            }
+      private function onLessonSelectionListToggleLessonSelected(event:Event_LessonVersionList):void {
+         var vo:LessonVersionVO = event.lessonVersionVO;
+         navigator.pushView(View_Credits_Lesson, vo, navigator.context);
+      }
 
-            private function onViewActivate():void
-            {
-                createLessonSelectorList();
-            }
-        ]]>
+      private function onViewActivate():void {
+         createLessonSelectorList();
+      }
+      ]]>
     </fx:Script>
 </view:View_Base>

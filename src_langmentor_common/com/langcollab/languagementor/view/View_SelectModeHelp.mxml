@@ -17,117 +17,117 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<view:View_Base xmlns:fx="http://ns.adobe.com/mxml/2009"
-                xmlns:s="library://ns.adobe.com/flex/spark"
-                xmlns:view="com.langcollab.languagementor.view.*"
-                implements="com.brightworks.interfaces.IDisposable"
-                title="Learning Mode Help"
-                viewActivate="onViewActivate()">
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                implements = "com.brightworks.interfaces.IDisposable"
+                title = "Learning Mode Help"
+                viewActivate = "onViewActivate()">
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-        import com.brightworks.util.Log;
-        import com.brightworks.util.Utils_String;
-        import com.brightworks.util.Utils_System;
-        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
-        import com.langcollab.languagementor.view.supportClasses.ViewContext;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_String;
+      import com.brightworks.util.Utils_System;
+      import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
-        private var _isDisposed:Boolean = false;
-        private var _stageWebView:StageWebView;
+      private var _isDisposed:Boolean = false;
+      private var _stageWebView:StageWebView;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        override public function dispose():void {
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            removeEventListener(Event.ACTIVATE, onActivate);
-            removeEventListener(Event.DEACTIVATE, onDeactivate);
-            if (_stageWebView) {
-                _stageWebView.stage = null;
-                _stageWebView.viewPort = null;
-                _stageWebView.dispose();
-                _stageWebView = null;
-            }
-        }
-
-        override public function doGoBack():void {
-            Log.info("View_SelectModeHelp.doGoBack(): " + contextType);
-            switch (contextType) {
-                case ViewContext.CONTEXT_TYPE__HELP:
-                    navigator.popView(transition_SlideView_Right);
-                    break;
-                case ViewContext.CONTEXT_TYPE__SELECT_MODE_SCREEN_HELP:
-                    navigator.popView(transition_SlideView_Left);
-                    break;
-                default:
-                    Log.error("View_SelectModeHelp.doGoBack(): No case for " + contextType);
-                    navigator.popView(transition_SlideView_Left);
-            }
-        }
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Private Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        private function onActivate(event:Event):void {
-            Log.info("View_SelectModeHelp.onActivate()");
-            _stageWebView.stage = stage;
-        }
-
-        private function onDeactivate(event:Event):void {
-            Log.info("View_SelectModeHelp.onDeactivate()");
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         removeEventListener(Event.ACTIVATE, onActivate);
+         removeEventListener(Event.DEACTIVATE, onDeactivate);
+         if (_stageWebView) {
             _stageWebView.stage = null;
-        }
+            _stageWebView.viewPort = null;
+            _stageWebView.dispose();
+            _stageWebView = null;
+         }
+      }
 
-        private function onViewActivate():void {
-            addEventListener(Event.ACTIVATE, onActivate);
-            addEventListener(Event.DEACTIVATE, onDeactivate);
-            var padding:int = Math.round(stageWebViewRect.width / 20);
-            _stageWebView = new StageWebView();
-            _stageWebView.stage = stage;
-            _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, stageWebViewRect.width - padding, stageWebViewRect.height - padding);
-            var modeId:uint = uint(data);
-            var htmlString:String = model.learningModeDescriptionsHTML[modeId];
-            htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);
-            htmlString = Utils_String.removeLineBreaks(htmlString);
-            if (Utils_System.isIOS()) {
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "18");
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "15");
-            }
-            else {
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "6");
-                htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "5");
-            }
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage());
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_EXAMPLE, model.getNativeLanguageResource("languageExample"));
+      override public function doGoBack():void {
+         Log.info("View_SelectModeHelp.doGoBack(): " + contextType);
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__HELP:
+               navigator.popView(transition_SlideView_Right);
+               break;
+            case ViewContext.CONTEXT_TYPE__SELECT_MODE_SCREEN_HELP:
+               navigator.popView(transition_SlideView_Left);
+               break;
+            default:
+               Log.error("View_SelectModeHelp.doGoBack(): No case for " + contextType);
+               navigator.popView(transition_SlideView_Left);
+         }
+      }
 
-            // dmccarroll 20121113 ///
-            // This is a kludge which has the effect of using "Hello (in [target language])" for the target language example in cases where we do not yet have a
-            // target language example.
-            var targetLanguageExample:String = model.getTargetLanguageResource("languageExample");
-            if (!targetLanguageExample)
-                targetLanguageExample =
-                        "Hello (in " +
-                        model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() +
-                        ")";
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_EXAMPLE, targetLanguageExample);
-            //htmlString = Utils_String.replaceAll(htmlString, Constant_Misc.TOKEN_TARGET_LANGUAGE_EXAMPLE, model.getTargetLanguageResource("languageExample"));
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            _stageWebView.loadString(htmlString);
-        }
-        ]]>
+      private function onActivate(event:Event):void {
+         Log.info("View_SelectModeHelp.onActivate()");
+         _stageWebView.stage = stage;
+      }
+
+      private function onDeactivate(event:Event):void {
+         Log.info("View_SelectModeHelp.onDeactivate()");
+         _stageWebView.stage = null;
+      }
+
+      private function onViewActivate():void {
+         addEventListener(Event.ACTIVATE, onActivate);
+         addEventListener(Event.DEACTIVATE, onDeactivate);
+         var padding:int = Math.round(stageWebViewRect.width / 20);
+         _stageWebView = new StageWebView();
+         _stageWebView.stage = stage;
+         _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, stageWebViewRect.width - padding, stageWebViewRect.height - padding);
+         var modeId:uint = uint(data);
+         var htmlString:String = model.learningModeDescriptionsHTML[modeId];
+         htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);
+         htmlString = Utils_String.removeLineBreaks(htmlString);
+         if (Utils_System.isIOS()) {
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "18");
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "15");
+         }
+         else {
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "6");
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "5");
+         }
+         htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
+         htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage());
+         htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_EXAMPLE, model.getNativeLanguageResource("languageExample"));
+
+         // dmccarroll 20121113 ///
+         // This is a kludge which has the effect of using "Hello (in [target language])" for the target language example in cases where we do not yet have a
+         // target language example.
+         var targetLanguageExample:String = model.getTargetLanguageResource("languageExample");
+         if (!targetLanguageExample)
+            targetLanguageExample =
+                  "Hello (in " +
+                  model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() +
+                  ")";
+         htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_EXAMPLE, targetLanguageExample);
+         //htmlString = Utils_String.replaceAll(htmlString, Constant_Misc.TOKEN_TARGET_LANGUAGE_EXAMPLE, model.getTargetLanguageResource("languageExample"));
+
+         _stageWebView.loadString(htmlString);
+      }
+      ]]>
     </fx:Script>
 
-    <s:Rect id = "stageWebViewRect"
-            height = "100%"
-            width = "100%" />
+   <s:Rect id = "stageWebViewRect"
+           height = "100%"
+           width = "100%"/>
 </view:View_Base>

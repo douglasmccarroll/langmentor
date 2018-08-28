@@ -16,15 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model.appstatepersistence
-{
-	public class LessonVersionInfo
-	{
-		public var contentProviderId:String;
-		public var lessonVersionSignature:String;
+package com.langcollab.languagementor.model.appstatepersistence {
+public class LessonVersionInfo {
+   public var contentProviderId:String;
+   public var lessonVersionSignature:String;
 
-		public function LessonVersionInfo()
-		{
-		}
-	}
+   public function LessonVersionInfo() {
+   }
+}
 }

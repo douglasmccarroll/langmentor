@@ -18,107 +18,91 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
-                xmlns:comps = "com.langcollab.languagementor.component.*"
                 implements = "com.brightworks.interfaces.IDisposable"
                 title = "Community &amp; Support"
                 creationComplete = "onCreationComplete()"
                 viewActivate = "onViewActivate()"
                 xmlns:list = "com.brightworks.component.list.*">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.component.itemrenderer.BwLabelItemRenderer;
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_Dispose;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Dispose;
 
-            import mx.collections.ArrayCollection;
+      import mx.collections.ArrayCollection;
 
-            private static const LIST_OPTION__FORUMS:String = "Forums";
-            private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
-            private static const LIST_OPTION__SHARE:String = "Share";
-            private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
+      private static const LIST_OPTION__FORUMS:String = "Forums";
+      private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
+      private static const LIST_OPTION__SHARE:String = "Share";
+      private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
 
-            [Bindable]
-            private var _listDataProvider:ArrayCollection;
-            private var _isDisposed:Boolean = false;
+      [Bindable]
+      private var _listDataProvider:ArrayCollection;
+      private var _isDisposed:Boolean = false;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                if (_listDataProvider)
-                {
-                    Utils_Dispose.disposeArrayCollection(_listDataProvider, true);
-                    _listDataProvider = null;
-                }
-                model = null;
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_listDataProvider) {
+            Utils_Dispose.disposeArrayCollection(_listDataProvider, true);
+            _listDataProvider = null;
+         }
+         model = null;
+      }
+
+      override public function doGoBack():void {
+         navigator.pushView(View_More, null, null, transition_SlideView_Right);
+      }
+
+      private function onCreationComplete():void {
+         _listDataProvider = new ArrayCollection();
+         _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
+         _listDataProvider.addItem({label: LIST_OPTION__SEND_PROBLEM_REPORT, value: LIST_OPTION__SEND_PROBLEM_REPORT});
+         _listDataProvider.addItem({label: LIST_OPTION__SHARE, value: LIST_OPTION__SHARE});
+         _listDataProvider.addItem({label: LIST_OPTION__UPGRADE, value: LIST_OPTION__UPGRADE})
+      }
+
+      private function onListChange():void {
+         Log.info("View_CommunityAndSupport.onListChange(): " + list.selectedItem.value);
+         switch (list.selectedItem.value) {
+            case LIST_OPTION__FORUMS: {
+               navigator.pushView(View_Forums);
+               break;
             }
-
-            override public function doGoBack():void
-            {
-                navigator.pushView(View_More, null, null, transition_SlideView_Right);
+            case LIST_OPTION__SEND_PROBLEM_REPORT: {
+               navigator.pushView(View_SendProblemReport);
+               break;
             }
-
-            private function onCreationComplete():void
-            {
-                _listDataProvider = new ArrayCollection();
-                _listDataProvider.addItem({label:LIST_OPTION__FORUMS, value:LIST_OPTION__FORUMS});
-                _listDataProvider.addItem({label:LIST_OPTION__SEND_PROBLEM_REPORT, value:LIST_OPTION__SEND_PROBLEM_REPORT});
-                _listDataProvider.addItem({label:LIST_OPTION__SHARE, value:LIST_OPTION__SHARE});
-                _listDataProvider.addItem({label:LIST_OPTION__UPGRADE, value:LIST_OPTION__UPGRADE})
+            case LIST_OPTION__SHARE: {
+               navigator.pushView(View_Share);
+               break;
             }
-
-            private function onListChange():void
-            {
-                Log.info("View_CommunityAndSupport.onListChange(): " + list.selectedItem.value);
-                switch (list.selectedItem.value)
-                {
-                    case LIST_OPTION__FORUMS:
-                    {
-                        navigator.pushView(View_Forums);
-                        break;
-                    }
-                    case LIST_OPTION__SEND_PROBLEM_REPORT:
-                    {
-                        navigator.pushView(View_SendProblemReport);
-                        break;
-                    }
-                    case LIST_OPTION__SHARE:
-                    {
-                        navigator.pushView(View_Share);
-                        break;
-                    }
-                    case LIST_OPTION__UPGRADE:
-                    {
-                        navigator.pushView(View_Upgrade);
-                        break;
-                    }
-                    default:
-                    {
-                        Log.error("View_CommunityAndSupport.onListChange(): no case for: " + list.selectedItem.value);
-                    }
-                }
+            case LIST_OPTION__UPGRADE: {
+               navigator.pushView(View_Upgrade);
+               break;
             }
-
-            private function onViewActivate():void
-            {
+            default: {
+               Log.error("View_CommunityAndSupport.onListChange(): no case for: " + list.selectedItem.value);
             }
-        ]]>
+         }
+      }
+
+      private function onViewActivate():void {
+      }
+      ]]>
     </fx:Script>
 
-    <list:NormalList id = "list"
-                     dataProvider = "{_listDataProvider}"
-                     change = "onListChange()"
-                     itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
-                     width = "100%"
-                     height = "100%" />
+   <list:NormalList id = "list"
+                    dataProvider = "{_listDataProvider}"
+                    change = "onListChange()"
+                    itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
+                    width = "100%"
+                    height = "100%"/>
 
 </view:View_Base>

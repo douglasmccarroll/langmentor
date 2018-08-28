@@ -18,87 +18,77 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                              xmlns:mx = "library://ns.adobe.com/flex/mx"
-                              xmlns:s = "library://ns.adobe.com/flex/spark"
                               xmlns:view = "com.langcollab.languagementor.view.*"
                               creationComplete = "onCreationComplete()"
                               title = "Upgrade">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Utils_AIR;
-            import com.brightworks.util.Utils_System;
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.brightworks.util.Utils_AIR;
+      import com.brightworks.util.Utils_System;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _headingWidget:UIWidget_Viewlet__Heading;
-            private var _isDisposed:Boolean = false;
-            private var _messageTextWidget:UIWidget_Viewlet__Text;
+      private var _headingWidget:UIWidget_Viewlet__Heading;
+      private var _isDisposed:Boolean = false;
+      private var _messageTextWidget:UIWidget_Viewlet__Text;
 
-            public var foo:IUIWidget_Text;
+      public var foo:IUIWidget_Text;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function onCreationComplete():void {
+         _headingWidget = new UIWidget_Viewlet__Heading();
+         _headingWidget.text = "Upgrade Info";
+         viewletGroup.addElement(_headingWidget);
+         viewletGroup.addElement(new Spacer());
+         var messageText:String;
+         if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
+            messageText = "Hmm... We don't seem to be able to get information on available upgrades. Please ensure that you have an Internet connection and try again.";
+         }
+         else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion) {
+            messageText = "Congratulations! You're running the most recent version of Language Mentor.";
+         }
+         else {
+            if (Utils_AIR.appVersionNumber >= model.configFileInfo.requiredVersion_LibraryAccess) {
+               messageText = "An optional update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
             }
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            private function onCreationComplete():void
-            {
-                _headingWidget = new UIWidget_Viewlet__Heading();
-                _headingWidget.text = "Upgrade Info";
-                viewletGroup.addElement(_headingWidget);
-                viewletGroup.addElement(new Spacer());
-                var messageText:String;
-                if (!model.configFileInfo.isDataLoaded_MentorTypeFile)
-                {
-                    messageText = "Hmm... We don't seem to be able to get information on available upgrades. Please ensure that you have an Internet connection and try again.";
-                }
-                else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion)
-                {
-                    messageText = "Congratulations! You're running the most recent version of Language Mentor.";
-                }
-                else
-                {
-                    if (Utils_AIR.appVersionNumber >= model.configFileInfo.requiredVersion_LibraryAccess)
-                    {
-                        messageText = "An optional update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
-                    }
-                    else
-                    {
-                        messageText = "An update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is required in order to continue downloading new lessons.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
-                    }
-                    if (appStatePersistenceManager.retrieveDataSchemaAppVersion() < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion)
-                    {
-                        messageText += "\n\nNote: Version " + model.configFileInfo.mostRecentVersion + " uses a new data format, so updating will require a re-install of Language Mentor.\n\nYou'll need to re-download lessons, etc.\n\nWe apologize for this inconvenience.";
-                    }
-                }
-                _messageTextWidget = new UIWidget_Viewlet__Text();
-                _messageTextWidget.text = messageText;
-                viewletGroup.addElement(_messageTextWidget);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
+            else {
+               messageText = "An update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is required in order to continue downloading new lessons.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
             }
-        ]]>
+            if (appStatePersistenceManager.retrieveDataSchemaAppVersion() < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+               messageText += "\n\nNote: Version " + model.configFileInfo.mostRecentVersion + " uses a new data format, so updating will require a re-install of Language Mentor.\n\nYou'll need to re-download lessons, etc.\n\nWe apologize for this inconvenience.";
+            }
+         }
+         _messageTextWidget = new UIWidget_Viewlet__Text();
+         _messageTextWidget.text = messageText;
+         viewletGroup.addElement(_messageTextWidget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+      }
+      ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

@@ -16,33 +16,29 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.event
-{
-    import com.brightworks.event.BwEvent;
+package com.langcollab.languagementor.event {
+import com.brightworks.event.BwEvent;
 
-    import flash.events.Event;
+import flash.events.Event;
 
-    public class Event_AudioProgress extends BwEvent
-    {
-        public static const ELEMENT_COMPLETE_REPORT:String = "elementCompleteReport";
-        public static const ELEMENT_START_REPORT:String = "elementStartReport";
-        public static const IOERROR_REPORT:String = "ioErrorReport";
+public class Event_AudioProgress extends BwEvent {
+   public static const ELEMENT_COMPLETE_REPORT:String = "elementCompleteReport";
+   public static const ELEMENT_START_REPORT:String = "elementStartReport";
+   public static const IOERROR_REPORT:String = "ioErrorReport";
 
-        public var id:Object;
-        public var levelId:String;
-        public var message:Object;
+   public var id:Object;
+   public var levelId:String;
+   public var message:Object;
 
-        public function Event_AudioProgress(type:String, id:Object, levelId:String, message:Object=null)
-        {
-            super(type);
-            this.id = id;
-            this.levelId = levelId;
-            this.message = message;
-        }
+   public function Event_AudioProgress(type:String, id:Object, levelId:String, message:Object = null) {
+      super(type);
+      this.id = id;
+      this.levelId = levelId;
+      this.message = message;
+   }
 
-        override public function clone():Event
-        {
-            return new Event_AudioProgress(ELEMENT_COMPLETE_REPORT, id, levelId);
-        }
-    }
+   override public function clone():Event {
+      return new Event_AudioProgress(ELEMENT_COMPLETE_REPORT, id, levelId);
+   }
+}
 }

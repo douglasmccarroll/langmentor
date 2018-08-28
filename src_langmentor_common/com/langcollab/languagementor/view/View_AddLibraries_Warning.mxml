@@ -18,62 +18,56 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_CancelAndOrNext_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                                xmlns:s = "library://ns.adobe.com/flex/spark"
                                 xmlns:view = "com.langcollab.languagementor.view.*"
                                 creationComplete = "onCreationComplete()"
                                 isDisplayCancelButton = "true"
                                 title = "Add Libraries">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
+      import com.brightworks.util.Log;
 
-            import flash.events.MouseEvent;
-            private var _isDisposed:Boolean = false;
+      private var _isDisposed:Boolean = false;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Protected Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override protected function onNextButtonClick(event:MouseEvent):void
-            {
-                Log.info("View_AddLibraries_Warning.onNextButtonClick()");
-                navigator.pushView(View_AddLibraries_Agreement);
-            }
+      override protected function onNextButtonClick(event:MouseEvent):void {
+         Log.info("View_AddLibraries_Warning.onNextButtonClick()");
+         navigator.pushView(View_AddLibraries_Agreement);
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                cancelButton.label = "No";
-                nextButton.label = "Yes";
-                var viewlet:Viewlet_AddLibraries_Warning = new Viewlet_AddLibraries_Warning();
-                viewletGroup.addElement(viewlet);
-            }
-        ]]>
+      private function onCreationComplete():void {
+         cancelButton.label = "No";
+         nextButton.label = "Yes";
+         var viewlet:Viewlet_AddLibraries_Warning = new Viewlet_AddLibraries_Warning();
+         viewletGroup.addElement(viewlet);
+      }
+      ]]>
     </fx:Script>
 </view:View_CancelAndOrNext_Base>

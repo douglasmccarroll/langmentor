@@ -18,79 +18,70 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_CancelAndOrNext_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                                xmlns:s = "library://ns.adobe.com/flex/spark"
                                 xmlns:view = "com.langcollab.languagementor.view.*"
                                 creationComplete = "onCreationComplete()"
                                 isDisplayCancelButton = "true"
                                 title = "Intro &amp; Setup: Add Libraries">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
+      import com.brightworks.util.Log;
 
-            import flash.events.MouseEvent;
-            private var _isDisposed:Boolean = false;
-            private var _viewlet:Viewlet_AddLibraries_Agreement;
+      private var _isDisposed:Boolean = false;
+      private var _viewlet:Viewlet_AddLibraries_Agreement;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                _viewlet.removeEventListener(Event.CHANGE, onViewletChange);
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         _viewlet.removeEventListener(Event.CHANGE, onViewletChange);
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Protected Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override protected function onCancelButtonClick(event:MouseEvent):void
-            {
-                navigator.pushView(View_ManageDownloads, null, null, transition_SlideView_Right);
-            }
+      override protected function onCancelButtonClick(event:MouseEvent):void {
+         navigator.pushView(View_ManageDownloads, null, null, transition_SlideView_Right);
+      }
 
-            override protected function onNextButtonClick(event:MouseEvent):void
-            {
-                Log.info("View_AddLibraries_Agreement.onNextButtonClick()");
-                navigator.pushView(View_AddLibraries);
-            }
+      override protected function onNextButtonClick(event:MouseEvent):void {
+         Log.info("View_AddLibraries_Agreement.onNextButtonClick()");
+         navigator.pushView(View_AddLibraries);
+      }
 
-            override protected function onViewActivate():void
-            {
-                super.onViewActivate();
-                nextButton.enabled = false;
-            }
+      override protected function onViewActivate():void {
+         super.onViewActivate();
+         nextButton.enabled = false;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                _viewlet = new Viewlet_AddLibraries_Agreement();
-                _viewlet.addEventListener(Event.CHANGE, onViewletChange);
-                viewletGroup.addElement(_viewlet);
-            }
+      private function onCreationComplete():void {
+         _viewlet = new Viewlet_AddLibraries_Agreement();
+         _viewlet.addEventListener(Event.CHANGE, onViewletChange);
+         viewletGroup.addElement(_viewlet);
+      }
 
-            private function onViewletChange(event:Event):void
-            {
-                nextButton.enabled = _viewlet.isUserAgreed;
-            }
-        ]]>
+      private function onViewletChange(event:Event):void {
+         nextButton.enabled = _viewlet.isUserAgreed;
+      }
+      ]]>
     </fx:Script>
 </view:View_CancelAndOrNext_Base>

@@ -17,14 +17,14 @@
    along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.controller.audio {
-   import flash.utils.Dictionary;
+import flash.utils.Dictionary;
 
-   public class SequenceStrategy_Chunk extends SequenceStrategy {
-      public function SequenceStrategy_Chunk():void {
-      }
-
-      public function init(elements:Dictionary):void {
-         this.elements = elements;
-      }
+public class SequenceStrategy_Chunk extends SequenceStrategy {
+   public function SequenceStrategy_Chunk():void {
    }
+
+   public function init(elements:Dictionary):void {
+      this.elements = elements;
+   }
+}
 }

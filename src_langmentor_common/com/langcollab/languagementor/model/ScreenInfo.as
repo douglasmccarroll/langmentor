@@ -34,129 +34,126 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
+package com.langcollab.languagementor.model {
 
-    public class ScreenInfo
-    {
-        public function ScreenInfo()
-        {
-        }
+public class ScreenInfo {
+   public function ScreenInfo() {
+   }
 
-    /*public function getScreenIdFromPosition(horizontalPos:int, verticalPos:int):int
-    {
-        var result:int;
-        switch (horizontalPos)
-        {
-            case 2:
-                switch (verticalPos)
-                {
-                    case 3:
-                        result = Constants_ScreenStateCodes.SELECT_MODE;
-                        break;
-                    default:
-    Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
-                }
-                break;
-            case 3:
-                switch (verticalPos)
-                {
-                    case 2:
-                        result = Constants_ScreenStateCodes.PLAY_LESSONS;
-                        break;
-                    case 3:
-                        result = Constants_ScreenStateCodes.MAIN_MENU;
-                        break;
-                    case 4:
-                        result = Constants_ScreenStateCodes.OPTIONS;
-                        break;
-                    default:
-    Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
-                }
-                break;
-            case 4:
-                switch (verticalPos)
-                {
-                    case 3:
-                        result = Constants_ScreenStateCodes.SELECT_LESSONS;
-                        break;
-                    default:
-    Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
-                }
-                break;
-            case 5:
-                switch (verticalPos)
-                {
-                    case 3:
-                        result = Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS;
-                        break;
-                    default:
-    Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
-                }
-                break;
-            default:
-    Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
-        }
-        return result;
-    }*/
+   /*public function getScreenIdFromPosition(horizontalPos:int, verticalPos:int):int
+   {
+       var result:int;
+       switch (horizontalPos)
+       {
+           case 2:
+               switch (verticalPos)
+               {
+                   case 3:
+                       result = Constants_ScreenStateCodes.SELECT_MODE;
+                       break;
+                   default:
+   Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
+               }
+               break;
+           case 3:
+               switch (verticalPos)
+               {
+                   case 2:
+                       result = Constants_ScreenStateCodes.PLAY_LESSONS;
+                       break;
+                   case 3:
+                       result = Constants_ScreenStateCodes.MAIN_MENU;
+                       break;
+                   case 4:
+                       result = Constants_ScreenStateCodes.OPTIONS;
+                       break;
+                   default:
+   Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
+               }
+               break;
+           case 4:
+               switch (verticalPos)
+               {
+                   case 3:
+                       result = Constants_ScreenStateCodes.SELECT_LESSONS;
+                       break;
+                   default:
+   Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
+               }
+               break;
+           case 5:
+               switch (verticalPos)
+               {
+                   case 3:
+                       result = Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS;
+                       break;
+                   default:
+   Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
+               }
+               break;
+           default:
+   Log.fatal("ScreenInfo.getScreenIdFromPosition(): no screen defined at " + horizontalPos + ", " + verticalPos);
+       }
+       return result;
+   }*/
 
-    /*public function getScreenHorizontalPositionFromScreenId(screen:int):int
-    {
-        var result:int;
-        switch (screen)
-        {
-            case Constants_ScreenStateCodes.OPTIONS:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.MAIN_MENU:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.PLAY_LESSONS:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.SELECT_MODE:
-                result = 2;
-                break;
-            case Constants_ScreenStateCodes.SELECT_LESSONS:
-                result = 4;
-                break;
-            case Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS:
-                result = 5;
-                break;
-            default:
-    Log.fatal("MainModel.getScreenX() - no matching case: " + screen);
-        }
-        return result;
-    }*/
+   /*public function getScreenHorizontalPositionFromScreenId(screen:int):int
+   {
+       var result:int;
+       switch (screen)
+       {
+           case Constants_ScreenStateCodes.OPTIONS:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.MAIN_MENU:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.PLAY_LESSONS:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.SELECT_MODE:
+               result = 2;
+               break;
+           case Constants_ScreenStateCodes.SELECT_LESSONS:
+               result = 4;
+               break;
+           case Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS:
+               result = 5;
+               break;
+           default:
+   Log.fatal("MainModel.getScreenX() - no matching case: " + screen);
+       }
+       return result;
+   }*/
 
-    /*public function getScreenVerticalPositionFromScreenId(screen:int):int
-    {
-        var result:int;
-        switch (screen)
-        {
-            case Constants_ScreenStateCodes.OPTIONS:
-                result = 4;
-                break;
-            case Constants_ScreenStateCodes.MAIN_MENU:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.PLAY_LESSONS:
-                result = 2;
-                break;
-            case Constants_ScreenStateCodes.SELECT_MODE:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.SELECT_LESSONS:
-                result = 3;
-                break;
-            case Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS:
-                result = 3;
-                break;
-            default:
-    Log.fatal("MainModel.getScreenY() - no matching case: " + screen);
-        }
-        return result;
-    }
+   /*public function getScreenVerticalPositionFromScreenId(screen:int):int
+   {
+       var result:int;
+       switch (screen)
+       {
+           case Constants_ScreenStateCodes.OPTIONS:
+               result = 4;
+               break;
+           case Constants_ScreenStateCodes.MAIN_MENU:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.PLAY_LESSONS:
+               result = 2;
+               break;
+           case Constants_ScreenStateCodes.SELECT_MODE:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.SELECT_LESSONS:
+               result = 3;
+               break;
+           case Constants_ScreenStateCodes.SELECT_LESSONS_OPTIONS:
+               result = 3;
+               break;
+           default:
+   Log.fatal("MainModel.getScreenY() - no matching case: " + screen);
+       }
+       return result;
+   }
 */
-    }
+}
 }

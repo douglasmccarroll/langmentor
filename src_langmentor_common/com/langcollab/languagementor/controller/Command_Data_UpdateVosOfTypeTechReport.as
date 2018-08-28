@@ -16,35 +16,30 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller
-{
-    import com.brightworks.techreport.ITechReport;
-    import com.brightworks.techreport.TechReport;
-    import com.langcollab.languagementor.model.MainModelDBOperationReport;
+package com.langcollab.languagementor.controller {
+import com.brightworks.techreport.ITechReport;
+import com.brightworks.techreport.TechReport;
+import com.langcollab.languagementor.model.MainModelDBOperationReport;
 
-    public class Command_Data_UpdateVosOfTypeTechReport extends TechReport implements ITechReport
-    {
-        public var isSuccessful:Boolean;
-        public var mainModelDBOperationReport:MainModelDBOperationReport;
+public class Command_Data_UpdateVosOfTypeTechReport extends TechReport implements ITechReport {
+   public var isSuccessful:Boolean;
+   public var mainModelDBOperationReport:MainModelDBOperationReport;
 
-        private var _isDisposed:Boolean;
+   private var _isDisposed:Boolean;
 
-        public function Command_Data_UpdateVosOfTypeTechReport()
-        {
-            super();
-        }
+   public function Command_Data_UpdateVosOfTypeTechReport() {
+      super();
+   }
 
-        override public function dispose():void
-        {
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (mainModelDBOperationReport)
-            {
-                mainModelDBOperationReport.dispose();
-                mainModelDBOperationReport = null;
-            }
-        }
-    }
+   override public function dispose():void {
+      super.dispose();
+      if (_isDisposed)
+         return;
+      _isDisposed = true;
+      if (mainModelDBOperationReport) {
+         mainModelDBOperationReport.dispose();
+         mainModelDBOperationReport = null;
+      }
+   }
+}
 }

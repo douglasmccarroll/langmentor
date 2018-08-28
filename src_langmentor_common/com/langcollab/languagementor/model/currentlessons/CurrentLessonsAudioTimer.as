@@ -39,69 +39,61 @@ See notes at top of CurrentLessons class for an explanation of why this class is
 
 
 */
-package com.langcollab.languagementor.model.currentlessons
-{
-    import com.langcollab.languagementor.event.Event_CurrentLessonsAudioTimer;
+package com.langcollab.languagementor.model.currentlessons {
+import com.langcollab.languagementor.event.Event_CurrentLessonsAudioTimer;
 
-    import flash.events.EventDispatcher;
-    import flash.events.TimerEvent;
-    import flash.utils.Timer;
+import flash.events.EventDispatcher;
+import flash.events.TimerEvent;
+import flash.utils.Timer;
 
-    public class CurrentLessonsAudioTimer extends EventDispatcher
-    {
-        private static const _TIMER_PERIOD__AUDIO_DELAY:uint = 800;
+public class CurrentLessonsAudioTimer extends EventDispatcher {
+   private static const _TIMER_PERIOD__AUDIO_DELAY:uint = 800;
 
-        private var _timer_audioDelay:Timer;
+   private var _timer_audioDelay:Timer;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Public Methods
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        public function CurrentLessonsAudioTimer()
-        {
-        }
+   public function CurrentLessonsAudioTimer() {
+   }
 
-        public function cancelAllAudioPlayPermissionRequests():void
-        {
-            if (_timer_audioDelay)
-                _timer_audioDelay.stop();
-        }
+   public function cancelAllAudioPlayPermissionRequests():void {
+      if (_timer_audioDelay)
+         _timer_audioDelay.stop();
+   }
 
-        public function requestAudioPlayPermission():void
-        {
-            startOrRestartAudioDelayTimer();
-        }
+   public function requestAudioPlayPermission():void {
+      startOrRestartAudioDelayTimer();
+   }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Private Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Private Methods
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        private function onTimer_AudioDelay(event:TimerEvent):void
-        {
-            if (_timer_audioDelay)
-                _timer_audioDelay.stop();
-            dispatchEvent(new Event_CurrentLessonsAudioTimer(Event_CurrentLessonsAudioTimer.AUDIO_PLAY_ALLOWED));
-        }
+   private function onTimer_AudioDelay(event:TimerEvent):void {
+      if (_timer_audioDelay)
+         _timer_audioDelay.stop();
+      dispatchEvent(new Event_CurrentLessonsAudioTimer(Event_CurrentLessonsAudioTimer.AUDIO_PLAY_ALLOWED));
+   }
 
-        private function startOrRestartAudioDelayTimer():void
-        {
-            if (_timer_audioDelay)
-            {
-                _timer_audioDelay.stop();
-                _timer_audioDelay.removeEventListener(TimerEvent.TIMER, onTimer_AudioDelay);
-                _timer_audioDelay = null;
-            }
-            _timer_audioDelay = new Timer(_TIMER_PERIOD__AUDIO_DELAY, 1);
-            _timer_audioDelay.addEventListener(TimerEvent.TIMER, onTimer_AudioDelay);
-            _timer_audioDelay.start();
-        }
+   private function startOrRestartAudioDelayTimer():void {
+      if (_timer_audioDelay) {
+         _timer_audioDelay.stop();
+         _timer_audioDelay.removeEventListener(TimerEvent.TIMER, onTimer_AudioDelay);
+         _timer_audioDelay = null;
+      }
+      _timer_audioDelay = new Timer(_TIMER_PERIOD__AUDIO_DELAY, 1);
+      _timer_audioDelay.addEventListener(TimerEvent.TIMER, onTimer_AudioDelay);
+      _timer_audioDelay.start();
+   }
 
 
-    }
+}
 }
 
 

@@ -18,103 +18,96 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.component.checkbox.NormalCheckBox;
-            import com.brightworks.util.Log;
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.brightworks.component.checkbox.NormalCheckBox;
+      import com.brightworks.util.Log;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _agreeCheckbox:NormalCheckBox;
-            private var _isDisposed:Boolean;
+      private var _agreeCheckbox:NormalCheckBox;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Getters / Setters
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Getters / Setters
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            public function get isUserAgreed():Boolean
-            {
-                if (_agreeCheckbox)
-                    return _agreeCheckbox.selected;
-                else
-                    return false;
-            }
+      public function get isUserAgreed():Boolean {
+         if (_agreeCheckbox)
+            return _agreeCheckbox.selected;
+         else
+            return false;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                if (_agreeCheckbox)
-                {
-                    _agreeCheckbox.removeEventListener(Event.CHANGE, onAgreeCheckboxChange);
-                    _agreeCheckbox = null;
-                }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_agreeCheckbox) {
+            _agreeCheckbox.removeEventListener(Event.CHANGE, onAgreeCheckboxChange);
+            _agreeCheckbox = null;
+         }
 
-            }
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onAgreeCheckboxChange(event:Event):void
-            {
-                Log.info("Viewlet_AddLibraries_Agreement.onAgreeCheckboxChange()");
-                dispatchEvent(new Event(Event.CHANGE));
-            }
+      private function onAgreeCheckboxChange(event:Event):void {
+         Log.info("Viewlet_AddLibraries_Agreement.onAgreeCheckboxChange()");
+         dispatchEvent(new Event(Event.CHANGE));
+      }
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Agreement:";
-                addElement(textWidget);
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "I understand that some libraries may contain content that I find offensive, indecent or objectionable, and that I should only use libraries that I trust.";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "I agree that Language Mentor and its creators have no obligation to screen or regulate libraries, and that selecting libraries is strictly my responsibility.";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "I agree that, despite the above, Language Mentor and its creators have the right (but no responsibility) to restrict access to any library for any reason, including, but not limited to, copyright infringement, hate speech, obsenity, bullying, and illegal content.";
-                addElement(textWidget);
-                addElement(new Spacer());
-                addElement(new Spacer());
-                _agreeCheckbox = new NormalCheckBox();
-                _agreeCheckbox.label = "I Agree";
-                _agreeCheckbox.addEventListener(Event.CHANGE, onAgreeCheckboxChange);
-                addElement(_agreeCheckbox);
-                addElement(new Spacer());
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bold_Text();
-                textWidget.text = "Please report libraries that contain offensive or illegal content at LanguageCollaborative.com/violations";
-                addElement(textWidget);
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "Agreement:";
+         addElement(textWidget);
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "I understand that some libraries may contain content that I find offensive, indecent or objectionable, and that I should only use libraries that I trust.";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "I agree that Language Mentor and its creators have no obligation to screen or regulate libraries, and that selecting libraries is strictly my responsibility.";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "I agree that, despite the above, Language Mentor and its creators have the right (but no responsibility) to restrict access to any library for any reason, including, but not limited to, copyright infringement, hate speech, obsenity, bullying, and illegal content.";
+         addElement(textWidget);
+         addElement(new Spacer());
+         addElement(new Spacer());
+         _agreeCheckbox = new NormalCheckBox();
+         _agreeCheckbox.label = "I Agree";
+         _agreeCheckbox.addEventListener(Event.CHANGE, onAgreeCheckboxChange);
+         addElement(_agreeCheckbox);
+         addElement(new Spacer());
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bold_Text();
+         textWidget.text = "Please report libraries that contain offensive or illegal content at LanguageCollaborative.com/violations";
+         addElement(textWidget);
+      }
+      ]]>
     </fx:Script>
 
 </view:Viewlet_Base>

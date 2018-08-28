@@ -16,88 +16,77 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
-    import com.brightworks.db.SQLiteQueryData_Select;
-    import com.brightworks.db.SQLiteTransaction;
-    import com.brightworks.db.SQLiteTransactionReport;
-    import com.brightworks.util.Log;
-    
-    import flash.events.EventDispatcher;
-    import flash.filesystem.File;
+package com.langcollab.languagementor.model {
+import com.brightworks.db.SQLiteQueryData_Select;
+import com.brightworks.db.SQLiteTransaction;
+import com.brightworks.db.SQLiteTransactionReport;
+import com.brightworks.util.Log;
+
+import flash.events.EventDispatcher;
+import flash.filesystem.File;
+
+public class Data extends EventDispatcher {
+   public var dbAccessReportCallback:Function;
+
+   private var _dbFile:File;
+   private var _isDisposed:Boolean;
+
+   // --------------------------------------------
+   //
+   //           Public Methods
+   //
+   // --------------------------------------------
+
+   public function Data(dbFileURL:String) {
+      _dbFile = new File(dbFileURL);
+   }
 
 
-    public class Data extends EventDispatcher
-    {
-        public var dbAccessReportCallback:Function;
+   public function deleteData(queryDataList:Array):SQLiteTransactionReport {
+      if (dbAccessReportCallback is Function)
+         dbAccessReportCallback();
+      Log.info("Data.deleteData()");
+      var op:SQLiteTransaction = new SQLiteTransaction(queryDataList);
+      var result:SQLiteTransactionReport = op.execute(_dbFile);
+      return result;
+   }
 
-        private var _dbFile:File;
-        private var _isDisposed:Boolean;
+   public function dispose():void {
+      if (_isDisposed)
+         return;
+   }
 
-        // --------------------------------------------
-        //
-        //           Public Methods
-        //
-        // --------------------------------------------
+   public function insertData(queryDataList:Array, diagnosticInfoString:String = null):SQLiteTransactionReport {
+      if (dbAccessReportCallback is Function)
+         dbAccessReportCallback();
+      Log.info("Data.insertData()");
+      var op:SQLiteTransaction = new SQLiteTransaction(queryDataList, diagnosticInfoString);
+      var result:SQLiteTransactionReport = op.execute(_dbFile);
+      return result;
+   }
 
-        public function Data(dbFileURL:String)
-        {
-            _dbFile = new File(dbFileURL);
-        }
+   public function selectData(queryData:SQLiteQueryData_Select):SQLiteTransactionReport {
+      if (dbAccessReportCallback is Function)
+         dbAccessReportCallback();
+      //var startTime:Number = Utils_DateTime.getCurrentMS_BasedOnDate();
+      Log.debug("Data.selectData()");
+      var op:SQLiteTransaction = new SQLiteTransaction([queryData]);
+      var result:SQLiteTransactionReport = op.execute(_dbFile);
+      //var duration:Number = Utils_DateTime.getCurrentMS_BasedOnDate() - startTime;
+      //trace("*** " + duration);
+      return result;
+   }
 
+   public function updateData(queryDataList:Array):SQLiteTransactionReport {
+      if (dbAccessReportCallback is Function)
+         dbAccessReportCallback();
+      Log.info("Data.updateData()");
+      var op:SQLiteTransaction = new SQLiteTransaction(queryDataList);
+      var result:SQLiteTransactionReport = op.execute(_dbFile);
+      return result;
+   }
 
-
-
-        public function deleteData(queryDataList:Array):SQLiteTransactionReport
-        {
-            if (dbAccessReportCallback is Function)
-                 dbAccessReportCallback();
-            Log.info("Data.deleteData()");
-            var op:SQLiteTransaction = new SQLiteTransaction(queryDataList);
-            var result:SQLiteTransactionReport = op.execute(_dbFile);
-            return result;
-        }
-
-        public function dispose():void
-        {
-            if (_isDisposed)
-                return;
-        }
-
-        public function insertData(queryDataList:Array, diagnosticInfoString:String = null):SQLiteTransactionReport
-        {
-            if (dbAccessReportCallback is Function)
-                dbAccessReportCallback();
-            Log.info("Data.insertData()");
-            var op:SQLiteTransaction = new SQLiteTransaction(queryDataList, diagnosticInfoString);
-            var result:SQLiteTransactionReport = op.execute(_dbFile);
-            return result;
-        }
-
-        public function selectData(queryData:SQLiteQueryData_Select):SQLiteTransactionReport
-        {
-            if (dbAccessReportCallback is Function)
-                dbAccessReportCallback();
-            //var startTime:Number = Utils_DateTime.getCurrentMS_BasedOnDate(); 
-            Log.debug("Data.selectData()");
-            var op:SQLiteTransaction = new SQLiteTransaction([queryData]);
-            var result:SQLiteTransactionReport = op.execute(_dbFile);
-            //var duration:Number = Utils_DateTime.getCurrentMS_BasedOnDate() - startTime; 
-            //trace("*** " + duration);
-            return result;
-        }
-
-        public function updateData(queryDataList:Array):SQLiteTransactionReport
-        {
-            if (dbAccessReportCallback is Function)
-                dbAccessReportCallback();
-            Log.info("Data.updateData()");
-            var op:SQLiteTransaction = new SQLiteTransaction(queryDataList);
-            var result:SQLiteTransactionReport = op.execute(_dbFile);
-            return result;
-        }
-
-    }
+}
 }
 
 

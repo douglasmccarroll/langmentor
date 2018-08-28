@@ -18,71 +18,67 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Welcome to Language Mentor!";
-                addElement(textWidget);
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = 'Free "mostly audio" language practice for busy people';
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Record/Playback helps you practice your pronunciation";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = '"I Know This"' + " button allows you to focus on the content that you haven't mastered yet";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Multiple learning modes for learning new content, translation practice, etc.";
-                addElement(textWidget);
-                addElement(new Spacer());
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bold_Text();
-                textWidget.text = "Thanks for trying Language Mentor!";
-                addElement(textWidget);
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "Welcome to Language Mentor!";
+         addElement(textWidget);
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = 'Free "mostly audio" language practice for busy people';
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "Record/Playback helps you practice your pronunciation";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = '"I Know This"' + " button allows you to focus on the content that you haven't mastered yet";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "Multiple learning modes for learning new content, translation practice, etc.";
+         addElement(textWidget);
+         addElement(new Spacer());
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bold_Text();
+         textWidget.text = "Thanks for trying Language Mentor!";
+         addElement(textWidget);
+      }
+      ]]>
     </fx:Script>
 
 </view:Viewlet_Base>

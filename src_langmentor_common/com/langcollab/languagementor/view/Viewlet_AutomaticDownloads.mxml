@@ -18,118 +18,108 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:list = "com.brightworks.component.list.*"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
                    xmlns:s = "library://ns.adobe.com/flex/spark"
-                   xmlns:swiz = "org.swizframework.core.*"
                    xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()"
                    implements = "com.brightworks.interfaces.IDisposable"
-                   xmlns:button = "com.brightworks.component.button.*"
                    xmlns:radiobutton = "com.brightworks.component.radiobutton.*">
 
-    <fx:Metadata> 
-        [Event( name="complete", type="flash.events.Event") ] 
-    </fx:Metadata>
+   <fx:Metadata>
+      [Event(name="complete", type="flash.events.Event")]
+   </fx:Metadata>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Log;
 
-            public var suggestYesOption:Boolean = false;
+      public var suggestYesOption:Boolean = false;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Getters / Setters
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Getters / Setters
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private var _userChoice:Boolean;
+      private var _userChoice:Boolean;
 
-            public function get userChoice():Boolean
-            {
-                return _userChoice;
-            }
+      public function get userChoice():Boolean {
+         return _userChoice;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
-                if (suggestYesOption)
-                {
-                    _userChoice = true;
-                    radioButtonGroup.selection = yesRadioButton;
-                }
-                else
-                {
-                    _userChoice = model.autoDownloadLessons;
-                    radioButtonGroup.selection = model.autoDownloadLessons ? yesRadioButton : noRadioButton;
-                }
-            }
+      private function onCreationComplete():void {
+         Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
+         if (suggestYesOption) {
+            _userChoice = true;
+            radioButtonGroup.selection = yesRadioButton;
+         }
+         else {
+            _userChoice = model.autoDownloadLessons;
+            radioButtonGroup.selection = model.autoDownloadLessons ? yesRadioButton : noRadioButton;
+         }
+      }
 
-            private function onRadioButtonGroupChange():void
-            {
-                Log.info("Viewlet_AutomaticDownloads.onRadioButtonGroupChange(): " + radioButtonGroup.selection.label);
-                switch (radioButtonGroup.selection)
-                {
-                    case yesRadioButton:
-                        _userChoice = true;
-                        break;
-                    case noRadioButton:
-                        _userChoice = false;
-                        break;
-                    default:
-                        Log.error("Viewlet_AutomaticDownloads.onRadioButtonGroupChange(): No case for radioButtonGroup.selection");
-                }
-            }
-        ]]>
+      private function onRadioButtonGroupChange():void {
+         Log.info("Viewlet_AutomaticDownloads.onRadioButtonGroupChange(): " + radioButtonGroup.selection.label);
+         switch (radioButtonGroup.selection) {
+            case yesRadioButton:
+               _userChoice = true;
+               break;
+            case noRadioButton:
+               _userChoice = false;
+               break;
+            default:
+               Log.error("Viewlet_AutomaticDownloads.onRadioButtonGroupChange(): No case for radioButtonGroup.selection");
+         }
+      }
+      ]]>
     </fx:Script>
 
-    <fx:Declarations>
-        <radiobutton:NormalRadioButtonGroup id = "radioButtonGroup"
-                                            change = "onRadioButtonGroupChange()" />
-    </fx:Declarations>
+   <fx:Declarations>
+      <radiobutton:NormalRadioButtonGroup id = "radioButtonGroup"
+                                          change = "onRadioButtonGroupChange()"/>
+   </fx:Declarations>
 
-    <s:VGroup horizontalAlign = "left"
-              height = "100%"
-              width = "100%">
-        <uiwidget:UIWidget_Viewlet__Heading id = "uiWidget_Viewlet__Heading"
-                                            text = "Automatically download lessons?" />
-        <s:Spacer />
-        <s:RadioButton id = "yesRadioButton"
-                       group = "{radioButtonGroup}"
-                       label = "Yes" />
-        <uiwidget:UIWidget_Viewlet__Text text = "If you select this option, Language Mentor will search for new lessons and download them as they become available. You won’t need to do anything." />
-        <s:Spacer />
-        <s:RadioButton id = "noRadioButton"
-                       group = "{radioButtonGroup}"
-                       label = "No" />
-        <uiwidget:UIWidget_Viewlet__Text text = "If you select this option, you’ll be responsible for deciding when to initiate lesson downloads." />
-        <s:Spacer />
-    </s:VGroup>
+   <s:VGroup horizontalAlign = "left"
+             height = "100%"
+             width = "100%">
+      <uiwidget:UIWidget_Viewlet__Heading id = "uiWidget_Viewlet__Heading"
+                                          text = "Automatically download lessons?"/>
+      <s:Spacer/>
+      <s:RadioButton id = "yesRadioButton"
+                     group = "{radioButtonGroup}"
+                     label = "Yes"/>
+      <uiwidget:UIWidget_Viewlet__Text
+            text = "If you select this option, Language Mentor will search for new lessons and download them as they become available. You won’t need to do anything."/>
+      <s:Spacer/>
+      <s:RadioButton id = "noRadioButton"
+                     group = "{radioButtonGroup}"
+                     label = "No"/>
+      <uiwidget:UIWidget_Viewlet__Text
+            text = "If you select this option, you’ll be responsible for deciding when to initiate lesson downloads."/>
+      <s:Spacer/>
+   </s:VGroup>
 </view:Viewlet_Base>
 
 

@@ -16,16 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.constant
-{
-	public class Constant_TextDisplayTypeNames
-	{
-        public static const NATIVE_LANGUAGE:String = "textNativeLanguage";
-        public static const TARGET_LANGUAGE:String = "textTargetLanguage";
-        public static const TARGET_LANGUAGE_PHONETIC:String = "textTargetLanguagePhonetic";
-        public static const TYPE_NAME_LIST:Array = [
-            Constant_TextDisplayTypeNames.NATIVE_LANGUAGE, 
-            Constant_TextDisplayTypeNames.TARGET_LANGUAGE,
-            Constant_TextDisplayTypeNames.TARGET_LANGUAGE_PHONETIC];
-	}
+package com.langcollab.languagementor.constant {
+public class Constant_TextDisplayTypeNames {
+   public static const NATIVE_LANGUAGE:String = "textNativeLanguage";
+   public static const TARGET_LANGUAGE:String = "textTargetLanguage";
+   public static const TARGET_LANGUAGE_PHONETIC:String = "textTargetLanguagePhonetic";
+   public static const TYPE_NAME_LIST:Array = [
+      Constant_TextDisplayTypeNames.NATIVE_LANGUAGE,
+      Constant_TextDisplayTypeNames.TARGET_LANGUAGE,
+      Constant_TextDisplayTypeNames.TARGET_LANGUAGE_PHONETIC];
+}
 }

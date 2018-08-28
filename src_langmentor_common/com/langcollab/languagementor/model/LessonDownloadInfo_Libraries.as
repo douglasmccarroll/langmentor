@@ -16,36 +16,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
-    import com.brightworks.interfaces.IDisposable;
-    import com.brightworks.util.Log;
-    import com.brightworks.util.Utils_Dispose;
+package com.langcollab.languagementor.model {
+import com.brightworks.interfaces.IDisposable;
+import com.brightworks.util.Log;
+import com.brightworks.util.Utils_Dispose;
 
-    import flash.utils.Dictionary;
+import flash.utils.Dictionary;
 
-    public class LessonDownloadInfo_Libraries implements IDisposable
-    {
-        public var index_libraryFolderURL_to_lessonDownloadInfo_library:Dictionary;
+public class LessonDownloadInfo_Libraries implements IDisposable {
+   public var index_libraryFolderURL_to_lessonDownloadInfo_library:Dictionary;
 
-        private var _isDisposed:Boolean = false;
+   private var _isDisposed:Boolean = false;
 
-        public function LessonDownloadInfo_Libraries()
-        {
-            index_libraryFolderURL_to_lessonDownloadInfo_library = new Dictionary();
-        }
+   public function LessonDownloadInfo_Libraries() {
+      index_libraryFolderURL_to_lessonDownloadInfo_library = new Dictionary();
+   }
 
-        public function dispose():void
-        {
-            Log.debug("LessonDownloadInfo_Libraries.dispose()");
-            if (_isDisposed)
-                return;
-            if (index_libraryFolderURL_to_lessonDownloadInfo_library)
-            {
-                Utils_Dispose.disposeDictionary(index_libraryFolderURL_to_lessonDownloadInfo_library, true);
-                index_libraryFolderURL_to_lessonDownloadInfo_library = null;
-            }
-        }
+   public function dispose():void {
+      Log.debug("LessonDownloadInfo_Libraries.dispose()");
+      if (_isDisposed)
+         return;
+      if (index_libraryFolderURL_to_lessonDownloadInfo_library) {
+         Utils_Dispose.disposeDictionary(index_libraryFolderURL_to_lessonDownloadInfo_library, true);
+         index_libraryFolderURL_to_lessonDownloadInfo_library = null;
+      }
+   }
 
-    }
+}
 }

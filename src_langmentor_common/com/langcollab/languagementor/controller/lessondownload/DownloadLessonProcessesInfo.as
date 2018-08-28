@@ -16,99 +16,84 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.lessondownload
-{
-    import com.brightworks.interfaces.IDisposable;
-    import com.brightworks.util.Log;
-    import com.brightworks.util.Utils_Dispose;
+package com.langcollab.languagementor.controller.lessondownload {
+import com.brightworks.interfaces.IDisposable;
+import com.brightworks.util.Log;
+import com.brightworks.util.Utils_Dispose;
 
-    public class DownloadLessonProcessesInfo implements IDisposable
-    {
-        private var _isDisposed:Boolean = false;
+public class DownloadLessonProcessesInfo implements IDisposable {
+   private var _isDisposed:Boolean = false;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Getters & Setters
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Getters & Setters
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        private var _downloadProcessInfoList:Array = [];
+   private var _downloadProcessInfoList:Array = [];
 
-        public function get downloadProcessInfoList():Vector.<DownloadLessonProcessInfo>
-        {
-            var result:Vector.<DownloadLessonProcessInfo> = new Vector.<DownloadLessonProcessInfo>();
-            for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList)
-            {
-                result.push(downloadProcessInfo);
-            }
-            return result;
-        }
+   public function get downloadProcessInfoList():Vector.<DownloadLessonProcessInfo> {
+      var result:Vector.<DownloadLessonProcessInfo> = new Vector.<DownloadLessonProcessInfo>();
+      for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList) {
+         result.push(downloadProcessInfo);
+      }
+      return result;
+   }
 
-        public function get length():uint
-        {
-            var result:uint = 0;
-            for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList)
-            {
-                result++;
-            }
-            return result;
-        }
+   public function get length():uint {
+      var result:uint = 0;
+      for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList) {
+         result++;
+      }
+      return result;
+   }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   //
+   //          Public Methods
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-        public function DownloadLessonProcessesInfo()
-        {
-        }
+   public function DownloadLessonProcessesInfo() {
+   }
 
-        public function dispose():void
-        {
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (_downloadProcessInfoList)
-            {
-                // No dispose() method - we store these (for successful downloads) in LessonDownloadController's successfulDownloadInfoList... props for the duration of the session
-                /*for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList)
-                {
-                    downloadProcessInfo.dispose();
-                }*/
-                Utils_Dispose.disposeArray(_downloadProcessInfoList, false);
-                _downloadProcessInfoList = null;
-            }
-        }
+   public function dispose():void {
+      if (_isDisposed)
+         return;
+      _isDisposed = true;
+      if (_downloadProcessInfoList) {
+         // No dispose() method - we store these (for successful downloads) in LessonDownloadController's successfulDownloadInfoList... props for the duration of the session
+         /*for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList)
+         {
+             downloadProcessInfo.dispose();
+         }*/
+         Utils_Dispose.disposeArray(_downloadProcessInfoList, false);
+         _downloadProcessInfoList = null;
+      }
+   }
 
-        public function addDownloadProcessInfo(downloadProcessInfo:DownloadLessonProcessInfo):void
-        {
-            if ((!(downloadProcessInfo.contentProviderId)) || (!(downloadProcessInfo.downloadFileNameBody)) || (!(downloadProcessInfo.downloadFileNameExtension)) || (!(downloadProcessInfo.nativeLanguageContentProviderName)) || (!(downloadProcessInfo.nativeLanguageLibraryName)) || (!(downloadProcessInfo.publishedLessonVersionId)) || (!(downloadProcessInfo.publishedLessonVersionVersion)) || (!(downloadProcessInfo.libraryId)) || (!(downloadProcessInfo.saveFolderFilePath)))
-            {
-                Log.warn("DownloadLessonProcessesInfo.addDownloadProcessInfo(): downloadProcessInfo arg not fully populated.");
-                return;
-            }
-            if (getDownloadProcessInfo(downloadProcessInfo.contentProviderId, downloadProcessInfo.publishedLessonVersionId) != null)
-            {
-                Log.warn("DownloadLessonProcessesInfo.addDownloadProcessInfo(): A DownloadLessonProcessInfo instance with the same contentProviderId and publishedLessonVersionId has already been added. Duplicate values aren't allowed.");
-                return;
-            }
-            _downloadProcessInfoList.push(downloadProcessInfo);
-        }
+   public function addDownloadProcessInfo(downloadProcessInfo:DownloadLessonProcessInfo):void {
+      if ((!(downloadProcessInfo.contentProviderId)) || (!(downloadProcessInfo.downloadFileNameBody)) || (!(downloadProcessInfo.downloadFileNameExtension)) || (!(downloadProcessInfo.nativeLanguageContentProviderName)) || (!(downloadProcessInfo.nativeLanguageLibraryName)) || (!(downloadProcessInfo.publishedLessonVersionId)) || (!(downloadProcessInfo.publishedLessonVersionVersion)) || (!(downloadProcessInfo.libraryId)) || (!(downloadProcessInfo.saveFolderFilePath))) {
+         Log.warn("DownloadLessonProcessesInfo.addDownloadProcessInfo(): downloadProcessInfo arg not fully populated.");
+         return;
+      }
+      if (getDownloadProcessInfo(downloadProcessInfo.contentProviderId, downloadProcessInfo.publishedLessonVersionId) != null) {
+         Log.warn("DownloadLessonProcessesInfo.addDownloadProcessInfo(): A DownloadLessonProcessInfo instance with the same contentProviderId and publishedLessonVersionId has already been added. Duplicate values aren't allowed.");
+         return;
+      }
+      _downloadProcessInfoList.push(downloadProcessInfo);
+   }
 
-        public function getDownloadProcessInfo(contentProviderId:String, publishedLessonVersionId:String):DownloadLessonProcessInfo
-        {
-            var result:DownloadLessonProcessInfo;
-            for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList)
-            {
-                if ((downloadProcessInfo.contentProviderId == contentProviderId) && (downloadProcessInfo.publishedLessonVersionId == publishedLessonVersionId))
-                {
-                    result = downloadProcessInfo;
-                    break;
-                }
-            }
-            return result;
-        }
+   public function getDownloadProcessInfo(contentProviderId:String, publishedLessonVersionId:String):DownloadLessonProcessInfo {
+      var result:DownloadLessonProcessInfo;
+      for each (var downloadProcessInfo:DownloadLessonProcessInfo in _downloadProcessInfoList) {
+         if ((downloadProcessInfo.contentProviderId == contentProviderId) && (downloadProcessInfo.publishedLessonVersionId == publishedLessonVersionId)) {
+            result = downloadProcessInfo;
+            break;
+         }
+      }
+      return result;
+   }
 
-    }
+}
 }

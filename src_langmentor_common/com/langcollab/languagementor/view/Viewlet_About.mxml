@@ -18,101 +18,96 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Utils_Layout;
-            import com.brightworks.util.Utils_System;
-            import com.brightworks.util.Utils_Text;
-            import com.langcollab.languagementor.constant.Constant_AppConfiguration;
-            import com.langcollab.languagementor.util.Resources_Image;
-            import com.langcollab.languagementor.util.Utils_LangCollab;
+      import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_Text;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.util.Resources_Image;
+      import com.langcollab.languagementor.util.Utils_LangCollab;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            import spark.components.Group;
-            import spark.components.Image;
-            import spark.components.TextArea;
-            import spark.skins.mobile.TextAreaSkin;
-            import spark.utils.MultiDPIBitmapSource;
+      import spark.components.Group;
+      import spark.components.Image;
+      import spark.components.TextArea;
+      import spark.skins.mobile.TextAreaSkin;
+      import spark.utils.MultiDPIBitmapSource;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                /*var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
-                textWidget.text = "Language Mentor®, Version " + Utils_System.appVersion + ", Copyright 2009-2013, Brightworks, Inc.";
-                addElement(textWidget);*/
-                var textArea:TextArea;
-                textArea = new TextArea();
-                textArea.percentWidth = 100;
-                textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2017 - Brightworks, Inc.";
-                textArea.editable = false;
-                textArea.selectable = false;
-                textArea.setStyle("skinClass", TextAreaSkin);
-                textArea.setStyle("fontFamily", "calligraph");
-                textArea.setStyle("fontSize", 20);
-                textArea.setStyle("contentBackgroundAlpha", 0);
-                textArea.setStyle("borderVisible", false);
-                textArea.setStyle("textAlign", "center");
-                textArea.setStyle("paddingLeft", Utils_Layout.getStandardPadding());
-                textArea.setStyle("paddingRight", Utils_Layout.getStandardPadding());
-                addElement(textArea);
-                addElement(new Spacer());
-                var group:Group = new Group();
-                group.percentWidth = 100;
-                var multiDpiBitmapSource:MultiDPIBitmapSource = new MultiDPIBitmapSource();
-                multiDpiBitmapSource.source160dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_160;
-                multiDpiBitmapSource.source240dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_240;
-                multiDpiBitmapSource.source320dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320;
-                var image:Image = new Image();
-                image.horizontalCenter = 0;
-                image.source = multiDpiBitmapSource;
-                group.addElement(image);
-                addElement(group);
-                textArea = new TextArea();
-                textArea.percentWidth = 100;
-                textArea.text = Constant_AppConfiguration.BRIGHTWORKS_BLURB;
-                textArea.editable = false;
-                textArea.selectable = false;
-                textArea.setStyle("skinClass", TextAreaSkin);
-                textArea.setStyle("fontFamily", "calligraph");
-                textArea.setStyle("fontSize", Utils_Text.getStandardFontSize());
-                textArea.setStyle("contentBackgroundAlpha", 0);
-                textArea.setStyle("borderVisible", false);
-                textArea.setStyle("textAlign", "center");
-                textArea.setStyle("paddingLeft", Utils_Layout.getStandardPadding() * 2);
-                textArea.setStyle("paddingRight", Utils_Layout.getStandardPadding() * 2);
-                addElement(textArea);
-            }
-        ]]>
+      private function onCreationComplete():void {
+         /*var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
+         textWidget.text = "Language Mentor®, Version " + Utils_System.appVersion + ", Copyright 2009-2013, Brightworks, Inc.";
+         addElement(textWidget);*/
+         var textArea:TextArea;
+         textArea = new TextArea();
+         textArea.percentWidth = 100;
+         textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2017 - Brightworks, Inc.";
+         textArea.editable = false;
+         textArea.selectable = false;
+         textArea.setStyle("skinClass", TextAreaSkin);
+         textArea.setStyle("fontFamily", "calligraph");
+         textArea.setStyle("fontSize", 20);
+         textArea.setStyle("contentBackgroundAlpha", 0);
+         textArea.setStyle("borderVisible", false);
+         textArea.setStyle("textAlign", "center");
+         textArea.setStyle("paddingLeft", Utils_Layout.getStandardPadding());
+         textArea.setStyle("paddingRight", Utils_Layout.getStandardPadding());
+         addElement(textArea);
+         addElement(new Spacer());
+         var group:Group = new Group();
+         group.percentWidth = 100;
+         var multiDpiBitmapSource:MultiDPIBitmapSource = new MultiDPIBitmapSource();
+         multiDpiBitmapSource.source160dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_160;
+         multiDpiBitmapSource.source240dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_240;
+         multiDpiBitmapSource.source320dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320;
+         var image:Image = new Image();
+         image.horizontalCenter = 0;
+         image.source = multiDpiBitmapSource;
+         group.addElement(image);
+         addElement(group);
+         textArea = new TextArea();
+         textArea.percentWidth = 100;
+         textArea.text = Constant_AppConfiguration.BRIGHTWORKS_BLURB;
+         textArea.editable = false;
+         textArea.selectable = false;
+         textArea.setStyle("skinClass", TextAreaSkin);
+         textArea.setStyle("fontFamily", "calligraph");
+         textArea.setStyle("fontSize", Utils_Text.getStandardFontSize());
+         textArea.setStyle("contentBackgroundAlpha", 0);
+         textArea.setStyle("borderVisible", false);
+         textArea.setStyle("textAlign", "center");
+         textArea.setStyle("paddingLeft", Utils_Layout.getStandardPadding() * 2);
+         textArea.setStyle("paddingRight", Utils_Layout.getStandardPadding() * 2);
+         addElement(textArea);
+      }
+      ]]>
     </fx:Script>
 
 </view:Viewlet_Base>

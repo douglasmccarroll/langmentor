@@ -16,15 +16,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.constant
-{
-	public class Constant_ScreenStateCodes
-	{
-		public static const OPTIONS:int                = 340;
-		public static const MAIN_MENU:int              = 330;
-		public static const PLAY_LESSONS:int           = 320;
-		public static const SELECT_MODE:int            = 230;
-		public static const SELECT_LESSONS:int         = 430;
-		public static const SELECT_LESSONS_OPTIONS:int = 530;
-	}
+package com.langcollab.languagementor.constant {
+public class Constant_ScreenStateCodes {
+   public static const OPTIONS:int = 340;
+   public static const MAIN_MENU:int = 330;
+   public static const PLAY_LESSONS:int = 320;
+   public static const SELECT_MODE:int = 230;
+   public static const SELECT_LESSONS:int = 430;
+   public static const SELECT_LESSONS_OPTIONS:int = 530;
+}
 }

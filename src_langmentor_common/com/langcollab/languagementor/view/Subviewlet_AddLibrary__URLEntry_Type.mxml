@@ -18,119 +18,110 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Subviewlet_AddLibrary__URLEntry_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                                           xmlns:mx = "library://ns.adobe.com/flex/mx"
                                            xmlns:s = "library://ns.adobe.com/flex/spark"
                                            xmlns:button = "com.brightworks.component.button.*"
                                            xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
                                            xmlns:view = "com.langcollab.languagementor.view.*"
                                            show = "onShow()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_Layout;
-            import com.brightworks.util.Utils_String;
-            import com.brightworks.util.Utils_URL;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_String;
+      import com.brightworks.util.Utils_URL;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Protected Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override protected function displayAddURLResult(resultText:String):void
-            {
-                feedbackTextWidget.text = resultText;
-            }
+      override protected function displayAddURLResult(resultText:String):void {
+         feedbackTextWidget.text = resultText;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function isEditableTextAreaContainsValidURL():Boolean
-            {
-                var s:String = Utils_String.removeWhiteSpaceIncludingLineReturnsFromBeginningAndEndOfString(editableTextArea.text);
-                if (!s)
-                    return false;
-                return Utils_URL.isUrlProperlyFormed(s);
-            }
+      private function isEditableTextAreaContainsValidURL():Boolean {
+         var s:String = Utils_String.removeWhiteSpaceIncludingLineReturnsFromBeginningAndEndOfString(editableTextArea.text);
+         if (!s)
+            return false;
+         return Utils_URL.isUrlProperlyFormed(s);
+      }
 
-            private function onAddButtonClick():void
-            {
-                Log.info("Subviewlet_AddLibrary__URLEntry_Type.onAddButtonClick()");
-                if (isEditableTextAreaContainsValidURL())
-                {
-                    feedbackTextWidget.text = "Adding library. Please wait...";
-                    startBusyIndicator();
-                    startAddLibraryProcess(editableTextArea.text);
-                }
-                else
-                {
-                    feedbackTextWidget.text = '"' + editableTextArea.text + '" is not a valid URL. Please try again.';
-                }
-            }
+      private function onAddButtonClick():void {
+         Log.info("Subviewlet_AddLibrary__URLEntry_Type.onAddButtonClick()");
+         if (isEditableTextAreaContainsValidURL()) {
+            feedbackTextWidget.text = "Adding library. Please wait...";
+            startBusyIndicator();
+            startAddLibraryProcess(editableTextArea.text);
+         }
+         else {
+            feedbackTextWidget.text = '"' + editableTextArea.text + '" is not a valid URL. Please try again.';
+         }
+      }
 
-            private function onEditableTextAreaChange():void
-            {
-                addButton.enabled = (editableTextArea.text.length > 0);
-            }
+      private function onEditableTextAreaChange():void {
+         addButton.enabled = (editableTextArea.text.length > 0);
+      }
 
-            private function onShow():void
-            {
-                addButton.enabled = false;
-                feedbackTextWidget.text = "Enter a library URL, then press the Add Library button.";
-            }
-        ]]>
+      private function onShow():void {
+         addButton.enabled = false;
+         feedbackTextWidget.text = "Enter a library URL, then press the Add Library button.";
+      }
+      ]]>
     </fx:Script>
 
-    <s:Scroller horizontalScrollPolicy = "off"
-                skinClass = "com.brightworks.component.scroll.InitialFadeScrollerSkin"
-                height = "100%"
-                width = "{width}">
-        <s:VGroup height = "100%"
-                  width = "100%"
-                  horizontalAlign = "center"
-                  paddingLeft = "{Utils_Layout.getStandardPadding() * 2}"
-                  paddingRight = "{Utils_Layout.getStandardPadding() * 2}">
-            <s:TextArea id = "editableTextArea"
-                        change = "onEditableTextAreaChange()"
-                        editable = "true"
-                        horizontalScrollPolicy = "off"
-                        verticalScrollPolicy = "auto"
-                        width = "100%"
-                        height = "{width * .6}" />
-            <s:Spacer />
-            <s:Spacer />
-            <uiwidget:UIWidget_Viewlet__Bold_Text id = "feedbackTextWidget"
-                                                  width = "100%" />
-            <s:Spacer />
-            <s:Spacer />
-            <button:NormalButton id = "addButton"
-                                 label = "Add Library"
-                                 click = "onAddButtonClick()"
-                                 width = "75%" />
-            <s:Spacer />
-        </s:VGroup>
-    </s:Scroller>
+   <s:Scroller horizontalScrollPolicy = "off"
+               skinClass = "com.brightworks.component.scroll.InitialFadeScrollerSkin"
+               height = "100%"
+               width = "{width}">
+      <s:VGroup height = "100%"
+                width = "100%"
+                horizontalAlign = "center"
+                paddingLeft = "{Utils_Layout.getStandardPadding() * 2}"
+                paddingRight = "{Utils_Layout.getStandardPadding() * 2}">
+         <s:TextArea id = "editableTextArea"
+                     change = "onEditableTextAreaChange()"
+                     editable = "true"
+                     horizontalScrollPolicy = "off"
+                     verticalScrollPolicy = "auto"
+                     width = "100%"
+                     height = "{width * .6}"/>
+         <s:Spacer/>
+         <s:Spacer/>
+         <uiwidget:UIWidget_Viewlet__Bold_Text id = "feedbackTextWidget"
+                                               width = "100%"/>
+         <s:Spacer/>
+         <s:Spacer/>
+         <button:NormalButton id = "addButton"
+                              label = "Add Library"
+                              click = "onAddButtonClick()"
+                              width = "75%"/>
+         <s:Spacer/>
+      </s:VGroup>
+   </s:Scroller>
 </view:Subviewlet_AddLibrary__URLEntry_Base>

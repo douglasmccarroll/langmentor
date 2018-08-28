@@ -18,8 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                      xmlns:mx = "library://ns.adobe.com/flex/mx"
-                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
                       title = "Intro &amp; Setup: Select Language">
@@ -29,104 +27,104 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
       <![CDATA[
-         import com.brightworks.component.list.NormalList;
-         import com.brightworks.util.Log;
-         import com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LanguageSelectionList;
-         import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-         import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.brightworks.component.list.NormalList;
+      import com.brightworks.util.Log;
+      import com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LanguageSelectionList;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-         import mx.collections.ArrayCollection;
-         import mx.collections.Sort;
-         import mx.collections.SortField;
-         import mx.controls.Spacer;
+      import mx.collections.ArrayCollection;
+      import mx.collections.Sort;
+      import mx.collections.SortField;
+      import mx.controls.Spacer;
 
-         import spark.components.BorderContainer;
-         import spark.components.List;
+      import spark.components.BorderContainer;
+      import spark.components.List;
 
-         private var _dataProvider:ArrayCollection = new ArrayCollection();
-         private var _isDisposed:Boolean = false;
-         private var _list:List;
+      private var _dataProvider:ArrayCollection = new ArrayCollection();
+      private var _isDisposed:Boolean = false;
+      private var _list:List;
 
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Public Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-         override public function dispose():void {
-            super.dispose();
-            if (_isDisposed)
-               return;
-            _isDisposed = true;
-            _list.removeEventListener(Event.CHANGE, onListChange);
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         _list.removeEventListener(Event.CHANGE, onListChange);
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      override protected function onNextButtonClick(event:MouseEvent):void {
+         Log.info("View_Intro_SelectLanguage.onContinueButtonClick()");
+         if (!_list.selectedItem) {
+            Log.warn("View_Intro_SelectLanguage.onContinueButtonClick(): no selectedItem");
+            return;
          }
+         model.initTargetLanguage(_list.selectedItem["value"], true);
+         super.onNextButtonClick(event);
+      }
 
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Protected Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      override protected function onViewActivate():void {
+         super.onViewActivate();
+         nextButton.enabled = false;
+         setupDataProvider();
+      }
 
-         override protected function onNextButtonClick(event:MouseEvent):void {
-            Log.info("View_Intro_SelectLanguage.onContinueButtonClick()");
-            if (!_list.selectedItem) {
-               Log.warn("View_Intro_SelectLanguage.onContinueButtonClick(): no selectedItem");
-               return;
-            }
-            model.initTargetLanguage(_list.selectedItem["value"], true);
-            super.onNextButtonClick(event);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text;
+         var borderContainer:BorderContainer;
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "What language would you like to learn?";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         borderContainer = new BorderContainer();
+         borderContainer.percentHeight = 100;
+         borderContainer.percentWidth = 100;
+         _list = new NormalList();
+         _list.percentHeight = 100;
+         _list.percentWidth = 100;
+         _list.dataProvider = _dataProvider;
+         _list.addEventListener(Event.CHANGE, onListChange);
+         _list.itemRenderer = new ClassFactory(ItemRenderer_LanguageSelectionList);
+
+         borderContainer.addElement(_list);
+         viewletGroup.addElement(borderContainer);
+      }
+
+      private function onListChange(event:Event):void {
+         nextButton.enabled = (_list.selectedItem);
+      }
+
+      private function setupDataProvider():void {
+         _dataProvider.removeAll();
+         var sort:Sort = new Sort();
+         sort.fields = [new SortField("label")];
+         _dataProvider.sort = sort;
+         _dataProvider.refresh();
+         var languageIdList:Array = model.getLanguageIdList();
+         for each (var id:int in languageIdList) {
+            var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(id);
+            var item:Object = {label: displayName, value: id};
+            _dataProvider.addItem(item);
          }
-
-         override protected function onViewActivate():void {
-            super.onViewActivate();
-            nextButton.enabled = false;
-            setupDataProvider();
-         }
-
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-         //
-         //          Private Methods
-         //
-         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-         private function onCreationComplete():void {
-            var textWidget:IUIWidget_Text;
-            var borderContainer:BorderContainer;
-            textWidget = new UIWidget_Viewlet__Heading();
-            textWidget.text = "What language would you like to learn?";
-            viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
-            borderContainer = new BorderContainer();
-            borderContainer.percentHeight = 100;
-            borderContainer.percentWidth = 100;
-            _list = new NormalList();
-            _list.percentHeight = 100;
-            _list.percentWidth = 100;
-            _list.dataProvider = _dataProvider;
-            _list.addEventListener(Event.CHANGE, onListChange);
-            _list.itemRenderer = new ClassFactory(ItemRenderer_LanguageSelectionList);
-
-            borderContainer.addElement(_list);
-            viewletGroup.addElement(borderContainer);
-         }
-
-         private function onListChange(event:Event):void {
-            nextButton.enabled = (_list.selectedItem);
-         }
-
-         private function setupDataProvider():void {
-            _dataProvider.removeAll();
-            var sort:Sort = new Sort();
-            sort.fields = [new SortField("label")];
-            _dataProvider.sort = sort;
-            _dataProvider.refresh();
-            var languageIdList:Array = model.getLanguageIdList();
-            for each (var id:int in languageIdList) {
-               var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(id);
-               var item:Object = {label:displayName, value:id};
-               _dataProvider.addItem(item);
-            }
-         }
+      }
       ]]>
    </fx:Script>
 </view:View_Intro_Base>

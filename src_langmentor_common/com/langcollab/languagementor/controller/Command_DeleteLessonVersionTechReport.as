@@ -16,38 +16,33 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller
-{
-    import com.brightworks.techreport.ITechReport;
-    import com.brightworks.techreport.TechReport;
-    import com.langcollab.languagementor.model.MainModelDBOperationReport;
+package com.langcollab.languagementor.controller {
+import com.brightworks.techreport.ITechReport;
+import com.brightworks.techreport.TechReport;
+import com.langcollab.languagementor.model.MainModelDBOperationReport;
 
-    public class Command_DeleteLessonVersionTechReport extends TechReport implements ITechReport
-    {
-        public static const ERROR_TYPE__DELETE_DATA_FAILURE:String = "errorType_DeleteDataFailure";
-        public static const ERROR_TYPE__DELETE_FILES_FAILURE:String = "errorType_DeleteFilesFailure";
+public class Command_DeleteLessonVersionTechReport extends TechReport implements ITechReport {
+   public static const ERROR_TYPE__DELETE_DATA_FAILURE:String = "errorType_DeleteDataFailure";
+   public static const ERROR_TYPE__DELETE_FILES_FAILURE:String = "errorType_DeleteFilesFailure";
 
-        public var isSuccess:Boolean;
-        public var mainModelDBOperationReport:MainModelDBOperationReport;
+   public var isSuccess:Boolean;
+   public var mainModelDBOperationReport:MainModelDBOperationReport;
 
-        private var _isDisposed:Boolean;
+   private var _isDisposed:Boolean;
 
-        public function Command_DeleteLessonVersionTechReport()
-        {
-            super();
-        }
+   public function Command_DeleteLessonVersionTechReport() {
+      super();
+   }
 
-        override public function dispose():void
-        {
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (mainModelDBOperationReport)
-            {
-                mainModelDBOperationReport.dispose();
-                mainModelDBOperationReport = null;
-            }
-        }
-    }
+   override public function dispose():void {
+      super.dispose();
+      if (_isDisposed)
+         return;
+      _isDisposed = true;
+      if (mainModelDBOperationReport) {
+         mainModelDBOperationReport.dispose();
+         mainModelDBOperationReport = null;
+      }
+   }
+}
 }

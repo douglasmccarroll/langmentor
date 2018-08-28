@@ -16,17 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
-    public class Constant_DataErrorTypes
-    {
-		public static const DELETE__REMOVAL_FROM_STORAGE_LISTS_FAILED:String = "delete_removalFromStorageListsFailed";
-		public static const DELETE__SOME_VOS_DO_NOT_HAVE_SINGLE_MATCHING_VO_IN_STORAGE_LIST:String = "delete_SomeVOsDoNotHaveSingleMatchingVOInStorageList";
-        public static const SQLITE_DB_OPERATION_FAILURE:String = "sqliteDbOperationFailure";
-        public static const UPDATE__ANOTHER_SQL_OPERATION_CURRENTLY_IN_PROGRESS:String = "update_AnotherSQLOperationCurrentlyInProgress";
-        
-        public function Constant_DataErrorTypes()
-        {
-        }
-    }
+package com.langcollab.languagementor.model {
+public class Constant_DataErrorTypes {
+   public static const DELETE__REMOVAL_FROM_STORAGE_LISTS_FAILED:String = "delete_removalFromStorageListsFailed";
+   public static const DELETE__SOME_VOS_DO_NOT_HAVE_SINGLE_MATCHING_VO_IN_STORAGE_LIST:String = "delete_SomeVOsDoNotHaveSingleMatchingVOInStorageList";
+   public static const SQLITE_DB_OPERATION_FAILURE:String = "sqliteDbOperationFailure";
+   public static const UPDATE__ANOTHER_SQL_OPERATION_CURRENTLY_IN_PROGRESS:String = "update_AnotherSQLOperationCurrentlyInProgress";
+
+   public function Constant_DataErrorTypes() {
+   }
+}
 }

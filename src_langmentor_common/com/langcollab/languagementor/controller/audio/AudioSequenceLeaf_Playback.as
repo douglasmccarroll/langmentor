@@ -16,98 +16,85 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.audio
-{
-    import com.brightworks.util.Log;
+package com.langcollab.languagementor.controller.audio {
+import com.brightworks.util.Log;
 
-    import flash.events.Event;
+import flash.events.Event;
 
-    public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf
-    {
-        private static var _availableInstancePool:Array = [];
+public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
+   private static var _availableInstancePool:Array = [];
 
-        private var _audioRecorder:AudioRecorder = AudioRecorder.getInstance();
+   private var _audioRecorder:AudioRecorder = AudioRecorder.getInstance();
 
-        // ****************************************************
-        //
-        //          Public Methods
-        //
-        // ****************************************************
+   // ****************************************************
+   //
+   //          Public Methods
+   //
+   // ****************************************************
 
-        public function AudioSequenceLeaf_Playback(enforcer:Class)
-        {
-            super();
-            if (enforcer != InstancePoolEnforcer)
-                throw new Error("AudioSequenceLeaf_Playback: create instances with acquireReusable()");
-        }
+   public function AudioSequenceLeaf_Playback(enforcer:Class) {
+      super();
+      if (enforcer != InstancePoolEnforcer)
+         throw new Error("AudioSequenceLeaf_Playback: create instances with acquireReusable()");
+   }
 
-        public static function acquireReusable(id:Object, duration:int):AudioSequenceLeaf_Playback
-        {
-            var result:AudioSequenceLeaf_Playback;
-            if (_availableInstancePool.length > 0)
-            {
-                result = _availableInstancePool.pop();
-                result.isDisposed = false;
-            }
-            else
-            {
-                result = new AudioSequenceLeaf_Playback(InstancePoolEnforcer);
-            }
-            result.id = id;
-            result.duration = duration;
-            return result;
-        }
+   public static function acquireReusable(id:Object, duration:int):AudioSequenceLeaf_Playback {
+      var result:AudioSequenceLeaf_Playback;
+      if (_availableInstancePool.length > 0) {
+         result = _availableInstancePool.pop();
+         result.isDisposed = false;
+      }
+      else {
+         result = new AudioSequenceLeaf_Playback(InstancePoolEnforcer);
+      }
+      result.id = id;
+      result.duration = duration;
+      return result;
+   }
 
-        override public function dispose():void
-        {
-            if (_audioRecorder)
-            {
-                _audioRecorder.stopPlayback();
-                _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
-                _audioRecorder = null;
-            }
-            super.dispose();
-            AudioSequenceLeaf_Playback.releaseReusable(this);
-        }
+   override public function dispose():void {
+      if (_audioRecorder) {
+         _audioRecorder.stopPlayback();
+         _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+         _audioRecorder = null;
+      }
+      super.dispose();
+      AudioSequenceLeaf_Playback.releaseReusable(this);
+   }
 
-        public static function releaseReusable(instance:AudioSequenceLeaf_Playback):void
-        {
-            if (_availableInstancePool.indexOf(instance) != -1)
-                _availableInstancePool.push(instance);
-        }
+   public static function releaseReusable(instance:AudioSequenceLeaf_Playback):void {
+      if (_availableInstancePool.indexOf(instance) != -1)
+         _availableInstancePool.push(instance);
+   }
 
-        public override function startFromBeginning():void
-        {
-            Log.debug("AudioSequenceLeaf_Playback.startFromBeginning()");
-            super.startFromBeginning();
-            _audioRecorder.addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-            _audioRecorder.startPlayback();
-        }
+   public override function startFromBeginning():void {
+      Log.debug("AudioSequenceLeaf_Playback.startFromBeginning()");
+      super.startFromBeginning();
+      _audioRecorder.addEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      _audioRecorder.startPlayback();
+   }
 
-        public override function stop():void
-        {
-            Log.debug("AudioSequenceLeaf_Playback.stop()");
-            super.stop();
-            _audioRecorder.stopPlayback();
-            _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
-        }
+   public override function stop():void {
+      Log.debug("AudioSequenceLeaf_Playback.stop()");
+      super.stop();
+      _audioRecorder.stopPlayback();
+      _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+   }
 
-        // ****************************************************
-        //
-        //          Protected Methods
-        //
-        // ****************************************************
+   // ****************************************************
+   //
+   //          Protected Methods
+   //
+   // ****************************************************
 
-        protected override function onElementComplete(event:Event):void
-        {
-            Log.debug("AudioSequenceLeaf_Playback.onElementComplete()");
-            _audioRecorder.stopPlayback();
-            _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
-            super.onElementComplete(event);
-        }
-    }
+   protected override function onElementComplete(event:Event):void {
+      Log.debug("AudioSequenceLeaf_Playback.onElementComplete()");
+      _audioRecorder.stopPlayback();
+      _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      super.onElementComplete(event);
+   }
+}
 }
 
-class InstancePoolEnforcer
-{
+class InstancePoolEnforcer {
 }

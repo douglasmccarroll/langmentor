@@ -16,22 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.event
-{
-    import com.brightworks.event.BwEvent;
-    import com.langcollab.languagementor.vo.LessonVersionVO;
+package com.langcollab.languagementor.event {
+import com.brightworks.event.BwEvent;
+import com.langcollab.languagementor.vo.LessonVersionVO;
 
-    public class Event_LessonVersionList extends BwEvent
-    {
-        public static const LEVEL_CHANGE:String="event_LessonVersionList_LevelChange";
-        public static const TOGGLE_LESSON_SELECTED:String="event_LessonVersionList_ToggleLessonSelected";
+public class Event_LessonVersionList extends BwEvent {
+   public static const LEVEL_CHANGE:String = "event_LessonVersionList_LevelChange";
+   public static const TOGGLE_LESSON_SELECTED:String = "event_LessonVersionList_ToggleLessonSelected";
 
-        public var lessonVersionVO:LessonVersionVO;
+   public var lessonVersionVO:LessonVersionVO;
 
-        public function Event_LessonVersionList(type:String)
-        {
-            super(type);
-        }
-    }
+   public function Event_LessonVersionList(type:String) {
+      super(type);
+   }
+}
 }
 

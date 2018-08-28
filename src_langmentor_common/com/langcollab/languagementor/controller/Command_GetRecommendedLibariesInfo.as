@@ -16,52 +16,46 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller
-{
-    import com.brightworks.base.Callbacks;
-    import com.brightworks.util.Log;
+package com.langcollab.languagementor.controller {
+import com.brightworks.base.Callbacks;
+import com.brightworks.util.Log;
 
-    public class Command_GetRecommendedLibariesInfo extends Command_UpdateLibraryInfoBase
-    {
-        private var _isDisposed:Boolean = false;
+public class Command_GetRecommendedLibariesInfo extends Command_UpdateLibraryInfoBase {
+   private var _isDisposed:Boolean = false;
 
-        // --------------------------------------------
-        //
-        //           Public Methods
-        //
-        // --------------------------------------------
+   // --------------------------------------------
+   //
+   //           Public Methods
+   //
+   // --------------------------------------------
 
-        public function Command_GetRecommendedLibariesInfo(callbacks:Callbacks)
-        {
-            super();
-            Log.debug("Command_GetRecommendedLibariesInfo constructor");
-            this.callbacks = callbacks;
-            techReport = new Command_GetRecommendedLibariesInfoTechReport();
-        }
+   public function Command_GetRecommendedLibariesInfo(callbacks:Callbacks) {
+      super();
+      Log.debug("Command_GetRecommendedLibariesInfo constructor");
+      this.callbacks = callbacks;
+      techReport = new Command_GetRecommendedLibariesInfoTechReport();
+   }
 
-        override public function dispose():void
-        {
-            Log.debug("Command_GetRecommendedLibariesInfo.dispose()");
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (techReport)
-            {
-                techReport.dispose();
-                techReport = null;
-            }
-        }
+   override public function dispose():void {
+      Log.debug("Command_GetRecommendedLibariesInfo.dispose()");
+      super.dispose();
+      if (_isDisposed)
+         return;
+      _isDisposed = true;
+      if (techReport) {
+         techReport.dispose();
+         techReport = null;
+      }
+   }
 
-        override public function execute():void
-        {
-            Log.info("Command_GetRecommendedLibariesInfo.execute()");
-            includeRecommendedLibraries = true;
-            super.execute();
-        }
+   override public function execute():void {
+      Log.info("Command_GetRecommendedLibariesInfo.execute()");
+      includeRecommendedLibraries = true;
+      super.execute();
+   }
 
 
-    }
+}
 }
 
 

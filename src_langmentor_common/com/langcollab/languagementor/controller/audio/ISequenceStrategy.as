@@ -16,32 +16,30 @@
 	You should have received a copy of the GNU General Public License
 	along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.audio
-{
-	import flash.utils.Dictionary;
+package com.langcollab.languagementor.controller.audio {
+import flash.utils.Dictionary;
 
-    public interface ISequenceStrategy
-    {
-        function get currentOrderSpecListIndex():int;
+public interface ISequenceStrategy {
+   function get currentOrderSpecListIndex():int;
 
-        function clone():ISequenceStrategy;
+   function clone():ISequenceStrategy;
 
-        function dispose():void;
-		
-		  function getCurrentElement():AudioSequenceElement;
+   function dispose():void;
 
-        function getElement(id:Object):AudioSequenceElement;
+   function getCurrentElement():AudioSequenceElement;
 
-        function getFirstElement():AudioSequenceElement;
+   function getElement(id:Object):AudioSequenceElement;
 
-        function getNextElement():AudioSequenceElement;
+   function getFirstElement():AudioSequenceElement;
 
-        function hasNextElement():Boolean;
+   function getNextElement():AudioSequenceElement;
 
-        function init(elements:Dictionary):void;
+   function hasNextElement():Boolean;
 
-        function isElementAllowed(id:Object):Boolean;
+   function init(elements:Dictionary):void;
 
-        function reset():void;
-    }
+   function isElementAllowed(id:Object):Boolean;
+
+   function reset():void;
+}
 }

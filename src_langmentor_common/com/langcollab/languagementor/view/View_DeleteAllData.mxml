@@ -18,213 +18,188 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:button = "com.brightworks.component.button.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 title = "Are You SURE?"
                 viewActivate = "onViewActivate()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.base.Callbacks;
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_System;
-            import com.brightworks.util.Utils_Text;
-            import com.langcollab.languagementor.controller.Command_InitApplication;
-            import com.langcollab.languagementor.util.Utils_LangCollab;
+      import com.brightworks.base.Callbacks;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_System;
+      import com.brightworks.util.Utils_Text;
+      import com.langcollab.languagementor.controller.Command_InitApplication;
+      import com.langcollab.languagementor.util.Utils_LangCollab;
 
-            private var _isDisposed:Boolean = false;
-            private var _isDeleteProcessStarted:Boolean;
-            private var _isDeleteProcessSuccessful:Boolean;
-            private var _timer:Timer;
+      private var _isDisposed:Boolean = false;
+      private var _isDeleteProcessStarted:Boolean;
+      private var _isDeleteProcessSuccessful:Boolean;
+      private var _timer:Timer;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                stopTimer();
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         stopTimer();
+      }
+
+      override public function doGoBack():void {
+         Log.info("View_DeleteAllData.doGoBack()");
+         if (_isDeleteProcessSuccessful) {
+            goToSetupWelcomeScreen();
+         }
+         else {
+            if (_isDeleteProcessStarted) {
+               // do nothing
             }
-
-            override public function doGoBack():void
-            {
-                Log.info("View_DeleteAllData.doGoBack()");
-                if (_isDeleteProcessSuccessful)
-                {
-                    goToSetupWelcomeScreen();
-                }
-                else
-                {
-                    if (_isDeleteProcessStarted)
-                    {
-                        // do nothing
-                    }
-                    else
-                    {
-                        navigator.popView(transition_SlideView_Right);
-                    }
-                }
+            else {
+               navigator.popView(transition_SlideView_Right);
             }
+         }
+      }
 
-            override public function doGoHome():void
-            {
-                Log.info("View_DeleteAllData.doGoHome()");
-                if (_isDeleteProcessSuccessful)
-                {
-                    goToSetupWelcomeScreen();
-                }
-                else
-                {
-                    if (_isDeleteProcessStarted)
-                    {
-                        // do nothing
-                    }
-                    else
-                    {
-                        super.doGoHome();
-                    }
-                }
+      override public function doGoHome():void {
+         Log.info("View_DeleteAllData.doGoHome()");
+         if (_isDeleteProcessSuccessful) {
+            goToSetupWelcomeScreen();
+         }
+         else {
+            if (_isDeleteProcessStarted) {
+               // do nothing
             }
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-            private function goToSetupWelcomeScreen():void
-            {
-                navigator.pushView(View_Intro_Welcome, null, null, transition_SlideView_Left);
+            else {
+               super.doGoHome();
             }
+         }
+      }
 
-            private function onCancelButtonClick():void
-            {
-                Log.info("View_DeleteAllData.onCancelButtonClick()");
-                navigator.popView(transition_SlideView_Right);
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onDeleteButtonClick():void
-            {
-                Log.info("View_DeleteAllData.onDeleteButtonClick()");
-                textDisplayLabel.text = "Please wait. Deleting...";
-                cancelButton.enabled = false;
-                deleteButton.enabled = false;
-                _isDeleteProcessStarted = true;
-                if (!Utils_System.isRunningOnDesktop())
-                    currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-                _timer = new Timer(500, 1);
-                _timer.addEventListener(TimerEvent.TIMER, onTimer);
-                _timer.start();
-            }
+      private function goToSetupWelcomeScreen():void {
+         navigator.pushView(View_Intro_Welcome, null, null, transition_SlideView_Left);
+      }
 
-            private function onDeleteButtonClick_Continued():void
-            {
-                var isDeleteDirectorySuccess:Boolean = Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
-                cancelButton.visible = false;
-                cancelButton.includeInLayout = false;
-                deleteButton.visible = false;
-                okayButton.includeInLayout = true;
-                if (isDeleteDirectorySuccess)
-                {
-                    var cb:Callbacks = new Callbacks(onInitApplicationComplete, onInitApplicationFailure);
-                    var c:Command_InitApplication = new Command_InitApplication(cb);
-                    c.execute();
-                }
-                else
-                {
-                    textDisplayLabel.text = "Unable to completely delete data. We suggest that you uninstall and reinstall Language Mentor.";
-                }
-            }
+      private function onCancelButtonClick():void {
+         Log.info("View_DeleteAllData.onCancelButtonClick()");
+         navigator.popView(transition_SlideView_Right);
+      }
 
-            private function onInitApplicationComplete(o:Object):void
-            {
-                Log.debug("View_DeleteAllData.onInitApplicationComplete()");
-                _isDeleteProcessSuccessful = true;
-                textDisplayLabel.text = "All data has been successfully deleted. Please click OK to restart Language Mentor."
-                okayButton.visible = true;
-            }
+      private function onDeleteButtonClick():void {
+         Log.info("View_DeleteAllData.onDeleteButtonClick()");
+         textDisplayLabel.text = "Please wait. Deleting...";
+         cancelButton.enabled = false;
+         deleteButton.enabled = false;
+         _isDeleteProcessStarted = true;
+         if (!Utils_System.isRunningOnDesktop())
+            currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+         _timer = new Timer(500, 1);
+         _timer.addEventListener(TimerEvent.TIMER, onTimer);
+         _timer.start();
+      }
 
-            private function onInitApplicationFailure(o:Object):void
-            {
-                // Currently not called - command calls Log.fatal() directly.
-                Log.info("View_DeleteAllData.onInitApplicationFailure()");
-                textDisplayLabel.setStyle("fontSize", Math.round(Utils_Text.getStandardFontSize() * 1.6));
-                textDisplayLabel.text = "Unable to complete process. Please try restarting your phone. If you continue to encounter problems please contact us via the forums at LanguageCollaborative.com.";
-            }
+      private function onDeleteButtonClick_Continued():void {
+         var isDeleteDirectorySuccess:Boolean = Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
+         cancelButton.visible = false;
+         cancelButton.includeInLayout = false;
+         deleteButton.visible = false;
+         okayButton.includeInLayout = true;
+         if (isDeleteDirectorySuccess) {
+            var cb:Callbacks = new Callbacks(onInitApplicationComplete, onInitApplicationFailure);
+            var c:Command_InitApplication = new Command_InitApplication(cb);
+            c.execute();
+         }
+         else {
+            textDisplayLabel.text = "Unable to completely delete data. We suggest that you uninstall and reinstall Language Mentor.";
+         }
+      }
+
+      private function onInitApplicationComplete(o:Object):void {
+         Log.debug("View_DeleteAllData.onInitApplicationComplete()");
+         _isDeleteProcessSuccessful = true;
+         textDisplayLabel.text = "All data has been successfully deleted. Please click OK to restart Language Mentor."
+         okayButton.visible = true;
+      }
+
+      private function onInitApplicationFailure(o:Object):void {
+         // Currently not called - command calls Log.fatal() directly.
+         Log.info("View_DeleteAllData.onInitApplicationFailure()");
+         textDisplayLabel.setStyle("fontSize", Math.round(Utils_Text.getStandardFontSize() * 1.6));
+         textDisplayLabel.text = "Unable to complete process. Please try restarting your phone. If you continue to encounter problems please contact us via the forums at LanguageCollaborative.com.";
+      }
 
 
-            private function onOkayButtonClick():void
-            {
-                Log.info("View_DeleteAllData.onOkayButtonClick()");
-                goToSetupWelcomeScreen();
-            }
+      private function onOkayButtonClick():void {
+         Log.info("View_DeleteAllData.onOkayButtonClick()");
+         goToSetupWelcomeScreen();
+      }
 
-            private function onTimer(event:TimerEvent):void
-            {
-                stopTimer();
-                onDeleteButtonClick_Continued();
-            }
+      private function onTimer(event:TimerEvent):void {
+         stopTimer();
+         onDeleteButtonClick_Continued();
+      }
 
-            private function onViewActivate():void
-            {
-                textDisplayLabel.text = "Are you SURE? This will delete ALL lessons and settings and restore Language Mentor to the state it was in when it was initially installed.";
-            }
+      private function onViewActivate():void {
+         textDisplayLabel.text = "Are you SURE? This will delete ALL lessons and settings and restore Language Mentor to the state it was in when it was initially installed.";
+      }
 
-            private function stopTimer():void
-            {
-                if (_timer)
-                {
-                    _timer.stop();
-                    _timer.removeEventListener(TimerEvent.TIMER, onTimer);
-                    _timer = null;
-                }
-            }
-        ]]>
+      private function stopTimer():void {
+         if (_timer) {
+            _timer.stop();
+            _timer.removeEventListener(TimerEvent.TIMER, onTimer);
+            _timer = null;
+         }
+      }
+      ]]>
     </fx:Script>
 
-    <s:VGroup height = "100%"
-              width = "100%"
-              horizontalAlign = "center"
-              bottom = "10"
-              top = "10"
-              left = "10"
-              right = "10">
-        <s:HGroup width = "80%"
-                  height = "100%"
-                  verticalAlign = "middle">
-            <s:Label id = "textDisplayLabel"
-                     fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.5)}"
-                     width = "100%" />
-        </s:HGroup>
-        <button:NormalButton id = "deleteButton"
-                             label = "Yes, I'm Sure"
-                             click = "onDeleteButtonClick()"
-                             width = "75%"
-                             height = "12%" />
-        <s:Spacer />
-        <button:NormalButton id = "cancelButton"
-                             label = "Cancel"
-                             click = "onCancelButtonClick()"
-                             width = "75%"
-                             height = "12%" />
-        <button:NormalButton id = "okayButton"
-                             label = "OK"
-                             click = "onOkayButtonClick()"
-                             visible = "false"
-                             includeInLayout = "false"
-                             width = "75%"
-                             height = "12%" />
-        <s:Spacer />
-    </s:VGroup>
+   <s:VGroup height = "100%"
+             width = "100%"
+             horizontalAlign = "center"
+             bottom = "10"
+             top = "10"
+             left = "10"
+             right = "10">
+      <s:HGroup width = "80%"
+                height = "100%"
+                verticalAlign = "middle">
+         <s:Label id = "textDisplayLabel"
+                  fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.5)}"
+                  width = "100%"/>
+      </s:HGroup>
+      <button:NormalButton id = "deleteButton"
+                           label = "Yes, I'm Sure"
+                           click = "onDeleteButtonClick()"
+                           width = "75%"
+                           height = "12%"/>
+      <s:Spacer/>
+      <button:NormalButton id = "cancelButton"
+                           label = "Cancel"
+                           click = "onCancelButtonClick()"
+                           width = "75%"
+                           height = "12%"/>
+      <button:NormalButton id = "okayButton"
+                           label = "OK"
+                           click = "onOkayButtonClick()"
+                           visible = "false"
+                           includeInLayout = "false"
+                           width = "75%"
+                           height = "12%"/>
+      <s:Spacer/>
+   </s:VGroup>
 </view:View_Base>

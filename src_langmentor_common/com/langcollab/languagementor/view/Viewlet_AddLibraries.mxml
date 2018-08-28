@@ -18,84 +18,77 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
                    xmlns:s = "library://ns.adobe.com/flex/spark"
-                   xmlns:button = "com.brightworks.component.button.*"
-                   xmlns:experimental="http://flex.apache.org/experimental/ns"
-                   xmlns:layout = "com.brightworks.component.layout.*"
-                   xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
+                   xmlns:experimental = "http://flex.apache.org/experimental/ns"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    width = "100%">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            public var isLibrariesAdded:Boolean;
+      import com.brightworks.util.Log;
 
-            private var _isDisposed:Boolean;
+      public var isLibrariesAdded:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      private var _isDisposed:Boolean;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                enterURLView.dispose();
-                introView.dispose();
-                scanQRCodeView.dispose();
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         enterURLView.dispose();
+         introView.dispose();
+         scanQRCodeView.dispose();
+      }
 
-            private function callback_LibraryAdded():void
-            {
-                Log.info("Viewlet_AddLibraries.callback_LibraryAdded()");
-                isLibrariesAdded = true;
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function callback_ShowEnterURLView():void
-            {
-                Log.info("Viewlet_AddLibraries.callback_ShowEnterURLView()");
-                navigator.selectedItem = enterURLView;
-            }
+      private function callback_LibraryAdded():void {
+         Log.info("Viewlet_AddLibraries.callback_LibraryAdded()");
+         isLibrariesAdded = true;
+      }
 
-            private function callback_ShowScanQRCodeView():void
-            {
-                Log.info("Viewlet_AddLibraries.callback_ShowScanQRCodeView()");
-                navigator.selectedItem = scanQRCodeView;
-            }
-        ]]>
+      private function callback_ShowEnterURLView():void {
+         Log.info("Viewlet_AddLibraries.callback_ShowEnterURLView()");
+         navigator.selectedItem = enterURLView;
+      }
+
+      private function callback_ShowScanQRCodeView():void {
+         Log.info("Viewlet_AddLibraries.callback_ShowScanQRCodeView()");
+         navigator.selectedItem = scanQRCodeView;
+      }
+      ]]>
     </fx:Script>
 
-    <s:Spacer />
-    <experimental:Navigator id = "navigator"
-                          borderVisible = "false"
-                          height = "{height}"
-                          width = "{width}">
-        <view:Subviewlet_AddLibrary__Intro id = "introView"
-                                           showEnterURLViewCallback = "{callback_ShowEnterURLView}"
-                                           showScanQRCodeViewCallback = "{callback_ShowScanQRCodeView}"
-                                           width = "100%" />
-        <view:Subviewlet_AddLibrary__URLEntry_Type id = "enterURLView"
-                                                   libraryAddedCallback = "{callback_LibraryAdded}"
-                                                   showScanQRCodeViewCallback = "{callback_ShowScanQRCodeView}"
-                                                   width = "100%" />
-        <view:Subviewlet_AddLibrary__URLEntry_Scan id = "scanQRCodeView"
-                                                   libraryAddedCallback = "{callback_LibraryAdded}"
-                                                   showEnterURLViewCallback = "{callback_ShowEnterURLView}"
-                                                   width = "100%" />
-    </experimental:Navigator>
+   <s:Spacer/>
+   <experimental:Navigator id = "navigator"
+                           borderVisible = "false"
+                           height = "{height}"
+                           width = "{width}">
+      <view:Subviewlet_AddLibrary__Intro id = "introView"
+                                         showEnterURLViewCallback = "{callback_ShowEnterURLView}"
+                                         showScanQRCodeViewCallback = "{callback_ShowScanQRCodeView}"
+                                         width = "100%"/>
+      <view:Subviewlet_AddLibrary__URLEntry_Type id = "enterURLView"
+                                                 libraryAddedCallback = "{callback_LibraryAdded}"
+                                                 showScanQRCodeViewCallback = "{callback_ShowScanQRCodeView}"
+                                                 width = "100%"/>
+      <view:Subviewlet_AddLibrary__URLEntry_Scan id = "scanQRCodeView"
+                                                 libraryAddedCallback = "{callback_LibraryAdded}"
+                                                 showEnterURLViewCallback = "{callback_ShowEnterURLView}"
+                                                 width = "100%"/>
+   </experimental:Navigator>
 </view:Viewlet_Base>

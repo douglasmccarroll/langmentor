@@ -17,95 +17,95 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<view:View_Base xmlns:fx="http://ns.adobe.com/mxml/2009"
-                xmlns:list="com.brightworks.component.list.*"
-                xmlns:view="com.langcollab.languagementor.view.*"
-                implements="com.brightworks.interfaces.IDisposable"
-                title="Learning Modes"
-                viewActivate="onViewActivate()">
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:list = "com.brightworks.component.list.*"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                implements = "com.brightworks.interfaces.IDisposable"
+                title = "Learning Modes"
+                viewActivate = "onViewActivate()">
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-        import com.brightworks.component.list.BasicListItem;
-        import com.brightworks.util.Utils_Dispose;
-        import com.brightworks.util.Utils_String;
-        import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
-        import com.langcollab.languagementor.view.supportClasses.ViewContext;
-        import com.langcollab.languagementor.vo.LearningModeVO;
+      import com.brightworks.component.list.BasicListItem;
+      import com.brightworks.util.Utils_Dispose;
+      import com.brightworks.util.Utils_String;
+      import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
+      import com.langcollab.languagementor.vo.LearningModeVO;
 
-        import mx.collections.ArrayCollection;
+      import mx.collections.ArrayCollection;
 
-        private var _index_ListIndexToLearningModeID:Dictionary;
-        private var _isDisposed:Boolean = false;
-        [Bindable]
-        private var _listDataProvider:ArrayCollection = new ArrayCollection();
+      private var _index_ListIndexToLearningModeID:Dictionary;
+      private var _isDisposed:Boolean = false;
+      [Bindable]
+      private var _listDataProvider:ArrayCollection = new ArrayCollection();
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Public Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        override public function dispose():void {
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            if (_listDataProvider) {
-                Utils_Dispose.disposeArrayCollection(_listDataProvider, true);
-                _listDataProvider = null;
-            }
-        }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         if (_listDataProvider) {
+            Utils_Dispose.disposeArrayCollection(_listDataProvider, true);
+            _listDataProvider = null;
+         }
+      }
 
-        override public function doGoBack():void {
-            navigator.popView(transition_SlideView_Right);
-        }
+      override public function doGoBack():void {
+         navigator.popView(transition_SlideView_Right);
+      }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //
-        //          Private Methods
-        //
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        private function onListChange():void {
-            if (list.selectedIndex == -1)
-                return;
-            var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HELP);
-            var learningModeId:int = _index_ListIndexToLearningModeID[list.selectedIndex];
-            navigator.pushView(View_SelectModeHelp, learningModeId, ctxt, transition_SlideView_Left);
-        }
+      private function onListChange():void {
+         if (list.selectedIndex == -1)
+            return;
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HELP);
+         var learningModeId:int = _index_ListIndexToLearningModeID[list.selectedIndex];
+         navigator.pushView(View_SelectModeHelp, learningModeId, ctxt, transition_SlideView_Left);
+      }
 
-        private function onViewActivate():void {
-            populateDataProvider();
-        }
+      private function onViewActivate():void {
+         populateDataProvider();
+      }
 
-        private function populateDataProvider():void {
-            _index_ListIndexToLearningModeID = new Dictionary();
-            var learningModeIds:Array = model.getLearningModeIDListSortedByLocationInOrder();
-            var currentListIndex:int = -1;
-            for each (var learningModeId:int in learningModeIds) {
-                var learningModeVO:LearningModeVO = model.getLearningModeVOFromID(learningModeId);
-                if ((!(model.isAppDualLanguage())) && (learningModeVO.isDualLanguage))
-                    continue;
-                currentListIndex++;
-                var modeLabelToken:String = learningModeVO.labelToken;
-                var modeLabel:String = model.getNativeLanguageResource("label_LearningMode_" + modeLabelToken);
-                modeLabel = Utils_String.replaceAll(modeLabel, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
-                modeLabel = Utils_String.replaceAll(modeLabel, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage());
-                var item:BasicListItem = new BasicListItem();
-                item.label = modeLabel;
-                item.value = learningModeId;
-                _listDataProvider.addItem(item);
-                _index_ListIndexToLearningModeID[currentListIndex] = learningModeId;
-            }
-        }
-        ]]>
+      private function populateDataProvider():void {
+         _index_ListIndexToLearningModeID = new Dictionary();
+         var learningModeIds:Array = model.getLearningModeIDListSortedByLocationInOrder();
+         var currentListIndex:int = -1;
+         for each (var learningModeId:int in learningModeIds) {
+            var learningModeVO:LearningModeVO = model.getLearningModeVOFromID(learningModeId);
+            if ((!(model.isAppDualLanguage())) && (learningModeVO.isDualLanguage))
+               continue;
+            currentListIndex++;
+            var modeLabelToken:String = learningModeVO.labelToken;
+            var modeLabel:String = model.getNativeLanguageResource("label_LearningMode_" + modeLabelToken);
+            modeLabel = Utils_String.replaceAll(modeLabel, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
+            modeLabel = Utils_String.replaceAll(modeLabel, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage());
+            var item:BasicListItem = new BasicListItem();
+            item.label = modeLabel;
+            item.value = learningModeId;
+            _listDataProvider.addItem(item);
+            _index_ListIndexToLearningModeID[currentListIndex] = learningModeId;
+         }
+      }
+      ]]>
     </fx:Script>
 
-    <list:NormalList id = "list"
-                     change = "onListChange()"
-                     dataProvider = "{_listDataProvider}"
-                     itemRenderer = "com.brightworks.component.itemrenderer.MultilineLabelItemRenderer"
-                     height = "100%"
-                     width = "100%" />
+   <list:NormalList id = "list"
+                    change = "onListChange()"
+                    dataProvider = "{_listDataProvider}"
+                    itemRenderer = "com.brightworks.component.itemrenderer.MultilineLabelItemRenderer"
+                    height = "100%"
+                    width = "100%"/>
 </view:View_Base>

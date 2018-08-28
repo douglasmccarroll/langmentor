@@ -18,63 +18,59 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:mx = "library://ns.adobe.com/flex/mx"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-            import mx.controls.Spacer;
+      import mx.controls.Spacer;
 
-            private var _isDisposed:Boolean;
+      private var _isDisposed:Boolean;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:IUIWidget_Text
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Do you trust the library that you are about to add?";
-                addElement(textWidget);
-                addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Language Mentor does not pre-screen the lessons provided by libraries, except for those libraries that we specifically recommend. ";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "Because of this, it's important that you only add libraries that you trust.";
-                addElement(textWidget);
-                textWidget = new UIWidget_Viewlet__Bullet_Text();
-                textWidget.text = "If you don't trust the library that you are about to add, please press No now. If you do, press Yes.";
-                addElement(textWidget);
-                addElement(new Spacer());
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "Do you trust the library that you are about to add?";
+         addElement(textWidget);
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "Language Mentor does not pre-screen the lessons provided by libraries, except for those libraries that we specifically recommend. ";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "Because of this, it's important that you only add libraries that you trust.";
+         addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "If you don't trust the library that you are about to add, please press No now. If you do, press Yes.";
+         addElement(textWidget);
+         addElement(new Spacer());
+      }
+      ]]>
     </fx:Script>
 
 </view:Viewlet_Base>

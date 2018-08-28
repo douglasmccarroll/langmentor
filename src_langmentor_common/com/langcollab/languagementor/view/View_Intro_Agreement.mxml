@@ -18,78 +18,72 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                      xmlns:mx = "library://ns.adobe.com/flex/mx"
-                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
                       title = "Intro &amp; Setup: Agreement">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.component.checkbox.NormalCheckBox;
-            import com.brightworks.util.Log;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_TextArea_NonEditable;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
-            import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-            
-            import mx.controls.Spacer;
+      import com.brightworks.component.checkbox.NormalCheckBox;
+      import com.brightworks.util.Log;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_TextArea_NonEditable;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
 
-            private var _agreeCheckbox:NormalCheckBox;
-            private var _isDisposed:Boolean = false;
+      import mx.controls.Spacer;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      private var _agreeCheckbox:NormalCheckBox;
+      private var _isDisposed:Boolean = false;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
 
-            private function onAgreeCheckboxChange(event:Event):void
-            {
-                Log.info("View_Intro_Agreement.onAgreeCheckboxChange()");
-                nextButton.enabled = _agreeCheckbox.selected;
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onCreationComplete():void
-            {
-                var textWidget:UIWidget_TextArea_NonEditable;
-                textWidget = new UIWidget_Viewlet__Heading();
-                textWidget.text = "Agreement:";
-                viewletGroup.addElement(textWidget);
-                viewletGroup.addElement(new Spacer());
-                viewletGroup.addElement(new Spacer());
-                textWidget = new UIWidget_Viewlet__Bold_Text();
-                textWidget.fontSizeMultiplier = 1.2;
-                textWidget.text = "I agree not to use Language Mentor while driving or using heavy equipment.";
-                viewletGroup.addElement(textWidget);
-                viewletGroup.addElement(new Spacer());
-                _agreeCheckbox = new NormalCheckBox();
-                _agreeCheckbox.label = "I Agree";
-                _agreeCheckbox.addEventListener(Event.CHANGE, onAgreeCheckboxChange);
-                viewletGroup.addElement(_agreeCheckbox);
-            }
+      private function onAgreeCheckboxChange(event:Event):void {
+         Log.info("View_Intro_Agreement.onAgreeCheckboxChange()");
+         nextButton.enabled = _agreeCheckbox.selected;
+      }
 
-            override protected function onViewActivate():void
-            {
-                super.onViewActivate();
-                nextButton.enabled = false;
-            }
-        ]]>
+      private function onCreationComplete():void {
+         var textWidget:UIWidget_TextArea_NonEditable;
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "Agreement:";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bold_Text();
+         textWidget.fontSizeMultiplier = 1.2;
+         textWidget.text = "I agree not to use Language Mentor while driving or using heavy equipment.";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         _agreeCheckbox = new NormalCheckBox();
+         _agreeCheckbox.label = "I Agree";
+         _agreeCheckbox.addEventListener(Event.CHANGE, onAgreeCheckboxChange);
+         viewletGroup.addElement(_agreeCheckbox);
+      }
+
+      override protected function onViewActivate():void {
+         super.onViewActivate();
+         nextButton.enabled = false;
+      }
+      ]]>
     </fx:Script>
 </view:View_Intro_Base>

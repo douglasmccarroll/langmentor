@@ -18,76 +18,72 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
                 xmlns:button = "com.brightworks.component.button.*"
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 title = "Automatic Downloads">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            private var _isDisposed:Boolean = false;
+      import com.brightworks.util.Log;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      private var _isDisposed:Boolean = false;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                viewlet.dispose();
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            override public function doGoBack():void
-            {
-                dispose();
-                super.doGoBack();
-            }
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         viewlet.dispose();
+      }
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      override public function doGoBack():void {
+         dispose();
+         super.doGoBack();
+      }
 
-            private function onCancelButtonClick():void
-            {
-                Log.info("View_AutomaticDownloads.onCancelButtonClick()");
-                doGoBack();
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onSubmitButtonClick():void
-            {
-                Log.info("View_AutomaticDownloads.onSubmitButtonClick()");
-                model.autoDownloadLessons = (viewlet.userChoice);
-                // LessonDownloadController.onAutoDownloadLessonsChange() does the right thing, based on changes to model.autoDownloadLessons
-                doGoBack();
-            }
-        ]]>
+      private function onCancelButtonClick():void {
+         Log.info("View_AutomaticDownloads.onCancelButtonClick()");
+         doGoBack();
+      }
+
+      private function onSubmitButtonClick():void {
+         Log.info("View_AutomaticDownloads.onSubmitButtonClick()");
+         model.autoDownloadLessons = (viewlet.userChoice);
+         // LessonDownloadController.onAutoDownloadLessonsChange() does the right thing, based on changes to model.autoDownloadLessons
+         doGoBack();
+      }
+      ]]>
     </fx:Script>
 
-    <s:VGroup width = "100%">
-        <view:Viewlet_AutomaticDownloads id = "viewlet"
-                                         height = "100%"
-                                         width = "100%" />
-        <s:HGroup horizontalAlign = "center"
-                  width = "100%">
-            <button:NormalButton label = "Cancel"
-                                 click = "onCancelButtonClick()"
-                                 width = "40%" />
-            <button:NormalButton label = "Submit"
-                                 click = "onSubmitButtonClick()"
-                                 width = "40%" />
-        </s:HGroup>
-    </s:VGroup>
+   <s:VGroup width = "100%">
+      <view:Viewlet_AutomaticDownloads id = "viewlet"
+                                       height = "100%"
+                                       width = "100%"/>
+      <s:HGroup horizontalAlign = "center"
+                width = "100%">
+         <button:NormalButton label = "Cancel"
+                              click = "onCancelButtonClick()"
+                              width = "40%"/>
+         <button:NormalButton label = "Submit"
+                              click = "onSubmitButtonClick()"
+                              width = "40%"/>
+      </s:HGroup>
+   </s:VGroup>
 
 </view:View_Base>

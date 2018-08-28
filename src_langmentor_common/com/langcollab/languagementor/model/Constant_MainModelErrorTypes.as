@@ -16,15 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.model
-{
+package com.langcollab.languagementor.model {
 
-    public class Constant_MainModelErrorTypes
-    {
-        public static const UPDATE__UNALLOWED_FIELDS:String = "update_UnallowedFields";
+public class Constant_MainModelErrorTypes {
+   public static const UPDATE__UNALLOWED_FIELDS:String = "update_UnallowedFields";
 
-        public function Constant_MainModelErrorTypes()
-        {
-        }
-    }
+   public function Constant_MainModelErrorTypes() {
+   }
+}
 }

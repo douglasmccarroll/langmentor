@@ -17,50 +17,50 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.controller {
-   import com.brightworks.controller.Command_Base;
-   import com.langcollab.languagementor.controller.audio.AudioController;
-   import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
-   import com.langcollab.languagementor.model.MainModel;
-   import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
-   import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
+import com.brightworks.controller.Command_Base;
+import com.langcollab.languagementor.controller.audio.AudioController;
+import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
+import com.langcollab.languagementor.model.MainModel;
+import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
+import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
 
-   public class Command_Base__LangMentor extends Command_Base {
-      protected var audioController:AudioController = AudioController.getInstance();
-      protected var currentLessons:CurrentLessons = CurrentLessons.getInstance();
-      protected var lessonDownloadController:LessonDownloadController = LessonDownloadController.getInstance();
-      protected var model:MainModel = MainModel.getInstance();
+public class Command_Base__LangMentor extends Command_Base {
+   protected var audioController:AudioController = AudioController.getInstance();
+   protected var currentLessons:CurrentLessons = CurrentLessons.getInstance();
+   protected var lessonDownloadController:LessonDownloadController = LessonDownloadController.getInstance();
+   protected var model:MainModel = MainModel.getInstance();
 
-      // --------------------------------------------
-      //
-      //           Getters / Setters
-      //
-      // --------------------------------------------
+   // --------------------------------------------
+   //
+   //           Getters / Setters
+   //
+   // --------------------------------------------
 
-      private var _appStatePersistenceManager:AppStatePersistenceManager;
+   private var _appStatePersistenceManager:AppStatePersistenceManager;
 
-      protected function get appStatePersistenceManager():AppStatePersistenceManager {
-         if (!_appStatePersistenceManager)
-            _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
-         return _appStatePersistenceManager;
-      }
-
-      // --------------------------------------------
-      //
-      //           Public Methods
-      //
-      // --------------------------------------------
-
-      public function Command_Base__LangMentor() {
-         super();
-      }
-
-
-      override public function dispose():void {
-         _appStatePersistenceManager = null;
-         audioController = null;
-         lessonDownloadController = null;
-         super.dispose();
-      }
-
+   protected function get appStatePersistenceManager():AppStatePersistenceManager {
+      if (!_appStatePersistenceManager)
+         _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
+      return _appStatePersistenceManager;
    }
+
+   // --------------------------------------------
+   //
+   //           Public Methods
+   //
+   // --------------------------------------------
+
+   public function Command_Base__LangMentor() {
+      super();
+   }
+
+
+   override public function dispose():void {
+      _appStatePersistenceManager = null;
+      audioController = null;
+      lessonDownloadController = null;
+      super.dispose();
+   }
+
+}
 }

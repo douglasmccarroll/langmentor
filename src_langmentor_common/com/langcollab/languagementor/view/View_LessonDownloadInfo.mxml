@@ -18,61 +18,54 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                xmlns:mx = "library://ns.adobe.com/flex/mx"
-                xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 title = "Lesson Downloads"
                 viewActivate = "onViewActivate()">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            import com.brightworks.util.Utils_AIR;
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_AIR;
 
-            import spark.events.ViewNavigatorEvent;
+      private var _isDisposed:Boolean = false;
 
-            private var _isDisposed:Boolean = false;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         viewlet.dispose();
+         Utils_AIR.keepSystemAwake(false);
+      }
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                viewlet.dispose();
-                Utils_AIR.keepSystemAwake(false);
-            }
+      override public function doGoBack():void {
+         Log.info("View_LessonDownloadInfo.doGoBack()");
+         navigator.popView(transition_SlideView_Right);
+         dispose();
+      }
 
-            override public function doGoBack():void
-            {
-                Log.info("View_LessonDownloadInfo.doGoBack()");
-                navigator.popView(transition_SlideView_Right);
-                dispose();
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            private function onViewActivate():void
-            {
-                Utils_AIR.keepSystemAwake();
-            }
-        ]]>
+      private function onViewActivate():void {
+         Utils_AIR.keepSystemAwake();
+      }
+      ]]>
     </fx:Script>
 
-    <view:Viewlet_LessonDownloads id = "viewlet"
-                                  height = "100%"
-                                  width = "100%" />
+   <view:Viewlet_LessonDownloads id = "viewlet"
+                                 height = "100%"
+                                 width = "100%"/>
 </view:View_Base>

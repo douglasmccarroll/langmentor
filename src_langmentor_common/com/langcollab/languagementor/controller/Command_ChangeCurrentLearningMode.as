@@ -16,46 +16,41 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller
-{
+package com.langcollab.languagementor.controller {
 
-    import com.brightworks.util.Log;
+import com.brightworks.util.Log;
 
-    public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor
-    {
-        private var _isDisposed:Boolean = false;
-        private var _newLearningModeId:uint;
+public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor {
+   private var _isDisposed:Boolean = false;
+   private var _newLearningModeId:uint;
 
-        // ****************************************************
-        //
-        //          Public Methods
-        //
-        // ****************************************************
+   // ****************************************************
+   //
+   //          Public Methods
+   //
+   // ****************************************************
 
-        public function Command_ChangeCurrentLearningMode(newLearningModeId:uint)
-        {
-            super();
-            Log.debug("Command_ChangeCurrentLearningMode - Constructor");
-            _newLearningModeId = newLearningModeId;
-        }
+   public function Command_ChangeCurrentLearningMode(newLearningModeId:uint) {
+      super();
+      Log.debug("Command_ChangeCurrentLearningMode - Constructor");
+      _newLearningModeId = newLearningModeId;
+   }
 
-        override public function dispose():void
-        {
-            Log.debug("Command_ChangeCurrentLearningMode.dispose()");
-            super.dispose();
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            model = null;
-        }
+   override public function dispose():void {
+      Log.debug("Command_ChangeCurrentLearningMode.dispose()");
+      super.dispose();
+      if (_isDisposed)
+         return;
+      _isDisposed = true;
+      model = null;
+   }
 
-        public function execute():void
-        {
-            Log.info("Command_ChangeCurrentLearningMode.execute()");
-            model.currentLearningModeId = _newLearningModeId;
-            appStatePersistenceManager.persistSelectedLearningModeId(_newLearningModeId);
-            audioController.onLearningModeIdChange();
-            dispose();
-        }
-    }
+   public function execute():void {
+      Log.info("Command_ChangeCurrentLearningMode.execute()");
+      model.currentLearningModeId = _newLearningModeId;
+      appStatePersistenceManager.persistSelectedLearningModeId(_newLearningModeId);
+      audioController.onLearningModeIdChange();
+      dispose();
+   }
+}
 }

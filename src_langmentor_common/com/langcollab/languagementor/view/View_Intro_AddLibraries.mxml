@@ -18,67 +18,62 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                      xmlns:mx = "library://ns.adobe.com/flex/mx"
-                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
                       preinitialize = "onPreinitialize()"
                       title = "Intro &amp; Setup: Add Lesson Libraries">
 
-    <fx:Declarations>
-    </fx:Declarations>
+   <fx:Declarations>
+   </fx:Declarations>
 
-    <fx:Script>
+   <fx:Script>
         <![CDATA[
-            import com.brightworks.util.Log;
-            private var _isDisposed:Boolean = false;
-            private var _viewlet:Viewlet_AddLibraries;
+      import com.brightworks.util.Log;
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Public Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+      private var _isDisposed:Boolean = false;
+      private var _viewlet:Viewlet_AddLibraries;
 
-            override public function dispose():void
-            {
-                super.dispose();
-                if (_isDisposed)
-                    return;
-                _isDisposed = true;
-                _viewlet.dispose();
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Protected Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+         _viewlet.dispose();
+      }
 
-            override protected function onCancelButtonClick(event:MouseEvent):void
-            {
-                Log.info("View_Intro_AddLibraries.onCancelButtonClick()");
-                navigator.pushView(View_Intro_AddLibraries_Decide);
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-            //
-            //          Private Methods
-            //
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      override protected function onCancelButtonClick(event:MouseEvent):void {
+         Log.info("View_Intro_AddLibraries.onCancelButtonClick()");
+         navigator.pushView(View_Intro_AddLibraries_Decide);
+      }
 
-            private function onCreationComplete():void
-            {
-                _viewlet = new Viewlet_AddLibraries();
-                _viewlet.percentHeight = 100;
-                viewletGroup.addElement(_viewlet);
-            }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            private function onPreinitialize():void
-            {
-                viewletGroup_Scrollable = false;
-                viewletGroup_UsePadding = false;
-            }
-        ]]>
+      private function onCreationComplete():void {
+         _viewlet = new Viewlet_AddLibraries();
+         _viewlet.percentHeight = 100;
+         viewletGroup.addElement(_viewlet);
+      }
+
+      private function onPreinitialize():void {
+         viewletGroup_Scrollable = false;
+         viewletGroup_UsePadding = false;
+      }
+      ]]>
     </fx:Script>
 </view:View_Intro_Base>

@@ -16,28 +16,23 @@
     You should have received a copy of the GNU General Public License
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.controller.audio
-{
-import com.brightworks.constant.Constant_Misc;
+package com.langcollab.languagementor.controller.audio {
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_Translate extends SequenceStrategy_Chunk implements ISequenceStrategy
-    {
-        public function SequenceStrategy_Translate():void
-        {
-            orderSpecList = new ArrayCollection();
-            orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL);
-            orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
-            orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
-        }
+public class SequenceStrategy_Translate extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_Translate():void {
+      orderSpecList = new ArrayCollection();
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
+   }
 
-        public function clone():ISequenceStrategy
-        {
-            var instance:SequenceStrategy_Translate = new SequenceStrategy_Translate();
-            instance.orderSpecList = this.orderSpecList;
-            return instance;
-        }
-    }
+   public function clone():ISequenceStrategy {
+      var instance:SequenceStrategy_Translate = new SequenceStrategy_Translate();
+      instance.orderSpecList = this.orderSpecList;
+      return instance;
+   }
+}
 }
