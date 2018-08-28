@@ -83,6 +83,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
         private var _mostRecentUserActionTime:Number;
         private var _mostRecentUserInitiatedChunkNavigationTime:Number;
+        private var _mostRecentUserInitiatedIKnowThisTime:Number;
         private var _timer_ShowHideMicrophoneImage:Timer;
         private var _watcher_CurrentChunkIndex:ChangeWatcher;
         private var _watcher_foo:ChangeWatcher;
@@ -240,6 +241,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         //
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        private function currentlyInIKnowThisWaitInterval():Boolean {
+            if (_mostRecentUserInitiatedIKnowThisTime == 0)
+                return false;
+            return ((Utils_DateTime.getCurrentMS_BasedOnDate() - _mostRecentUserInitiatedIKnowThisTime) <= Constant_Misc.I_KNOW_THIS_REQUIRED_WAIT_INTERVAL)
+        }
+
         private function currentlyInUserActionRequiredWaitInterval():Boolean {
             if (_mostRecentUserActionTime == 0)
                 return false;
@@ -314,6 +321,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         }
 
         private function onDo_IKnowThis():void {
+            if (currentlyInIKnowThisWaitInterval())
+                return;
             if (currentlyInUserActionRequiredWaitInterval())
                 return;
             _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
@@ -338,6 +347,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 audioPlayer.stop();
                 Resources_Audio.CLICK.play();
                 _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
+                _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
                 _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
                 callLater(onDo_IKnowThis_DispatchCommand);
             }
