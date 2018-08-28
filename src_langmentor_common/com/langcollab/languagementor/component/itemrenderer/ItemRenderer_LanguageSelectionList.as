@@ -1,22 +1,18 @@
-package com.langcollab.languagementor.component.itemrenderer
-{
-    import com.brightworks.component.itemrenderer.BwLabelItemRenderer;
+package com.langcollab.languagementor.component.itemrenderer {
+import com.brightworks.component.itemrenderer.BwLabelItemRenderer;
 
-    import flash.system.Capabilities;
+import flash.system.Capabilities;
 
-    public class ItemRenderer_LanguageSelectionList extends BwLabelItemRenderer
-    {
-        public function ItemRenderer_LanguageSelectionList()
-        {
-            super();
-        }
+public class ItemRenderer_LanguageSelectionList extends BwLabelItemRenderer {
+   public function ItemRenderer_LanguageSelectionList() {
+      super();
+   }
 
-        override protected function measure():void
-        {
-            super.measure();
-            measuredHeight = measuredMinHeight = Math.round(Capabilities.screenDPI * .4);
-        }
+   override protected function measure():void {
+      super.measure();
+      measuredHeight = measuredMinHeight = Math.round(Capabilities.screenDPI * .4);
+   }
 
 
-    }
+}
 }

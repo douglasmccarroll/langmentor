@@ -9,7 +9,7 @@ import flash.utils.Timer;
 
 import spark.components.ToggleButton;
 
-public class Button_Toggle_Standard extends ToggleButton{
+public class Button_Toggle_Standard extends ToggleButton {
 
    public var color:uint;
 
@@ -31,8 +31,7 @@ public class Button_Toggle_Standard extends ToggleButton{
       addEventListener(MouseEvent.CLICK, onClick);
    }
 
-   public function dispose():void
-   {
+   public function dispose():void {
       if (_isDisposed)
          return;
       _isDisposed = true;

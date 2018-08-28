@@ -18,20 +18,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-
-
 /*
 This is a 'marker' subclass of Button which allows us to specify styles in CSS.
 */
-package com.langcollab.languagementor.component.button
-{
-    import spark.components.Button;
+package com.langcollab.languagementor.component.button {
+import spark.components.Button;
 
-    public class Button_ActionBar_Home extends Button
-    {
-        public function Button_ActionBar_Home()
-        {
-            super();
-        }
-    }
+public class Button_ActionBar_Home extends Button {
+   public function Button_ActionBar_Home() {
+      super();
+   }
+}
 }

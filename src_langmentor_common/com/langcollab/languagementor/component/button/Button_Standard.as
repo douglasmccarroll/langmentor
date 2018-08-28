@@ -9,7 +9,7 @@ import flash.utils.Timer;
 
 import spark.components.Button;
 
-public class Button_Standard extends Button{
+public class Button_Standard extends Button {
 
    public var clickSoundEnabled:Boolean = true;
    public var color:uint;
@@ -32,8 +32,7 @@ public class Button_Standard extends Button{
       addEventListener(MouseEvent.CLICK, onClick);
    }
 
-   public function dispose():void
-   {
+   public function dispose():void {
       if (_isDisposed)
          return;
       _isDisposed = true;

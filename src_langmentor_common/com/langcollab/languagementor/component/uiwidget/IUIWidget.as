@@ -1,9 +1,7 @@
-package com.langcollab.languagementor.component.uiwidget
-{
-    import mx.core.IVisualElement;
+package com.langcollab.languagementor.component.uiwidget {
+import mx.core.IVisualElement;
 
-    public interface IUIWidget extends IVisualElement
-    {
-        function dispose():void;
-    }
+public interface IUIWidget extends IVisualElement {
+   function dispose():void;
+}
 }
