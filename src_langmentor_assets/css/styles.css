@@ -1,7 +1,6 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace button "com.brightworks.component.button.*";
 @namespace itemrenderer "com.brightworks.component.itemrenderer.*";
-@namespace mobilecomp "com.brightworks.component.mobile.*";
 @namespace mobilecompskin "com.brightworks.component.mobile.skin.*";
 @namespace langmentorbutton "com.langcollab.languagementor.component.button.*";
 @namespace langmentorcomp "com.langcollab.languagementor.component.*";
@@ -58,22 +57,6 @@ langmentorlessonversionlist|ItemRenderer_LessonVersionList {
     background: Embed(source='/assets/backgrounds/item_renderer_background_up.png', scaleGridLeft=10, scaleGridTop=20, scaleGridRight=11, scaleGridBottom=21);
     background-selected: Embed(source='/assets/backgrounds/item_renderer_background_down.png', scaleGridLeft=50, scaleGridTop=20, scaleGridRight=51, scaleGridBottom=21);
     separator: Embed(source='/assets/primitives/item_renderer_separator.png');
-}
-
-mobilecomp|MobileButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton_Bevelled");
-    color: #DDDDFF;
-}
-
-mobilecomp|MobileToggleButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton_Bevelled");
-    fontWeight: bold;
-    color: #DDDDFF;
-}
-
-mobilecomp|MobileToggleButton:upAndSelected,
-mobilecomp|MobileToggleButton:downAndSelected {
-    color: #FFFF55;
 }
 
 langmentoruiwidget|UIWidget_TextArea_NonEditable {
