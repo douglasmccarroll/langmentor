@@ -43,6 +43,7 @@ import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
+import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
@@ -1350,8 +1351,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var c:Command_LoadLearningModeDescriptions = new Command_LoadLearningModeDescriptions(cb);
       c.execute();
       dispatchEvent(new Event("isDataInitializedChange")); // We do this here because this is the point at which data is truly initialized, i.e. we have both DB data and _currentTargetLanguageVO
-      if (Utils_System.isMobilePlatform())
-         reportAppStartupToAnalytics();
+      reportAppStartupToAnalytics();
    }
 
    private function loadLanguageResourceXML():void {
@@ -1410,12 +1410,12 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    private function reportAppStartupToAnalytics():void {
-      var extraParams:Object = {};
-      extraParams.airVersion = "v" + String(Utils_AIR.appVersionNumber);
-      extraParams.mentorType = Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE;
-      extraParams.nativeLanguageIso639_3Code = getNativeLanguageIso639_3Code();
-      extraParams.targetLanguageIso639_3Code = getTargetLanguageIso639_3Code();
-      Utils_NativeExtensions.googleAnalyticsTrackAppStartup(Constant_AppConfiguration.APP_NAME, extraParams);
+      var data:String = "";
+      data += "appName=" + Constant_AppConfiguration.APP_NAME + ":";
+      data += "appVersion=" + String(Utils_AIR.appVersionNumber) + ":";
+      data += "mentorType=" + Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE + ":";
+      data += "languages=" + getNativeLanguageIso639_3Code() + ">" + getTargetLanguageIso639_3Code();
+      Utils_GoogleAnalytics.trackAppStartup(data);
    }
 
    private function setInitialLearningMode():void {

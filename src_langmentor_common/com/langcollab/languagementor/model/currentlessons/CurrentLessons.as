@@ -43,6 +43,7 @@ import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_Dispose;
+import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
@@ -693,8 +694,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
             // We want to move to the next lesson, if there is one. Otherwise
             // we'd like to restart the current lesson.
             iterateLessonVersion(1, isUserInitiated);
-            if (Utils_System.isMobilePlatform())
-               reportLessonEnteredToAnalytics();
+            reportLessonEnteredToAnalytics();
             var calledIterateLessonVersion:Boolean = true;
             Log.debug("CurrentLessons.iterateChunk(): no unsuppressed chunk after curr chunk; iterated lesson; new lesson ID: " + currentLessonVO.publishedLessonVersionId);
          } else {
@@ -728,6 +728,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          var newCurrentLessonIndex:int = getIndexForNextOrPreviousSelectedLessonVersionWithUnsuppressedChunks(direction);
          var newCurrentChunkIndex:int = getIndexForEarliestUnsuppressedChunkInLessonWithIndexOf(newCurrentLessonIndex);
          setCurrentLessonAndChunkIndexes(newCurrentLessonIndex, newCurrentChunkIndex);
+         reportLessonEnteredToAnalytics();
       } else {
          setCurrentLessonAndChunkIndexes(currentLessonIndex, getIndexForEarliestUnsuppressedChunkInCurrentLesson());
       }
@@ -884,8 +885,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          AudioPlayer.getInstance().stop();
          pauseCurrentLessonVersionIfPlaying();
       } else {
-         if (Utils_System.isMobilePlatform())
-            reportLessonEnteredToAnalytics();
          playCurrentLessonVersionAndCurrentChunk();
       }
    }
@@ -1072,7 +1071,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       var lessonId:String = currentLessonVO.publishedLessonVersionId;
       var lessonVersion:String = currentLessonVO.publishedLessonVersionVersion;
       var providerId:String = currentLessonVO.contentProviderId;
-      Utils_NativeExtensions.googleAnalyticsTrackLessonEntered(lessonName, lessonId, lessonVersion, providerId);
+      Utils_GoogleAnalytics.trackLessonEntered(lessonName, lessonId, lessonVersion, providerId);
    }
 
    private function sortArrayCollectionOfSortableLessonVersionInfoInstances(ac:ArrayCollection):void {

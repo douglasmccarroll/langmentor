@@ -48,22 +48,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__CLOSE:String = "Close App";
       private static const _BUTTON_LABEL__SEND_INFO:String = "Send Info";
       private static const _HEADING__FATAL_ERROR:String = "We're sorry - Language Mentor has encountered a problem";
-      private static const _HEADING__THANKS_FOR_HELPING:String = "Thanks for helping us improve Language Mentor!";
+      private static const _HEADING__THANKS_FOR_YOUR_FEEDBACK:String = "Thanks for your feedback!";
       private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. " + _MESSAGE__OPTIONAL + " Thanks!";
       private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "Please press " + _BUTTON_LABEL__SEND_INFO + " to send us diagnostic information. " + _MESSAGE__OPTIONAL;
       private static const _MESSAGE__ONCLICK__CLOSING_APP:String = "Closing...";
       private static const _MESSAGE__ONCLICK__SENDING_REPORT:String = "Sending Diagnostic Information";
-      private static const _MESSAGE__LOG_RESULT__COMPLETE:String = "Diagnostic information sent. Thanks!";
-      private static const _MESSAGE__LOG_RESULT__FAILURE:String = "We're sorry, Language Mentor is unable to send diagnostic information. Please ensure that your device is connected to the Internet and try again. If you continue to encounter this problem " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US;
-      private static const _MESSAGE__OPTIONAL:String = "Optional: Give us some details on the problem and what you were doing when it occurred.";
+      private static const _MESSAGE__LOG_RESULT__COMPLETE:String = "Your feedback has been sent.";
+      private static const _MESSAGE__LOG_RESULT__FAILURE:String = "We're sorry, Language Mentor is unable to send your feedback. Please ensure that your device is connected to the Internet and try again. If you continue to encounter this problem " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US;
+      private static const _MESSAGE__OPTIONAL:String = "Optional: Give us some details on the problem and what you were doing when it occurred. If you'd like a response, please include your name and email address.";
 
       private var _headingWidget:UIWidget_Viewlet__Heading;
       private var _isDisposed:Boolean = false;
       private var _isLogAttemptDone:Boolean;
       private var _messageTextWidget:UIWidget_Viewlet__Text;
-      private var _timer:Timer;
       private var _userCommentTextArea:TextArea;
-      private var _viewMenuItem_ViewLogInfo:ViewMenuItem;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -136,7 +134,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          return ((contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) && (Utils_System.platformName != Constant_PlatformName.IOS));
       }
 
-      private function logErrorCallback(event:Event = null):void {
+      private function logErrorCallback(success:Boolean):void {
          primaryBottomButton.enabled = true;
          primaryBottomButton.label = BUTTON_LABEL__OK;
          _isLogAttemptDone = true;
@@ -147,10 +145,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             NativeApplication.nativeApplication.exit();
          }
          else {
-            if (event is ResultEvent) {
+            if (success) {
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__COMPLETE;
             }
-            else if (event is FaultEvent) {
+            else {
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__FAILURE
             }
          }
@@ -165,7 +163,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _headingWidget.text =
                (contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) ?
                      _HEADING__FATAL_ERROR :
-                     _HEADING__THANKS_FOR_HELPING;
+                     _HEADING__THANKS_FOR_YOUR_FEEDBACK;
          viewletGroup.addElement(_headingWidget);
          viewletGroup.addElement(new Spacer());
          _messageTextWidget = new UIWidget_Viewlet__Text();

@@ -19,6 +19,7 @@
 package com.langcollab.languagementor.controller {
 import com.brightworks.base.Callbacks;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;
@@ -86,8 +87,7 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
             var c:Command_AddOrRemoveSelectedLessonVersion =
                   new Command_AddOrRemoveSelectedLessonVersion(_oldLessonVersion);
             c.execute();
-            if (Utils_System.isMobilePlatform())
-               reportLessonLearnedToAnalytics();
+            reportLessonLearnedToAnalytics();
          }
          resumeAudioIfAppropriate();
          result(_preCommandSelectedLessonCount);
@@ -98,8 +98,10 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
 
    private function reportLessonLearnedToAnalytics():void {
       var lessonName:String = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_oldLessonVersion);
+      var lessonId:String = _oldLessonVersion.publishedLessonVersionId;
       var lessonVersion:String = _oldLessonVersion.publishedLessonVersionVersion;
-      Utils_NativeExtensions.googleAnalyticsTrackLessonLearned(lessonName, lessonVersion);
+      var providerId:String = _oldLessonVersion.contentProviderId;
+      Utils_GoogleAnalytics.trackLessonEntered(lessonName, lessonId, lessonVersion, providerId);
    }
 
    private function resumeAudioIfAppropriate():void {

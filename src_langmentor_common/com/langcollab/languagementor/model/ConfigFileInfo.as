@@ -6,6 +6,7 @@ import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.ILoggingConfigProvider;
 import com.brightworks.util.AppActiveElapsedTimeTimer;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DataConversionComparison;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_String;
@@ -178,7 +179,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function isLogToServerEnabled(level:uint):Boolean {
-      if (!_index_LogLevel_to_IsLogToServerEnabled.hasOwnProperty("level")) {
+      if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_IsLogToServerEnabled, level)) {
          // We don't log an error here because this method is used by our logging, and we'd create an infinite loop
          return false;
       }
