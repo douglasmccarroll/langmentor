@@ -94,11 +94,6 @@ public class HomeScreenRealEstateManager {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function populateScreenAreaGroup_Bottom(group:Group, clickFunction:Function):void {
-
-
-      //var bttn:Button_Standard = new Button_Standard(_FOREGROUND_BUTTON_COLOR);
-
-
       var bttn:Button_Standard = new Button_Standard();
       bttn.label = "More";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
