@@ -283,6 +283,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (lvtlvo != null);
    }
 
+   public function doesTargetLanguageHaveRecommendedLibraries(iso639_3Code:String):Boolean {
+      return (configFileInfo.list_TargetLanguagesWithRecommendedLibraries.indexOf(iso639_3Code) != -1);
+   }
+
    public function getChunkCountForLessonVersionVO(vo:LessonVersionVO):int {
       var queryVO:ChunkVO = new ChunkVO();
       queryVO.contentProviderId = vo.contentProviderId;
@@ -384,6 +388,12 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       // return getLanguageNameTranslation(_currentNativeLanguageResourceXML, _currentNativeLanguageVO.iso639_3Code);
    }
 
+   public function getCurrentNativeLanguageISO639_3Code():String {
+      if (!_currentNativeLanguageVO)
+            return null;
+      return _currentNativeLanguageVO.iso639_3Code;
+   }
+
    public function getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage():String {
       return getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(_currentTargetLanguageVO.id, _currentNativeLanguageVO.id);
       /// Previously, we got this from resource XML - should we return to something like this?
@@ -463,6 +473,13 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var result:Array = Utils_ArrayVectorEtc.createArrayContainingValuesFromSpecifiedPropForPassedArrayItems(report.resultData, "id", true);
       report.dispose();
       return result;
+   }
+
+   public function getLanguageIso639_3CodeFromId(id:int):String {
+      var vo:LanguageVO = getLanguageVOFromID(id);
+      if (!vo)
+            return null;
+      return vo.iso639_3Code;
    }
 
    public function getLanguageVOFromID(id:int):LanguageVO {

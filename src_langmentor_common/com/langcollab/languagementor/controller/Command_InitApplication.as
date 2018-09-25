@@ -59,9 +59,10 @@ public class Command_InitApplication extends Command_Base__LangMentor {
       Log.info("Command_InitApplication.execute()");
       ToolTip.maxWidth = 150;
       // Next lines are for cases where we're init'ing after data wipe
+      // Update: I'm not sure that the above comment is accurate, i.e. I think that these lines are for both a) a first-time use scenario, and b) an after-data-wipe scenario. But I'm not sure, and am not going to take time to research this thoroughly right now.
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
       if (!appStatePersistenceManager.retrieveIsAutoDownloadLessonsSaved())
-         model.autoDownloadLessons = false;
+         model.autoDownloadLessons = true;
       if (!appStatePersistenceManager.retrieveIsUseRecommendedLibrariesSaved())
          model.useRecommendedLibraries = false;
       if (!Utils_System.isRunningOnDesktop()) {

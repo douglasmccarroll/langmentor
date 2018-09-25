@@ -27,8 +27,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
       <![CDATA[
+      import com.brightworks.component.checkbox.NormalCheckBox;
       import com.brightworks.component.list.NormalList;
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LanguageSelectionList;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
@@ -41,9 +43,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import spark.components.BorderContainer;
       import spark.components.List;
 
-      private var _dataProvider:ArrayCollection = new ArrayCollection();
+      private var _displayOnlyLanguagesWithRecommendedLibrariesCheckbox:NormalCheckBox;
       private var _isDisposed:Boolean = false;
-      private var _list:List;
+      private var _languageList:List;
+      private var _languageListDataProvider:ArrayCollection = new ArrayCollection();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -56,7 +59,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (_isDisposed)
             return;
          _isDisposed = true;
-         _list.removeEventListener(Event.CHANGE, onListChange);
+         _languageList.removeEventListener(Event.CHANGE, onListChange);
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -67,18 +70,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override protected function onNextButtonClick(event:MouseEvent):void {
          Log.info("View_Intro_SelectLanguage.onContinueButtonClick()");
-         if (!_list.selectedItem) {
+         if (!_languageList.selectedItem) {
             Log.warn("View_Intro_SelectLanguage.onContinueButtonClick(): no selectedItem");
             return;
          }
-         model.initTargetLanguage(_list.selectedItem["value"], true);
+         model.initTargetLanguage(_languageList.selectedItem["value"], true);
          super.onNextButtonClick(event);
       }
 
       override protected function onViewActivate():void {
          super.onViewActivate();
          nextButton.enabled = false;
-         setupDataProvider();
+         populateLanguageListDataProvider();
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,37 +95,57 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var borderContainer:BorderContainer;
          textWidget = new UIWidget_Viewlet__Heading();
          textWidget.text = "What language would you like to learn?";
+         _displayOnlyLanguagesWithRecommendedLibrariesCheckbox = new NormalCheckBox();
+         _displayOnlyLanguagesWithRecommendedLibrariesCheckbox.label = "Display Only Languages\nwith Recommended Libraries";
+         _displayOnlyLanguagesWithRecommendedLibrariesCheckbox.selected = true;
+         _displayOnlyLanguagesWithRecommendedLibrariesCheckbox.addEventListener(Event.CHANGE, onDisplayOnlyLanguagesWithRecommendedLibrariesCheckboxChange)
          viewletGroup.addElement(textWidget);
-         viewletGroup.addElement(new Spacer());
+         var spacer:Spacer;
+         spacer = new Spacer();
+         spacer.height = Utils_Text.getStandardFontSize();
+         viewletGroup.addElement(spacer);
+         viewletGroup.addElement(_displayOnlyLanguagesWithRecommendedLibrariesCheckbox);
+         spacer = new Spacer();
+         spacer.height = Utils_Text.getStandardFontSize();
+         viewletGroup.addElement(spacer);
          borderContainer = new BorderContainer();
          borderContainer.percentHeight = 100;
          borderContainer.percentWidth = 100;
-         _list = new NormalList();
-         _list.percentHeight = 100;
-         _list.percentWidth = 100;
-         _list.dataProvider = _dataProvider;
-         _list.addEventListener(Event.CHANGE, onListChange);
-         _list.itemRenderer = new ClassFactory(ItemRenderer_LanguageSelectionList);
+         _languageList = new NormalList();
+         _languageList.percentHeight = 100;
+         _languageList.percentWidth = 100;
+         _languageList.dataProvider = _languageListDataProvider;
+         _languageList.addEventListener(Event.CHANGE, onListChange);
+         _languageList.itemRenderer = new ClassFactory(ItemRenderer_LanguageSelectionList);
 
-         borderContainer.addElement(_list);
+         borderContainer.addElement(_languageList);
          viewletGroup.addElement(borderContainer);
       }
 
-      private function onListChange(event:Event):void {
-         nextButton.enabled = (_list.selectedItem);
+      private function onDisplayOnlyLanguagesWithRecommendedLibrariesCheckboxChange(e:Event):void {
+         populateLanguageListDataProvider();
       }
 
-      private function setupDataProvider():void {
-         _dataProvider.removeAll();
+      private function onListChange(e:Event):void {
+         nextButton.enabled = (_languageList.selectedItem);
+      }
+
+      private function populateLanguageListDataProvider():void {
+         _languageListDataProvider.removeAll();
          var sort:Sort = new Sort();
          sort.fields = [new SortField("label")];
-         _dataProvider.sort = sort;
-         _dataProvider.refresh();
+         _languageListDataProvider.sort = sort;
+         _languageListDataProvider.refresh();
          var languageIdList:Array = model.getLanguageIdList();
          for each (var id:int in languageIdList) {
+            if (_displayOnlyLanguagesWithRecommendedLibrariesCheckbox.selected) {
+               var iso639_3Code:String = model.getLanguageIso639_3CodeFromId(id);
+               if (!model.doesTargetLanguageHaveRecommendedLibraries(iso639_3Code))
+                     continue;
+            }
             var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(id);
             var item:Object = {label: displayName, value: id};
-            _dataProvider.addItem(item);
+            _languageListDataProvider.addItem(item);
          }
       }
       ]]>

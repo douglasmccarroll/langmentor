@@ -197,9 +197,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-      /*if ((appStatePersistenceManager.retrieveIsMostRecentAppVersionWhereUserAgreedToLegalNoticeSaved()) &&
-       (appStatePersistenceManager.retrieveMostRecentAppVersionWhereUserAgreedToLegalNotice() >= Constant_AppConfiguration.APP_VERSION__MINIMUM__USER_AGREED_TO_LEGAL_NOTICE) &&
-       (appStatePersistenceManager.retrieveIsTargetLanguageIdSaved()))*/
       if ((_appStatePersistenceManager.retrieveAppInstallDate()) &&
             (_appStatePersistenceManager.retrieveIsTargetLanguageIdSaved())) {
          _model.initTargetLanguage(_appStatePersistenceManager.retrieveTargetLanguageId());

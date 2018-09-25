@@ -47,17 +47,13 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
          } else {
             navigator.pushView(View_Intro_OpenPlatform);
          }
-      } else if (this is View_Intro_OpenPlatform)
-         navigator.pushView(View_Intro_SingleDualLanguages);
-      else if (this is View_Intro_SingleDualLanguages)
-         navigator.pushView(View_Intro_PrivacyPolicy);
-      //else if (this is View_Intro_Overview) /// Bypassing - delete?
-      //navigator.pushView(View_Intro_PrivacyPolicy);
-      else if (this is View_Intro_PrivacyPolicy)
-         navigator.pushView(View_Intro_Safety);
-      //else if (this is View_Intro_Safety)
-      //navigator.pushView(View_Intro_Agreement);
-      else if (this is View_Intro_Safety) {
+      }
+      // No longer used:
+            // View_Intro_SingleDualLanguages
+            // View_Intro_PrivacyPolicy
+            // View_Intro_Safety
+            // View_Intro_Agreement
+      else if (this is View_Intro_OpenPlatform) {
          if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
             navigator.pushView(View_Intro_SelectLanguage);
          } else {
@@ -82,12 +78,10 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
          View_Intro_Base.isUserCompletedAddLibraryProcess = true;
          navigator.pushView(View_Intro_AddLibraries_Decide);
       } else if (this is View_Intro_LessonLevels)
-         navigator.pushView(View_Intro_AutoDownloads);
-      else if (this is View_Intro_AutoDownloads) {
-         saveSettings();
-         navigator.pushView(View_Intro_LibraryPreferencesSaved);
-      } else if (this is View_Intro_LibraryPreferencesSaved)
          navigator.pushView(View_Intro_SetupComplete);
+      // No longer used:
+            // View_Intro_AutoDownloads
+            // View_Intro_LibraryPreferencesSaved
       else if (this is View_Intro_SetupComplete)
          doIntroDone();
       else {
@@ -111,7 +105,6 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function bypassIntroScreens():void {
-      model.autoDownloadLessons = true;
       model.useRecommendedLibraries = true;
       model.initTargetLanguage(1, true);
       var selectedLessonDownloadLevels_PrimaryLevels:Array = [];

@@ -95,7 +95,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onViewActivate():void {
          _listDataProvider = new ArrayCollection();
-         _listDataProvider.addItem(_LIST_OPTION__AUTOMATIC_DOWNLOADS);
+         //_listDataProvider.addItem(_LIST_OPTION__AUTOMATIC_DOWNLOADS);
          _listDataProvider.addItem(_LIST_OPTION__LESSON_DOWNLOADS_INFO);
          _listDataProvider.addItem(_LIST_OPTION__LESSON_LEVELS);
          _listDataProvider.addItem(_LIST_OPTION__START_LESSON_DOWNLOADS);

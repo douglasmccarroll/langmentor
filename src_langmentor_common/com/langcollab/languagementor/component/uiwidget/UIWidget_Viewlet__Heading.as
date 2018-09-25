@@ -5,7 +5,7 @@ import mx.core.ScrollPolicy;
 import mx.events.FlexEvent;
 
 public class UIWidget_Viewlet__Heading extends UIWidget_TextArea_NonEditable implements IUIWidget_Text {
-   private static const _HEADING_MULTIPLIER:Number = 1.8;
+   private static const _HEADING_MULTIPLIER:Number = 2;
 
    private var _isDisposed:Boolean;
 

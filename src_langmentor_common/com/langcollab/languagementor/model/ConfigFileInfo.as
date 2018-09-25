@@ -53,20 +53,15 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_NODE:String = "problemDescription_TypeError_MostRecentVersionNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODE:String = "problemDescription_TypeError_MostRecentVersionRequiredDataSchemaVersionNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__REQUIRED_VERSION_LIBRARY_ACCESS_NODE:String = "problemDescription_TypeError_RequiredVersion_LibraryAccessNode";
-   public static const STATUS__DATA_LOAD_COMPLETE:String = "status_DataLoadComplete";
-   public static const STATUS__DOWNLOADING_MENTOR_TYPE_FILE:String = "status_DownloadingMentorTypeFile";
-   public static const STATUS__DOWNLOADING_ROOT_CONFIG_FILE:String = "status_DownloadingRootConfigFile";
-   public static const STATUS__PARSING_MENTOR_TYPE_FILE:String = "status_ParsingMentorTypeFile";
-   public static const STATUS__PARSING_ROOT_CONFIG_FILE:String = "status_ParsingRootConfigFile";
 
    private static const _TIMER_TIMEOUT_MS:int = 30000;
+
+   public var list_TargetLanguagesWithRecommendedLibraries:Array;
 
    private var _appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    private var _callbackList:Array = [];
    private var _downloadFailureCount:uint;
    private var _fileXML_LanguageMentorRootConfig:XML;
-   private var _fileXML_LanguageSpecificInfo_Dual:XML;
-   private var _fileXML_LanguageSpecificInfo_Single:XML;
    private var _fileXML_MentorType:XML;
    private var _fileDownloader_MentorNewsUpdate:FileDownloader;
    private var _fileDownloader_MentorNewsUpdateInfo:FileDownloader;
@@ -412,14 +407,10 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       Log.debug("ConfigFileInfo.onRootConfigFileDownloadComplete()");
       _model.downloadBandwidthRecorder.reportFileDownloader(_fileDownloader_RootConfigFile);
       var fileData:ByteArray = FileDownloader(event.target).fileData;
-
-
-      var s:String = String(fileData);
-
-
       _fileXML_LanguageMentorRootConfig = new XML(String(fileData));
       /// Use a validateAndPopulateRootConfigFileXML() method
       _mainConfigFolderURL = _fileXML_LanguageMentorRootConfig.mainConfigFolderURL[0].toString();
+      populateTargetLanguagesWithRecommendedLibrariesList(_fileXML_LanguageMentorRootConfig);
       _fileDownloader_MentorTypeFile = new FileDownloader();
       _fileDownloader_MentorTypeFile.downloadFolderURL = _model.getURL_MainConfigFolder();
       _fileDownloader_MentorTypeFile.downloadFileName = createMentorTypeFileFileName();
@@ -451,6 +442,19 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       Log.debug("ConfigFileInfo.onTimeoutTimerComplete()");
       techReport.isProcessTimedOut = true;
       reportFault();
+   }
+
+   private function populateTargetLanguagesWithRecommendedLibrariesList(xml:XML):void {
+      list_TargetLanguagesWithRecommendedLibraries = [];
+      var nativeLanguagesNode:XML = xml.languagePairsWithRecommendedLibrariesInfo[0].nativeLanguages[0];
+      var nativeLanguageNode:XML = nativeLanguagesNode[_model.getCurrentNativeLanguageISO639_3Code()][0];
+      var targetLanguagesNode:XML = nativeLanguageNode.targetLanguages[0];
+      for (var i:int = 0; i < targetLanguagesNode.length(); i++) {
+         var targetLanguageNode:XML = targetLanguagesNode.children()[i];
+         var iso639_3Code:String = targetLanguageNode.name();
+         list_TargetLanguagesWithRecommendedLibraries.push(iso639_3Code);
+      }
+
    }
 
    private function refreshMentorTypeDataFromXML():void {
