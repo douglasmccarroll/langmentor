@@ -1,5 +1,5 @@
 /*
- Copyright 2008, 2009, 2010, 2011, 2012 Brightworks, Inc.
+ Copyright 2018 Brightworks, Inc.
 
  This file is part of Language Mentor.
 
