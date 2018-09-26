@@ -1,7 +1,6 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace button "com.brightworks.component.button.*";
 @namespace itemrenderer "com.brightworks.component.itemrenderer.*";
-@namespace mobilecomp "com.brightworks.component.mobile.*";
 @namespace mobilecompskin "com.brightworks.component.mobile.skin.*";
 @namespace langmentorbutton "com.langcollab.languagementor.component.button.*";
 @namespace langmentorcomp "com.langcollab.languagementor.component.*";
@@ -31,23 +30,15 @@
 }
 
 langmentorview|App_LanguageMentor_Base {
-    backgroundColor: #000000;  /* In iOS 7 and higher, controls color of status bar at top */
+    backgroundColor: #000000; /* In iOS 7 and higher, controls color of status bar at top */
 }
+
 langmentorbutton|Button_ActionBar_Home {
     icon: Embed(source='/assets/icons/home_icon.png');
 }
 
 langmentorbutton|Button_ActionBar_LeftArrow {
     icon: Embed(source='/assets/icons/arrow_left_icon.png');
-}
-
-langmentorbutton|Button_PlayPause {
-    colorFill: #99CCCC;
-}
-
-langmentorbutton|Button_PlayPause:upAndSelected,
-langmentorbutton|Button_PlayPause:downAndSelected {
-    color: #DDDDFF;
 }
 
 langmentorlearningmodelist|ItemRenderer_LearningModeList {
@@ -68,26 +59,6 @@ langmentorlessonversionlist|ItemRenderer_LessonVersionList {
     separator: Embed(source='/assets/primitives/item_renderer_separator.png');
 }
 
-mobilecomp|MobileButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton");
-    color: #DDDDFF;
-}
-
-mobilecompskin|MobileSkin_MobileButton {
-    textAlign: center;
-}
-
-mobilecomp|MobileToggleButton {
-    skinClass: ClassReference("com.brightworks.component.mobile.skin.MobileSkin_MobileButton");
-    fontWeight: bold;
-    color: #DDDDFF;
-}
-
-mobilecomp|MobileToggleButton:upAndSelected,
-mobilecomp|MobileToggleButton:downAndSelected {
-    color: #FFFF55;
-}
-
 langmentoruiwidget|UIWidget_TextArea_NonEditable {
     skinClass: ClassReference("com.langcollab.languagementor.component.skin.UIWidget_TextArea_NonEditable_Skin");
     paddingBottom: 0;
@@ -97,11 +68,11 @@ langmentoruiwidget|UIWidget_TextArea_NonEditable {
 }
 
 langmentorview|View_Home {
-    backgroundColor: #111144;
+    backgroundColor: #FFFFFF; /*#333374;*/
 }
 
 langmentorview|View_PlayLessons {
-    backgroundColor: #000000;
+    backgroundColor: #FFFFFF; /* #000000 */
 }
 
 s|ActionBar #titleDisplay {
@@ -112,10 +83,6 @@ s|ActionBar #titleDisplay {
 s|Button {
     fontWeight: "bold";
     skinClass: ClassReference("spark.skins.mobile.ButtonSkin");
-}
-
-.mobileButton {
-    colorFill: #000000;
 }
 
 .playLessonsScreenButton {
