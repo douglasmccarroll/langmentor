@@ -249,6 +249,12 @@ Process:
 		    MainModel.insertData()
 		  reportComplete()
 
+
+SVN
+***
+DreamHost 'private' - standard password
+GitHub - ditto?
+
 		
 XML Files: Lesson info download process 
 ***************************************
