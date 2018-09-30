@@ -146,7 +146,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_Share.onButtonClick_FacebookInvite()");
          if (!_isFacebookInviteInProgress) {
             _isFacebookInviteInProgress = true;
-            Utils_NativeExtensions.facebookInvite(Constant_AppConfiguration.SHARING__FACEBOOK_INVITE_TEXT, onFacebookInviteResult);
+            // Utils_NativeExtensions.facebookInvite(Constant_AppConfiguration.SHARING__FACEBOOK_INVITE_TEXT, onFacebookInviteResult);
          }
       }
 
@@ -159,7 +159,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_Share.onButtonClick_Tweet()");
          if (!_isTweetInProgress) {
             _isTweetInProgress = true;
-            Utils_NativeExtensions.tweet(Constant_AppConfiguration.SHARING__TWEET, onTweetResult);
+            //Utils_NativeExtensions.tweet(Constant_AppConfiguration.SHARING__TWEET, onTweetResult);
          }
       }
 
@@ -179,7 +179,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(widget);
          viewletGroup.addElement(new Spacer());
          displayButtons(["Rate Language Mentor"], [onButtonClick_OpenAppStoreToRate]);
-         viewletGroup.addElement(new Spacer());
+
+         /*viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
          widget = new UIWidget_Viewlet__Bold_Text();
          if (Utils_NativeExtensions.isFacebookSupported())
@@ -207,7 +208,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());*/
+
          widget = new UIWidget_Viewlet__Bold_Text();
          widget.text = "Thanks!  :)";
          viewletGroup.addElement(widget);
