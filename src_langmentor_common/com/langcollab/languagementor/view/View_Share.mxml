@@ -16,6 +16,21 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+
+
+
+20181003  This class is now deprecated, i.e. no longer used
+
+
+
+
+
+
+
+
 -->
 <view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
                               xmlns:view = "com.langcollab.languagementor.view.*"
@@ -142,25 +157,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             appStatePersistenceManager.persistNaggingDisabled(_naggingOptOutCheckbox.selected);
       }
 
-      private function onButtonClick_FacebookInvite(event:MouseEvent):void {
+      private function onButtonClick_FacebookShare(event:MouseEvent):void {
          Log.info("View_Share.onButtonClick_FacebookInvite()");
          if (!_isFacebookInviteInProgress) {
             _isFacebookInviteInProgress = true;
-            // Utils_NativeExtensions.facebookInvite(Constant_AppConfiguration.SHARING__FACEBOOK_INVITE_TEXT, onFacebookInviteResult);
+            //Utils_NativeExtensions.facebookShare(onFacebookShareResult);
          }
       }
 
       private function onButtonClick_OpenAppStoreToRate(event:MouseEvent):void {
          Log.info("View_Share.onButtonClick_OpenAppStoreToRate()");
          Utils_NativeExtensions.showRatingsPrompt();
-      }
-
-      private function onButtonClick_Tweet(event:MouseEvent):void {
-         Log.info("View_Share.onButtonClick_Tweet()");
-         if (!_isTweetInProgress) {
-            _isTweetInProgress = true;
-            //Utils_NativeExtensions.tweet(Constant_AppConfiguration.SHARING__TWEET, onTweetResult);
-         }
       }
 
       private function onCreationComplete():void {
@@ -180,36 +187,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(new Spacer());
          displayButtons(["Rate Language Mentor"], [onButtonClick_OpenAppStoreToRate]);
 
-         /*viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         widget = new UIWidget_Viewlet__Bold_Text();
-         if (Utils_NativeExtensions.isFacebookSupported())
-            widget.text = "Facebook & Twitter";
-         else
-            widget.text = "Tweet";
-         viewletGroup.addElement(widget);
          viewletGroup.addElement(new Spacer());
          if (Utils_NativeExtensions.isFacebookSupported()) {
-            displayButtons(
-                  [
-                     "Invite Friends",
-                     "Tweet @langmentor"],
-                  [
-                     onButtonClick_FacebookInvite,
-                     onButtonClick_Tweet]);
+            widget = new UIWidget_Viewlet__Bold_Text();
+            widget.text = "Facebook";
+            viewletGroup.addElement(widget);
+            viewletGroup.addElement(new Spacer());
+            displayButtons(["Share on Facebook"], [onButtonClick_FacebookShare]);
+            viewletGroup.addElement(new Spacer());
+            viewletGroup.addElement(new Spacer());
          }
-         else {
-            displayButtons(
-                  [
-                     "Tweet @langmentor"],
-                  [
-                     onButtonClick_Tweet]);
-         }
-         viewletGroup.addElement(new Spacer());
-         viewletGroup.addElement(new Spacer());
-         viewletGroup.addElement(new Spacer());
-         viewletGroup.addElement(new Spacer());*/
-
          widget = new UIWidget_Viewlet__Bold_Text();
          widget.text = "Thanks!  :)";
          viewletGroup.addElement(widget);
@@ -220,13 +208,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          displayNaggingOptOut();
       }
 
-      private function onFacebookInviteResult(success:Boolean):void {
+      private function onFacebookShareResult():void {
          _isFacebookInviteInProgress = false;
       }
 
-      private function onTweetResult():void {
-         _isTweetInProgress = false;
-      }
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

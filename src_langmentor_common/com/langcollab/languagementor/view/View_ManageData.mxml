@@ -32,7 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import mx.collections.ArrayCollection;
 
       //private static const _LIST_OPTION__:String = "";
-      private static const _LIST_OPTION__DELETE_ALL_DATA:String = "Delete ALL Data";
+      private static const _LIST_OPTION__DELETE_ALL_DATA:String = "Delete All Data (!)";
       private static const _LIST_OPTION__DELETE_I_KNOW_THIS_DATA:String = 'Delete "I Know This" Data';
 
       private var _isDisposed:Boolean = false;

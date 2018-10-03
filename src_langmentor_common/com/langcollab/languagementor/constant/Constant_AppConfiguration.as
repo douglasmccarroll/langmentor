@@ -46,11 +46,10 @@ public class Constant_AppConfiguration {
    public static const REQUIRED_SCREEN_RESOLUTION__X:uint = 320;
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;
 
-   //// Code should decide which version of these to use and, of course, these need to be renamed
-   public static const SHARING__FACEBOOK_INVITE_TEXT:String = "Check out Language Mentor - an open platform for Mobile Assisted Language Learning (MALL)";
-   // public static const SHARING__FACEBOOK_INVITE_TEXT:String = "Give the Chinese Language Mentor app a try!";
-   public static const SHARING__TWEET:String = "Language Mentor - @LangMentor: An open platform for Mobile Assisted Language Learning (MALL) - http://bit.ly/16D7Wqt";
-   //public static const SHARING__TWEET:String = "I Love @LangMentor's Chinese Language Mentor app!";
+   //// Code should decide which version of these to use
+   public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Check out Language Mentor - a free and open language learning platform";
+   // public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Give the Chinese Language Mentor app a try!";
+   public static const SHARING__FACEBOOK_SHARE_URL:String = "http://languagecollaborative.com";
 
 }
 }

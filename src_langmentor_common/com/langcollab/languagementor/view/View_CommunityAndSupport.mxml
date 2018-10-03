@@ -32,12 +32,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
+      import com.brightworks.util.Utils_NativeExtensions;
 
       import mx.collections.ArrayCollection;
 
       private static const LIST_OPTION__FORUMS:String = "Forums";
+      private static const LIST_OPTION__RATE_LANGMENTOR:String = "Rate Language Mentor";
       private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
-      private static const LIST_OPTION__SHARE:String = "Share";
+      //private static const LIST_OPTION__SHARE:String = "Share";
       private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
 
       [Bindable]
@@ -63,8 +65,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          _listDataProvider = new ArrayCollection();
          _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
+         _listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
          _listDataProvider.addItem({label: LIST_OPTION__SEND_PROBLEM_REPORT, value: LIST_OPTION__SEND_PROBLEM_REPORT});
-         _listDataProvider.addItem({label: LIST_OPTION__SHARE, value: LIST_OPTION__SHARE});
          _listDataProvider.addItem({label: LIST_OPTION__UPGRADE, value: LIST_OPTION__UPGRADE})
       }
 
@@ -79,8 +81,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_SendProblemReport);
                break;
             }
-            case LIST_OPTION__SHARE: {
-               navigator.pushView(View_Share);
+            case LIST_OPTION__RATE_LANGMENTOR: {
+               list.selectedItems = null;
+               list.invalidateProperties();
+               Utils_NativeExtensions.showRatingsPrompt();
                break;
             }
             case LIST_OPTION__UPGRADE: {
@@ -95,6 +99,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onViewActivate():void {
       }
+
+
       ]]>
     </fx:Script>
 

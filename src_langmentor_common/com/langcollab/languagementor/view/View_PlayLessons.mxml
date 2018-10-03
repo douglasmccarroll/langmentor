@@ -901,7 +901,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   width = "29%">
          </s:Group>
          <text:CenteredMobileText id = "textField_ChunkStatus"
-                                  fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.35}"
+                                  fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.35)}"
                                   height = "100%"
                                   width = "42%"/>
          <s:Group id = "group_NextLessonButton"
