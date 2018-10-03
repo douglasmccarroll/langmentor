@@ -147,6 +147,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       </s:VGroup>
       <uiwidget:UIWidget_Viewlet__Text id = "infoDisplayViewlet"
                                        text = "Searching for recommended libraries..."
+                                       fontFamily = "_sans"
                                        height = "100%"/>
    </s:VGroup>
 </view:Viewlet_Base>
