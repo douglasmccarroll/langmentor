@@ -838,19 +838,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 width = "100%">
          <s:Group id = "group_IKnowThisButton"
                   height = "100%"
-                  width = "25%">
+                  width = "28%">
          </s:Group>
          <s:Group id = "group_LoopButton"
                   height = "100%"
-                  width = "25%">
-         </s:Group>
-         <s:Group id = "group_RecordAndTranslateButtons"
-                  height = "100%"
-                  width = "25%">
+                  width = "22%">
          </s:Group>
          <s:Group id = "group_CreditsButton"
                   height = "100%"
-                  width = "25%">
+                  width = "22%">
+         </s:Group>
+         <s:Group id = "group_RecordAndTranslateButtons"
+                  height = "100%"
+                  width = "28%">
          </s:Group>
       </s:HGroup>
       <s:VGroup id = "group_MainTextDisplay"
