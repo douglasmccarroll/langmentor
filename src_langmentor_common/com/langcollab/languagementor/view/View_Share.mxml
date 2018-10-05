@@ -189,7 +189,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         if (Utils_NativeExtensions.isFacebookSupported()) {
+         /*if (Utils_NativeExtensions.isFacebookSupported()) {
             widget = new UIWidget_Viewlet__Bold_Text();
             widget.text = "Facebook";
             viewletGroup.addElement(widget);
@@ -197,7 +197,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             displayButtons(["Share on Facebook"], [onButtonClick_FacebookShare]);
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
-         }
+         }*/
          widget = new UIWidget_Viewlet__Bold_Text();
          widget.text = "Thanks!  :)";
          viewletGroup.addElement(widget);
