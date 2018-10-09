@@ -117,7 +117,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function closeApp(event:Event = null):void {
          if (!Utils_System.isRunningOnDesktop())
             currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-         //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
          NativeApplication.nativeApplication.exit();
       }
 
@@ -141,7 +140,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isInUserClosesAppMode()) {
             if (!Utils_System.isRunningOnDesktop())
                currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-            //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
             NativeApplication.nativeApplication.exit();
          }
          else {

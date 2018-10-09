@@ -1065,10 +1065,14 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
             }
          }
          if (bProblemWithLessonAndOrChunkIndexes) {
-            // Theres a problem with the retrieved data, but we know that we have at least one playable lesson
+            // There's a problem with the retrieved data, but we know that we have at least one playable lesson
             _currentLessons.setCurrentLessonAndChunkIndexesToFirstPlayableLessonAndChunk();
          } else {
-            _currentLessons.setCurrentLessonAndChunkIndexes(newCurrentLessonVersionIndex, newCurrentChunkIndex, true);
+            if (_currentLessons.areNewCurrentLessonAndChunkIndexesAllowed(newCurrentLessonVersionIndex, newCurrentChunkIndex)) {
+               _currentLessons.setCurrentLessonAndChunkIndexes(newCurrentLessonVersionIndex, newCurrentChunkIndex, true);
+            } else {
+               _currentLessons.setCurrentLessonAndChunkIndexesToFirstPlayableLessonAndChunk();
+            }
          }
       } else {
          // No selected lesson versions are playable - app will display explanatory message when user clicks Play Lessons
