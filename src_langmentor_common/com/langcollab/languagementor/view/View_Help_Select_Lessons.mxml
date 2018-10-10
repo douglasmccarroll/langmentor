@@ -96,7 +96,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
          textWidget = new UIWidget_Viewlet__Heading();
-         textWidget.text = "Using the Select Lessons screen";
+         textWidget.text = "How to use the Select Lessons screen";
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Text();

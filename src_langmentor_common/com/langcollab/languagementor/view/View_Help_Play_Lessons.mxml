@@ -105,7 +105,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
          textWidget = new UIWidget_Viewlet__Heading();
-         textWidget.text = "Using the Play Lessons screen";
+         textWidget.text = "How to use the Play Lessons screen";
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
