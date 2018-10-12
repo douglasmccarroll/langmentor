@@ -46,7 +46,7 @@ public class Utils_Database {
          Log.fatal("Utils_Database.createNewDBFileFromTemplate(): DB template file not found at: " + dbTemplateFile.nativePath);
       }
       dbTemplateFile.copyTo(dbFile, true);
-      appStatePersistenceManager.persistDataSchemaAppVersion(Utils_AIR.appVersionNumber);
+      appStatePersistenceManager.persistDataSchemaAppVersion(Utils_AIR.appVersionNumber);                                                          
    }
 
    public static function ensureDBFileExists(sqLiteDatabaseFileURL:String, appStatePersistenceManager:AppStatePersistenceManager):void {

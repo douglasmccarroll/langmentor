@@ -17,6 +17,7 @@ import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
+import com.langcollab.languagementor.vo.LanguageVO;
 
 import flash.events.TimerEvent;
 import flash.utils.ByteArray;
@@ -55,8 +56,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__REQUIRED_VERSION_LIBRARY_ACCESS_NODE:String = "problemDescription_TypeError_RequiredVersion_LibraryAccessNode";
 
    private static const _TIMER_TIMEOUT_MS:int = 30000;
-
-   public var list_TargetLanguagesWithRecommendedLibraries:Array;
 
    private var _appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    private var _callbackList:Array = [];
@@ -410,7 +409,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       _fileXML_LanguageMentorRootConfig = new XML(String(fileData));
       /// Use a validateAndPopulateRootConfigFileXML() method
       _mainConfigFolderURL = _fileXML_LanguageMentorRootConfig.mainConfigFolderURL[0].toString();
-      populateTargetLanguagesWithRecommendedLibrariesList(_fileXML_LanguageMentorRootConfig);
+      updateLanguageVOsWithHasRecommendedLibrariesInfo(_fileXML_LanguageMentorRootConfig);
       _fileDownloader_MentorTypeFile = new FileDownloader();
       _fileDownloader_MentorTypeFile.downloadFolderURL = _model.getURL_MainConfigFolder();
       _fileDownloader_MentorTypeFile.downloadFileName = createMentorTypeFileFileName();
@@ -444,17 +443,19 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       reportFault();
    }
 
-   private function populateTargetLanguagesWithRecommendedLibrariesList(xml:XML):void {
-      list_TargetLanguagesWithRecommendedLibraries = [];
+   private function updateLanguageVOsWithHasRecommendedLibrariesInfo(xml:XML):void {
+      /// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
+      /// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
       var nativeLanguagesNode:XML = xml.languagePairsWithRecommendedLibrariesInfo[0].nativeLanguages[0];
       var nativeLanguageNode:XML = nativeLanguagesNode[_model.getCurrentNativeLanguageISO639_3Code()][0];
       var targetLanguagesNode:XML = nativeLanguageNode.targetLanguages[0];
-      for (var i:int = 0; i < targetLanguagesNode.length(); i++) {
+      for (var i:int = 0; i < targetLanguagesNode.children().length(); i++) {
          var targetLanguageNode:XML = targetLanguagesNode.children()[i];
          var iso639_3Code:String = targetLanguageNode.name();
-         list_TargetLanguagesWithRecommendedLibraries.push(iso639_3Code);
+         var vo:LanguageVO = _model.getLanguageVOFromIso639_3Code(iso639_3Code);
+         vo.hasRecommendedLibraries = true;
+         _model.updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfo", vo, ["hasRecommendedLibraries"]);
       }
-
    }
 
    private function refreshMentorTypeDataFromXML():void {
@@ -676,7 +677,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
                bError = true;
                techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_TO_SERVER_PROBABILITY_NODE);
             }
-            if (XMLList(loggingConfigurationNode.default[0].logURL).length() < 1) {
+            /*if (XMLList(loggingConfigurationNode.default[0].logURL).length() < 1) {
                bError = true;
                techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__NO_LOG_URL_NODE);
             }
@@ -687,7 +688,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
             else if (!Utils_XML.doesNodeEvaluateToURL(loggingConfigurationNode.default[0].logURL[0])) {
                bError = true;
                techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_URL_NODE__URL_MALFORMED);
-            }
+            }*/
          }
          if (XMLList(loggingConfigurationNode.info).length() > 1) {
             bError = true;

@@ -36,7 +36,7 @@ public class Constant_AppConfiguration {
    public static const LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE:String = "eng";
    public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "eng";
 
-   public static const RELEASE_TYPE:String = Constant_ReleaseType.ALPHA;
+   public static const RELEASE_TYPE:String = Constant_ReleaseType.PRODUCTION;
 
 
    // Constants that we don't usually modify for a new release

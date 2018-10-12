@@ -93,8 +93,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget = new UIWidget_Viewlet__Bold_Text();
             textWidget.text = "You can change this option later if you like";
             viewletGroup.addElement(textWidget);
-         }
-         else {
+         } else {
             textWidget = new UIWidget_Viewlet__Heading();
             textWidget.text = "What lesson libraries would you like to use?";
             viewletGroup.addElement(textWidget);

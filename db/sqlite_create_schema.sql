@@ -20,6 +20,7 @@ CREATE TABLE Library (
   libraryFolderURL TEXT
 ) ;
 
+-- We always set hasRecommendedLibraries to 0 - this will be updated on app startup
 CREATE TABLE Language (
   id INTEGER NOT NULL UNIQUE,
   iso639_3Code TEXT NOT NULL UNIQUE,
@@ -35,7 +36,7 @@ CREATE TABLE LanguageDisplayName (
 )  ;
 
 -- Mandarin Chinese
-INSERT INTO Language VALUES ('1','cmn','1');
+INSERT INTO Language VALUES ('1','cmn','0');
 INSERT INTO LanguageDisplayName VALUES ('1','1','3','Mandarin Chinese','Chinese, Mandarin');
 -- Spanish
 INSERT INTO Language VALUES ('2','spa','0');

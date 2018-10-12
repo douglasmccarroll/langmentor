@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LanguageSelectionList;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.vo.LanguageVO;
 
       import mx.collections.ArrayCollection;
       import mx.collections.Sort;
@@ -139,8 +140,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var languageIdList:Array = model.getLanguageIdList();
          for each (var id:int in languageIdList) {
             if (_displayOnlyLanguagesWithRecommendedLibrariesCheckbox.selected) {
-               var iso639_3Code:String = model.getLanguageIso639_3CodeFromId(id);
-               if (!model.doesTargetLanguageHaveRecommendedLibraries(iso639_3Code))
+               var vo:LanguageVO = model.getLanguageVOFromID(id);
+               if (!vo.hasRecommendedLibraries)
                      continue;
             }
             var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(id);
