@@ -154,6 +154,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override public function doGoBack():void {
          Log.info("View_PlayLessons.doGoBack()");
          textField_ChunkText.text = "";
+         /////audioPlayer.stop();
+         /////if (audioController)
+         /////   callLater(currentLessons.stopPlayingCurrentLessonVersionIfPlaying); // Using callLater() improves perceived responsiveness - the app briefly becomes unresponsive in the Home screen, rather than hesitating before going there
          navigator.pushView(View_Home, null, null, transition_SlideView_Up);
       }
 
@@ -679,6 +682,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onViewDeactivate():void {
+         /////   delete this func and addListener
          audioPlayer.stop();
          if (audioController)
             callLater(currentLessons.stopPlayingCurrentLessonVersionIfPlaying); // Using callLater() improve percieved responsiveness - the app briefly becomes unresponsive in the Home screen, rather than hesitating before going there
@@ -789,6 +793,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textField_ChunkText.text = "Tap Here To\nShow/Hide Text";
          }
          textField_ChunkText.fontSize = fontSize;
+         var leading:Number = 2 * Math.round(Utils_Text.getStandardFontSize());
+         textField_ChunkText.setStyle("leading", leading);
       }
 
       private function updateLessonTitleTextBoxText():void {

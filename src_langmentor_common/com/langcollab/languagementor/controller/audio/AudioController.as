@@ -633,7 +633,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          /// use constants for these values
          duration = (index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO] * 2) + 1200;
 
-         //// We could avoid instantiating two out of the next four chunks by combining the 'attempt' and 'repeat' types into one generic
+         // We could avoid instantiating two out of the next four chunks by combining the 'attempt' and 'repeat' types into one generic
          //   type - as long as all have the same duration this would work fine. For now we're keeping all four so that we can set
          //   different durations for attempt and repeat, if we want.
          leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT, duration);
@@ -649,13 +649,13 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT] = leaf;
 
          // We don't do recording if there's no text displayed, as this probably indicates that we don't have native language audio.
-         // This can happen in title chunks, and perhaps in other cases. This is a bit kludgy //// Ideally this would be specified in
+         // This can happen in title chunks, and perhaps in other cases. This is a bit kludgy /// Ideally this would be specified in
          // the XML for the chunk.
          var suppressRecording:Boolean = !_currentLessons.doesChunkHaveDefaultDisplayText(chunkVO);
 
          // On at least some devices, we need to keep recording longer than the desired recording time in
          // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
-         var recordingStopDelayDuration:uint = 1000; //// base this on platform & model? this value works for iOS G4 & G5
+         var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
 
          var durationNotIncludingRecordingStopDelay:int = duration + AudioRecorder.RECORDING_START_DELAY_DURATION;
 

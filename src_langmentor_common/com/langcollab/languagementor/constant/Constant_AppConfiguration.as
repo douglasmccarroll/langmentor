@@ -21,6 +21,7 @@ import com.brightworks.constant.Constant_ReleaseType;
 
 public class Constant_AppConfiguration {
    // Constants that we may modify when configuring a release
+   //// Some of these constants should be in a "project-specific" or "app-specific" constants file
 
    public static const APP_NAME:String = "Language Mentor";
    public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.23;
@@ -46,7 +47,6 @@ public class Constant_AppConfiguration {
    public static const REQUIRED_SCREEN_RESOLUTION__X:uint = 320;
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;
 
-   //// Code should decide which version of these to use
    public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Check out Language Mentor - a free and open language learning platform";
    // public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Give the Chinese Language Mentor app a try!";
    public static const SHARING__FACEBOOK_SHARE_URL:String = "http://languagecollaborative.com";

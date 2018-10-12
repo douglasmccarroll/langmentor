@@ -69,6 +69,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    public function App_LanguageMentor_Base() {
       super();
+      /////NativeApplication.nativeApplication.executeInBackground = true;
       Utils_System.releaseType = Constant_AppConfiguration.RELEASE_TYPE;
       Log.init(Utils_AIR.appName, onFatalLog, null, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
       frameRate = 6;
@@ -110,7 +111,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // exit() doesn't work in iOS
          if (!Utils_System.isRunningOnDesktop())
             _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-         //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
          NativeApplication.nativeApplication.exit();
       } else {
          View_Base(navigator.activeView).doGoBack();
@@ -135,7 +135,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       } else {
          Log.info("App_LanguageMentor_Base.onActivateApp() *************************");
       }
-      //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.MEDIA;
    }
 
    private function onCreationComplete(event:FlexEvent):void {
@@ -152,6 +151,9 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onDeactivateApp(event:Event):void {
+
+      ///// Delete this function and addListener
+
       // This happens when the device sends the app into the background - i.e. when 
       // the phone rings, when a clock alarm goes off, etc...
       if (Utils_System.isRunningOnDesktop()) {
@@ -162,7 +164,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          Log.info("App_LanguageMentor_Base.onDeactivateApp() *************************");
          _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       }
-      //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
    }
 
    private function onExiting(event:Event):void {
@@ -232,8 +233,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          case Keyboard.HOME: {
             if (!Utils_System.isRunningOnDesktop())
                _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-            //// not needed in iOS - useful in Android?   SoundMixer.audioPlaybackMode = AudioPlaybackMode.VOICE;
-            //NativeApplication.nativeApplication.exit();
             break;
          }
          case Keyboard.SEARCH: {
