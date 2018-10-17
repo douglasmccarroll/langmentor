@@ -252,7 +252,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("View_Home.onCreationComplete()");
-         _isCreationCompleteCalled = true;
+        _isCreationCompleteCalled = true;
          doPostInitStuff();
          if (!_isPostInitStuffDone)
             activateBusyIndicator();
@@ -273,7 +273,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onPreinitialize():void {
          Log.debug("View_Home.onPreinitialize()");
-         _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDataInitialized", onModelDataInitialized); //// do we really still need this?
+         _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDataInitialized", onModelDataInitialized);
       }
 
       private function onSelectModeAlertCallback():void {

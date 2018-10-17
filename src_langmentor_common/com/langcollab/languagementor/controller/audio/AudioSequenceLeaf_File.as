@@ -82,8 +82,6 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
    override public function startFromBeginning():void {
       Log.debug(["AudioSequenceLeaf_File.startFromBeginning(): url=" + url, "Calls AudioPlayer.play()"]);
       _audioPlayer.addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      _audioPlayer.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-      _audioPlayer.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onIOError);
       _audioPlayer.play(url, audioVolumeAdjustmentFactor);
       // We don't call super.startFromBeginning() here because all it does is to dispatch the ELEMENT_START_REPORT
       // event, and we want to include the url info when we do this...
@@ -116,16 +114,8 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
    //
    // ****************************************************
 
-   private function onIOError(event:ErrorEvent):void {
-      Log.debug(["AudioSequenceLeaf_File.onIOError(): url=" + url, event]);
-      // Dispatch IOERROR_REPORT - AudioController listens for this
-      dispatchEvent(new Event_AudioProgress(Event_AudioProgress.IOERROR_REPORT, id, levelId, event.text));
-   }
-
    private function removeEventListeners():void {
       _audioPlayer.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      _audioPlayer.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-      _audioPlayer.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onIOError);
    }
 }
 

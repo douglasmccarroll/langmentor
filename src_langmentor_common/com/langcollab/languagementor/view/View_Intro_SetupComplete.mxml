@@ -305,8 +305,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess)
                         displayContent_Downloading_Failure();
                      else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
-                           updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage ||
-                           updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
+                              (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+                               updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)) {
                         displayContent_Downloading_Failure();
                      }
                   }

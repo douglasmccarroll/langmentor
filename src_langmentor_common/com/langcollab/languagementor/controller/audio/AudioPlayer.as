@@ -19,7 +19,10 @@
 package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.singleton.SingletonManager;
+import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
+import com.distriqt.extension.mediaplayer.events.MediaErrorEvent;
 
 import flash.events.ErrorEvent;
 import flash.events.Event;
@@ -37,25 +40,15 @@ import flash.utils.Timer;
 
 [Event(name="complete", type="flash.events.Event")]
 [Event(name="id3", type="flash.events.Event")]
-[Event(name="ioError", type="flash.events.IOErrorEvent")]
 [Event(name="open", type="flash.events.Event")]
 [Event(name="progress", type="flash.events.ProgressEvent")]
-[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 [Event(name="soundComplete", type="flash.events.Event")]
 
 public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
-   private static const _BUFFER_TIME:uint = 500;
-   private static const _SAMPLE_SIZE:uint = 4096;
-
    private static var _instance:AudioPlayer;
 
    private var _isPlaying:Boolean;
-   private var _sound:Sound;
-   private var _soundChannel:SoundChannel;
-   private var _soundChannel_Silent:SoundChannel;
    private var _soundURL:String;
-   private var _soundVolumeAdjustmentFactor:Number;
-   private var _timer:Timer;
 
    // ****************************************************
    //
@@ -80,7 +73,7 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
    }
 
    // A passedSoundVolumeAdjustmentFactor of 1 means that the sound volume will be left as-is
-   public function play(soundUrl:String, passedSoundVolumeAdjustmentFactor:Number):void {
+   public function play(soundUrl:String, volume:Number):void {
       Log.info("AudioPlayer.play(): " + soundUrl);
       if (_isPlaying) {
          if (soundUrl == _soundURL) {
@@ -119,29 +112,21 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
             Log.warn(["AudioPlayer.play(): called while sound is playing", "Old URL: " + _soundURL, "New URL: " + soundUrl]);
          }
       }
-      clear();
       _isPlaying = true;
-      _soundVolumeAdjustmentFactor = passedSoundVolumeAdjustmentFactor;
       _soundURL = soundUrl;
       var file:File = new File(_soundURL);
-      var request:URLRequest = new URLRequest(file.url);
-      var transform:SoundTransform = new SoundTransform(_soundVolumeAdjustmentFactor);
-      _sound = new Sound();
-      _sound.load(request);
-      _soundChannel = _sound.play();
-      _soundChannel.soundTransform = transform;
-      _sound.addEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
-      _sound.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSoundLoadError);
-      _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+      Utils_NativeExtensions.audioPlay(file, volume, audioCallback);
    }
 
    public function stop(url:String = null):void {
-      Log.info("AudioPlayer.stop(): " + _soundURL);
+      Log.info("AudioPlayer.stop(): " + url);
       if ((url) && (_soundURL != "") && (url != _soundURL)) {
          Log.warn("AudioPlayer.stop(): url != _soundURL: url=" + url + " _soundURL=" + _soundURL);
          return;
       }
-      clear();
+      _soundURL = null;
+      _isPlaying = false;
+      Utils_NativeExtensions.audioStop();
    }
 
    // ****************************************************
@@ -149,66 +134,24 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
    //          Private Methods
    //
    // ****************************************************
-
-   private function clear():void {
-      Log.info("AudioPlayer.clear()");
-      _isPlaying = false;
-      if (_sound) {
-         _sound.removeEventListener(IOErrorEvent.IO_ERROR, onSoundLoadError);
-         _sound.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSoundLoadError);
-         _sound = null;
-      }
-      if (_soundChannel) {
-         _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-         _soundChannel.stop();
-         _soundChannel = null;
-      }
-      if (_soundChannel_Silent) {
-         _soundChannel_Silent.stop();
-         _soundChannel_Silent = null;
-      }
-      _soundURL = "";
-      _soundVolumeAdjustmentFactor = 0;
-   }
-
-   private function clearTimer():void {
-      if (_timer) {
-         _timer.stop();
-         _timer.removeEventListener(TimerEvent.TIMER, play_Continued);
-         _timer = null;
+   
+   private function audioCallback(e:Object):void {
+      if (e is AudioPlayerEvent) {
+         switch (AudioPlayerEvent(e).type) {
+            case AudioPlayerEvent.COMPLETE:
+               _soundURL = null;
+               dispatchEvent(new Event(Event.SOUND_COMPLETE));
+               break;
+            default:
+               Log.warn("AudioPlayer.audioCallback() - Event type not supported: " + AudioPlayerEvent(e).type);
+         }
+      } else if (e is MediaErrorEvent) {
+         Log.error("AudioPlayer.audioCallback() - Passed object is MediaErrorEvent - _soundURL: " + _soundURL);
+      } else {
+         Log.error("AudioPlayer.audioCallback() - Passed object is neither AudioPlayerEvent or MediaErrorEvent - _soundURL: " + _soundURL);
       }
    }
 
-   private function createSilentSample():ByteArray {
-      var result:ByteArray = new ByteArray();
-      var desiredLength:uint = 2 * _SAMPLE_SIZE;
-      for (var i:uint = 0; i < desiredLength; i++) {
-         result.writeFloat(0);
-      }
-      return result;
-   }
-
-   private function onSoundComplete(event:Event):void {
-      Log.info("AudioPlayer.onSoundComplete()");
-      clear();
-      dispatchEvent(new Event(Event.SOUND_COMPLETE));
-   }
-
-   private function onSoundLoadError(event:ErrorEvent):void {
-      Log.info("AudioPlayer.onSourceSoundLoadError()");
-      clear();
-      dispatchEvent(event.clone());
-   }
-
-   private function play_Continued(event:TimerEvent):void {
-      clearTimer();
-      // We may have paused while timer is running
-      if (_sound) {
-         var transform:SoundTransform = new SoundTransform(_soundVolumeAdjustmentFactor);
-         _soundChannel = _sound.play(0, 1, transform);
-         _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-      }
-   }
 
 }
 }

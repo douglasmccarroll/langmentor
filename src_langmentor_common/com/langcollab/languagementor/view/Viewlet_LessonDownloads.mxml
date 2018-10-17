@@ -123,8 +123,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
                }
-               else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage ||
-                     updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
+               else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+                        updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
                   explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
                }
                updateInfoCommandReport.dispose();

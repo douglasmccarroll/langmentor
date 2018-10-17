@@ -22,6 +22,7 @@ import com.brightworks.component.mobilealert.MobileDialog;
 import com.brightworks.resource.Resources_Audio;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
+import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
@@ -69,13 +70,12 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    public function App_LanguageMentor_Base() {
       super();
-      /////NativeApplication.nativeApplication.executeInBackground = true;
+      NativeApplication.nativeApplication.executeInBackground = true;
       Utils_System.releaseType = Constant_AppConfiguration.RELEASE_TYPE;
       Log.init(Utils_AIR.appName, onFatalLog, null, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
       frameRate = 6;
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
-      addEventListener(FlexEvent.PREINITIALIZE, onPreinitialize);
       _singletonManager = new LangMentorSingletonManager();
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
       _audioController = AudioController.getInstance();
@@ -161,8 +161,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // focus, but the app continues to execute. So we haven't really deactivated.
          return;
       } else {
-         Log.info("App_LanguageMentor_Base.onDeactivateApp() *************************");
-         _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+         //Log.info("App_LanguageMentor_Base.onDeactivateApp() *************************");
+         //_currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       }
    }
 
@@ -191,6 +191,11 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    private function onInitialize(event:FlexEvent):void {
       if (!Utils_System.isScreenResolutionHighEnough(Constant_AppConfiguration.REQUIRED_SCREEN_RESOLUTION__X, Constant_AppConfiguration.REQUIRED_SCREEN_RESOLUTION__Y, true)) {
          navigator.pushView(View_ScreenResolutionTooLow);
+         return;
+      }
+      if (!Utils_NativeExtensions.isMediaPlayerSupported()) {
+         Log.error("App_LanguageMentor_Base.onPreinitialize(): MediaPlayer ANE isn't supported");
+         navigator.pushView(View_DeviceDoesntSupportLangMentor);
          return;
       }
       NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onActivateApp);
@@ -241,11 +246,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
             break;
          }
       }
-   }
-
-   private function onPreinitialize(event:FlexEvent):void {
-      if (!Utils_System.isScreenResolutionHighEnough(Constant_AppConfiguration.REQUIRED_SCREEN_RESOLUTION__X, Constant_AppConfiguration.REQUIRED_SCREEN_RESOLUTION__Y, true))
-         return;
    }
 
    private function onUncaughtError(event:UncaughtErrorEvent):void {

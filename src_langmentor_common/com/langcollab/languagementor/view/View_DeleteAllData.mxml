@@ -183,7 +183,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   width = "100%"/>
       </s:HGroup>
       <button:NormalButton id = "deleteButton"
-                           label = "Yes, I'm Sure"
+                           label = "Yes, I'm Sure ( ! )"
                            click = "onDeleteButtonClick()"
                            width = "75%"
                            height = "12%"/>
