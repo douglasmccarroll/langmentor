@@ -26,7 +26,6 @@ import flash.utils.Timer;
 public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    private static var _availableInstancePool:Array = [];
 
-   private var _audioRecorder:AudioRecorder = AudioRecorder.getInstance();
    private var _recordingStopDelayDuration:uint;
    private var _suppressRecording:Boolean;
    private var _timer:Timer;
@@ -61,7 +60,6 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
 
    override public function dispose():void {
       stopRecording();
-      _audioRecorder = null;
       super.dispose();
       AudioSequenceLeaf_Recorder.releaseReusable(this);
    }
@@ -75,7 +73,7 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
       Log.info("AudioSequenceLeaf_Recorder.startFromBeginning(): duration:" + duration + "recordingStopDelayDuration:" + _recordingStopDelayDuration);
       super.startFromBeginning();
       if (!_suppressRecording) {
-         _audioRecorder.startRecording();
+         AudioRecorder.getInstance().startRecording();
          _timer = new Timer(duration - _recordingStopDelayDuration, 1);
          _timer.addEventListener(TimerEvent.TIMER, onTimer);
          _timer.start();
@@ -112,8 +110,8 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
 
    private function stopRecording():void {
       stopTimer();
-      if (!_suppressRecording && (_audioRecorder))
-         _audioRecorder.stopRecording(_recordingStopDelayDuration);
+      if (!_suppressRecording && (AudioRecorder.getInstance()))
+         AudioRecorder.getInstance().stopRecording(_recordingStopDelayDuration);
    }
 
    private function stopTimer():void {

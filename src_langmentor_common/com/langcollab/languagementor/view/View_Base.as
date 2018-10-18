@@ -53,7 +53,6 @@ public class View_Base extends View {
 
    protected var appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    protected var audioController:AudioController = AudioController.getInstance();
-   protected var audioPlayer:AudioPlayer = AudioPlayer.getInstance();
    protected var currentLessons:CurrentLessons = CurrentLessons.getInstance();
    protected var isCustomGesturesEnabled:Boolean = false;
    protected var model:MainModel = MainModel.getInstance();

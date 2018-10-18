@@ -39,6 +39,7 @@
 
  */
 package com.langcollab.languagementor.model.currentlessons {
+import com.brightworks.event.Event_Audio;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ArrayVectorEtc;
@@ -73,6 +74,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
    private var _appStatePersistenceManager:AppStatePersistenceManager;
    private var _audioTimer:CurrentLessonsAudioTimer = new CurrentLessonsAudioTimer();
    private var _audioController:AudioController;
+   private var _audioPlayer:AudioPlayer;
    private var _currentLessons:ArrayCollection;
    private var _index_ChunkFileLists_by_LessonVersionVO:Dictionary = new Dictionary();
    private var _index_ChunkListsSortedByLocationInOrder_by_LessonVersionVO:Dictionary = new Dictionary();
@@ -633,6 +635,9 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
       _audioController = AudioController.getInstance();
       _model = MainModel.getInstance();
+      _audioPlayer = AudioPlayer.getInstance();
+      _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STARTED_AUDIO, onUserStartedAudio);
+      _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STOPPED_AUDIO, onUserStoppedAudio);
    }
 
    public function isAllSelectedLessonVersionsDualLanguage():Boolean {
@@ -1053,6 +1058,14 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          return;
       Log.debug("CurrentLessons.onAudioPlayAllowed(): calling AudioController.playCurrentLessonVersionAndCurrentChunk()");
       _audioController.playCurrentLessonVersionAndCurrentChunk();
+   }
+
+   private function onUserStartedAudio(e:Event_Audio):void {
+      playCurrentLessonVersionAndCurrentChunk();
+   }
+
+   private function onUserStoppedAudio(e:Event_Audio):void {
+      stopPlayingCurrentLessonVersionIfPlaying();
    }
 
    private function persistSelectedLessonVersionData():void {

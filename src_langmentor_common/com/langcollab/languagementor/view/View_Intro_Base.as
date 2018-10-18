@@ -90,23 +90,15 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
       }
    }
 
-   override protected function onNextButtonDoubleClick(event:MouseEvent):void {
-      if ((Utils_System.isInDebugMode()) ||
-            (Utils_System.isAlphaOrBetaVersion()))
-         bypassIntroScreens();
-      else
-         onNextButtonClick(event);
-   }
-
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
-   //          Private Methods
+   //          Protected Methods
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   private function bypassIntroScreens():void {
+   protected function bypassIntroScreens():void {
       model.useRecommendedLibraries = true;
-      model.initTargetLanguage(1, true);
+      model.initTargetLanguage(11, true);
       var selectedLessonDownloadLevels_PrimaryLevels:Array = [];
       for each (var i:int in[1, 2, 6, 10]) /// kludge
       {
@@ -117,6 +109,12 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
       //appStatePersistenceManager.persistMostRecentAppVersionWhereUserAgreedToLegalNotice(Utils_AIR.appVersionNumber);
       appStatePersistenceManager.persistAppInstallDate(new Date());
    }
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   //
+   //          Private Methods
+   //
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function doIntroDone():void {
       Utils_AIR.keepSystemAwake(false);

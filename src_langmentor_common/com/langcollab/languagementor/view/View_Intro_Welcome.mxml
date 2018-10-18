@@ -27,7 +27,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.util.Utils_System;
+
       private var _isDisposed:Boolean = false;
+      private var _viewlet:Viewlet_Welcome;
+
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -40,7 +44,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (_isDisposed)
             return;
          _isDisposed = true;
+         if (_viewlet)
+               _viewlet.removeEventListener("bypassIntroScreens", onBypassIntroScreensEvent);
       }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Protected Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -51,9 +63,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          View_Intro_Base.isUserCompletedAddLibraryProcess = false;
          View_Intro_Base.isUserStartedAddLibraryProcess = false;
-         var viewlet:Viewlet_Welcome = new Viewlet_Welcome();
-         viewletGroup.addElement(viewlet);
+         _viewlet = new Viewlet_Welcome();
+         _viewlet.addEventListener("bypassIntroScreens", onBypassIntroScreensEvent);
+         viewletGroup.addElement(_viewlet);
       }
+
+      private function onBypassIntroScreensEvent(event:Event):void {
+         bypassIntroScreens();
+      }
+
+
       ]]>
     </fx:Script>
 </view:View_Intro_Base>

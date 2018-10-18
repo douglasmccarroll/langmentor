@@ -24,8 +24,6 @@ import flash.events.Event;
 public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
    private static var _availableInstancePool:Array = [];
 
-   private var _audioRecorder:AudioRecorder = AudioRecorder.getInstance();
-
    // ****************************************************
    //
    //          Public Methods
@@ -53,10 +51,9 @@ public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
    }
 
    override public function dispose():void {
-      if (_audioRecorder) {
-         _audioRecorder.stopPlayback();
-         _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
-         _audioRecorder = null;
+      if (AudioRecorder.getInstance()) {
+         AudioRecorder.getInstance().stopPlayback();
+         AudioRecorder.getInstance().removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
       }
       super.dispose();
       AudioSequenceLeaf_Playback.releaseReusable(this);
@@ -70,15 +67,15 @@ public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
    public override function startFromBeginning():void {
       Log.debug("AudioSequenceLeaf_Playback.startFromBeginning()");
       super.startFromBeginning();
-      _audioRecorder.addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      _audioRecorder.startPlayback();
+      AudioRecorder.getInstance().addEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      AudioRecorder.getInstance().startPlayback();
    }
 
    public override function stop():void {
       Log.debug("AudioSequenceLeaf_Playback.stop()");
       super.stop();
-      _audioRecorder.stopPlayback();
-      _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      AudioRecorder.getInstance().stopPlayback();
+      AudioRecorder.getInstance().removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
    }
 
    // ****************************************************
@@ -89,8 +86,8 @@ public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
 
    protected override function onElementComplete(event:Event):void {
       Log.debug("AudioSequenceLeaf_Playback.onElementComplete()");
-      _audioRecorder.stopPlayback();
-      _audioRecorder.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      AudioRecorder.getInstance().stopPlayback();
+      AudioRecorder.getInstance().removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
       super.onElementComplete(event);
    }
 }

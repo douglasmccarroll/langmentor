@@ -17,32 +17,19 @@
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.controller.audio {
+import com.brightworks.event.Event_Audio;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_NativeExtensions;
 import com.brightworks.util.singleton.SingletonManager;
 import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
 import com.distriqt.extension.mediaplayer.events.MediaErrorEvent;
+import com.distriqt.extension.mediaplayer.events.RemoteCommandCenterEvent;
+import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
-import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.EventDispatcher;
-import flash.events.IOErrorEvent;
-import flash.events.SecurityErrorEvent;
-import flash.events.TimerEvent;
 import flash.filesystem.File;
-import flash.media.Sound;
-import flash.media.SoundChannel;
-import flash.media.SoundTransform;
-import flash.net.URLRequest;
-import flash.utils.ByteArray;
-import flash.utils.Timer;
-
-[Event(name="complete", type="flash.events.Event")]
-[Event(name="id3", type="flash.events.Event")]
-[Event(name="open", type="flash.events.Event")]
-[Event(name="progress", type="flash.events.ProgressEvent")]
-[Event(name="soundComplete", type="flash.events.Event")]
 
 public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
    private static var _instance:AudioPlayer;
@@ -70,9 +57,10 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
 
    public function initSingleton():void {
       Log.info("AudioPlayer.initSingleton()");
+      Utils_NativeExtensions.setAudioPlayerCallbackFunction(audioCallback);
    }
 
-   // A passedSoundVolumeAdjustmentFactor of 1 means that the sound volume will be left as-is
+   // A passedSoundVolumeAdjustmentFactor of 1 means that the audio file that we're playing will be played at its full volume
    public function play(soundUrl:String, volume:Number):void {
       Log.info("AudioPlayer.play(): " + soundUrl);
       if (_isPlaying) {
@@ -115,20 +103,18 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
       _isPlaying = true;
       _soundURL = soundUrl;
       var file:File = new File(_soundURL);
-      Utils_NativeExtensions.audioPlay(file, volume, audioCallback);
+      Utils_NativeExtensions.audioPlay(file, volume);
    }
 
    public function stop(url:String = null):void {
       Log.info("AudioPlayer.stop(): " + url);
-      if ((url) && (_soundURL != "") && (url != _soundURL)) {
-         Log.warn("AudioPlayer.stop(): url != _soundURL: url=" + url + " _soundURL=" + _soundURL);
-         return;
+      if (_isPlaying) {
+         Utils_NativeExtensions.audioStopMediaPlayer();
       }
       _soundURL = null;
       _isPlaying = false;
-      Utils_NativeExtensions.audioStop();
    }
-
+   
    // ****************************************************
    //
    //          Private Methods
@@ -139,6 +125,15 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
       if (e is AudioPlayerEvent) {
          switch (AudioPlayerEvent(e).type) {
             case AudioPlayerEvent.COMPLETE:
+               // When an audio completes we play an MP3 file consisting of silence. Reason: When the media player is displaying
+               // in the lock screen, this causes it to display its controls as if sound is playing, which is what we want.
+               // If/when we want to stop the media player we call Utils_NativeExtensions.audioStopMediaPlayer().
+               var silenceAudioFile:File = File.applicationDirectory.resolvePath(
+                     Constant_LangMentor_Misc.FILEPATHINFO__SILENCE_AUDIO_FOLDER_NAME +
+                     File.separator +
+                     Constant_LangMentor_Misc.FILEPATHINFO__SILENCE_AUDIO_FILE_NAME);
+               Utils_NativeExtensions.audioPlay(silenceAudioFile, 1.0);
+               _isPlaying = false;
                _soundURL = null;
                dispatchEvent(new Event(Event.SOUND_COMPLETE));
                break;
@@ -147,6 +142,17 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
          }
       } else if (e is MediaErrorEvent) {
          Log.error("AudioPlayer.audioCallback() - Passed object is MediaErrorEvent - _soundURL: " + _soundURL);
+      } else if (e is RemoteCommandCenterEvent) {
+         switch (RemoteCommandCenterEvent(e).type) {
+            case RemoteCommandCenterEvent.PAUSE:
+               dispatchEvent(new Event_Audio(Event_Audio.AUDIO__USER_STOPPED_AUDIO));
+               break;
+            case RemoteCommandCenterEvent.PLAY:
+               dispatchEvent(new Event_Audio(Event_Audio.AUDIO__USER_STARTED_AUDIO));
+               break;
+            default:
+               Log.warn("AudioPlayer.audioCallback() - Event type not supported: " + RemoteCommandCenterEvent(e).type);
+         }
       } else {
          Log.error("AudioPlayer.audioCallback() - Passed object is neither AudioPlayerEvent or MediaErrorEvent - _soundURL: " + _soundURL);
       }

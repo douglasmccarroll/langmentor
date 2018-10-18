@@ -26,6 +26,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.util.Utils_System;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
@@ -58,6 +59,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var textWidget:IUIWidget_Text
          textWidget = new UIWidget_Viewlet__Heading();
          textWidget.text = "Welcome to Language Mentor!";
+         textWidget.addEventListener(MouseEvent.CLICK, onWelcomeTextClick);
          addElement(textWidget);
          addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bullet_Text();
@@ -77,6 +79,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bold_Text();
          textWidget.text = "Thanks for trying Language Mentor!";
          addElement(textWidget);
+      }
+
+      private function onWelcomeTextClick(e:MouseEvent):void {
+         if (Utils_System.isAlphaOrBetaVersion()) {
+            dispatchEvent(new Event("bypassIntroScreens"));
+         }
       }
       ]]>
     </fx:Script>

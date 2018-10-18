@@ -34,9 +34,6 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
 
    internal var audioVolumeAdjustmentFactor:Number;
 
-   private var _audioPlayer:AudioPlayer = AudioPlayer.getInstance();
-
-
    // ****************************************************
    //
    //          Public Methods
@@ -69,7 +66,6 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
       removeEventListeners();
       audioVolumeAdjustmentFactor = 0;
       url = null;
-      _audioPlayer = null;
       super.dispose();
       AudioSequenceLeaf_File.releaseReusable(this);
    }
@@ -81,8 +77,8 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
 
    override public function startFromBeginning():void {
       Log.debug(["AudioSequenceLeaf_File.startFromBeginning(): url=" + url, "Calls AudioPlayer.play()"]);
-      _audioPlayer.addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      _audioPlayer.play(url, audioVolumeAdjustmentFactor);
+      AudioPlayer.getInstance().addEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      AudioPlayer.getInstance().play(url, audioVolumeAdjustmentFactor);
       // We don't call super.startFromBeginning() here because all it does is to dispatch the ELEMENT_START_REPORT
       // event, and we want to include the url info when we do this...
       dispatchEvent(new Event_AudioProgress(Event_AudioProgress.ELEMENT_START_REPORT, id, levelId, url));
@@ -93,7 +89,7 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
       Log.debug(["AudioSequenceLeaf_File.stop(): url=" + url]);
       super.stop();
       removeEventListeners();
-      _audioPlayer.stop(url);
+      AudioPlayer.getInstance().stop(url);
    }
 
    // ****************************************************
@@ -115,7 +111,7 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
    // ****************************************************
 
    private function removeEventListeners():void {
-      _audioPlayer.removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
+      AudioPlayer.getInstance().removeEventListener(Event.SOUND_COMPLETE, onElementComplete);
    }
 }
 
