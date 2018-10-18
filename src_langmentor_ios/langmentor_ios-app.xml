@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/30.0">
+<application xmlns = "http://ns.adobe.com/air/application/31.0">
 
 
    <!-- ############################################################################################### -->
@@ -32,16 +32,16 @@
 
    <name>LangMentor</name>
 
-   <versionNumber>1.28.0</versionNumber>
+   <versionNumber>1.37.0</versionNumber>
 
-   <versionLabel>1.28</versionLabel>
+   <versionLabel>1.37</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
    <initialWindow>
       <!-- The main SWF or HTML file of the application. Required. -->
       <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
-      <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+      <content>langmentor_ios.swf</content>
 
       <aspectRatio>portrait</aspectRatio>
       <fullScreen>false</fullScreen>
@@ -60,25 +60,19 @@
       <image72x72>assets/icons/app_icon_72x72.png</image72x72>
       <image100x100>assets/icons/app_icon_100x100.png</image100x100>
       <image114x114>assets/icons/app_icon_114x114.png</image114x114>
+      <image120x120>assets/icons/app_icon_120x120.png</image120x120>
       <image144x144>assets/icons/app_icon_144x144.png</image144x144>
    </icon>
 
-   <android>
-      <colorDepth>16bit</colorDepth>
-      <manifestAdditions>
-         <![CDATA[
-			<manifest android:installLocation="auto">
-			</manifest>
-		]]>
-      </manifestAdditions>
-   </android>
    <iPhone>
+      <!--<Entitlements>      This block will probably make warnings from app store go away, but also seems to cause 'verification failed' message when
+         <![CDATA[                               I deploy directly to iPhone, unless I add 'push notifications' to provisioning profile
+         <key>aps-environment</key>
+         <string>production</string>
+      ]]>
+      </Entitlements>-->
       <InfoAdditions>
          <![CDATA[
-            <key>FacebookAppID</key>
-            <string>##########</string>
-            <key>FacebookDisplayName</key>
-            <string>Language Mentor</string>
             <key>CFBundleURLTypes</key>
             <array>
               <dict>
@@ -88,31 +82,48 @@
                 </array>
               </dict>
             </array>
-            <!--iOS 8.0 or higher can support barcode ANE-->
+            <key>FacebookAppID</key>
+            <string>##########</string>
+            <key>FacebookDisplayName</key>
+            <string>Language Mentor</string>
+            <!--iOS 8.0 or higher can support barcode ANE, but my iPhone 4 won't upgrade above iOS 7.1 -->
             <key>MinimumOSVersion</key>
             <string>8.0</string>
-            <!--iOS 10 or higher requires the next key -->
+            <key>NSCalendarsUsageDescription</key>
+            <string>Language Mentor does not access any calendars. If you see this message please select Don't Allow.</string>
             <key>NSCameraUsageDescription</key>
-            <string>Camera is used for QR code scanner, which is used by the user to add language lesson library URLs to the app.</string>
-             <key>UIStatusBarStyle</key>
-             <string>UIStatusBarStyleLightContent</string>
+            <string>Camera is used by Language Mentor's QR code scanner, which you'll use if you if you wish to add new language lesson library URLs to the app.</string>
+            <key>NSContactsUsageDescription</key>
+            <string>Language Mentor does not access any contacts. If you see this message please press Don't Allow.</string>
+            <key>NSMicrophoneUsageDescription</key>
+       		<string>Language Mentor uses the microphone to record your voice, so that you can listen and check your pronunciation.</string>
+            <key>UIStatusBarStyle</key>
+            <string>UIStatusBarStyleLightContent</string>
             <key>NSAppTransportSecurity</key>
             <dict>
               <key>NSAllowsArbitraryLoads</key>
               <true/>
             </dict>
+            <key>UIBackgroundModes</key>
+            <array>
+               <string>audio</string>
+            </array>
+
           ]]>
       </InfoAdditions>
       <requestedDisplayResolution>high</requestedDisplayResolution>
    </iPhone>
 
    <extensions>
-      <extensionID>com.adobe.Vibration</extensionID>
-      <extensionID>com.milkmangames.extensions.GAnalytics</extensionID>
-      <extensionID>com.milkmangames.extensions.GoogleServices</extensionID>
-      <extensionID>com.milkmangames.extensions.GoViral</extensionID>
-      <extensionID>com.milkmangames.extensions.RateBox</extensionID>
+      <extensionID>com.distriqt.Core</extensionID>
+      <extensionID>com.distriqt.MediaPlayer</extensionID>
+
       <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
-      <!--<extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>-->
+      <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
+      <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
+      <extensionID>com.myflashlab.air.extensions.rateMe</extensionID>
+
+
+
    </extensions>
 </application>
