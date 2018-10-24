@@ -25,8 +25,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 title = "Play Lessons"
                 initialize = "onInitialize()"
                 preinitialize = "onPreinitialize()"
-                viewActivate = "onViewActivate()"
-                viewDeactivate = "onViewDeactivate()">
+                viewActivate = "onViewActivate()">
 
    <fx:Script>
         <![CDATA[
@@ -313,7 +312,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onCurrentChunkVOChange(newValue:int):void {
-         setButtonEnabled_PreviousChunk_IfNotFirstChunk();
          if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
             _button_PlayPause.enabled = false;
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
@@ -360,13 +358,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   (_mostRecentUserInitiatedChunkNavigationTime >= audioController.mostRecentAutoChunkFinishInitiatedIterateChunk))
          }
          if (isAbortNeeded) {
-            Resources_Audio.FAIL_THUD.play();
+            Resources_Audio.playFailureSound();
          }
          else {
-            microphoneImage.alpha = 0;
+            microphoneImage.visible = false;
             textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
-            Resources_Audio.CLICK.play();
+            Resources_Audio.playClick();
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
@@ -384,7 +382,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         microphoneImage.alpha = 0;
+         microphoneImage.visible = false;
          if (_button_Loop.selected) {
             audioController.onStartLoopMode();
          }
@@ -417,9 +415,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          else {
             // Standard non-kludgy logic
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
-            textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
-            microphoneImage.alpha = 0;
+            microphoneImage.visible = false;
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             callLater(onDo_NextChunk_Continued);
          }
@@ -438,11 +435,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Log.error("View_PlayLessons.onDo_NextLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
          }
-         textField_ChunkText.text = "";
-         textField_LessonTitle.text = "";
          Log.debug("View_PlayLessons.onDo_NextLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
-         microphoneImage.alpha = 0;
+         microphoneImage.visible = false;
          callLater(onDo_NextLesson_Continued);
       }
 
@@ -481,11 +476,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          if (isPreviousUserActionKludge) {
             textField_ChunkText.text = currentLessons.getCurrentDisplayText();
-            setButtonEnabled_PreviousChunk_IfNotFirstChunk();
          } else {
-            textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
-            microphoneImage.alpha = 0;
+            microphoneImage.visible = false;
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             callLater(onDo_PreviousChunk_Continued);
          }
@@ -504,11 +497,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Log.error("View_PlayLessons.onDo_PreviousLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
          }
-         textField_ChunkText.text = "";
-         textField_LessonTitle.text = "";
          Log.debug("View_PlayLessons.onDo_PreviousLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
-         microphoneImage.alpha = 0;
+         microphoneImage.visible = false;
          callLater(onDo_PreviousLesson_Continued);
       }
 
@@ -692,28 +683,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.debug("View_PlayLessons.onViewActivate(): finished");
       }
 
-      private function onViewDeactivate():void {
-         /////   delete this func and addListener
-
-         //AudioPlayer.getInstance().stop();
-         //if (audioController)
-         //   callLater(currentLessons.stopPlayingCurrentLessonVersionIfPlaying); // Using callLater() improve percieved responsiveness - the app briefly becomes unresponsive in the Home screen, rather than hesitating before going there
-      }
-
       private function processCurrentLessonsLengthChange():void {
          if (currentLessons.length == 0) {
             (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(_ALERT_MESSAGE__ALL_LESSONS_LEARNED, onNoRemainingLessonsAlertCallback);
             return;
          }
-         if (currentLessons.getCountOfCurrentSelectedLessonVersionsWithUnsuppressedChunks() == 1) {
-            setChangeLessonEnabled(false);
-         }
-      }
-
-      private function setButtonEnabled_PreviousChunk_IfNotFirstChunk():void {
-         if (_button_PreviousChunk)
-            _button_PreviousChunk.enabled =
-                  (currentLessons.currentChunkIndex > currentLessons.getIndexForEarliestUnsuppressedChunkInCurrentLesson());
       }
 
       private function setButtonEnabled_Record(value:Boolean):void {
@@ -750,7 +724,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if ((!(audioController)) ||
                (!(currentLessons)) ||
                (!audioController.isRecordMode)) {
-            microphoneImage.alpha = 0;
+            microphoneImage.visible = false;
          }
          else {
             microphoneImage.visible = AudioRecorder.getInstance().isCurrentlyRecording;

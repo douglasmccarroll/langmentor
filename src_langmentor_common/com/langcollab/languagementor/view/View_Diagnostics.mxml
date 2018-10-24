@@ -119,7 +119,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onActionBarBackButtonClick(event:MouseEvent):void {
          Log.info("View_Diagnostics.onActionBarBackButtonClick()");
          //Utils_NativeExtensions.vibrate();
-         Resources_Audio.CLICK.play();
+         Resources_Audio.playClick();
          doGoBack();
       }
 

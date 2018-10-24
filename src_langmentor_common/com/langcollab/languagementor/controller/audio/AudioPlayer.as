@@ -57,11 +57,10 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
 
    public function initSingleton():void {
       Log.info("AudioPlayer.initSingleton()");
-      Utils_NativeExtensions.setAudioPlayerCallbackFunction(audioCallback);
    }
 
    // A passedSoundVolumeAdjustmentFactor of 1 means that the audio file that we're playing will be played at its full volume
-   public function play(soundUrl:String, volume:Number):void {
+   public function play(soundUrl:String, volume:Number = 1.0):void {
       Log.info("AudioPlayer.play(): " + soundUrl);
       if (_isPlaying) {
          if (soundUrl == _soundURL) {
@@ -93,8 +92,15 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
             //  stopped. In fact, I'd argue that we shouldn't do so. What we do instead is to check and see if something needs to be changed and,
             //  if it does, we make the correct thing happen. It looks as though the simplest way to deal with the possibility that our code may
             //  try to do 'the right thing' twice, when it really only needs to be done once, is to watch for that case here, and abort.
-            Log.info(["AudioPlayer.play(): called while sound is playing with same URL as currently playing, so we return without playing", "URL: " + _soundURL]);
-            return;
+            //
+            // dmccarroll 20181019
+            // I'm adding this if-clause because I'm finding that there are some cases where the url isn't actually being played.
+            if (soundUrl == Utils_NativeExtensions.getAudioCurrentFileUrl()) {
+               Log.info(["AudioPlayer.play() - called while sound with same URL is currently playing, so we return without playing", "URL: " + _soundURL]);
+               return;
+            } else {
+               // Do nothing here, i.e. continue and execute code below
+            }
          }
          else {
             Log.warn(["AudioPlayer.play(): called while sound is playing", "Old URL: " + _soundURL, "New URL: " + soundUrl]);
@@ -103,7 +109,7 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
       _isPlaying = true;
       _soundURL = soundUrl;
       var file:File = new File(_soundURL);
-      Utils_NativeExtensions.audioPlay(file, volume);
+      Utils_NativeExtensions.audioPlayFile(file, audioCallback, volume);
    }
 
    public function stop(url:String = null):void {
@@ -132,7 +138,7 @@ public class AudioPlayer extends EventDispatcher implements IManagedSingleton {
                      Constant_LangMentor_Misc.FILEPATHINFO__SILENCE_AUDIO_FOLDER_NAME +
                      File.separator +
                      Constant_LangMentor_Misc.FILEPATHINFO__SILENCE_AUDIO_FILE_NAME);
-               Utils_NativeExtensions.audioPlay(silenceAudioFile, 1.0);
+               Utils_NativeExtensions.audioPlayFile(silenceAudioFile, audioCallback, 1.0);
                _isPlaying = false;
                _soundURL = null;
                dispatchEvent(new Event(Event.SOUND_COMPLETE));

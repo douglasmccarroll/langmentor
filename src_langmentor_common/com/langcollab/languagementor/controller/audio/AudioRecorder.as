@@ -21,20 +21,19 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_NativeExtensions;
+import com.brightworks.util.audio.Utils_Audio;
 import com.brightworks.util.singleton.SingletonManager;
+import com.langcollab.languagementor.util.Utils_LangCollab;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.SampleDataEvent;
 import flash.events.TimerEvent;
+import flash.filesystem.File;
 import flash.media.Microphone;
-import flash.media.Sound;
-import flash.media.SoundChannel;
 import flash.sampler.getSize;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
-
-[Event(name="soundComplete", type="flash.events.Event")]
 
 public class AudioRecorder extends EventDispatcher implements IManagedSingleton {
    public static const RECORDING_START_DELAY_DURATION:uint = _START_DELAY__INITIAL + _START_DELAY__PUBLIC_IS_CURRENTLY_RECORDING_FLAG;
@@ -46,8 +45,6 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    private var _isPlaybackActive:Boolean;
    private var _isRecordingActive:Boolean;
    private var _microphone:Microphone;
-   private var _playbackChannel:SoundChannel;
-   private var _playbackSound:Sound;
    private var _recordedAudio:ByteArray;
    private var _recordingTimer_SetPublicIsCurrentlyRecordingDelay:Timer;
    private var _recordingTimer_StartDelay:Timer;
@@ -115,16 +112,6 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       if (_microphone)
          _microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onNewRecordingSampleData);
       setPublicIsCurrentlyRecordingFlag(false);
-      if (_playbackSound) {
-         _playbackSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onGetPlaybackSampleData);
-         // _playbackSound.close() throws an IOError. I assume that this is because we never call its load() method, and there is nothing to close.
-         _playbackSound = null;
-      }
-      if (_playbackChannel) {
-         _playbackChannel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
-         _playbackChannel.stop();
-         _playbackChannel = null;
-      }
       _recordedAudio.clear();
    }
 
@@ -148,10 +135,10 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       Log.info("AudioRecorder.startPlayback()");
       _isPlaybackActive = true;
       _recordedAudio.position = 0;
-      _playbackSound = new Sound();
-      _playbackSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onGetPlaybackSampleData);
-      _playbackChannel = _playbackSound.play();
-      _playbackChannel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
+      var f:File = Utils_Audio.createAndSaveWavFile(Utils_LangCollab.tempAudioFileURL, _recordedAudio);
+
+      AudioPlayer.getInstance().play(Utils_LangCollab.tempAudioFileURL);
+      
    }
 
    public function startRecording():void {
@@ -176,7 +163,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    public function stopRecording(recordingStopDelayDuration:uint = 0):void {
       Log.info("AudioRecorder.stopRecording(): _recordedAudio's size: " + getSize(_recordedAudio));
       if (!isMicrophoneAvailable()) {
-         // We call this method from at least on of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
+         // We call this method from at least one of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
          return;
       }
       if (!_isCurrentlyRecording)
@@ -204,29 +191,8 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       _microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onNewRecordingSampleData);
    }
 
-   private function onGetPlaybackSampleData(event:SampleDataEvent):void {
-      if (!_isPlaybackActive)
-         return;
-      if (_recordedAudio.bytesAvailable <= 0)
-         return;
-      for (var i:int = 0; i < 8192; i++) {
-         var sample:Number = 0;
-         if (_recordedAudio.bytesAvailable > 0) {
-            sample = _recordedAudio.readFloat();
-         }
-         event.data.writeFloat(sample);
-         event.data.writeFloat(sample);
-      }
-   }
-
    private function onNewRecordingSampleData(event:SampleDataEvent):void {
       _recordedAudio.writeBytes(event.data);
-   }
-
-   private function onPlaybackComplete(event:Event):void {
-      Log.info("AudioRecorder.onPlaybackComplete()");
-      clear();
-      dispatchEvent(new Event(Event.SOUND_COMPLETE));
    }
 
    private function onRecordingTimer_SetPublicIsCurrentlyRecordingDelay(event:TimerEvent):void {

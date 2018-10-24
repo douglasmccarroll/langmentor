@@ -75,7 +75,7 @@ public class HomeScreenBackgroundButton extends CenteredMobileText {
       }
       event.stopImmediatePropagation();
       event.preventDefault();
-      Resources_Audio.CLICK.play();
+      Resources_Audio.playClick();
       spriteVisualElement.alpha = .2
       _timer = new Timer(200);
       _timer.addEventListener(TimerEvent.TIMER, onTimer);

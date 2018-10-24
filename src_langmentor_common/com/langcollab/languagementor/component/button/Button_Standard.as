@@ -51,7 +51,7 @@ public class Button_Standard extends Button {
       event.stopImmediatePropagation();
       event.preventDefault();
       if (clickSoundEnabled)
-         Resources_Audio.CLICK.play();
+         Resources_Audio.playClick();
       _isClickActive = true;
       _timer = new Timer(200);
       _timer.addEventListener(TimerEvent.TIMER, onTimer);

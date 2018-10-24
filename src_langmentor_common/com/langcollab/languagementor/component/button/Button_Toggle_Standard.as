@@ -49,7 +49,7 @@ public class Button_Toggle_Standard extends ToggleButton {
          return;
       event.stopImmediatePropagation();
       event.preventDefault();
-      Resources_Audio.CLICK.play();
+      Resources_Audio.playClick();
       _isClickActive = true;
       _timer = new Timer(200);
       _timer.addEventListener(TimerEvent.TIMER, onTimer);

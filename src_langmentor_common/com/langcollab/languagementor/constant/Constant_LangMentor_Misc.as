@@ -54,6 +54,8 @@ public class Constant_LangMentor_Misc {
    public static const FILEPATHINFO__ROOT_INFO_FOLDER_URL:String = "http://lessons.languagecollaborative.com/";
    public static const FILEPATHINFO__SILENCE_AUDIO_FILE_NAME:String = "silence.mp3";
    public static const FILEPATHINFO__SILENCE_AUDIO_FOLDER_NAME:String = "assets" + File.separator + "audio";
+   public static const FILEPATHINFO__TEMP_AUDIO_FILE_FILE_NAME:String = "temp.wav";
+   public static const FILEPATHINFO__TEMP_AUDIO_FOLDER_NAME:String = "TempAudio";
 
    // Chunklet Type Tokens
    public static const LEAF_TYPE__AUDIO_NATIVE:String = "LEAF_TYPE__AUDIO_NATIVE";

@@ -118,12 +118,12 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onActionBarBackButtonClick(event:MouseEvent):void {
-      Resources_Audio.CLICK.play();
+      Resources_Audio.playClick();
       doBackButton();
    }
 
    private function onActionBarHomeButtonClick(event:MouseEvent):void {
-      Resources_Audio.CLICK.play();
+      Resources_Audio.playClick();
       View_Base(navigator.activeView).doGoHome();
    }
 
@@ -193,7 +193,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          navigator.pushView(View_ScreenResolutionTooLow);
          return;
       }
-      if (!Utils_NativeExtensions.isMediaPlayerSupported()) {
+      if ((!Utils_NativeExtensions.isMediaPlayerSupported()) && (!Utils_System.isRunningOnDesktop())) {
          Log.error("App_LanguageMentor_Base.onPreinitialize(): MediaPlayer ANE isn't supported");
          navigator.pushView(View_DeviceDoesntSupportLangMentor);
          return;

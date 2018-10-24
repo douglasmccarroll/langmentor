@@ -62,6 +62,14 @@ public class Utils_LangCollab {
       return sqLiteDatabaseFileDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DB_FILE_FILE_NAME;
    }
 
+   public static function get tempAudioFileDirectoryURL():String {
+      return Utils_AIR.documentStorageDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__TEMP_AUDIO_FOLDER_NAME;
+   }
+
+   public static function get tempAudioFileURL():String {
+      return tempAudioFileDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__TEMP_AUDIO_FILE_FILE_NAME;
+   }
+
    // ****************************************************
    //
    //          Public Methods

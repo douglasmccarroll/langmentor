@@ -525,6 +525,14 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       return result;
    }
 
+   public function getIndexForLastUnsuppressedChunkInLesson(lessonVO:LessonVersionVO):int {
+      Log.debug("CurrentLessons.getIndexForLastUnsuppressedChunkInLesson()");
+      var chunkCountInLesson:uint = getChunkCountForLessonVersionVO(lessonVO);
+      var index:int = getIndexForNextUnsuppressedChunkAtOrBeforeOrAfterChunkIndex(lessonVO, chunkCountInLesson - 1, -1);
+      Log.debug("CurrentLessons.getIndexForLastUnsuppressedChunkInLesson(): returning index of: " + index);
+      return index;
+   }
+
    public function getIndexForNextOrPreviousSelectedLessonVersion(startIndex:uint, direction:int):uint {
       if (!((direction == -1) || (direction == 1)))
          Log.fatal("CurrentLessons.getIndexForNextOrPreviousSelectedLessonVersion(): direction arg must be -1 or 1");
@@ -690,10 +698,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       } else {
          // No unsuppressed chunk in 'direction' in currLV
          if (direction == -1) {
-            // We don't move to previous lesson via < button.
-            // User can use << button for this.
-            newChunkIndex = getIndexForEarliestUnsuppressedChunkInCurrentLesson();
-            setCurrentLessonAndChunkIndexes(currentLessonIndex, newChunkIndex);
+            // Move to last chunk in previous lesson
+            var newLessonIndex:uint = getIndexForNextOrPreviousSelectedLessonVersion(currentLessonIndex, -1);
+            var newLessonVO:LessonVersionVO = getLessonByIndex(newLessonIndex);
+            newChunkIndex = getIndexForLastUnsuppressedChunkInLesson(newLessonVO);
+            setCurrentLessonAndChunkIndexes(newLessonIndex, newChunkIndex);
             Log.debug("CurrentLessons.iterateChunk(): no unsuppressed chunk before curr chunk; new currentChunkIndex: " + currentChunkIndex);
          } else if (direction == 1) {
             // We want to move to the next lesson, if there is one. Otherwise
