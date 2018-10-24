@@ -23,7 +23,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.gestures.GestureTranslator;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.audio.AudioController;
-import com.langcollab.languagementor.controller.audio.AudioPlayer;
+import com.brightworks.util.audio.AudioPlayer;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;

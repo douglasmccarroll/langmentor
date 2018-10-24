@@ -28,7 +28,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Layout;
-      import com.brightworks.util.Utils_NativeExtensions;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_URL;
 
       private static const _SCAN_BUTTON_LABEL__SCAN_AGAIN:String = "Scan Again";
@@ -93,7 +93,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onScanButtonClick():void {
          Log.info("Subviewlet_AddLibrary__URLEntry_Scan.onScanButtonClick()");
-         Utils_NativeExtensions.activateCodeScanner(onScanResult, onScanCancel, onScanFailure);
+         Utils_ANEs.activateCodeScanner(onScanResult, onScanCancel, onScanFailure);
       }
 
       private function onShow():void {

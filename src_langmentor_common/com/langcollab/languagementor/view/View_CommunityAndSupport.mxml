@@ -32,7 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
-      import com.brightworks.util.Utils_NativeExtensions;
+      import com.brightworks.util.Utils_ANEs;
 
       import mx.collections.ArrayCollection;
 
@@ -84,7 +84,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case LIST_OPTION__RATE_LANGMENTOR: {
                list.selectedItems = null;
                list.invalidateProperties();
-               Utils_NativeExtensions.showRatingsPrompt();
+               Utils_ANEs.showRatingsPrompt();
                break;
             }
             case LIST_OPTION__UPGRADE: {
@@ -99,8 +99,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onViewActivate():void {
       }
-
-
       ]]>
     </fx:Script>
 

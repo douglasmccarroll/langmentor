@@ -37,14 +37,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_DateTime;
-      import com.brightworks.util.Utils_NativeExtensions;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
+      import com.brightworks.util.audio.Utils_ANEs_Audio;
       import com.langcollab.languagementor.component.button.Button_Standard;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
-      import com.langcollab.languagementor.controller.audio.AudioPlayer;
+      import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.LessonVersionVO;
@@ -159,7 +160,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override public function doGoHome():void {
          Log.info("View_PlayLessons.doGoHome()");
-         Utils_NativeExtensions.audioStopMediaPlayer();
+         Utils_ANEs_Audio.audioStopMediaPlayer();
          textField_ChunkText.text = "";
          AudioPlayer.getInstance().stop();
          if (audioController)
@@ -445,7 +446,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          currentLessons.iterateLessonVersion(1, true);
       }
 
-      private function  onDo_PlayPause():void {
+      private function onDo_PlayPause():void {
          // This is written to be used by both Pause button and gesture, but
          // no gesture is yet implemented. 20110720
          if (currentlyInUserActionRequiredWaitInterval())

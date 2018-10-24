@@ -4,7 +4,7 @@ import com.brightworks.util.PerformanceAnalyzer;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.singleton.SingletonManager;
 import com.langcollab.languagementor.controller.audio.AudioController;
-import com.langcollab.languagementor.controller.audio.AudioPlayer;
+import com.brightworks.util.audio.AudioPlayer;
 import com.langcollab.languagementor.controller.audio.AudioRecorder;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;

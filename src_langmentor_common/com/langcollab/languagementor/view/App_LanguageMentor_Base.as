@@ -22,9 +22,10 @@ import com.brightworks.component.mobilealert.MobileDialog;
 import com.brightworks.resource.Resources_Audio;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
-import com.brightworks.util.Utils_NativeExtensions;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
+import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
 import com.langcollab.languagementor.component.button.Button_ActionBar_LeftArrow;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
@@ -193,7 +194,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          navigator.pushView(View_ScreenResolutionTooLow);
          return;
       }
-      if ((!Utils_NativeExtensions.isMediaPlayerSupported()) && (!Utils_System.isRunningOnDesktop())) {
+      if ((!Utils_ANEs_Audio.isMediaPlayerSupported()) && (!Utils_System.isRunningOnDesktop())) {
          Log.error("App_LanguageMentor_Base.onPreinitialize(): MediaPlayer ANE isn't supported");
          navigator.pushView(View_DeviceDoesntSupportLangMentor);
          return;

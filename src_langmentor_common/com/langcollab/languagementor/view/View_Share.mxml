@@ -44,7 +44,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
-      import com.brightworks.util.Utils_NativeExtensions;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_System;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
@@ -161,13 +161,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_Share.onButtonClick_FacebookInvite()");
          if (!_isFacebookInviteInProgress) {
             _isFacebookInviteInProgress = true;
-            //Utils_NativeExtensions.facebookShare(onFacebookShareResult);
+            //Utils_ANEs.facebookShare(onFacebookShareResult);
          }
       }
 
       private function onButtonClick_OpenAppStoreToRate(event:MouseEvent):void {
          Log.info("View_Share.onButtonClick_OpenAppStoreToRate()");
-         Utils_NativeExtensions.showRatingsPrompt();
+         Utils_ANEs.showRatingsPrompt();
       }
 
       private function onCreationComplete():void {
@@ -189,7 +189,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         /*if (Utils_NativeExtensions.isFacebookSupported()) {
+         /*if (Utils_ANEs.isFacebookSupported()) {
             widget = new UIWidget_Viewlet__Bold_Text();
             widget.text = "Facebook";
             viewletGroup.addElement(widget);
@@ -211,7 +211,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onFacebookShareResult():void {
          _isFacebookInviteInProgress = false;
       }
-
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

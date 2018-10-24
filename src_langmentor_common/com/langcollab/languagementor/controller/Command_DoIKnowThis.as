@@ -20,7 +20,7 @@ package com.langcollab.languagementor.controller {
 import com.brightworks.base.Callbacks;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.Utils_NativeExtensions;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;
 import com.langcollab.languagementor.vo.ChunkVO;

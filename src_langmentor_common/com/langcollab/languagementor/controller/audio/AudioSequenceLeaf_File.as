@@ -18,6 +18,7 @@
 */
 package com.langcollab.languagementor.controller.audio {
 import com.brightworks.util.Log;
+import com.brightworks.util.audio.AudioPlayer;
 import com.langcollab.languagementor.event.Event_AudioProgress;
 
 import flash.events.ErrorEvent;
