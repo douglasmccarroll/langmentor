@@ -19,7 +19,7 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
-import com.brightworks.resource.Resources_Audio;
+import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ANEs;
@@ -119,12 +119,12 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onActionBarBackButtonClick(event:MouseEvent):void {
-      Resources_Audio.playClick();
+      Utils_Audio_Files.playClick();
       doBackButton();
    }
 
    private function onActionBarHomeButtonClick(event:MouseEvent):void {
-      Resources_Audio.playClick();
+      Utils_Audio_Files.playClick();
       View_Base(navigator.activeView).doGoHome();
    }
 

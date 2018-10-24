@@ -33,7 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
-      import com.brightworks.resource.Resources_Audio;
+      import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_Layout;
@@ -118,7 +118,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onActionBarBackButtonClick(event:MouseEvent):void {
          Log.info("View_Diagnostics.onActionBarBackButtonClick()");
-         Resources_Audio.playClick();
+         Utils_Audio_Files.playClick();
          doGoBack();
       }
 

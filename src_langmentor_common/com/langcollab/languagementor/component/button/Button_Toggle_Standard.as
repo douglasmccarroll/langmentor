@@ -1,6 +1,6 @@
 package com.langcollab.languagementor.component.button {
 
-import com.brightworks.resource.Resources_Audio;
+import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.skins.button.ButtonSkin_Flat;
 
 import flash.events.MouseEvent;
@@ -49,7 +49,7 @@ public class Button_Toggle_Standard extends ToggleButton {
          return;
       event.stopImmediatePropagation();
       event.preventDefault();
-      Resources_Audio.playClick();
+      Utils_Audio_Files.playClick();
       _isClickActive = true;
       _timer = new Timer(200);
       _timer.addEventListener(TimerEvent.TIMER, onTimer);

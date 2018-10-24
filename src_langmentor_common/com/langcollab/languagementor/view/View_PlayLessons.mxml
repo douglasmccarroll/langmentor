@@ -33,7 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.mobilealert.MobileAlert;
       import com.brightworks.constant.Constant_Misc;
       import com.brightworks.constant.Constant_PlatformName;
-      import com.brightworks.resource.Resources_Audio;
+      import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_DateTime;
@@ -359,13 +359,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   (_mostRecentUserInitiatedChunkNavigationTime >= audioController.mostRecentAutoChunkFinishInitiatedIterateChunk))
          }
          if (isAbortNeeded) {
-            Resources_Audio.playFailureSound();
+            Utils_Audio_Files.playFailureSound();
          }
          else {
             microphoneImage.visible = false;
             textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
-            Resources_Audio.playClick();
+            Utils_Audio_Files.playClick();
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
