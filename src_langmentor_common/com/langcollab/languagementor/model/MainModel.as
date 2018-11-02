@@ -616,6 +616,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return lvnlVO.lessonName;
    }
 
+   public function getLessonVersionNativeLanguageProviderNameFromLessonVersionVO(vo:LessonVersionVO):String {
+      var lvnlVO:LessonVersionNativeLanguageVO = getLessonVersionNativeLanguageVOFromLessonVersionVO(vo);
+      return lvnlVO.contentProviderName;
+   }
+
    public function getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(vo:LessonVersionVO):String {
       var lvnlVO:LessonVersionNativeLanguageVO = getLessonVersionNativeLanguageVOFromLessonVersionVO(vo);
       if ((lvnlVO.lessonSortName is String) && (lvnlVO.lessonSortName.length > 0)) {

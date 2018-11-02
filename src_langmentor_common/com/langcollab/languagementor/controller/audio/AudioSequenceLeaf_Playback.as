@@ -68,7 +68,7 @@ public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
       Log.debug("AudioSequenceLeaf_Playback.startFromBeginning()");
       super.startFromBeginning();
       AudioRecorder.getInstance().addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      AudioRecorder.getInstance().startPlayback();
+      AudioRecorder.getInstance().startPlayback(duration);
    }
 
    public override function stop():void {

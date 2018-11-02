@@ -134,7 +134,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // See comment in onDeactivateApp()
          return;
       } else {
-         Log.info("App_LanguageMentor_Base.onActivateApp() *************************");
+         Log.info("App_LanguageMentor_Base.onActivateApp() AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
       }
    }
 
@@ -162,7 +162,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // focus, but the app continues to execute. So we haven't really deactivated.
          return;
       } else {
-         //Log.info("App_LanguageMentor_Base.onDeactivateApp() *************************");
+         Log.info("App_LanguageMentor_Base.onDeactivateApp() DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
          //_currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       }
    }

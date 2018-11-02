@@ -49,7 +49,7 @@ public class AudioSequenceLeaf_Timer extends AudioSequenceLeaf {
    }
 
    override public function startFromBeginning():void {
-      Log.info("AudioSequenceLeaf_Timer.startFromBeginning()");
+      Log.info("AudioSequenceLeaf_Timer.startFromBeginning() - creating new Timer with duration = " + duration);
       super.startFromBeginning();
       _timer = new Timer(duration, 0);
       _timer.addEventListener(TimerEvent.TIMER, onElementComplete);

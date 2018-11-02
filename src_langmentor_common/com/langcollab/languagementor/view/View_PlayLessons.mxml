@@ -360,7 +360,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_Audio_Files.playFailureSound();
          }
          else {
-            microphoneImage.visible = false;
+            microphoneImage.alpha = 0;
             textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
             Utils_Audio_Files.playClick();
@@ -381,7 +381,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         microphoneImage.visible = false;
+         microphoneImage.alpha = 0;
          if (_button_Loop.selected) {
             audioController.onStartLoopMode();
          }
@@ -415,7 +415,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             // Standard non-kludgy logic
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
             AudioPlayer.getInstance().stop();
-            microphoneImage.visible = false;
+            microphoneImage.alpha = 0;
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             callLater(onDo_NextChunk_Continued);
          }
@@ -436,7 +436,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          Log.debug("View_PlayLessons.onDo_NextLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
-         microphoneImage.visible = false;
+         microphoneImage.alpha = 0;
          callLater(onDo_NextLesson_Continued);
       }
 
@@ -477,7 +477,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textField_ChunkText.text = currentLessons.getCurrentDisplayText();
          } else {
             AudioPlayer.getInstance().stop();
-            microphoneImage.visible = false;
+            microphoneImage.alpha = 0;
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             callLater(onDo_PreviousChunk_Continued);
          }
@@ -498,7 +498,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          Log.debug("View_PlayLessons.onDo_PreviousLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
-         microphoneImage.visible = false;
+         microphoneImage.alpha = 0;
          callLater(onDo_PreviousLesson_Continued);
       }
 
@@ -642,7 +642,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case Constant_LearningModeLabels.REPEAT_TARGET: {
                setButtonEnabled_Translate(false);
                setButtonEnabled_Record(true);
-               _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
+               _button_Record.enabled = AudioRecorder.getInstance().isRecorderAvailable();
                _button_Record.selected = audioController.isRecordMode;
                break;
             }
@@ -723,10 +723,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if ((!(audioController)) ||
                (!(currentLessons)) ||
                (!audioController.isRecordMode)) {
-            microphoneImage.visible = false;
+            microphoneImage.alpha = 0;
          }
          else {
-            microphoneImage.visible = AudioRecorder.getInstance().isCurrentlyRecording;
+            if (AudioRecorder.getInstance().isCurrentlyRecording) {
+               microphoneImage.alpha = .5;
+            } else {
+               microphoneImage.alpha = 0;
+            }
          }
       }
 

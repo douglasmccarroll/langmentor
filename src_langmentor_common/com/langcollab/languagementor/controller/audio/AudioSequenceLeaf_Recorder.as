@@ -70,7 +70,7 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    }
 
    override public function startFromBeginning():void {
-      Log.info("AudioSequenceLeaf_Recorder.startFromBeginning(): duration:" + duration + "recordingStopDelayDuration:" + _recordingStopDelayDuration);
+      Log.info("AudioSequenceLeaf_Recorder.startFromBeginning(): duration:" + duration + " recordingStopDelayDuration:" + _recordingStopDelayDuration);
       super.startFromBeginning();
       if (!_suppressRecording) {
          AudioRecorder.getInstance().startRecording();
@@ -105,10 +105,12 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    // ****************************************************
 
    private function onTimer(event:TimerEvent):void {
-      stopRecording()
+      Log.info("AudioSequenceLeaf_Recorder.stopRecording()");
+      stopRecording();
    }
 
    private function stopRecording():void {
+      Log.info("AudioSequenceLeaf_Recorder.onTimer()");
       stopTimer();
       if (!_suppressRecording && (AudioRecorder.getInstance()))
          AudioRecorder.getInstance().stopRecording(_recordingStopDelayDuration);
