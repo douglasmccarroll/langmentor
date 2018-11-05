@@ -365,22 +365,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       return result;
    }
 
-   private function getInitialPauseLeafDuration():Number {
-      var standardDuration:Number = 500;
-      var result:Number = 500;
-      if ((Utils_System.isIPadOrPreGeneration5IPhoneOrIPod) &&
-            (AudioRecorder.getInstance().isMicrophoneUsedInSession)) {
-         if (_currentLessons.currentChunkIndex == _currentLessons.getIndexForEarliestUnsuppressedChunkInCurrentLesson())
-            result = 6000;
-         else if (_chunksPlayedInCurrentLessonVersionAudioSequence == 1)
-            result = 3000;
-         else
-            result = 1000;
-      }
-      Log.info("AudioController.getInitialPauseLeafDuration(): returning " + result);
-      return result;
-   }
-
    private function onActivate(event:Event):void {
       stopLeafFinishCheckProcess();
    }
@@ -578,19 +562,17 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             chunkIndex++;
             continue;
          }
-         duration = 500;
-         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY, duration);
+         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY, 200);
          leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
          leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
          leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
          chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY] = leaf;
 
-         leaf = AudioSequenceLeaf_Silence_Initial.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL, duration, getInitialPauseLeafDuration);
+         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL, 500);
          leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
          leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
          leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
          chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL] = leaf;
-
 
          if (_currentLessons.currentLessonVO.isDualLanguage) {
             var nativeLaguageFileDuration:Number = index_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];

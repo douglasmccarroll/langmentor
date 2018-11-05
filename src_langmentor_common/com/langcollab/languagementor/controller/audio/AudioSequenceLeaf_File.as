@@ -79,10 +79,6 @@ public class AudioSequenceLeaf_File extends AudioSequenceLeaf {
    override public function startFromBeginning():void {
       Log.debug(["AudioSequenceLeaf_File.startFromBeginning(): url=" + url, "Calls AudioPlayer.play()"]);
       AudioPlayer.getInstance().addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-
-
-
-
       AudioPlayer.getInstance().playMp3File(url, audioVolumeAdjustmentFactor);
       // We don't call super.startFromBeginning() here because all it does is to dispatch the ELEMENT_START_REPORT
       // event, and we want to include the url info when we do this...

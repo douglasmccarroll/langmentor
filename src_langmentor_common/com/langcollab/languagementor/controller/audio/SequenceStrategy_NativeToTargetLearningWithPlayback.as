@@ -28,8 +28,11 @@ public class SequenceStrategy_NativeToTargetLearningWithPlayback extends Sequenc
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
    }
 
    public function clone():ISequenceStrategy {

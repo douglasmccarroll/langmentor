@@ -26,11 +26,17 @@ public class SequenceStrategy_NativeToTargetTranslationWithPlayback extends Sequ
       orderSpecList = new ArrayCollection();
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
       orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
+      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY);
    }
 
    public function clone():ISequenceStrategy {

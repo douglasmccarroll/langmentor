@@ -97,8 +97,8 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function clear():void {
       Log.debug("AudioRecorder.clear()");
-      /////if(_recorder)
-      /////   _recorder.stop();
+      if(_recorder)
+         _recorder.stop();
       _isAttemptingPlayback = false;
       _isPlaybackActive = false;
       _isRecordingActive = false;
@@ -123,17 +123,16 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function isRecorderAvailable():Boolean {
       Log.debug("AudioRecorder.isRecorderAvailable()");
-      return true; /////(_recorder != null);
+      return (_recorder != null);
    }
 
    public function startPlayback(duration:int):void {
       _isAttemptingPlayback = true;
-      AudioPlayer.getInstance().playSilenceFile(); /////
       if (_recordedSamples) {
          Log.info("AudioRecorder.startPlayback() - starting playback");
          _isAttemptingPlayback = false;
          _isPlaybackActive = true;
-         /////AudioPlayer.getInstance().playWavSample(_recordedSamples);
+         AudioPlayer.getInstance().playWavSample(_recordedSamples);
          _recordedSamples = null;
          _playbackTimer = new Timer(duration);
          _playbackTimer.addEventListener(TimerEvent.TIMER, onPlaybackTimer);
@@ -194,8 +193,8 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    private function actuallyStopRecording(event:TimerEvent = null):void {
       Log.info("AudioRecorder.actuallyStopRecording()");
-      /////_recorder.stop();
-      _recordedSamples = new ByteArray(); /////_recorder.output;
+      _recorder.stop();
+      _recordedSamples = _recorder.output;
       AudioPlayer.getInstance().playSilenceFile();
    }
 
@@ -205,7 +204,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
          _microphone.rate = 44;
          _microphone.gain = 50; // Docs: "A value of 50 acts like a multiplier of one and specifies normal volume. ... Values above 50 specify higher than normal volume."
          _microphone.setSilenceLevel(0, 2000);
-         /////_recorder = new MicRecorder(new WaveEncoder(), _microphone);
+         _recorder = new MicRecorder(new WaveEncoder(), _microphone);
       }
    }
 
@@ -230,9 +229,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    private function onRecordingTimer_StartDelay(event:TimerEvent):void {
       Log.info("AudioRecorder.onRecordingTimer_StartDelay()");
       stopRecordingTimer_StartDelay();
-      /////
-      //
-      // _recorder.record();
+      _recorder.record();
       _recordingTimer_SetPublicIsCurrentlyRecordingDelay = new Timer(START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING, 1);
       _recordingTimer_SetPublicIsCurrentlyRecordingDelay.addEventListener(TimerEvent.TIMER, onRecordingTimer_SetPublicIsCurrentlyRecordingDelay);
       _recordingTimer_SetPublicIsCurrentlyRecordingDelay.start();

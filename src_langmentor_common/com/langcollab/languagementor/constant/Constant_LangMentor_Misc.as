@@ -63,7 +63,7 @@ public class Constant_LangMentor_Misc {
    public static const LEAF_TYPE__PAUSE_ATTEMPT:String = "LEAF_TYPE__PAUSE_ATTEMPT";
    public static const LEAF_TYPE__PAUSE_INITIAL:String = "LEAF_TYPE__PAUSE_INITIAL";
    public static const LEAF_TYPE__PAUSE_REPEAT:String = "LEAF_TYPE__PAUSE_REPEAT";
-   public static const LEAF_TYPE__PAUSE_TINY:String = "LEAF_TYPE__PAUSE_TINY";
+   public static const LEAF_TYPE__PAUSE_TINY:String = "LEAF_TYPE__PAUSE_TINY";  // dmccarroll 20181105 - These are used in "with playback" chunk sequence strategies because, for reasons I don't understand, they prevent iOS from deciding that the app, when playing in background mode, is no longer playing and thus should be suspended. No, this doesn't make any sense, but I discovered that it works through trial and error, so I'm using it for this purpose. I also use this leaf in one 'non-playback' strategy for reasons which I have long since forgotten.
    public static const LEAF_TYPE__PLAYBACK:String = "LEAF_TYPE__PLAYBACK";
    public static const LEAF_TYPE__RECORD_ATTEMPT:String = "LEAF_TYPE__RECORD_ATTEMPT";
    public static const LEAF_TYPE__RECORD_REPEAT:String = "LEAF_TYPE__RECORD_REPEAT";

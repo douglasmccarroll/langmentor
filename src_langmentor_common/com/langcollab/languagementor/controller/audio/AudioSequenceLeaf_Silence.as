@@ -57,10 +57,6 @@ public class AudioSequenceLeaf_Silence extends AudioSequenceLeaf_Timer {
          _availableInstancePool.push(instance);
    }
 
-   override public function startFromBeginning():void {
-      super.startFromBeginning();
-   }
-
 }
 }
 
