@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.mobilealert.MobileAlert;
       import com.brightworks.component.mobilealert.MobileDialog;
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_ArrayVectorEtc;
       import com.brightworks.util.Utils_Layout;
       import com.langcollab.languagementor.vo.LevelVO;
@@ -57,7 +58,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override public function doGoBack():void {
          Log.info("View_LessonLevels.doGoBack()");
          if (isSelectedLevelsChanged())
-            MobileAlert.open("Changes have not been saved.", true);
+            Utils_ANEs.showAlert_Toast("Changes have not been saved.");
          dispose();
          super.doGoBack();
       }
@@ -65,7 +66,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override public function doGoHome():void {
          Log.info("View_LessonLevels.doGoHome()");
          if (isSelectedLevelsChanged())
-            MobileAlert.open("Changes have not been saved.", true);
+            Utils_ANEs.showAlert_Toast("Changes have not been saved.");
          dispose();
          super.doGoHome();
       }

@@ -19,6 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.view {
 import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.gestures.GestureTranslator;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
@@ -190,7 +191,7 @@ public class View_Base extends View {
          return;
       var logDataString:String = Log.createLogInfoSummaryString() + "\n\n" + Log.getLogInfoForClipboard();
       Log.copyRecentInfoToClipboard();
-      MobileAlert.open("Log data copied to clipboard", true);
+      Utils_ANEs.showAlert_Toast("Log data copied to clipboard");
    }
 
    protected function onCustomGesture_Arrow_Down():void {

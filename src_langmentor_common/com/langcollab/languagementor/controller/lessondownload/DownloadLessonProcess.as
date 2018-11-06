@@ -23,6 +23,7 @@ import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.IDisposable;
 import com.brightworks.util.IPercentCompleteReporter;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
@@ -758,7 +759,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
 
       }
       message += downloadLessonProcessInfo.nativeLanguageLessonName;
-      MobileAlert.open(message, false);
+      Utils_ANEs.showAlert_Toast(message);
    }
 
    private function populateChunkInfo():void {

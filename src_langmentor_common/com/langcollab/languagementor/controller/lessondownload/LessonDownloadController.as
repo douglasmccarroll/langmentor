@@ -24,6 +24,7 @@ import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.IDisposable;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_DataConversionComparison;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
@@ -642,7 +643,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          var alertText:String = "Starting " + _downloadLessonProcessesInfo.length + " Lesson Download";
          if (_downloadLessonProcessesInfo.length > 1)
             alertText += "s";
-         MobileAlert.open(alertText, true);
+         Utils_ANEs.showAlert_Toast(alertText);
          var cb:Callbacks = new Callbacks(onDownloadLessonsUpdate);
          _currentCommand_DownloadLessons = new Command_DownloadLessons(_downloadLessonProcessesInfo, cb);
          _currentCommand_DownloadLessons.execute();
@@ -657,7 +658,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          // concludes that it's time to try again.
          return;
       }
-      MobileAlert.open("\nSearching For New Lessons\n\nPlease Wait\n\n", false);
+      Utils_ANEs.showAlert_Toast("\nSearching For New Lessons\n\nPlease Wait\n", true);
       _isUpdateAvailableLessonDownloadsProcessActive = true;
       _mostRecentUpdateAvailableLessonDownloadsStartTime = Utils_DateTime.getCurrentMS_BasedOnDate();
       lessonDownloadInfo_Libraries = new LessonDownloadInfo_Libraries();

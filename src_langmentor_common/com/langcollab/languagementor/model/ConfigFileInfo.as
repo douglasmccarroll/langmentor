@@ -6,6 +6,7 @@ import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.ILoggingConfigProvider;
 import com.brightworks.util.AppActiveElapsedTimeTimer;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DataConversionComparison;
 import com.brightworks.util.Utils_DateTime;
@@ -267,7 +268,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       }
       var result:String = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_TYPE_FILE_NAME_ROOT + platformName + "_" + stagingOrMentorTypeCode;
       if (Utils_System.platformName == Constant_PlatformName.WINDOWS_DESKTOP)
-         MobileAlert.open(platformName + "_" + stagingOrMentorTypeCode, true, 3000);
+         Utils_ANEs.showAlert_Toast(platformName + "_" + stagingOrMentorTypeCode);
       return result;
    }
 

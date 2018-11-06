@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.mobilealert.MobileAlert;
       import com.brightworks.constant.Constant_Misc;
       import com.brightworks.constant.Constant_PlatformName;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
@@ -533,7 +534,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onDoIKnowThisComplete(preCommandSelectedLessonCount:uint):void {
          // Show popup if lesson has been deselected
          if (currentLessons.length == preCommandSelectedLessonCount - 1) {
-            MobileAlert.open("Lesson Finished", true);
+            Utils_ANEs.showAlert_Toast("Lesson Finished");
          }
       }
 

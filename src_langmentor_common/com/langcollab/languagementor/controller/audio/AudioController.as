@@ -27,6 +27,7 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
@@ -242,7 +243,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       if (sequenceCreationStepNeeded) {
          Log.info("AudioController.playCurrentLessonVersionAndCurrentChunk(): sequenceCreationStepNeeded == true, setting timer to call playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence()");
          cleanupCurrentLessonVersion();
-         MobileAlert.open("Loading Lesson", true);
+         Utils_ANEs.showAlert_Toast("Loading Lesson");
          _timer_StartLesson = new Timer(250, 1);
          _timer_StartLesson.addEventListener(TimerEvent.TIMER, playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence);
          _timer_StartLesson.start();
