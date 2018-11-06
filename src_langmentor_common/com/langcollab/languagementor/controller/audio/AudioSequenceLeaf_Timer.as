@@ -18,6 +18,8 @@
 */
 package com.langcollab.languagementor.controller.audio {
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_System;
+import com.brightworks.util.audio.AudioPlayer;
 
 import flash.events.Event;
 import flash.events.TimerEvent;
@@ -54,6 +56,8 @@ public class AudioSequenceLeaf_Timer extends AudioSequenceLeaf {
       _timer = new Timer(duration, 0);
       _timer.addEventListener(TimerEvent.TIMER, onElementComplete);
       _timer.start();
+      if (Utils_System.isAndroid())  // I'm not sure that this would do any harm in iOS but it doesn't seem to need it in order to keep media controls displayed in the lock screen
+            AudioPlayer.getInstance().playSilenceFile();
    }
 
    override public function stop():void {

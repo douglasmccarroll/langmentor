@@ -278,10 +278,6 @@ public class AudioSequenceBranch extends AudioSequenceElement {
       removeEventListeners();
       if (_currentElement) {
          _currentElement.stop();
-         /*if (_currentElement.isPlaying)
-         {
-             _currentElement.stop();
-         }*/
          _currentElement = null;
       }
    }

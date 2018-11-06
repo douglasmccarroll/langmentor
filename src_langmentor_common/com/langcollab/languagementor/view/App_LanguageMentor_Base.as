@@ -153,10 +153,10 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    private function onDeactivateApp(event:Event):void {
 
-      ///// Delete this function and addListener
+      //// stop audio if in record-playback mode?
 
       // This happens when the device sends the app into the background - i.e. when 
-      // the phone rings, when a clock alarm goes off, etc...
+      // the phone rings, when a clock alarm goes off, when the user presses the home button, etc...
       if (Utils_System.isRunningOnDesktop()) {
          // When running on desktop, a deactivate event indicates that the app's window has lost
          // focus, but the app continues to execute. So we haven't really deactivated.
