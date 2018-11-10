@@ -49,6 +49,7 @@ import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
+import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.singleton.SingletonManager;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_TextDisplayTypeNames;
@@ -646,6 +647,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _audioPlayer = AudioPlayer.getInstance();
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STARTED_AUDIO, onUserStartedAudio);
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STOPPED_AUDIO, onUserStoppedAudio);
+      Utils_ANEs_Audio.setAppPauseFunction(pauseCurrentLessonVersionIfPlaying);
    }
 
    public function isAllSelectedLessonVersionsDualLanguage():Boolean {
