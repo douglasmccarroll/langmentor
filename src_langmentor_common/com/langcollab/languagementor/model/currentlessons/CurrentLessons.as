@@ -849,8 +849,10 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       if (newLessonIndex != _currentLessonIndex_OnlySetViaSetCurrentLessonAndChunkIndexes) {
          isEitherValueChanged = true;
          _currentLessonIndex_OnlySetViaSetCurrentLessonAndChunkIndexes = newLessonIndex;
-         if (!suppressPersistingData)
+         if (!suppressPersistingData) {
             _appStatePersistenceManager.persistCurrLessonVersion(currentLessonVO);
+            _appStatePersistenceManager.iterateLessonVersionEntryCount();
+         }
       }
       if (newChunkIndex != _currentChunkIndex_OnlySetViaSetCurrentLessonAndChunkIndexes) {
          isEitherValueChanged = true;

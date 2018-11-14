@@ -26,10 +26,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_ANEs;
       import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
       import com.langcollab.languagementor.event.Event_LessonVersionList;
+      import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 
       import mx.core.FlexGlobals;
 
@@ -81,6 +84,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       public function doGoBack_LeaveSelectLessons():void {
          navigator.pushView(View_Home, null, null, transition_SlideView_Right);
+         if (AppStatePersistenceManager.getInstance().retrieveIsLessonVersionEntryCountSaved() && (AppStatePersistenceManager.getInstance().retrieveLessonVersionEntryCount() >= Constant_AppConfiguration.LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT)) {
+            Log.info("View_SelectLessons.doGoBack_LeaveSelectLessons(): Calling Utils_ANEs.showRatingsPrompt()");
+            Utils_ANEs.showRatingsPrompt();
+         }
       }
 
       override public function doGoHome():void {

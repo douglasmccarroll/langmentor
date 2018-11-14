@@ -48,6 +48,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
    private static const _DATA_TYPE_NAME__IS__HELP__LAST_VIEW_DATE__SELECT_LESSONS__SAVED:String = "is_Help_LastViewDate_SelectLessons_Saved";
    private static const _DATA_TYPE_NAME__IS__HELP__LAST_VIEW_DATE__SELECT_MODE__SAVED:String = "is_Help_LastViewDate_SelectMode_Saved";
    private static const _DATA_TYPE_NAME__IS_HOME_SCREEN_DISPLAY_COUNT_SAVED:String = "is_HomeScreenDisplayCount_Saved";
+   private static const _DATA_TYPE_NAME__IS_LESSON_VERSION_ENTRY_COUNT_SAVED:String = "is_LessonVersionEntryCount_Saved";
    private static const _DATA_TYPE_NAME__IS_MOST_RECENT_APP_VERSION_WHERE_USER_AGREED_TO_LEGAL_NOTICE_SAVED:String = "isMostRecentAppVersionWhereUserAgreedToLegalNoticeSaved";
    private static const _DATA_TYPE_NAME__IS__MOST_RECENT__NEWS_UPDATE__SAVED:String = "is_MostRecent_NewsUpdate_Saved";
    private static const _DATA_TYPE_NAME__IS__MOST_RECENT__NEWS_UPDATE__DATE_RETRIEVED__SAVED:String = "is_MostRecent_NewsUpdate_DateRetrieved_Saved";
@@ -60,7 +61,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
    private static const _DATA_TYPE_NAME__IS_USE_RECOMMENDED_LIBRARIES_SAVED:String = "isUseRecommendedLibrariesSaved";
    private static const _DATA_TYPE_NAME__IS_SELECTED_LESSON_DOWNLOAD_LEVELS_SAVED:String = "isSelectedLessonDownloadLevelsSaved";
    private static const _DATA_TYPE_NAME__IS_SELECTED_LESSON_VERSIONS_SAVED:String = "isSelectedLessonVersionsSaved";
-   private static const _DATA_TYPE_NAME__MOST_RECENT_APP_VERSION_WHERE_USER_AGREED_TO_LEGAL_NOTICE:String = "mostRecentAppVersionWhereUserAgreedToLegalNotice";
+   private static const _DATA_TYPE_NAME__LESSON_VERSION_ENTRY_COUNT:String = "lessonVersionEntryCount";
    private static const _DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE:String = "mostRecent_NewsUpdate";
    private static const _DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE__DATE_RETRIEVED:String = "mostRecent_NewsUpdate_DateRetrieved";
    private static const _DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE__DATE_VIEWED:String = "mostRecent_NewsUpdate_DateViewed";
@@ -101,6 +102,23 @@ public class AppStatePersistenceManager implements IManagedSingleton {
 
    public function isEnabled():Boolean {
       return (_persistenceManager != null);
+   }
+
+   public function iterateLessonVersionEntryCount():void {
+      if (!_persistenceManager)
+         return;
+      if (isDataWipeActivityBlockActive)
+         return;
+      var count:int;
+      if (retrieveIsLessonVersionEntryCountSaved()) {
+         count = retrieveLessonVersionEntryCount();
+      } else {
+         count = 0;
+      }
+      _persistenceManager.setProperty(_DATA_TYPE_NAME__LESSON_VERSION_ENTRY_COUNT, count + 1);
+      _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_LESSON_VERSION_ENTRY_COUNT_SAVED, true);
+      _persistenceManager.save();
+
    }
 
    public function persistAppInstallDate(value:Date):void {
@@ -510,6 +528,13 @@ public class AppStatePersistenceManager implements IManagedSingleton {
        return result;
    }*/
 
+   public function retrieveIsLessonVersionEntryCountSaved():Boolean {
+      if (!_persistenceManager)
+         return false;
+      var result:Boolean = Boolean(_persistenceManager.getProperty(_DATA_TYPE_NAME__IS_LESSON_VERSION_ENTRY_COUNT_SAVED));
+      return result;
+   }
+
    public function retrieveIs_MostRecent_NewsUpdate_Saved():Boolean {
       if (!_persistenceManager)
          return false;
@@ -602,6 +627,13 @@ public class AppStatePersistenceManager implements IManagedSingleton {
        var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT_DOWNLOAD_LESSONS_TIME) as Date);
        return result;
    }*/
+
+   public function retrieveLessonVersionEntryCount():int {
+      if (!_persistenceManager)
+         return -1;
+      var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__LESSON_VERSION_ENTRY_COUNT));
+      return result;
+   }
 
    public function retrieveMostRecent_NewsUpdate():XML {
       if (!_persistenceManager)

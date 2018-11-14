@@ -73,20 +73,31 @@
       </Entitlements>-->
       <InfoAdditions>
          <![CDATA[
-            <key>CFBundleURLTypes</key>
-            <array>
-              <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                  <string>fb##########</string>
-                </array>
-              </dict>
-            </array>
+
+            <!-- Facebook ANE -->
             <key>FacebookAppID</key>
-            <string>##########</string>
+            <string>####</string>
             <key>FacebookDisplayName</key>
             <string>Language Mentor</string>
-            <!--iOS 8.0 or higher can support barcode ANE, but my iPhone 4 won't upgrade above iOS 7.1 -->
+            <key>CFBundleURLTypes</key>
+            <array>
+               <dict>
+                  <key>CFBundleURLSchemes</key>
+                  <array>
+                     <string>fb####</string>
+                  </array>
+               </dict>
+            </array>
+            <key>LSApplicationQueriesSchemes</key>
+            <array>
+               <string>fbapi</string>
+               <string>fb-messenger-api</string>
+               <string>fb-messenger-share-api</string>
+               <string>fb-messenger</string>
+               <string>fbauth2</string>
+               <string>fbshareextension</string>
+            </array>
+
             <key>MinimumOSVersion</key>
             <string>8.0</string>
             <key>NSCalendarsUsageDescription</key>
@@ -100,6 +111,7 @@
             <key>UIStatusBarStyle</key>
             <string>UIStatusBarStyleLightContent</string>
             <key>NSAppTransportSecurity</key>
+            <!-- For now, this allows us to continue to use http rather than https - get certs for the subdomains that we access? -->
             <dict>
               <key>NSAllowsArbitraryLoads</key>
               <true/>
@@ -120,6 +132,7 @@
 
       <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
       <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
+      <extensionID>com.myflashlab.air.extensions.facebook</extensionID>
       <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
       <extensionID>com.myflashlab.air.extensions.rateMe</extensionID>
 

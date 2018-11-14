@@ -39,7 +39,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const LIST_OPTION__FORUMS:String = "Forums";
       private static const LIST_OPTION__RATE_LANGMENTOR:String = "Rate Language Mentor";
       private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
-      //private static const LIST_OPTION__SHARE:String = "Share";
+      private static const LIST_OPTION__SHARE_ON_FACEBOOK:String = "Share on Facebook";
       private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
 
       [Bindable]
@@ -67,6 +67,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
          _listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
          _listDataProvider.addItem({label: LIST_OPTION__SEND_PROBLEM_REPORT, value: LIST_OPTION__SEND_PROBLEM_REPORT});
+         _listDataProvider.addItem({label: LIST_OPTION__SHARE_ON_FACEBOOK, value: LIST_OPTION__SHARE_ON_FACEBOOK});
          _listDataProvider.addItem({label: LIST_OPTION__UPGRADE, value: LIST_OPTION__UPGRADE})
       }
 
@@ -77,14 +78,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_Forums);
                break;
             }
-            case LIST_OPTION__SEND_PROBLEM_REPORT: {
-               navigator.pushView(View_SendProblemReport);
-               break;
-            }
             case LIST_OPTION__RATE_LANGMENTOR: {
                list.selectedItems = null;
                list.invalidateProperties();
                Utils_ANEs.showRatingsPrompt();
+               break;
+            }
+            case LIST_OPTION__SEND_PROBLEM_REPORT: {
+               navigator.pushView(View_SendProblemReport);
+               break;
+            }
+            case LIST_OPTION__SHARE_ON_FACEBOOK: {
+               list.selectedItems = null;
+               list.invalidateProperties();
+               Utils_ANEs.facebookShare();
                break;
             }
             case LIST_OPTION__UPGRADE: {

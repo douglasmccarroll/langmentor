@@ -30,8 +30,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.base.Callbacks;
-      import com.brightworks.component.mobilealert.MobileAlert;
-      import com.brightworks.constant.Constant_Misc;
       import com.brightworks.constant.Constant_PlatformName;
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.audio.Utils_Audio_Files;
@@ -42,6 +40,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.component.button.Button_Standard;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
@@ -252,13 +251,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function currentlyInIKnowThisWaitInterval():Boolean {
          if (_mostRecentUserInitiatedIKnowThisTime == 0)
             return false;
-         return ((Utils_DateTime.getCurrentMS_BasedOnDate() - _mostRecentUserInitiatedIKnowThisTime) <= Constant_Misc.I_KNOW_THIS_REQUIRED_WAIT_INTERVAL)
+         return ((Utils_DateTime.getCurrentMS_BasedOnDate() - _mostRecentUserInitiatedIKnowThisTime) <= Constant_AppConfiguration.I_KNOW_THIS_REQUIRED_WAIT_INTERVAL)
       }
 
       private function currentlyInUserActionRequiredWaitInterval():Boolean {
          if (_mostRecentUserActionTime == 0)
             return false;
-         return ((Utils_DateTime.getCurrentMS_BasedOnDate() - _mostRecentUserActionTime) <= Constant_Misc.USER_ACTION_REQUIRED_WAIT_INTERVAL)
+         return ((Utils_DateTime.getCurrentMS_BasedOnDate() - _mostRecentUserActionTime) <= Constant_AppConfiguration.USER_ACTION_REQUIRED_WAIT_INTERVAL)
       }
 
       private function onButtonClick_Credits(event:MouseEvent):void {
