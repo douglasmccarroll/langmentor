@@ -171,7 +171,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    private var _selectedLessonDownloadLevels_PrimaryLevels:Array
 
    public function get selectedLessonDownloadLevels_PrimaryLevels():Array {
-      return _selectedLessonDownloadLevels_PrimaryLevels.slice();
+      if (_selectedLessonDownloadLevels_PrimaryLevels) {
+         return _selectedLessonDownloadLevels_PrimaryLevels.slice();
+      } else {
+         return null;
+      }
    }
 
    public function set selectedLessonDownloadLevels_PrimaryLevels(value:Array):void {
@@ -214,6 +218,14 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       if (!lvtlvo)
          Log.fatal(["MainModel.addLessonVersionVOToCache(): Cannot retreive LessonVersionTargetLanguageVO for LessonVersionVO from DB", vo]);
       _index_LessonVersionTargetLanguageVOs_by_LessonVersionVO[vo] = lvtlvo;
+   }
+
+   public function areAnyLessonDownloadLevelsCurrentlySelected():Boolean {
+      if (selectedLessonDownloadLevels_PrimaryLevels) {
+         return (selectedLessonDownloadLevels_PrimaryLevels.length > 0);
+      } else {
+         return false;
+      }
    }
 
    public function deleteData(callingMethodName:String, queryDataList:Array):MainModelDBOperationReport {
@@ -984,6 +996,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (report.resultData.length == 1);
    }
 
+   public function isTargetLanguageSelected():Boolean {
+      return (_currentTargetLanguageVO != null);
+   }
+
    public function isTextDisplayTypeExists(typeName:String):Boolean {
       var vo:TextDisplayTypeVO = _index_TextDisplayTypeVOs_by_TypeName[typeName];
       return (vo != null);
@@ -1160,6 +1176,8 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function wipeData():void {
+      _currentNativeLanguageVO = null;
+      _currentTargetLanguageVO = null;
       currentApplicationState = 0;
       currentLearningModeId = 0;
       _isDBDataInitialized = false;
@@ -1176,6 +1194,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       Utils_Dispose.disposeDictionary(_index_TextDisplayTypeName_by_TextDisplayTypeID, true);
       Utils_Dispose.disposeDictionary(_index_TextDisplayTypeVOs_by_TypeName, true);
       Utils_Dispose.disposeArray(_list_LessonVersionVOs, true);
+      Utils_Dispose.disposeArray(_selectedLessonDownloadLevels_PrimaryLevels, true);
       _currentLessons.removeAll();
       if (_data) {
          _data.dispose();

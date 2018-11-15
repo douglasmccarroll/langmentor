@@ -39,6 +39,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private var _isDisposed:Boolean = false;
       private var _useRecommendedLibrariesCheckbox:NormalCheckBox;
+      private var _recommendedLibrariesViewlet:Viewlet_RecommendedLibraries;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -60,7 +61,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       override protected function onNextButtonClick(event:MouseEvent):void {
-         Log.info("View_Intro_RecommendedLibraries_Decide.onNextButtonClick()");
+         Log.info("View_Intro_RecommendedLibraries.onNextButtonClick()");
          if (_useRecommendedLibrariesCheckbox)
             model.useRecommendedLibraries = _useRecommendedLibrariesCheckbox.selected;
          super.onNextButtonClick(event);
@@ -75,7 +76,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
          if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
-            textWidget = new UIWidget_Viewlet__Heading();
+            textWidget = new UIWidget_Viewlet__Bold_Text();
             textWidget.text = "You can use lesson libraries that we recommend, add specific libraries, or both:";
             viewletGroup.addElement(textWidget);
             viewletGroup.addElement(new Spacer());
@@ -85,14 +86,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _useRecommendedLibrariesCheckbox.selected = true;
             viewletGroup.addElement(_useRecommendedLibrariesCheckbox);
             textWidget = new UIWidget_Viewlet__Text();
-            textWidget.text = "If you select this option, Language Mentor will download lessons from libraries that we recommend.";
+            textWidget.text = "If you select this option, Language Mentor will download lessons from libraries that we recommend. You can change this option later if you like.";
             viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
             textWidget = new UIWidget_Viewlet__Bold_Text();
-            textWidget.text = "You can change this option later if you like";
+            textWidget.text = "Recommended libraries";
             viewletGroup.addElement(textWidget);
+            _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
+            _recommendedLibrariesViewlet.displayRecommendedLibrariesHeading = false;
+            viewletGroup.addElement(_recommendedLibrariesViewlet);
          } else {
             textWidget = new UIWidget_Viewlet__Heading();
             textWidget.text = "What lesson libraries would you like to use?";

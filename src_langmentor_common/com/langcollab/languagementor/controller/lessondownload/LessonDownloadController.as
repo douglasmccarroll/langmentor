@@ -460,7 +460,11 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       if (isTimeToDoNewDownload && !isUserInitiatedDownloadProcessActive) {
          _mostRecentDownloadLessonsTime = new Date();
          isAutoInitiatedDownloadProcessActive = true;
-         startUpdateAvailableLessonsProcess();
+         if ((_model.isTargetLanguageSelected()) && (_model.areAnyLessonDownloadLevelsCurrentlySelected())) {
+            startUpdateAvailableLessonsProcess();
+         } else {
+            // This happens when we do a "Delete All Data" and are restarting from the beginning. And perhaps at other times. Obviously, we can't start downloads if we don't know the target language and/or if no lesson levels have yet been selected for downloading.
+         }
       }
    }
 

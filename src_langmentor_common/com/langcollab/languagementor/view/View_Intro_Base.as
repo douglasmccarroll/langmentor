@@ -57,16 +57,11 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
          if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
             navigator.pushView(View_Intro_SelectLanguage);
          } else {
-            navigator.pushView(View_Intro_RecommendedLibraries_Decide);
+            navigator.pushView(View_Intro_RecommendedLibraries);
          }
       } else if (this is View_Intro_SelectLanguage)
-         navigator.pushView(View_Intro_RecommendedLibraries_Decide);
-      else if (this is View_Intro_RecommendedLibraries_Decide) {
-         if (model.useRecommendedLibraries)
-            navigator.pushView(View_Intro_RecommendedLibraries_Display);
-         else
-            navigator.pushView(View_Intro_AddLibraries_Decide);
-      } else if (this is View_Intro_RecommendedLibraries_Display)
+         navigator.pushView(View_Intro_RecommendedLibraries);
+      else if (this is View_Intro_RecommendedLibraries)
          navigator.pushView(View_Intro_AddLibraries_Decide);
       else if (this is View_Intro_AddLibraries_Decide)
          Log.error("View_Intro_Base.onNextButtonClick(): View_Intro_AddLibraries_Decide should handle this, and not call super.onNextButtonClick()");

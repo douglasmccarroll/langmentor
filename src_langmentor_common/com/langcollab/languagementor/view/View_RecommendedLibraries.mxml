@@ -31,7 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private var _initialRecommendedLibrariesValue:Boolean;
       private var _isDisposed:Boolean = false;
-      private var _viewlet:Viewlet_RecommendedLibraries;
+      private var _recommendedLibrariesViewlet:Viewlet_RecommendedLibraries;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -44,7 +44,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (_isDisposed)
             return;
          _isDisposed = true;
-         _viewlet.dispose();
+         _recommendedLibrariesViewlet.dispose();
       }
 
       override public function doGoBack():void {
@@ -74,9 +74,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          _initialRecommendedLibrariesValue = model.useRecommendedLibraries;
-         _viewlet = new Viewlet_RecommendedLibraries();
-         _viewlet.displayUseRecommendedLibrariesCheckbox = true;
-         viewletGroup.addElement(_viewlet);
+         _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
+         _recommendedLibrariesViewlet.displayUseRecommendedLibrariesCheckbox = true;
+         viewletGroup.addElement(_recommendedLibrariesViewlet);
       }
       ]]>
     </fx:Script>

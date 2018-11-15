@@ -125,6 +125,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onDisplayOnlyLanguagesWithRecommendedLibrariesCheckboxChange(e:Event):void {
          populateLanguageListDataProvider();
+         nextButton.enabled = false;
       }
 
       private function onListChange(e:Event):void {
