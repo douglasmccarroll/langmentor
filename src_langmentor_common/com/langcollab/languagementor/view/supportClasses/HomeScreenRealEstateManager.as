@@ -24,8 +24,6 @@ public class HomeScreenRealEstateManager {
    public static const SCREEN_AREA_LABEL__TOP:String = "screenAreaLabel_Top";
    public static const SCREEN_AREA_LABEL__TOP_RIGHT:String = "screenAreaLabel_TopRight";
 
-   private static const _FOREGROUND_BUTTON_COLOR:uint = 0x5F6CC1;//0x0c631b;//0x5F6CC1;
-
    private var _appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    private var _index_ClickFunctions_to_Targets:Dictionary;
    private var _isDisposed:Boolean;
