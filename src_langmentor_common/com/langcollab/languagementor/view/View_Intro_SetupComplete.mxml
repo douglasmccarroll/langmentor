@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
 
       import mx.controls.Spacer;
@@ -166,11 +167,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(textWidget);
       }
 
-      private function displayContent_InsuffientLessonStorageSpaceAvailable():void {
+      private function displayContent_InsufficientLessonStorageSpaceAvailable():void {
          nextButton.enabled = true;
          var textWidget:IUIWidget_Text;
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "We're sorry, but this device doesn't have sufficient space available to store downloaded lessons";
+         textWidget.text = Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE;
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "You may be able to resolve this problem by adding additional storage, then restarting Language Mentor";
@@ -280,7 +281,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          nextButton.enabled = false;
          if (isAnyLibrariesAvailableForDownloading()) {
             if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
-               displayContent_InsuffientLessonStorageSpaceAvailable();
+               displayContent_InsufficientLessonStorageSpaceAvailable();
             }
             else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
                displayContent_Downloading_UpdatingAvailableLessonInfo();
@@ -305,8 +306,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess)
                         displayContent_Downloading_Failure();
                      else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
-                              (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
-                               updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)) {
+                           (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+                                 updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)) {
                         displayContent_Downloading_Failure();
                      }
                   }

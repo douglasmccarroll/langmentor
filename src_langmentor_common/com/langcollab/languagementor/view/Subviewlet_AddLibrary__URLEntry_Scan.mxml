@@ -35,6 +35,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _SCAN_BUTTON_LABEL__SCAN_ANOTHER:String = "Scan Another";
       private static const _SCAN_BUTTON_LABEL__START_SCAN:String = "Start Scan";
 
+      private var _isCameraPermissionObtained:Boolean;
       private var _isDisposed:Boolean;
 
 
@@ -71,6 +72,23 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+      private function activateCodeScanner():void {
+         Utils_ANEs.activateCodeScanner(onScanResult, onScanCancel, onScanFailure);
+      }
+
+      private function onCameraPermissionRequestResponse_Initial(b:Boolean):void {
+         _isCameraPermissionObtained = b;
+      }
+
+      private function onCameraPermissionRequestResponse_OnScanButtonClick(b:Boolean):void {
+         _isCameraPermissionObtained = b;
+         if (b) {
+            activateCodeScanner();
+         } else {
+            feedbackTextWidget.text = "Unable to obtain permission to use camera";
+         }
+      }
+
       private function onScanCancel():void {
          // do nothing
       }
@@ -93,10 +111,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onScanButtonClick():void {
          Log.info("Subviewlet_AddLibrary__URLEntry_Scan.onScanButtonClick()");
-         Utils_ANEs.activateCodeScanner(onScanResult, onScanCancel, onScanFailure);
+         if (_isCameraPermissionObtained) {
+            activateCodeScanner();
+         } else {
+            Utils_ANEs.requestCameraPermission(onCameraPermissionRequestResponse_OnScanButtonClick);
+         }
       }
 
       private function onShow():void {
+         Utils_ANEs.requestCameraPermission(onCameraPermissionRequestResponse_Initial);
          feedbackTextWidget.text = "";
       }
       ]]>

@@ -209,8 +209,13 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
    }
 
    public function init():void {
-      if ((_model.autoDownloadLessons) && (isSufficientLessonStorageSpaceAvailable()))
-         startAutoDownloadTimer();
+      if (_model.autoDownloadLessons) {
+         if (isSufficientLessonStorageSpaceAvailable()) {
+            startAutoDownloadTimer();
+         } else {
+            displayInsufficientStorageSpaceAlert();
+         }
+      }
    }
 
    public function initSingleton():void {
@@ -293,7 +298,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          return true;
       var exists:Boolean = Utils_File.ensureDirectoryExists(Utils_LangCollab.downloadedLessonsDirectoryURL);
       if (exists) {
-         var result:Boolean = (Utils_File.getAvailableFileSystemSpace(Utils_LangCollab.downloadedLessonsDirectoryURL) > Utils_File.BYTES_IN_GIGABYTE);
+         var result:Boolean = (Utils_File.getAvailableFileSystemSpace(Utils_LangCollab.downloadedLessonsDirectoryURL) > (Utils_File.BYTES_IN_MEGABYTE * 300));
          return result;
       } else {
          Log.error("LessonDownloadController.isSufficientLessonStorageSpaceAvailable(): Unable to ensure storage directory exists, so we can't measure available file system space");
@@ -395,14 +400,9 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       return result;
    }
 
-   /*private function getLessonFolderURL(libraryFolderUrl:String, lessonDownloadInfo_Lesson:LessonDownloadInfo_Lesson):String
-   {
-       /// 20120613 not being used - delete
-       var result:String = libraryFolderUrl + _model.getTargetLanguageIso639_3Code();
-       if (lessonDownloadInfo_Lesson.lessonIsDualLanguage)
-           result += "_" + _model.getNativeLanguageIso639_3Code() + "/";
-       return result;
-   }*/
+   private function displayInsufficientStorageSpaceAlert():void {
+      Utils_ANEs.showAlert_Toast(Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE);
+   }
 
    private function isLessonVersionPublishedVersionLessThan(lvvo:LessonVersionVO, lessonVersion:String):Boolean {
       var result:Boolean = false;
@@ -432,8 +432,11 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          return;
       }
       if (_model.autoDownloadLessons) {
-         if (isSufficientLessonStorageSpaceAvailable())
+         if (isSufficientLessonStorageSpaceAvailable()) {
             startAutoDownloadTimer();
+         } else {
+            displayInsufficientStorageSpaceAlert();
+         }
       } else {
          stopAutoDownloadTimer();
          if (isAutoInitiatedDownloadProcessActive) {
@@ -662,7 +665,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          // concludes that it's time to try again.
          return;
       }
-      Utils_ANEs.showAlert_Toast("\nSearching For New Lessons\n\nPlease Wait\n", true);
+      Utils_ANEs.showAlert_Toast("Searching For New Lessons", true);
       _isUpdateAvailableLessonDownloadsProcessActive = true;
       _mostRecentUpdateAvailableLessonDownloadsStartTime = Utils_DateTime.getCurrentMS_BasedOnDate();
       lessonDownloadInfo_Libraries = new LessonDownloadInfo_Libraries();

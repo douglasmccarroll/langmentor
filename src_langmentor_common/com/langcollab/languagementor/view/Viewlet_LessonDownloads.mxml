@@ -29,6 +29,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
+      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
       import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
       import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController_LessonDownloadProcessResultsInfo;
@@ -105,7 +106,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             message += updateUI_CreatePreviousLessonDownloadInfoString();
          }
          if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
-            message += "We're sorry, this device has insufficient space available in its file system to store new lessons.";
+            message += Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE;
          }
          else if (lessonDownloadController.isLessonDownloadProcessActive) {
             message += updateUI_CreateLessonDownloadInProcessString();

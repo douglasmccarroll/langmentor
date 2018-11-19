@@ -45,6 +45,7 @@ public class Constant_AppConfiguration {
 
    public static const BRIGHTWORKS_BLURB:String = "Language Mentor technology is lovingly crafted by the dwarves and elves of Brightworks, deep in the primal forests of Massachusetts. We specialize in cross-platform development of mobile learning apps. Our technology is available under various licenses from open source (GPL) to white-label apps custom branded for our clients\n\nHow may we be of service?\nhttp://www.brightworks.com";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
+   public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";
    public static const LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT:int = 25;
    public static const REQUIRED_SCREEN_RESOLUTION__X:uint = 320;
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;

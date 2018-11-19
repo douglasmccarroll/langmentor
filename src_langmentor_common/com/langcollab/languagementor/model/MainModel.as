@@ -1393,10 +1393,12 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var f:File;
       var s:String = Constant_LangMentor_Misc.FILEPATHINFO__LANGUAGE_RESOURCE_FOLDER_NAME + File.separator + _currentNativeLanguageVO.iso639_3Code + ".xml";
       f = appDir.resolvePath(Constant_LangMentor_Misc.FILEPATHINFO__LANGUAGE_RESOURCE_FOLDER_NAME + File.separator + _currentNativeLanguageVO.iso639_3Code + ".xml");
-      if (f.exists)
+      if (f.exists) {
          _currentNativeLanguageResourceXML = Utils_XML.synchronousLoadXML(f, true);
-      else
+      } else {
+         // This occurs sometimes when running desktop emulator, and resource files haven't gotten copied to the output folder
          Log.error("MainModel.loadLanguageResourceXML(): language resource file for native language (" + _currentNativeLanguageVO.iso639_3Code + ") is missing");
+      }
       f = appDir.resolvePath(Constant_LangMentor_Misc.FILEPATHINFO__LANGUAGE_RESOURCE_FOLDER_NAME + File.separator + _currentTargetLanguageVO.iso639_3Code + ".xml");
       if (f.exists)
          _currentTargetLanguageResourceXML = Utils_XML.synchronousLoadXML(f, true);

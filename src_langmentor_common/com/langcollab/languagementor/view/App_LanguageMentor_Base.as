@@ -77,6 +77,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       frameRate = 6;
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
+      Utils_ANEs.initialize();
       _singletonManager = new LangMentorSingletonManager();
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
       _audioController = AudioController.getInstance();

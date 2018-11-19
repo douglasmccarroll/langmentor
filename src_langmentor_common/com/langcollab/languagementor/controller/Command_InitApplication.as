@@ -59,7 +59,6 @@ public class Command_InitApplication extends Command_Base__LangMentor {
    public function execute():void {
       Log.info("Command_InitApplication.execute()");
       ToolTip.maxWidth = 150;
-      Utils_ANEs.initialize();
       // Next lines are for cases where we're init'ing after data wipe
       // Update: I'm not sure that the above comment is accurate, i.e. I think that these lines are for both a) a first-time use scenario, and b) an after-data-wipe scenario. But I'm not sure, and am not going to take time to research this thoroughly right now.
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
