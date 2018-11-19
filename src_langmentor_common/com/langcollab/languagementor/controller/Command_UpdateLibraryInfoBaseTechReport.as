@@ -27,23 +27,24 @@ import com.langcollab.languagementor.model.ConfigFileInfoTechReport;
 import flash.utils.Dictionary;
 
 public class Command_UpdateLibraryInfoBaseTechReport extends TechReport implements ITechReport, IDisposable {
+   public var configFileInfoTechReport:ConfigFileInfoTechReport;
    public var index_languageSpecificFileName_to_fileDownloaderErrorReport:Dictionary;
-   public var isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess:Boolean = false;
+   public var isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess:Boolean;
    // The next two properties aren't named very well. Neither one alone is actually a failure. Each just indicates that the library XML file doesn't have one type of lesson.
    // For this to really be a failure both need to be set to true.
-   public var isLanguageSpecificInfoFileDownloadFailure_DualLanguage:Boolean = false;
-   public var isLanguageSpecificInfoFileDownloadFailure_SingleLanguage:Boolean = false;
-   public var isLanguageSpecificInfoFileXMLParsingFailure_DualLanguage:Boolean = false;
-   public var isLanguageSpecificInfoFileXMLParsingFailure_SingleLanguage:Boolean = false;
-   public var isLoadConfigFileInfoFailure:Boolean = false;
-   public var isProcessTimedOut:Boolean = false;
-   public var configFileInfoTechReport:ConfigFileInfoTechReport;
+   public var isLanguageSpecificInfoFileDownloadFailure_DualLanguage:Boolean;
+   public var isLanguageSpecificInfoFileDownloadFailure_SingleLanguage:Boolean;
+   public var isLanguageSpecificInfoFileXMLParsingFailure_DualLanguage:Boolean;
+   public var isLanguageSpecificInfoFileXMLParsingFailure_SingleLanguage:Boolean;
+   public var isLoadConfigFileInfoFailure:Boolean;
+   public var isProcessTimedOut:Boolean;
+   public var isZeroLibrariesAddedByUserAndOrRecommendedLibraries:Boolean;
    public var list_LibraryURLs_UnfinishedLibraryInfoDownloadsAtTimeout:Array;
    public var list_TechReports_AllLibraryInfoDownloads:Array = [];
    public var list_TechReports_ProblematicLibraryInfoDownloads:Array = [];
    public var problemDescriptionList:Vector.<String> = new Vector.<String>();
 
-   private var _isDisposed:Boolean = false;
+   private var _isDisposed:Boolean;
 
    public function Command_UpdateLibraryInfoBaseTechReport() {
       Log.debug("Command_UpdateLibraryInfoBaseTechReport - Constructor");

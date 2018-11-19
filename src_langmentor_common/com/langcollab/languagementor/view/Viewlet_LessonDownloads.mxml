@@ -35,6 +35,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController_LessonDownloadProcessResultsInfo;
 
       private static const _INDENT:String = "    ";
+
+      private static const _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER:String =
+            "No lesson libraries have been selected. In order to access lessons, please go to More > Manage Libraries and add one or more libraries."
+      private static const _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES:String =
+            "No lesson libraries have been selected. In order to access lessons, please go to More > Manage Libraries and add one or more libraries, and/or select Use Recommended Libraries."
       private static const _MESSAGE__APP_UPDATE_REQUIRED:String =
             "Please Upgrade\n\nA new version of Language Mentor is available, and an upgrade is necessary before more new lessons can be downloaded.\n\n" +
             'Please go to More > Community & Support > Upgrade Language Mentor, then follow the directions on that screen.';
@@ -45,8 +50,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _MESSAGE__UNEXPLAINED:String =
             "We're sorry, we're unable to obtain new lesson info. Please " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US + ".";
       private static const _MESSAGE__ZERO_LIBRARIES_CHECKED:String =
-            "We're sorry, we're unable to download lessons because no libraries have been specified.\n\nLibraries can be specified in two ways:\n\n1. By adding specific libraries in More > Manage Libraries > Add Lesson Libraries.\n\n2. By activating the " +
-            '"Use Recommended Libraries" option in Manage Libraries > Recommended Libraries.';
+            "We're sorry, we weren't able to download any libraries. We're not sure what the problem is, but this problem is usually cause by a poor or nonexistent internet connection. " +
+            "Please ensure that this device is connected to the internet and try again.";
 
 
       public var startLessonDownloads:Boolean = false;
@@ -123,6 +128,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                }
                else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
+               }
+               else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
+                  if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
+                     explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES;
+                  } else {
+                     explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER;
+                  }
                }
                else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
                         updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {

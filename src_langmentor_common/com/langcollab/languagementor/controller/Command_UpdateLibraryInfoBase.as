@@ -342,6 +342,7 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
       if (includeUserAddedLibraries)
          addNonDuplicateLibraryURLsFromDBToArray(libraryUrlList);
       if (libraryUrlList.length == 0) {
+         techReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries = true;
          reportResultsAndDispose();
          return;
       }
