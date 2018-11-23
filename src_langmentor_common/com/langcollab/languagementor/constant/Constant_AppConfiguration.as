@@ -25,7 +25,7 @@ public class Constant_AppConfiguration {
 
    public static const APP_ID:String = "com.brightworks.LangMentor.standard";
    public static const APP_NAME:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.23;
+   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.38;
 
    public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL;
    public static const CURRENT_MENTOR_TYPE__DISPLAY_NAME:String = Constant_MentorTypes.MENTOR_TYPE_DISPLAY_NAME__GLOBAL;
@@ -44,6 +44,7 @@ public class Constant_AppConfiguration {
    // Constants that we don't usually modify for a new release
 
    public static const BRIGHTWORKS_BLURB:String = "Language Mentor technology is lovingly crafted by the dwarves and elves of Brightworks, deep in the primal forests of Massachusetts. We specialize in cross-platform development of mobile learning apps. Our technology is available under various licenses from open source (GPL) to white-label apps custom branded for our clients\n\nHow may we be of service?\nhttp://www.brightworks.com";
+   public static const EXPLANATORY_AUDIO_FILE_BODY_STRING:String = "xply";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
    public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";
    public static const LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT:int = 25;

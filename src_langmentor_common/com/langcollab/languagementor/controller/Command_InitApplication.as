@@ -71,10 +71,11 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          // It breaks when set while running in the AIR simulator on the desktop.
          File.documentsDirectory.preventBackup = true;
       }
-      if (!appStatePersistenceManager.retrieveIsCurrAppVersionSaved()) {
+      if ((!appStatePersistenceManager.retrieveIsCurrAppVersionSaved()) || (!Utils_Database.doesDBFileExist(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL))) {
          // Either this app has never been installed, or it has been uninstalled. In the latter case,
          // there may still be data on the SD card. We want to start from a clean slate in this case,
          // so we delete all app data.
+         Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
          Utils_File.deleteDirectory(Utils_AIR.documentStorageDirectoryURL);
          Utils_File.ensureDirectoryExists(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL);
          Utils_Database.ensureDBFileExists(Utils_LangCollab.sqLiteDatabaseFileURL, appStatePersistenceManager);
@@ -93,6 +94,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          Utils_Database.ensureDBFileExists(Utils_LangCollab.sqLiteDatabaseFileURL, appStatePersistenceManager);
          model.init();
       }
+      appStatePersistenceManager.isDataWipeActivityBlockActive = false;
       appStatePersistenceManager.persistCurrAppVersion(Utils_AIR.appVersionNumber);
       lessonDownloadController.init();
       model.retrievePersistedAppStateData();

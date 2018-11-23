@@ -29,7 +29,7 @@ public class ChunkFileVO extends ChunkReferencingVO implements IVO {
    private static var _associatedTableName:String;
    private static var _propInfoList:Dictionary;
 
-   public var iso639_3Code:String;
+   public var fileNameBody:String;
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
    //
@@ -51,21 +51,7 @@ public class ChunkFileVO extends ChunkReferencingVO implements IVO {
       }
    }
 
-   private var _languageId:int;
-
-   public function get languageId():int {
-      return _languageId;
-   }
-
-   public function set languageId(value:int):void {
-      setPropList.push("languageId");
-      if (_languageId != value) {
-         _languageId = value;
-         dispatchEvent(new Event("valueChange"));
-      }
-   }
-
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
@@ -101,7 +87,7 @@ public class ChunkFileVO extends ChunkReferencingVO implements IVO {
 
    override public function getPropNameList_KeyProps():Array {
       var result:Array = super.getPropNameList_KeyProps();
-      result.push("languageId");
+      result.push("fileNameBody");
       return result;
    }
 

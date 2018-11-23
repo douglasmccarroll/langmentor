@@ -408,6 +408,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                (!_isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge)) {
             // Kludge
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = true;
+            //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
             textField_ChunkText.text = currentLessons.getCurrentChunkDefaultDisplayText();
             _button_PreviousChunk.enabled = true;
          }

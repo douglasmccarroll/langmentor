@@ -20,9 +20,12 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.vo.IVO;
+import com.langcollab.languagementor.vo.ChunkVO;
 
 import flash.events.Event;
 import flash.utils.Dictionary;
+
+import mx.messaging.channels.SecureAMFChannel;
 
 public class AudioSequenceBranch extends AudioSequenceElement {
    private static var _availableInstancePool:Array = [];
@@ -190,6 +193,9 @@ public class AudioSequenceBranch extends AudioSequenceElement {
       Log.debug(["AudioSequenceBranch.setSequenceStrategy(): levelId=" + levelId, strategy]);
       if (this.levelId == levelId) {
          _sequenceStrategy = strategy;
+         if (levelId == AudioController.AUDIO_SEQUENCE_LEVEL__CHUNK) {
+            SequenceStrategy_Chunk(_sequenceStrategy).chunkType = ChunkVO(vo).chunkType;
+         }
          _sequenceStrategy.init(this.elements);
       } else {
          // call setSequenceStrategy() for all children

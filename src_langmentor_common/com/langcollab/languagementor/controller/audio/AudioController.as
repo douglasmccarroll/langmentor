@@ -24,7 +24,6 @@
 
 */
 package com.langcollab.languagementor.controller.audio {
-import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
@@ -33,6 +32,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.singleton.SingletonManager;
 import com.brightworks.vo.IVO;
+import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
 import com.langcollab.languagementor.event.Event_AudioProgress;
@@ -58,7 +58,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
    public static const AUDIO_SEQUENCE_LEVEL__LEAF:String = "audioSequenceLevel_Leaf";
    public static const AUDIO_SEQUENCE_LEVEL__LESSON:String = "audioSequenceLevel_Lesson";
 
-   private static var _audioController:AudioController;
    private static var _instance:AudioController;
 
    private var _chunksPlayedInCurrentLessonVersionAudioSequence:uint = 0;
@@ -230,12 +229,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       clearTimer_StartLesson();
       stopLeafFinishCheckProcess();
       var isSameLesson:Boolean = false;
-      var isSameChunk:Boolean = false;
       if (_currentLessonVersionAudioSequence) {
          var currPlayingLessonVO:IVO = _currentLessonVersionAudioSequence.getCurrentVOForLevel(AUDIO_SEQUENCE_LEVEL__LESSON);
-         var currPlayingChunkVO:IVO = _currentLessonVersionAudioSequence.getCurrentVOForLevel(AUDIO_SEQUENCE_LEVEL__CHUNK);
          isSameLesson = (currPlayingLessonVO.equals(_currentLessons.currentLessonVO));
-         isSameChunk = (currPlayingChunkVO.equals(_currentLessons.currentChunkVO));
       }
       var sequenceCreationStepNeeded:Boolean = false;
       if ((!(_currentLessonVersionAudioSequence)) || (!isSameLesson))
@@ -266,6 +262,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
    public function setTempChangeChunkSequenceStrategyForNChunks(chunkStrategy:ISequenceStrategy):void {
       // dmcarroll 20130605
+      // Currently only called by onTranslate() so it's always 1 chunk
       // If/when we start passing in 'n' again, search for comments with
       // 'setTempChangeChunkSequenceStrategyForNChunks' in them - some of our code may need to change
       var n:int = 1;
@@ -330,6 +327,23 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       }
    }
 
+   private function createIndex_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion():Dictionary { /////
+      var result:Dictionary = new Dictionary();
+      var index_ChunkVOs_by_LocationInOrder:Dictionary = new Dictionary();
+      for each (var chunkVO:ChunkVO in _currentLessons.currentLessonChunks_SortedByLocationInOrder) {
+         index_ChunkVOs_by_LocationInOrder[chunkVO.locationInOrder] = chunkVO;
+      }
+      var chunkFileVOList_ForLessonVersion:Array = _currentLessons.currentLessonChunkFiles;
+      var matchingChunkVO:ChunkVO;
+      for each (var chunkFileVO:ChunkFileVO in chunkFileVOList_ForLessonVersion) {
+         if (chunkFileVO.fileNameBody == Constant_AppConfiguration.EXPLANATORY_AUDIO_FILE_BODY_STRING) {
+            matchingChunkVO = index_ChunkVOs_by_LocationInOrder[chunkFileVO.chunkLocationInOrder];
+            result[matchingChunkVO] = chunkFileVO.duration;
+         }
+      }
+      return result;
+   }
+
    private function createIndex_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion():Dictionary {
       var result:Dictionary = new Dictionary();
       var index_ChunkVOs_by_LocationInOrder:Dictionary = new Dictionary();
@@ -337,10 +351,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          index_ChunkVOs_by_LocationInOrder[chunkVO.locationInOrder] = chunkVO;
       }
       var chunkFileVOList_ForLessonVersion:Array = _currentLessons.currentLessonChunkFiles;
-      var chunkFileVOList_ForChunk:Array;
       var matchingChunkVO:ChunkVO;
       for each (var chunkFileVO:ChunkFileVO in chunkFileVOList_ForLessonVersion) {
-         if (chunkFileVO.iso639_3Code == _model.getNativeLanguageIso639_3Code()) {
+         if (chunkFileVO.fileNameBody == _model.getNativeLanguageIso639_3Code()) {
             matchingChunkVO = index_ChunkVOs_by_LocationInOrder[chunkFileVO.chunkLocationInOrder];
             result[matchingChunkVO] = chunkFileVO.duration;
          }
@@ -355,10 +368,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          index_ChunkVOs_by_LocationInOrder[chunkVO.locationInOrder] = chunkVO;
       }
       var chunkFileVOList_ForLessonVersion:Array = _currentLessons.currentLessonChunkFiles;
-      var chunkFileVOList_ForChunk:Array;
       var matchingChunkVO:ChunkVO;
       for each (var chunkFileVO:ChunkFileVO in chunkFileVOList_ForLessonVersion) {
-         if (chunkFileVO.iso639_3Code == _model.getTargetLanguageIso639_3Code()) {
+         if (chunkFileVO.fileNameBody == _model.getTargetLanguageIso639_3Code()) {
             matchingChunkVO = index_ChunkVOs_by_LocationInOrder[chunkFileVO.chunkLocationInOrder];
             result[matchingChunkVO] = chunkFileVO.duration;
          }
@@ -420,19 +432,16 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT:
                   _model.mostRecentDownloadProcessStartAllowedEventTime = new Date();
                   break;
-               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL:
-                  // We don't set _model.mostRecentDownloadProcessStartAllowedEventTime here because
-                  // we don't want download processes to occur during this pause - the process might be a
-                  // 'save to DB' process, and saving to the DB right before we play the first audio in a
-                  // chunk tends to be problematic, at least on iPhone 4.
-                  break;
                case Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT:
                case Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT:
                   _model.mostRecentDownloadProcessStartAllowedEventTime = new Date();
                   break;
+               case Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_EXPLANATORY:
                case Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE:
                case Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET:
-               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY:
+               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS:
+               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS:
+               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS:
                case Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK:
                case Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE:
                case Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET:
@@ -443,8 +452,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             _currentLeafType = String(event.id);
             _mostRecentLeafElementStartTime = new Date();
             dispatchEvent(new Event("mostRecentLeafElementStartTimeChange"));
-            if (!(Utils_System.isIOS() && Utils_System.isInDebugMode()))       // This seems to be causing more problems than value in iOS debug mode
+            if (!(Utils_System.isIOS() && Utils_System.isInDebugMode())) {         // This seems to be causing more problems than value in iOS debug mode
                startLeafFinishCheckProcess(AudioSequenceLeaf(event.target));
+            }
             break;
          case AUDIO_SEQUENCE_LEVEL__CHUNK:
             _chunksPlayedInCurrentLessonVersionAudioSequence++;
@@ -463,7 +473,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       if (event.target is AudioSequenceLeaf_File)
          errorString += " url:" + AudioSequenceLeaf_File(event.target).url;
       trace("Error: " + errorString);
-      Log.fatal(errorString); ///
+      Log.fatal(errorString);
    }
 
    private function onTimer_LeafFinishChecker(event:TimerEvent):void {
@@ -510,6 +520,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       // All of the above 'if' blocks check for conditions where no leaf should be playing, and all suggest that there's a problem with this 'check' code,
       // rather than the 'leaf fails to finish' bug.
       // Once we get to this point, it seems probable that the problem actually exists in the leaf, i.e. the leaf started and should have completed, but didn't.
+      //
+      //  Debugging: Examine contents of leaf, including leaf.duration
+      //
       var leaf:AudioSequenceLeaf = _currentAudioSequenceLeaf;
       stopLeafFinishCheckProcess();
       Log.warn("AudioController.onTimer_LeafFinishChecker(): leaf should have finished but didn't. Resuming leaf.");
@@ -524,6 +537,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             AudioSequenceBranch.acquireReusable(null, AUDIO_SEQUENCE_LEVEL__LESSON, _currentLessons.currentLessonVO, false);
       _currentLessonVersionAudioSequence.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
       _currentLessonVersionAudioSequence.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+      var index_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion:Dictionary = createIndex_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion();
       var index_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion:Dictionary = createIndex_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion();
       var index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion:Dictionary = createIndex_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion();
       var audioVolumeAdjustmentFactor:Number;
@@ -539,133 +553,164 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          chunkElement.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
          chunkElement.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
          _currentLessonVersionAudioSequence.elements[chunkIndex] = chunkElement;
-         if (_currentLessons.isCurrentLessonAlphaReviewVersion()) {
-            if (chunkVO.textNativeLanguage) {
-               duration = (chunkVO.textNativeLanguage.length * 100) + 3000;
+         switch (chunkVO.chunkType) {
+            case ChunkVO.CHUNK_TYPE__DEFAULT: {
+               // What's the default chunk type? See comments at ChunkVO.CHUNK_TYPE__DEFAULT
+               if (_currentLessons.isCurrentLessonAlphaReviewVersion()) {
+                  if (chunkVO.textNativeLanguage) {
+                     duration = (chunkVO.textNativeLanguage.length * 100) + 3000;
+                  }
+                  else {
+                     Log.error("AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence(): Chunk has no native text in alpha review mode");
+                     duration = 10000;
+                  }
+      
+                  leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE, duration);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+                  leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+                  chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE] = leaf;
+      
+                  leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET, duration);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+                  leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+                  chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET] = leaf;
+      
+                  chunkIndex++;
+                  continue;
+               }
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS] = leaf;
+      
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS] = leaf;
+      
+               if (_currentLessons.currentLessonVO.isDualLanguage) {
+                  var nativeLanguageFileDuration:Number = index_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
+                  audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.nativeLanguageAudioVolumeAdjustmentFactor;
+                  url =
+                        Utils_LangCollab.downloadedLessonsDirectoryURL +
+                        File.separator +
+                        _currentLessons.currentLessonVO.contentProviderId +
+                        File.separator +
+                        _currentLessons.currentLessonVO.publishedLessonVersionId +
+                        File.separator +
+                        chunkVO.fileNameRoot +
+                        "." +
+                        _model.getNativeLanguageIso639_3Code() +
+                        "." +
+                        Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_AUDIO_FILE_EXTENSION;
+                  leaf = AudioSequenceLeaf_File.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE, url, audioVolumeAdjustmentFactor, nativeLanguageFileDuration);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+                  leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+                  leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+                  chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE] = leaf;
+               }
+      
+               var targetLanguageFileDuration:Number = index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
+               audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.targetLanguageAudioVolumeAdjustmentFactor;
+               url =
+                     Utils_LangCollab.downloadedLessonsDirectoryURL +
+                     File.separator +
+                     _currentLessons.currentLessonVO.contentProviderId +
+                     File.separator +
+                     _currentLessons.currentLessonVO.publishedLessonVersionId +
+                     File.separator +
+                     chunkVO.fileNameRoot +
+                     "." +
+                     _model.getTargetLanguageIso639_3Code() +
+                     "." +
+                     Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_AUDIO_FILE_EXTENSION;
+               leaf = AudioSequenceLeaf_File.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET, url, audioVolumeAdjustmentFactor, targetLanguageFileDuration);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET] = leaf;
+      
+               var pauseForRepetitionDuration:Number = (index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO] * 2) + 1200;
+      
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT, pauseForRepetitionDuration);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT] = leaf;
+      
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT, pauseForRepetitionDuration);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT] = leaf;
+      
+               // We don't do recording if there's no text displayed, as this probably indicates that we don't have native language audio.
+               // This can happen in title chunks, and perhaps in other cases. This is a bit kludgy /// Ideally this would be specified in
+               // the XML for the chunk.
+               var suppressRecording:Boolean = !_currentLessons.doesChunkHaveDefaultDisplayText(chunkVO);
+      
+               // On at least some devices, we need to keep recording longer than the desired recording time in
+               // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
+               var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
+      
+               var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.START_DELAY__INITIAL + AudioRecorder.START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING + recordingStopDelayDuration;
+      
+               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT] = leaf;
+      
+               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT] = leaf;
+      
+               var durationOfRecording:Number = durationIncludingAllDelays - AudioRecorder.START_DELAY__INITIAL;
+      
+               leaf = AudioSequenceLeaf_Playback.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK, durationOfRecording);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK] = leaf;
+               break;
             }
-            else {
-               Log.error("AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence(): Chunk has no native text in alpha review mode");
-               duration = 10000;
-            }
+            case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS] = leaf;
 
-            leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE, duration);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-            leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-            chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE] = leaf;
-
-            leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET, duration);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-            leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-            chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET] = leaf;
-
-            chunkIndex++;
-            continue;
+               duration = index_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
+               audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.nativeLanguageAudioVolumeAdjustmentFactor;
+               url =
+                     Utils_LangCollab.downloadedLessonsDirectoryURL +
+                     File.separator +
+                     _currentLessons.currentLessonVO.contentProviderId +
+                     File.separator +
+                     _currentLessons.currentLessonVO.publishedLessonVersionId +
+                     File.separator +
+                     chunkVO.fileNameRoot +
+                     "." +
+                     Constant_AppConfiguration.EXPLANATORY_AUDIO_FILE_BODY_STRING +
+                     "." +
+                     Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_AUDIO_FILE_EXTENSION;
+               leaf = AudioSequenceLeaf_File.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_EXPLANATORY, url, audioVolumeAdjustmentFactor, duration);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_EXPLANATORY] = leaf;
+               break;
+            }   
+            default:
+               Log.fatal("AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence() - no case for chunkType: " + chunkVO.chunkType);
          }
-         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY, 200);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_TINY] = leaf;
-
-         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL, 500);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL] = leaf;
-
-         if (_currentLessons.currentLessonVO.isDualLanguage) {
-            var nativeLaguageFileDuration:Number = index_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
-            audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.nativeLanguageAudioVolumeAdjustmentFactor;
-            url =
-                  Utils_LangCollab.downloadedLessonsDirectoryURL +
-                  File.separator +
-                  _currentLessons.currentLessonVO.contentProviderId +
-                  File.separator +
-                  _currentLessons.currentLessonVO.publishedLessonVersionId +
-                  File.separator +
-                  chunkVO.fileNameRoot +
-                  "." +
-                  _model.getNativeLanguageIso639_3Code() +
-                  "." +
-                  Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION;
-            leaf = AudioSequenceLeaf_File.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE, url, audioVolumeAdjustmentFactor, nativeLaguageFileDuration);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-            leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-            leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-            chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE] = leaf;
-         }
-
-         var targetLanguageFileDuration:Number = index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
-         audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.targetLanguageAudioVolumeAdjustmentFactor;
-         url =
-               Utils_LangCollab.downloadedLessonsDirectoryURL +
-               File.separator +
-               _currentLessons.currentLessonVO.contentProviderId +
-               File.separator +
-               _currentLessons.currentLessonVO.publishedLessonVersionId +
-               File.separator +
-               chunkVO.fileNameRoot +
-               "." +
-               _model.getTargetLanguageIso639_3Code() +
-               "." +
-               Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION;
-         leaf = AudioSequenceLeaf_File.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET, url, audioVolumeAdjustmentFactor, targetLanguageFileDuration);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET] = leaf;
-
-         /// use constants for these values
-         var pauseForRepetitionDuration:Number = (index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO] * 2) + 1200;
-
-         // We could avoid instantiating two out of the next four chunks by combining the 'attempt' and 'repeat' types into one generic
-         //   type - as long as all have the same duration this would work fine. For now we're keeping all four so that we can set
-         //   different durations for attempt and repeat, if we want.
-         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT, pauseForRepetitionDuration);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT] = leaf;
-
-         leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT, pauseForRepetitionDuration);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT] = leaf;
-
-         // We don't do recording if there's no text displayed, as this probably indicates that we don't have native language audio.
-         // This can happen in title chunks, and perhaps in other cases. This is a bit kludgy /// Ideally this would be specified in
-         // the XML for the chunk.
-         var suppressRecording:Boolean = !_currentLessons.doesChunkHaveDefaultDisplayText(chunkVO);
-
-         // On at least some devices, we need to keep recording longer than the desired recording time in
-         // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
-         var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
-
-         var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.START_DELAY__INITIAL + AudioRecorder.START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING + recordingStopDelayDuration;
-
-         leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT] = leaf;
-
-         leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT] = leaf;
-
-         var durationOfRecording:Number = durationIncludingAllDelays - AudioRecorder.START_DELAY__INITIAL;
-
-         leaf = AudioSequenceLeaf_Playback.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK, durationOfRecording);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
-         leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
-         leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
-         chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK] = leaf;
-
          chunkIndex++;
       }
       updateCurrentLessonVersionAudioSequenceSequenceStrategies();
@@ -715,7 +760,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
    }
 
    private function startLeafFinishCheckProcess(leaf:AudioSequenceLeaf):void {
-      stopLeafFinishCheckProcess();
       _currentAudioSequenceLeaf = leaf;
       _timer_LeafFinishChecker = new Timer(leaf.duration + 2000, 1);
       _timer_LeafFinishChecker.addEventListener(TimerEvent.TIMER, onTimer_LeafFinishChecker);
@@ -762,6 +806,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          chunkStrategy = new SequenceStrategy_AlphaReviewVersion();
       }
       else if ((_model.isCurrentLearningModeDualLanguage()) && (!_currentLessons.currentLessonVO.isDualLanguage)) {
+         // We replace dual-language learning modes with 'repeat target'
          chunkStrategy = new SequenceStrategy_RepeatTarget();
       }
       else {

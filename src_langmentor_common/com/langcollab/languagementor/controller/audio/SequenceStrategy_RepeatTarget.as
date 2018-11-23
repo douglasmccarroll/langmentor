@@ -23,15 +23,15 @@ import mx.collections.ArrayCollection;
 
 public class SequenceStrategy_RepeatTarget extends SequenceStrategy_Chunk implements ISequenceStrategy {
    public function SequenceStrategy_RepeatTarget():void {
-      orderSpecList = new ArrayCollection();
-      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_INITIAL);
-      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
-      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT);
+      orderSpecList_Default = new ArrayCollection();
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT);
    }
 
    public function clone():ISequenceStrategy {
       var instance:SequenceStrategy_RepeatTarget = new SequenceStrategy_RepeatTarget();
-      instance.orderSpecList = this.orderSpecList;
+      instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }
 }

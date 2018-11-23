@@ -320,15 +320,15 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return result;
    }
 
-   public function getChunkFileVOFromChunkVOAndLanguageId(vo:ChunkVO, languageId:int):ChunkFileVO {
+   public function getChunkFileVOFromChunkVOAndLanguageCode(vo:ChunkVO, iso639_3Code:String):ChunkFileVO {
       var queryVO:ChunkFileVO = new ChunkFileVO();
       queryVO.contentProviderId = vo.contentProviderId;
       queryVO.lessonVersionSignature = vo.lessonVersionSignature;
       queryVO.chunkLocationInOrder = vo.locationInOrder;
-      queryVO.languageId = languageId;
-      var report:MainModelDBOperationReport = selectData("getChunkFileVOFromChunkVOAndLanguageId", queryVO, null, 1, 1);
+      queryVO.fileNameBody = iso639_3Code;
+      var report:MainModelDBOperationReport = selectData("getChunkFileVOFromChunkVOAndLanguageCode", queryVO, null, 1, 1);
       if (report.isAnyProblems)
-         Log.fatal(["MainModel.getChunkFileVOFromChunkVOAndLanguageId(): selectData() reports problem", report]);
+         Log.fatal(["MainModel.getChunkFileVOFromChunkVOAndLanguageCode(): selectData() reports problem", report]);
       var result:ChunkFileVO = ChunkFileVO(report.resultData[0]);
       result.dispose();
       return result;
@@ -804,7 +804,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getNativeChunkFileVOFromChunkVO(vo:ChunkVO):ChunkFileVO {
-      var result:ChunkFileVO = getChunkFileVOFromChunkVOAndLanguageId(vo, _currentNativeLanguageVO.id);
+      var result:ChunkFileVO = getChunkFileVOFromChunkVOAndLanguageCode(vo, _currentNativeLanguageVO.iso639_3Code);
       return result;
    }
 
@@ -843,7 +843,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getTargetChunkFileVOFromChunkVO(vo:ChunkVO):ChunkFileVO {
-      var result:ChunkFileVO = getChunkFileVOFromChunkVOAndLanguageId(vo, _currentTargetLanguageVO.id);
+      var result:ChunkFileVO = getChunkFileVOFromChunkVOAndLanguageCode(vo, _currentTargetLanguageVO.iso639_3Code);
       return result;
    }
 

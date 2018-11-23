@@ -31,10 +31,6 @@ public class LessonDownloadInfo_Lesson implements IDisposable {
    public var lessonId:String;
    public var lessonIsAlphaReviewVersion:Boolean;
    public var lessonIsDualLanguage:Boolean;
-   public var lessonIsHasText_DefaultTextDisplayType:Boolean;
-   public var lessonIsHasText_Native:Boolean;
-   public var lessonIsHasText_Target:Boolean;
-   public var lessonIsHasText_TargetPhonetic:Boolean;
    public var lessonLevelToken:String;
    public var lessonName:String;
    public var lessonNativeLanguageAudioVolumeAdjustmentFactor:Number;

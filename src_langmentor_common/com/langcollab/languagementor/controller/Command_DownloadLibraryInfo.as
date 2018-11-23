@@ -188,25 +188,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       return result;
    }
 
-   private function doesLessonHaveTextForDefaultTextDisplayType(info:LessonDownloadInfo_Lesson):Boolean {
-      var result:Boolean;
-      var typeName:String = model.getTextDisplayTypeTypeNameFromId(info.lessonDefaultTextDisplayTypeId);
-      switch (typeName) {
-         case Constant_TextDisplayTypeNames.NATIVE_LANGUAGE:
-            result = info.lessonIsHasText_Native;
-            break;
-         case Constant_TextDisplayTypeNames.TARGET_LANGUAGE:
-            result = info.lessonIsHasText_Target;
-            break;
-         case Constant_TextDisplayTypeNames.TARGET_LANGUAGE_PHONETIC:
-            result = info.lessonIsHasText_TargetPhonetic;
-            break;
-         default:
-            Log.error("Command_DownloadLibraryInfo.doesLessonDownloadInfoHaveTextForDefaultTextDisplayType(): No match for typeName: " + typeName);
-      }
-      return result;
-   }
-
    private function doesSingleLanguageLessonInfoIndicateContentForCurrTargetLanguage():Boolean {
       var result:Boolean = false;
       var libraryContentInfoNode:XML = _libraryXML.libraryContentInfo[0];
@@ -372,17 +353,12 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
          techReport.index_lessonFileId_to_fileDownloaderErrorReport = index_lessonFileId_to_fileDownloaderErrorReport;
       }
       // Add _lessonDownloadInfo_Library to model if any lesson info was successfully retrieved.
-      // "Successfully retrieved" means that:
-      //    a) The lesson XML file was successfully downloaded, and
-      //    b) The lesson XML file was successfully validated.
+      // "Successfully retrieved" means that the lesson XML file was successfully downloaded.
       // We store this info in the model but don't persist it. In other words, this is
       // temporary data that will only be used while the user is in the 'download lessons' UI.
       var lessonId:String;
       var bAllLessonInfoFilesSuccessfullyDownloadedAndParsed:Boolean = true;
       var bOneOrMoreLessonInfoFilesSuccessfullyDownloadedAndParsed:Boolean = false;
-      var index_lessonFileId_to_isHasTextNative:Dictionary = new Dictionary();
-      var index_lessonFileId_to_isHasTextTarget:Dictionary = new Dictionary();
-      var index_lessonFileId_to_isHasTextTargetPhonetic:Dictionary = new Dictionary();
       for (lessonId in filesInfo.fileInfoList) {
          var problemDescriptionList:Vector.<String>;
          if ((index_lessonFileId_to_fileDownloaderErrorReport) && (index_lessonFileId_to_fileDownloaderErrorReport.hasOwnProperty(lessonId))) {
@@ -413,17 +389,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
          // Clearly, it would be simpler to parse this information in DownloadLessonProcess. We do it here so that we can abort the download process
          //    at this point, if appropriate.
          var chunksNodesList:XMLList = XML(_index_lessonId_to_lessonXML[lessonId]).chunks;
-         var isChunkConsistencyError:Boolean = !ChunkXMLConsistencyChecker.check(lessonId, chunksNodesList, [index_lessonFileId_to_isHasTextNative, index_lessonFileId_to_isHasTextTarget, index_lessonFileId_to_isHasTextTargetPhonetic]);
-         if (isChunkConsistencyError) {
-            bAllLessonInfoFilesSuccessfullyDownloadedAndParsed = false;
-            if (!techReport.index_lessonId_to_lessonXmlFileProblemDescriptionList[lessonId]) {
-               problemDescriptionList = new Vector.<String>();
-               techReport.index_lessonId_to_lessonXmlFileProblemDescriptionList[lessonId] = problemDescriptionList;
-            }
-            problemDescriptionList = techReport.index_lessonId_to_lessonXmlFileProblemDescriptionList[lessonId];
-            problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__CHUNK_CONSISTENCY_PROBLEM);
-            continue;
-         }
          _successfulLessonXMLFileDownloadCount++;
          bOneOrMoreLessonInfoFilesSuccessfullyDownloadedAndParsed = true;
       }
@@ -453,9 +418,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
             lessonDownloadInfo_Lesson.lessonId = lessonId;
             lessonDownloadInfo_Lesson.lessonIsAlphaReviewVersion = Utils_XML.readBooleanNode(lessonXML.isAlphaReviewVersion[0]);
             lessonDownloadInfo_Lesson.lessonIsDualLanguage = Utils_XML.readBooleanNode(lessonXML.isDualLanguage[0]);
-            lessonDownloadInfo_Lesson.lessonIsHasText_Native = index_lessonFileId_to_isHasTextNative[lessonId];
-            lessonDownloadInfo_Lesson.lessonIsHasText_Target = index_lessonFileId_to_isHasTextTarget[lessonId];
-            lessonDownloadInfo_Lesson.lessonIsHasText_TargetPhonetic = index_lessonFileId_to_isHasTextTargetPhonetic[lessonId];
             lessonDownloadInfo_Lesson.lessonLevelToken = lessonXML.level[0].toString();
             if (XMLList(lessonXML.nativeLanguageAudioVolumeAdjustmentFactor).length() == 1)
                lessonDownloadInfo_Lesson.lessonNativeLanguageAudioVolumeAdjustmentFactor = Utils_XML.readNumberNode(lessonXML.nativeLanguageAudioVolumeAdjustmentFactor[0]);
@@ -469,7 +431,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
 
             lessonDownloadInfo_Lesson.lessonDefaultTextDisplayTypeId =
                   model.getTextDisplayTypeIdFromTypeName(lessonXML.defaultTextDisplayType[0].toString());
-            lessonDownloadInfo_Lesson.lessonIsHasText_DefaultTextDisplayType = doesLessonHaveTextForDefaultTextDisplayType(lessonDownloadInfo_Lesson);
             lessonDownloadInfo_Lesson.lessonPublishedLessonVersionVersion = _index_lessonId_to_lessonPublishedVersion[lessonId];
             if (XMLList(lessonXML.tags).length() > 0)
                lessonDownloadInfo_Lesson.lessonTags = lessonXML.tags[0];

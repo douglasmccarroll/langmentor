@@ -23,14 +23,14 @@ import mx.collections.ArrayCollection;
 
 public class SequenceStrategy_AlphaReviewVersion extends SequenceStrategy_Chunk implements ISequenceStrategy {
    public function SequenceStrategy_AlphaReviewVersion():void {
-      orderSpecList = new ArrayCollection();
-      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE);
-      orderSpecList.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET);
+      orderSpecList_Default = new ArrayCollection();
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET);
    }
 
    public function clone():ISequenceStrategy {
       var instance:SequenceStrategy_AlphaReviewVersion = new SequenceStrategy_AlphaReviewVersion();
-      instance.orderSpecList = this.orderSpecList;
+      instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }
 }

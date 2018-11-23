@@ -64,7 +64,7 @@ public class SequenceStrategy_Lesson extends SequenceStrategy implements ISequen
       // The net effect is that all of our elements will be used.
       var propCount:int = Utils_Object.getDynamicVariableCount(elements);
       var orderedArray:Array = Utils_ArrayVectorEtc.createArrayContainingSequenceOfIntegers(propCount - 1);
-      orderSpecList = new ArrayCollection(orderedArray);
+      orderSpecList_Default = new ArrayCollection(orderedArray);
    }
 }
 }

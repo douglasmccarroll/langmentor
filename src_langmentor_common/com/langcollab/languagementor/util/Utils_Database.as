@@ -49,10 +49,14 @@ public class Utils_Database {
       appStatePersistenceManager.persistDataSchemaAppVersion(Utils_AIR.appVersionNumber);                                                          
    }
 
+   public static function doesDBFileExist(sqLiteDatabaseFileURL:String):Boolean {
+      var dbFile:File = new File(sqLiteDatabaseFileURL);
+      return dbFile.exists;
+   }
+
    public static function ensureDBFileExists(sqLiteDatabaseFileURL:String, appStatePersistenceManager:AppStatePersistenceManager):void {
       Log.debug("Utils_Database.ensureDBFileExists()");
-      var dbFile:File = new File(sqLiteDatabaseFileURL);
-      if (!dbFile.exists) {
+      if (!doesDBFileExist(sqLiteDatabaseFileURL)) {
          createNewDBFileFromTemplate(sqLiteDatabaseFileURL, appStatePersistenceManager);
       }
    }

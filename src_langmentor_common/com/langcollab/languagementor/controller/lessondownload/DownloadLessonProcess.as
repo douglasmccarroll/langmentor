@@ -25,6 +25,7 @@ import com.brightworks.util.IPercentCompleteReporter;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_ArrayVectorEtc;
+import com.brightworks.util.Utils_DataConversionComparison;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_String;
@@ -36,9 +37,11 @@ import com.brightworks.util.audio.MP3FileInfo;
 import com.brightworks.util.download.FileDownloader;
 import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.brightworks.vo.IVO;
+import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.Command_DeleteLessonVersion;
 import com.langcollab.languagementor.controller.Command_DeleteLessonVersionTechReport;
+import com.langcollab.languagementor.controller.Command_DownloadLibraryInfo;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;
@@ -277,96 +280,53 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
 
    private function checkChunkInfoConsistencyAndOrPopulateLists():Boolean {
       var isError:Boolean = false;
-      var isFileNameAndChunkXMLConsistencyError:Boolean = false;
-      var isFileNameConsistencyError:Boolean = false;
       var isFileNamingError:Boolean = false;
-      var isUnallowedLanguageFileError:Boolean = false;
       var langCode_Native:String = downloadLessonProcessInfo.iso639_3Code_NativeLanguage;
       var langCode_Target:String = downloadLessonProcessInfo.iso639_3Code_TargetLanguage;
-      var chunkFileNameRootList_FromNativeLangFiles:ArrayCollection = new ArrayCollection();
-      var chunkFileNameRootList_FromTargetLangFiles:ArrayCollection = new ArrayCollection();
-      var nameRootListList:Array = [_alphabetizedChunkFileNameRootList, chunkFileNameRootList_FromNativeLangFiles, chunkFileNameRootList_FromTargetLangFiles];
-      for each (var nameRootList:ArrayCollection in nameRootListList) {
-         var sort:Sort = new Sort();
-         sort.fields = [new SortField(null, true)];
-         nameRootList.sort = sort;
-         nameRootList.refresh();
-      }
       for (var fileName:String in _unzippedAudioFileDataList) {
-         var minimumFileNameLength:uint = Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_LANGUAGE_CODE_LENGTH + Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length + 3;
-         if (fileName.length < minimumFileNameLength) {
+         if (getFileNamePartCount(fileName) != 3) {
             isError = true;
             isFileNamingError = true;
-            techReport.errorData_InsufficientlyLongFileNameList.push(fileName);
+            techReport.index_fileName_to_namingError[fileName] = DownloadLessonProcessTechReport.ERROR__FILE_NAMING__FILE_PART_COUNT_DOES_NOT_EQUAL_THREE;
             continue;
          }
-         if (!Utils_String.isStringEndsWith(fileName, "." + Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION)) {
-            isError = true;
-            isFileNamingError = true;
-            techReport.errorData_IncorrectFileNameList.push(fileName);
-            continue;
-         }
-         var fileNameRoot:String = getFileNameRootFromFileName(fileName);
-         var languageCodeSubstring:String = getLanguageCodeSubstringFromFileName(fileName);
-         var isLanguageCodeSubstringNativeOrTargetLanguage:Boolean = false;
-         if (languageCodeSubstring == langCode_Native) {
-            isLanguageCodeSubstringNativeOrTargetLanguage = true;
-            chunkFileNameRootList_FromNativeLangFiles.addItem(fileNameRoot);
-         }
-         if (languageCodeSubstring == langCode_Target) {
-            isLanguageCodeSubstringNativeOrTargetLanguage = true;
-            chunkFileNameRootList_FromTargetLangFiles.addItem(fileNameRoot);
-         }
-         if (!isLanguageCodeSubstringNativeOrTargetLanguage) {
-            isError = true;
-            isUnallowedLanguageFileError = true;
-            techReport.errorData_UnallowedLanguageFileFileNameList.push(fileName);
-         }
-      }
-      // dmccarroll 20120616
-      // If chunks XML exists, and it has chunk nodes, each chunk node will have a fileNameRoot node 
-      // This was confirmed before lesson download was started, in Command_DownloadLibraryInfo
-      // Confirm that name roots in the chunk nodes match the name roots of actual files.
-      // Search for another 'dmccarroll 20120616' comment if you'd like info on how and why we determine which 
-      // types of text are available for lesson before we download the lesson file.
-      // Of course, we didn't have the audio files at that point, so we need to make sure that the file 
-      // names and the XML fileNameRoot info correlate correctly.
-      if ((!isError) && (!downloadLessonProcessInfo.isAlphaReviewVersion) && (downloadLessonProcessInfo.isDualLanguage)) {
-         var inconsistencyList:Array = [];
-         if (!Utils_ArrayVectorEtc.isArrayCollectionsContainEqualItemsInSameOrder(chunkFileNameRootList_FromNativeLangFiles, chunkFileNameRootList_FromTargetLangFiles, inconsistencyList)) {
-            isError = true;
-            isFileNameConsistencyError = true;
-            if (chunkFileNameRootList_FromNativeLangFiles.length != chunkFileNameRootList_FromTargetLangFiles.length) {
-               techReport.errorData_Inconsistencies_NativeAndTargetChunkFileNames = ["Lists are different lengths", chunkFileNameRootList_FromNativeLangFiles, chunkFileNameRootList_FromTargetLangFiles];
-            } else {
-               techReport.errorData_Inconsistencies_NativeAndTargetChunkFileNames = inconsistencyList;
+         else {
+            var fileNameRoot:String = getFileNameRootFromFileName(fileName);
+            var fileNameBody:String = getFileNameBodyFromFileName(fileName);
+            var fileNameExtension:String = getFileNameExtensionFromFileName(fileName);
+            if ((fileNameRoot.length != 2) || (!Utils_DataConversionComparison.isAnIntegerString(fileNameRoot))) {
+               isError = true;
+               isFileNamingError = true;
+               techReport.index_fileName_to_namingError[fileName] = DownloadLessonProcessTechReport.ERROR__FILE_NAMING__FILE_NAME_ROOT_INCORRECT;
+               continue;
             }
-         }
-      }
-      var isHasChunkXML:Boolean = isLessonHasChunkXML();
-      if ((!isError) && isHasChunkXML) {
-         inconsistencyList = [];
-         if ((!downloadLessonProcessInfo.isAlphaReviewVersion) &&
-               (!Utils_ArrayVectorEtc.isArrayCollectionsContainEqualItemsInSameOrder(_alphabetizedChunkFileNameRootList, chunkFileNameRootList_FromTargetLangFiles, inconsistencyList))) {
-            isError = true;
-            isFileNameAndChunkXMLConsistencyError = true;
-            if (_alphabetizedChunkFileNameRootList.length != chunkFileNameRootList_FromTargetLangFiles.length) {
-               techReport.errorData_Inconsistencies_ChunkFileNameAndXML = ["Lists are different lengths", _alphabetizedChunkFileNameRootList, chunkFileNameRootList_FromTargetLangFiles];
-            } else {
-               techReport.errorData_Inconsistencies_ChunkFileNameAndXML = inconsistencyList;
+            var isFileNameBodyCorrect:Boolean = false;
+            if (fileNameBody == langCode_Native) {
+               isFileNameBodyCorrect = true;
+            }
+            if (fileNameBody == langCode_Target) {
+               isFileNameBodyCorrect = true;
+            }
+            if (fileNameBody == Constant_AppConfiguration.EXPLANATORY_AUDIO_FILE_BODY_STRING) {
+               isFileNameBodyCorrect = true;
+            }
+            if (!isFileNameBodyCorrect) {
+               isError = true;
+               techReport.index_fileName_to_namingError[fileName] = DownloadLessonProcessTechReport.ERROR__FILE_NAMING__FILE_NAME_BODY_INCORRECT;
+               continue;
+            }
+            if (fileNameExtension != Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_AUDIO_FILE_EXTENSION) {
+               isError = true;
+               isFileNamingError = true;
+               techReport.index_fileName_to_namingError[fileName] = DownloadLessonProcessTechReport.ERROR__FILE_NAMING__FILE_NAME_EXTENSION_INCORRECT;
+               continue;
             }
          }
       }
       if (isError)
          techReport.isErrorReported = true;
-      if (isFileNameAndChunkXMLConsistencyError)
-         techReport.errorTypeList.push(DownloadLessonProcessTechReport.ERROR__AUDIO_FILE_NAME_AND_XML_CHUNK_CONSISTENCY);
-      if (isFileNameConsistencyError)
-         techReport.errorTypeList.push(DownloadLessonProcessTechReport.ERROR__AUDIO_FILE_NAME_CONSISTENCY);
       if (isFileNamingError)
          techReport.errorTypeList.push(DownloadLessonProcessTechReport.ERROR__AUDIO_FILE_NAMING);
-      if (isUnallowedLanguageFileError)
-         techReport.errorTypeList.push(DownloadLessonProcessTechReport.ERROR__UNALLOWED_LANGUAGE_FILE_INCLUDED);
       return !isError;
    }
 
@@ -388,35 +348,37 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
    private function extractChunkInfoFromUnzippedFileDataList():Dictionary {
       // Format for result:
       //		{
-      //			"0000000001.000" : 	{
+      //			"01" : 	{
+      //									chunkType : Default,
       //									locationInOrder : 1,
-      //                                  textNativeLanguage : "",
-      //                                  textTargetLanguage : "",
-      //                                  textTargetLanguagePhonetic : "",
-      //									languageFileData :	{
-      //															cmn: 	{
+      //                         textAudio : null,                       | All 5 of these are optional, i.e. some are used in some cases, others in other cases.
+      //                         textDisplay : null,                     | In chunks with a chunkType of Default, it depends on whether this is a single or dual-language
+      //                         textNativeLanguage : "Hi",              | lesson, whether the target language uses phonetic text, etc.
+      //                         textTargetLanguage : "Hola",            | In chunks with a chunkType of Explanatory, we use textAudio and textDisplay. See second
+      //                         textTargetLanguagePhonetic : null,      | chunk in this example.
+      //									audioFileData :	{
+      //															esp: 	{
       //																		duration:	  2031,
-      //																		languageCode: "cmn"
+      //																		fileNameBody: "esp"
       //																	},
       //															eng: 	{
       //																		duration:	  1883,
-      //																		languageCode: "eng"
+      //																		fileNameBody: "eng"
       //																	}
       //														}
       //								},
-      //			"0000000001.001" : 	{
+      //			"02" : 	{
+      //									chunkType : Explanatory,
       //									locationInOrder : 2,
-      //                                  textNativeLanguage : "",
-      //                                  textTargetLanguage : "",
-      //                                  textTargetLanguagePhonetic : "",
-      //									languageFileData :	{
-      //															cmn: 	{
-      //																		duration:	  3290,
-      //																		languageCode: "cmn"
-      //																	},
-      //															eng: 	{
+      //                         textAudio : "Some interesting explanation, as this is an 'Explanatory' chunk type",
+      //                         textDisplay : "Text to display, while we explain",
+      //                         textNativeLanguage : null,
+      //                         textTargetLanguage : null,
+      //                         textTargetLanguagePhonetic : null,
+      //									audioFileData :	{
+      //															xply: 	{
       //																		duration:	  3522,
-      //																		languageCode: "eng"
+      //																		fileNameBody: "xply"
       //																	}
       //														}
       //								},
@@ -439,43 +401,57 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       var currentChunk:int;
       for (currentChunk = 0; currentChunk < chunkCount; currentChunk++) {
          fileNameRoot = _alphabetizedChunkFileNameRootList[currentChunk];
-         chunkInfoObject = {locationInOrder: currentChunk + 1, languageFileData: {}}
+         chunkInfoObject = {locationInOrder: currentChunk + 1, audioFileData: {}}
          result[fileNameRoot] = chunkInfoObject;
-         if (downloadLessonProcessInfo.isHasText_Native || downloadLessonProcessInfo.isHasText_Target || downloadLessonProcessInfo.isHasText_TargetPhonetic) {
-            var chunkNode:XML = _index_fileNameRoot_to_chunkXMLNode[fileNameRoot];
-            if (downloadLessonProcessInfo.isHasText_Native)
-               chunkInfoObject.textNativeLanguage = chunkNode.textNativeLanguage[0].toString();
-            else
-               chunkInfoObject.textNativeLanguage = null;
-            if (downloadLessonProcessInfo.isHasText_Target)
-               chunkInfoObject.textTargetLanguage = chunkNode.textTargetLanguage[0].toString();
-            else
-               chunkInfoObject.textTargetLanguage = null;
-            if (downloadLessonProcessInfo.isHasText_TargetPhonetic)
-               chunkInfoObject.textTargetLanguagePhonetic = chunkNode.textTargetLanguagePhonetic[0].toString();
-            else
-               chunkInfoObject.textTargetLanguagePhonetic = null;
+         var chunkNode:XML = _index_fileNameRoot_to_chunkXMLNode[fileNameRoot];
+         var chunkType:String;
+         if (XMLList(chunkNode.chunkType).length() == 1) {
+            chunkType = chunkNode.chunkType[0].toString();
+         } else {
+            chunkType = ChunkVO.CHUNK_TYPE__DEFAULT;  // We don't want to require all chunks in XML to specify their chunk type - only those that aren't a default chunk type.
          }
+         switch (chunkType) {
+            case ChunkVO.CHUNK_TYPE__DEFAULT:
+            case ChunkVO.CHUNK_TYPE__EXPLANATORY:
+               chunkInfoObject.chunkType = chunkType;
+               break;
+            default:
+               Log.error("Command_DownloadLibraryInfo.extractChunkInfoFromUnzippedFileDataList() - chunkType specified in XML is an unknown type. We'll use 'Default' instead. chunkXML.chunkType: " + chunkType);
+               chunkInfoObject.chunkType = ChunkVO.CHUNK_TYPE__DEFAULT;
+         }
+         if (XMLList(chunkNode.textAudio).length() == 1)
+            chunkInfoObject.textAudio = chunkNode.textAudio[0].toString();
+         else
+            chunkInfoObject.textAudio = null;
+         if (XMLList(chunkNode.textDisplay).length() == 1)
+            chunkInfoObject.textDisplay = chunkNode.textDisplay[0].toString();
+         else
+            chunkInfoObject.textDisplay = null;
+         if (XMLList(chunkNode.textNativeLanguage).length() == 1)
+            chunkInfoObject.textNativeLanguage = chunkNode.textNativeLanguage[0].toString();
+         else
+            chunkInfoObject.textNativeLanguage = null;
+         if (XMLList(chunkNode.textTargetLanguage).length() == 1)
+            chunkInfoObject.textTargetLanguage = chunkNode.textTargetLanguage[0].toString();
+         else
+            chunkInfoObject.textTargetLanguage = null;
+         if (XMLList(chunkNode.textTargetLanguagePhonetic).length() == 1)
+            chunkInfoObject.textTargetLanguagePhonetic = chunkNode.textTargetLanguagePhonetic[0].toString();
+         else
+            chunkInfoObject.textTargetLanguagePhonetic = null;
       }
-      var languageCode:String;
-      var languageFileData:Object;
+      var fileNameBody:String;
+      var audioFileData:Object;
       for (fileName in _unzippedAudioFileDataList) {
          // File names are checked after unzipping in checkChunkInfoConsistencyAndOrPopulateLists()
          var oneFilesData:MP3FileInfo = _unzippedAudioFileDataList[fileName];
-         fileNameRoot = Utils_String.removeCharsFromEndOfString(fileName, Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_LANGUAGE_CODE_LENGTH + Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length + 2);
-         languageCode = extractLanguageCodeFromFullFileName(fileName);
+         fileNameRoot = getFileNameRootFromFileName(fileName);
+         fileNameBody = getFileNameBodyFromFileName(fileName);
          if (!oneFilesData.duration is int)
             return null;
-         languageFileData = result[fileNameRoot].languageFileData;
-         languageFileData[languageCode] = {duration: oneFilesData.duration, languageCode: languageCode}
+         audioFileData = result[fileNameRoot].audioFileData;
+         audioFileData[fileNameBody] = {duration: oneFilesData.duration, fileNameBody: fileNameBody}
       }
-      return result;
-   }
-
-   private function extractLanguageCodeFromFullFileName(fileName:String):String {
-      var startIndex:int = fileName.length - (Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_LANGUAGE_CODE_LENGTH + Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length + 1);
-      var endIndex:int = fileName.length - (Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length + 1);
-      var result:String = fileName.substring(startIndex, endIndex);
       return result;
    }
 
@@ -490,15 +466,14 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       result = result.concat(getChunkAndChunkFileVOs(chunkInfoDict));
       return result;
    }
-
+   
    private function getChunkAndChunkFileVOs(chunkInfoDict:Dictionary):Array {
       var result:Array = [];
       var chunkInfo:Object;
       var chunkVO:ChunkVO;
       var chunkFileVO:ChunkFileVO;
       var fileNameRoot:String;
-      var languageCode:String;
-      var languageFileInfo:Object;
+      var audioFileInfo:Object;
       for (fileNameRoot in chunkInfoDict) {
          chunkInfo = chunkInfoDict[fileNameRoot];
          chunkVO = new ChunkVO();
@@ -507,42 +482,64 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
          chunkVO.fileNameRoot = fileNameRoot;
          chunkVO.locationInOrder = chunkInfo.locationInOrder;
          chunkVO.lessonVersionSignature = lessonVersionSignature;
+         chunkVO.chunkType = chunkInfo.chunkType;
+         chunkVO.textAudio = chunkInfo.textAudio;
+         chunkVO.textDisplay = chunkInfo.textDisplay;
          chunkVO.textNativeLanguage = chunkInfo.textNativeLanguage;
          chunkVO.textTargetLanguage = chunkInfo.textTargetLanguage;
          chunkVO.textTargetLanguagePhonetic = chunkInfo.textTargetLanguagePhonetic;
-         for each (languageFileInfo in chunkInfo.languageFileData) {
+         for each (audioFileInfo in chunkInfo.audioFileData) {
             chunkFileVO = new ChunkFileVO();
             result.push(chunkFileVO);
-            languageCode = languageFileInfo.languageCode;
             chunkFileVO.chunkLocationInOrder = chunkInfo.locationInOrder;
             chunkFileVO.contentProviderId = downloadLessonProcessInfo.contentProviderId;
-            chunkFileVO.duration = languageFileInfo.duration;
-            chunkFileVO.iso639_3Code = languageCode;
-            chunkFileVO.languageId = _model.getLanguageIdFromIso639_3Code(languageCode);
+            chunkFileVO.duration = audioFileInfo.duration;
+            chunkFileVO.fileNameBody = audioFileInfo.fileNameBody;
             chunkFileVO.lessonVersionSignature = lessonVersionSignature;
          }
       }
       return result;
    }
 
-   private function getFileNameRootFromFileName(fileName:String):String {
-      var result:String = Utils_String.removeCharsFromEndOfString(fileName, Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_LANGUAGE_CODE_LENGTH + Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length + 2);
-      return result;
+   private function getFileNameBodyFromFileName(fileName:String):String {
+      var fileNamePartList:Array = Utils_DataConversionComparison.convertStringToArrayBasedOnDelimiter(fileName, ".");
+      if (fileNamePartList.length != 3) {
+         Log.fatal("DownloadLessonProcess.getFileNameBodyFromFileName() - file name doesn't contain 3 parts, delimited by dots - file name: " + fileName);
+         return "";
+      } else {
+         return fileNamePartList[1];
+      }
    }
 
-   private function getLanguageCodeSubstringFromFileName(fileName:String):String {
-      var fileExtensionLength:int = Constant_LangMentor_Misc.FILEPATHINFO__CHUNK_FILE_EXTENSION.length;
-      var languageCodeSubstringEndIndex:int = fileName.length - (fileExtensionLength + 1);
-      var languageCodeSubstringStartIndex:int = languageCodeSubstringEndIndex - 3;
-      var result:String = fileName.substring(languageCodeSubstringStartIndex, languageCodeSubstringEndIndex);
-      return result;
+   private function getFileNameExtensionFromFileName(fileName:String):String {
+      var fileNamePartList:Array = Utils_DataConversionComparison.convertStringToArrayBasedOnDelimiter(fileName, ".");
+      if (fileNamePartList.length != 3) {
+         Log.fatal("DownloadLessonProcess.getFileNameExtensionFromFileName() - file name doesn't contain 3 parts, delimited by dots - file name: " + fileName);
+         return "";
+      } else {
+         return fileNamePartList[2];
+      }
+   }
+
+   private function getFileNamePartCount(fileName:String):int {
+      var fileNamePartList:Array = Utils_DataConversionComparison.convertStringToArrayBasedOnDelimiter(fileName, ".");
+      return fileNamePartList.length;
+   }
+
+   private function getFileNameRootFromFileName(fileName:String):String {
+      var fileNamePartList:Array = Utils_DataConversionComparison.convertStringToArrayBasedOnDelimiter(fileName, ".");
+      if (fileNamePartList.length != 3) {
+         Log.fatal("DownloadLessonProcess.getFileNameRootFromFileName() - file name doesn't contain 3 parts, delimited by dots - file name: " + fileName);
+         return "";
+      } else {
+         return fileNamePartList[0];
+      }
    }
 
    private function getLessonVersionNativeLanguageVOs(chunkInfoDict:Dictionary):Array {
       var result:Array = [];
       var vo:LessonVersionNativeLanguageVO;
       vo = new LessonVersionNativeLanguageVO();
-      vo.allChunksHaveAudioFile = isAllChunksHaveAudioFileForLanguage(downloadLessonProcessInfo.iso639_3Code_NativeLanguage, chunkInfoDict);
       vo.contentProviderId = downloadLessonProcessInfo.contentProviderId;
       vo.contentProviderName = downloadLessonProcessInfo.nativeLanguageContentProviderName;
       vo.creditsXML = downloadLessonProcessInfo.credits;
@@ -553,9 +550,6 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       vo.lessonVersionSignature = lessonVersionSignature;
       vo.libraryName = downloadLessonProcessInfo.nativeLanguageLibraryName;
       vo.description = downloadLessonProcessInfo.description;
-      if (vo.allChunksHaveAudioFile) {
-         vo.totalAudioFileDuration = getTotalAudioFileDurationForLanguage(downloadLessonProcessInfo.iso639_3Code_NativeLanguage, chunkInfoDict);
-      }
       result.push(vo);
       return result;
    }
@@ -564,14 +558,10 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       var result:Array = [];
       var vo:LessonVersionTargetLanguageVO;
       vo = new LessonVersionTargetLanguageVO();
-      vo.allChunksHaveAudioFile = isAllChunksHaveAudioFileForLanguage(downloadLessonProcessInfo.iso639_3Code_TargetLanguage, chunkInfoDict);
       vo.contentProviderId = downloadLessonProcessInfo.contentProviderId;
       vo.iso639_3Code = downloadLessonProcessInfo.iso639_3Code_TargetLanguage;
       vo.languageId = _model.getLanguageIdFromIso639_3Code(downloadLessonProcessInfo.iso639_3Code_TargetLanguage);
       vo.lessonVersionSignature = lessonVersionSignature;
-      if (vo.allChunksHaveAudioFile) {
-         vo.totalAudioFileDuration = getTotalAudioFileDurationForLanguage(downloadLessonProcessInfo.iso639_3Code_TargetLanguage, chunkInfoDict);
-      }
       result.push(vo);
       return result;
    }
@@ -582,10 +572,6 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       vo.defaultTextDisplayTypeId = downloadLessonProcessInfo.defaultTextDisplayTypeId;
       vo.isAlphaReviewVersion = downloadLessonProcessInfo.isAlphaReviewVersion;
       vo.isDualLanguage = downloadLessonProcessInfo.isDualLanguage;
-      vo.isHasText_DefaultTextDisplayType = downloadLessonProcessInfo.isHasText_DefaultTextDisplayType;
-      vo.isHasText_Native = downloadLessonProcessInfo.isHasText_Native;
-      vo.isHasText_Target = downloadLessonProcessInfo.isHasText_Target;
-      vo.isHasText_TargetPhonetic = downloadLessonProcessInfo.isHasText_TargetPhonetic;
       vo.lessonVersionSignature = lessonVersionSignature;
       vo.levelId = downloadLessonProcessInfo.levelId;
       vo.nativeLanguageAudioVolumeAdjustmentFactor = downloadLessonProcessInfo.nativeLanguageAudioVolumeAdjustmentFactor;
@@ -610,15 +596,6 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       _queuedProcessFunctionTimer = new Timer(1000);
       _queuedProcessFunctionTimer.addEventListener(TimerEvent.TIMER, onQueuedProcessFunctionTimer);
       _queuedProcessFunctionTimer.start();
-   }
-
-   private function isAllChunksHaveAudioFileForLanguage(iso639_3Code:String, chunkInfoDict:Dictionary):Boolean {
-      var chunkInfo:Object;
-      for each (chunkInfo in chunkInfoDict) {
-         if (!chunkInfo.languageFileData.hasOwnProperty(iso639_3Code))
-            return false;
-      }
-      return true;
    }
 
    private function isLessonHasChunkXML():Boolean {
@@ -885,7 +862,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
          var queryData:SQLiteQueryData_Insert = new SQLiteQueryData_Insert(queryDataVO, 1, 1);
          queryDataListForDB.push(queryData);
       }
-      Log.debug("DownloadLessonrProcess.startProcess_SaveDataToDB_Continued(): sending " + String(queryDataListForDB.length) + " queries into DB");
+      Log.debug("DownloadLessonProcess.startProcess_SaveDataToDB_Continued(): sending " + String(queryDataListForDB.length) + " queries into DB");
       var modelReport:MainModelDBOperationReport = _model.insertData("DownloadLessonProcess.startProcess_SaveDataToDB_Continued", queryDataListForDB, downloadLessonProcessInfo.downloadFileNameBody);
       if (modelReport.isAnyProblems) {
          Log.info(["DownloadLessonProcess.startProcess_SaveDataToDB_Continued(): insertData() reports problem: " + downloadLessonProcessInfo.publishedLessonVersionId, modelReport]);

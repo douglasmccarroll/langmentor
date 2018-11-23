@@ -148,8 +148,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function isCurrScreenDisplayFirstForApp():Boolean {
          var result:Boolean = true;
          if (appStatePersistenceManager.retrieveIsCurrAppVersionSaved()) {
-            var savedAppVerson:Number = appStatePersistenceManager.retrieveCurrAppVersion();
-            if (savedAppVerson > 0)
+            var savedAppVersion:Number = appStatePersistenceManager.retrieveCurrAppVersion();
+            if (savedAppVersion > 0)
                result = false;
          }
          return result;

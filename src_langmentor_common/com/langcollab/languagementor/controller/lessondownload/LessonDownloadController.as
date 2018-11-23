@@ -620,10 +620,6 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
             downloadLessonProcessInfo.downloadFolderURL = lessonDownloadInfo_Lesson.lessonDownloadFolderURL;
             downloadLessonProcessInfo.isAlphaReviewVersion = lessonDownloadInfo_Lesson.lessonIsAlphaReviewVersion;
             downloadLessonProcessInfo.isDualLanguage = lessonDownloadInfo_Lesson.lessonIsDualLanguage;
-            downloadLessonProcessInfo.isHasText_DefaultTextDisplayType = lessonDownloadInfo_Lesson.lessonIsHasText_DefaultTextDisplayType;
-            downloadLessonProcessInfo.isHasText_Native = lessonDownloadInfo_Lesson.lessonIsHasText_Native;
-            downloadLessonProcessInfo.isHasText_Target = lessonDownloadInfo_Lesson.lessonIsHasText_Target;
-            downloadLessonProcessInfo.isHasText_TargetPhonetic = lessonDownloadInfo_Lesson.lessonIsHasText_TargetPhonetic;
             downloadLessonProcessInfo.iso639_3Code_NativeLanguage = _model.getNativeLanguageIso639_3Code();
             downloadLessonProcessInfo.iso639_3Code_TargetLanguage = _model.getTargetLanguageIso639_3Code();
             downloadLessonProcessInfo.levelId = _model.getLevelIdFromLevelLabelToken(lessonDownloadInfo_Lesson.lessonLevelToken);

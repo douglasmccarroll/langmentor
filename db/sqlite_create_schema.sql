@@ -386,10 +386,6 @@ CREATE TABLE LessonVersion (
   defaultTextDisplayTypeId INTEGER,
   isAlphaReviewVersion BOOL,
   isDualLanguage BOOL,
-  isHasText_DefaultTextDisplayType BOOL NOT NULL,
-  isHasText_Native BOOL NOT NULL,
-  isHasText_Target BOOL NOT NULL,
-  isHasText_TargetPhonetic BOOL NOT NULL,
   levelId INTEGER NOT NULL,
   nativeLanguageAudioVolumeAdjustmentFactor REAL,
   paidContent BOOL,
@@ -408,8 +404,6 @@ CREATE TABLE LessonVersionNativeLanguage (
   lessonSortName TEXT NOT NULL,
   contentProviderName TEXT NOT NULL,
   libraryName TEXT NOT NULL,
-  allChunksHaveAudioFile BOOL NOT NULL,
-  totalAudioFileDuration INTEGER,
   creditsXML TEXT
 ) ;
 
@@ -417,9 +411,7 @@ CREATE TABLE LessonVersionTargetLanguage (
   lessonVersionSignature TEXT NOT NULL,
   contentProviderId TEXT NOT NULL,
   languageId INTEGER NOT NULL,
-  iso639_3Code TEXT NOT NULL,
-  allChunksHaveAudioFile BOOL NOT NULL,
-  totalAudioFileDuration INTEGER
+  iso639_3Code TEXT NOT NULL
 ) ;
 
 CREATE TABLE Chunk (
@@ -427,6 +419,9 @@ CREATE TABLE Chunk (
   contentProviderId TEXT NOT NULL,
   locationInOrder INTEGER NOT NULL,
   fileNameRoot TEXT NOT NULL,
+  chunkType TEXT,
+  textAudio TEXT,
+  textDisplay TEXT,
   textNativeLanguage TEXT,
   textTargetLanguage TEXT,
   textTargetLanguagePhonetic TEXT,
@@ -439,9 +434,31 @@ CREATE TABLE ChunkFile (
   contentProviderId TEXT NOT NULL,
   chunkLocationInOrder INTEGER NOT NULL,
   duration INTEGER NOT NULL,
-  languageId INTEGER NOT NULL,
-  iso639_3Code TEXT NOT NULL
+  fileNameBody TEXT NOT NULL
 ) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

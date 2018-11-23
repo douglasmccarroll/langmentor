@@ -17,21 +17,22 @@
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.controller.audio {
+
 import com.brightworks.interfaces.IDisposable;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_Dispose;
+
+import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import flash.utils.Dictionary;
 
 import mx.collections.ArrayCollection;
 
 public class SequenceStrategy implements IDisposable {
-   protected var orderSpecList:ArrayCollection = null;
+
+   protected var orderSpecList_Default:ArrayCollection = null;
 
    private var _isDisposed:Boolean = false;
-
-   public function SequenceStrategy():void {
-   }
 
    // ****************************************************
    //
@@ -55,11 +56,18 @@ public class SequenceStrategy implements IDisposable {
       _elements = value;
    }
 
+   protected function get orderSpecList():ArrayCollection {
+      return orderSpecList_Default;
+   }
+
    // ****************************************************
    //
    //          Public Methods
    //
    // ****************************************************
+
+   public function SequenceStrategy():void {
+   }
 
    public function dispose():void {
       if (_isDisposed)
@@ -70,9 +78,9 @@ public class SequenceStrategy implements IDisposable {
          // Utils_Dispose.disposeDictionary(_elements);
          elements = null;
       }
-      if (orderSpecList) {
-         Utils_Dispose.disposeArrayCollection(orderSpecList, true);
-         orderSpecList = null;
+      if (orderSpecList_Default) {
+         Utils_Dispose.disposeArrayCollection(orderSpecList_Default, true);
+         orderSpecList_Default = null;
       }
    }
 
