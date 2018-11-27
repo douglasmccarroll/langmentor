@@ -91,7 +91,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
             textWidget = new UIWidget_Viewlet__Bold_Text();
-            textWidget.text = "Recommended libraries";
+            textWidget.text = "Recommended Libraries:";
             viewletGroup.addElement(textWidget);
             _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
             _recommendedLibrariesViewlet.displayRecommendedLibrariesHeading = false;

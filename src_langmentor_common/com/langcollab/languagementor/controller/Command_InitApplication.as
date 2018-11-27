@@ -84,8 +84,10 @@ public class Command_InitApplication extends Command_Base__LangMentor {
       else if ((!(appStatePersistenceManager.retrieveIsDataSchemaAppVersionSaved())) ||
             (appStatePersistenceManager.retrieveDataSchemaAppVersion() < Constant_AppConfiguration.APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA)) {
          // Our data schema's app version is lower than our current minimum supported data schema app version.
-         // In this situation we delete all data. (The More|Upgrade option warns the user that this will happen.) In the
-         // future we should update the data schema in most or all of these cases, but at this
+         // In this situation we delete all data.
+         // Messages in the app that encourage users to upgrade to a new version warn them if this will happen.
+         // It's possible that users may upgrade without getting such a message, in which case they will not have been warned. ///
+         // In the future we should update the data schema in most or all of these cases, but at this
          // point we don't have enough resources to do this.
          Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
          model.init();

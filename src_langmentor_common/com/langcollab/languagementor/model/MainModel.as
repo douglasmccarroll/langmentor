@@ -62,6 +62,7 @@ import com.langcollab.languagementor.model.appstatepersistence.AppStatePersisten
 import com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo;
 import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
 import com.langcollab.languagementor.util.Utils_LangCollab;
+import com.langcollab.languagementor.view.App_LanguageMentor_Base;
 import com.langcollab.languagementor.vo.ChunkFileVO;
 import com.langcollab.languagementor.vo.ChunkVO;
 import com.langcollab.languagementor.vo.LanguageDisplayNameVO;
@@ -80,6 +81,7 @@ import flash.filesystem.File;
 import flash.utils.Dictionary;
 
 import mx.collections.ArrayCollection;
+import mx.core.FlexGlobals;
 import mx.rpc.events.FaultEvent;
 
 public class MainModel extends EventDispatcher implements IManagedSingleton {
@@ -97,6 +99,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    [Bindable]
    public var currentUserId:int = 1; ///
    public var downloadBandwidthRecorder:DownloadBandwidthRecorder;
+   public var isAppRunningInBackground:Boolean;
    public var isDataWipeActivityBlockActive:Boolean;
    public var isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed:Boolean
    public var lessonsSelectionTreeSortOptions:Array;
@@ -1101,8 +1104,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
             new SQLiteQueryData_Select(selectionCriteriaVO, orderByPropNames, minAllowedResultCount, maxAllowedResultCount);
       var result:MainModelDBOperationReport = new MainModelDBOperationReport();
       result.sqliteTransactionReport = _data.selectData(queryData);
-      if (!result.sqliteTransactionReport.isSuccessful)
+      if (!result.sqliteTransactionReport.isSuccessful) {
          result.isAnyProblems = true;
+         // For debugging...
+         result.sqliteTransactionReport = _data.selectData(queryData);
+      }
       if ((result.sqliteTransactionReport.index_resultData_by_queryData) &&
             (result.sqliteTransactionReport.index_resultData_by_queryData[queryData] is Array)) {
          result.resultData = result.sqliteTransactionReport.index_resultData_by_queryData[queryData];
@@ -1424,6 +1430,13 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private function onLoadConfigDataComplete(techReport:ConfigFileInfoTechReport):void {
       Log.debug("MainModel.onLoadConfigDataComplete()");
+      if (Utils_AIR.appVersionNumber < configFileInfo.requiredVersion_LibraryAccess) {
+         var message:String = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
+         if (Utils_AIR.appVersionNumber < configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+            message += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
+         }
+         Utils_ANEs.showAlert_OkayButton(message);  ///// if we're running in the background, this should wait until we're in the foreground again
+      }
    }
 
    private function onLoadConfigDataFailure(techReport:ConfigFileInfoTechReport):void {

@@ -86,10 +86,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    }
 
-   public function displayMobileDialog(alertText:String, callback:Function = null):void {
-      MobileDialog.open(alertText, callback);
-   }
-
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Protected Methods
@@ -135,7 +131,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // See comment in onDeactivateApp()
          return;
       } else {
-         Log.info("App_LanguageMentor_Base.onActivateApp() AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+         Log.info("App_LanguageMentor_Base.onActivateApp()");
+         _model.isAppRunningInBackground = false;
       }
    }
 
@@ -163,8 +160,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          // focus, but the app continues to execute. So we haven't really deactivated.
          return;
       } else {
-         Log.info("App_LanguageMentor_Base.onDeactivateApp() DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-         //_currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
+         Log.info("App_LanguageMentor_Base.onDeactivateApp()");
+         _model.isAppRunningInBackground = true;
       }
    }
 

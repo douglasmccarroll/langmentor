@@ -31,6 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_Dispose;
       import com.langcollab.languagementor.util.Utils_LangCollab;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
@@ -91,7 +92,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case LIST_OPTION__LESSONS: {
                if (model.getLessonVersionCount() < 1) {
                   var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
-                  (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message);
+                  Utils_ANEs.showAlert_OkayButton(message);
                   return;
                }
                navigator.pushView(View_Credits_Lessons, null, navigator.context);

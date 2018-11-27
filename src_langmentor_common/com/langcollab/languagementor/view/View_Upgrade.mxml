@@ -32,6 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
       import mx.controls.Spacer;
 
@@ -74,13 +75,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          else {
             if (Utils_AIR.appVersionNumber >= model.configFileInfo.requiredVersion_LibraryAccess) {
-               messageText = "An optional update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
+               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE;
             }
             else {
-               messageText = "An update to version " + model.configFileInfo.mostRecentVersion + " of Language Mentor is required in order to continue downloading new lessons.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
+               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
             }
             if (appStatePersistenceManager.retrieveDataSchemaAppVersion() < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-               messageText += "\n\nNote: Version " + model.configFileInfo.mostRecentVersion + " uses a new data format, so updating will require a re-install of Language Mentor.\n\nYou'll need to re-download lessons, etc.\n\nWe apologize for this inconvenience.";
+               messageText += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
             }
          }
          _messageTextWidget = new UIWidget_Viewlet__Text();

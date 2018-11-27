@@ -19,6 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.view {
 import com.brightworks.interfaces.IDisposable;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_Dispose;
 import com.langcollab.languagementor.component.learningmodelist.ItemRenderer_LearningModeList;
 import com.langcollab.languagementor.component.learningmodelist.LearningModeList;
@@ -91,7 +92,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
          if ((currentLessons.getSelectedSingleLanguageLessonVersionCount() > 0) && !model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed) {
             var message:String =
                   createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
-            (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(message, onDualLanguageModeSelectedWhileSingleLanguageLessonsSelectedMessageClose);
+            Utils_ANEs.showAlert_OkayButton(message, onDualLanguageModeSelectedWhileSingleLanguageLessonsSelectedMessageClose);
             model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
          }
          else {

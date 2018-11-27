@@ -237,36 +237,45 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       //    - If app is alpha or beta version, this is alpha or beta
       //    - If app is production version, this is the current mentor type code
       //      See Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE and Constant_MentorTypes
-      var stagingOrMentorTypeCode:String =
-            Utils_System.isAlphaOrBetaVersion() ?
-                  Constant_AppConfiguration.RELEASE_TYPE :
-                  Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE;
-      var platformName:String;
-      switch (Utils_System.platformName) {
-         case Constant_PlatformName.ANDROID:
-            platformName = "android";
-            break;
-         case Constant_PlatformName.IOS:
-            platformName = "ios";
-            break;
-         case Constant_PlatformName.MAC:
-         case Constant_PlatformName.WINDOWS_DESKTOP:
-            switch (Constant_LangMentor_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF) {
-               case Constant_PlatformName.ANDROID:
-                  platformName = "android";
-                  break;
-               case Constant_PlatformName.IOS:
-                  platformName = "ios";
-                  break;
-               default:
-                  Log.fatal("ConfigFileInfo.createMentorTypeFileFileName(): No case for Constant_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF of: " + Constant_LangMentor_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF);
-            }
-            break;
-         default:
-            var name:String = Utils_System.platformName;
-            Log.fatal("ConfigFileInfo.createMentorTypeFileFileName(): No case for Utils_System.platformName of: " + Utils_System.platformName);
+      // Exception:
+      //  - Desktop emulation - "mentor_type__desktop"
+      //
+      var result:String;
+      if (Utils_System.isRunningOnDesktop()) {
+         result = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_TYPE_FILE_NAME_ROOT + "desktop";
       }
-      var result:String = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_TYPE_FILE_NAME_ROOT + platformName + "_" + stagingOrMentorTypeCode;
+      else {
+         var stagingOrMentorTypeCode:String =
+               Utils_System.isAlphaOrBetaVersion() ?
+                     Constant_AppConfiguration.RELEASE_TYPE :
+                     Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE;
+         var platformName:String;
+         switch (Utils_System.platformName) {
+            case Constant_PlatformName.ANDROID:
+               platformName = "android";
+               break;
+            case Constant_PlatformName.IOS:
+               platformName = "ios";
+               break;
+            case Constant_PlatformName.MAC:
+            case Constant_PlatformName.WINDOWS_DESKTOP:
+               switch (Constant_LangMentor_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF) {
+                  case Constant_PlatformName.ANDROID:
+                     platformName = "android";
+                     break;
+                  case Constant_PlatformName.IOS:
+                     platformName = "ios";
+                     break;
+                  default:
+                     Log.fatal("ConfigFileInfo.createMentorTypeFileFileName(): No case for Constant_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF of: " + Constant_LangMentor_Misc.PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF);
+               }
+               break;
+            default:
+               var name:String = Utils_System.platformName;
+               Log.fatal("ConfigFileInfo.createMentorTypeFileFileName(): No case for Utils_System.platformName of: " + Utils_System.platformName);
+         }
+         result = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_TYPE_FILE_NAME_ROOT + platformName + "_" + stagingOrMentorTypeCode;
+      }
       if (Utils_System.platformName == Constant_PlatformName.WINDOWS_DESKTOP)
          Utils_ANEs.showAlert_Toast(platformName + "_" + stagingOrMentorTypeCode);
       return result;
@@ -279,7 +288,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    // Low priority data is typically fetched on a less frequent schedule, and is stored using _appStatePersistenceManager.
    // This class does callbacks to report results when the high-priority stuff is done, then proceeds to do low priority stuff, with no callbacks/reporting.
    private function doLowPriorityDataFetching():void {
-      fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdate();
       fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdateDate();
    }
 
@@ -363,6 +371,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          var d:Date = Utils_DataConversionComparison.convertYYYYMMDDStringToUTCDate(dateString);
          _appStatePersistenceManager.persistMostRecent_NewsUpdateDate(d);
          _appStatePersistenceManager.persistMostRecent_NewsUpdateDate_DateRetrieved(new Date());
+         fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdate();
       }
    }
 

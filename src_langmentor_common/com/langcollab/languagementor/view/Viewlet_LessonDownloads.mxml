@@ -27,6 +27,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.event.BwEvent;
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
@@ -40,9 +41,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             "No lesson libraries have been selected. In order to access lessons, please go to More > Manage Libraries and add one or more libraries."
       private static const _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES:String =
             "No lesson libraries have been selected. In order to access lessons, please go to More > Manage Libraries and add one or more libraries, and/or select Use Recommended Libraries."
-      private static const _MESSAGE__APP_UPDATE_REQUIRED:String =
-            "Please Upgrade\n\nA new version of Language Mentor is available, and an upgrade is necessary before more new lessons can be downloaded.\n\n" +
-            'Please go to More > Community & Support > Upgrade Language Mentor, then follow the directions on that screen.';
       private static const _MESSAGE__NO_INTERNET_CONNECTION:String =
             "Hmmm... Language Mentor is having trouble accessing the Internet... If you continue to see this message, please check your device's Internet access.";
       private static const _MESSAGE__NO_NEW_LESSONS_FOUND:String =
@@ -124,7 +122,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
             if (updateInfoCommandReport) {
                if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess) {
-                  explanation = _MESSAGE__APP_UPDATE_REQUIRED;
+                  explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
+                  if (Utils_AIR.appVersionNumber < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+                     explanation += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
+                  }
                }
                else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;

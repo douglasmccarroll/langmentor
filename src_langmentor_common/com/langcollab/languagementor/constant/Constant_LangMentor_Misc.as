@@ -18,6 +18,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.constant {
 import com.brightworks.constant.Constant_PlatformName;
+import com.brightworks.util.Utils_System;
 
 import flash.filesystem.File;
 
@@ -75,6 +76,9 @@ public class Constant_LangMentor_Misc {
    // Messages
    public static const MESSAGE__CONTACT_US:String = "contact us via the forums at LanguageCollaborative.com";
    public static const MESSAGE__REPORT_PROBLEM:String = "Please report this problem on the forums at LanguageCollaborative.com";
+   public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE:String = "A newer version of Language Mentor is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
+   public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS:String = "Please Upgrade\n\nA new version of Language Mentor is available, and an upgrade is necessary before more new lessons can be downloaded.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
+   public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE:String = "Note: This new version uses a new data format, so once you update, you'll need to re-download lessons, etc.\n\nWe apologize for this inconvenience.";
 
    // Language Tokens
    public static const TOKEN_FONT_SIZE_HEADING:String = "%heading_font_size%";
@@ -83,6 +87,7 @@ public class Constant_LangMentor_Misc {
    public static const TOKEN_NATIVE_LANGUAGE_NAME:String = "%native_language_name%";
    public static const TOKEN_TARGET_LANGUAGE_EXAMPLE:String = "%target_language_example%";
    public static const TOKEN_TARGET_LANGUAGE_NAME:String = "%target_language_name%";
+
 
    // Misc
    public static const PLATFORM__DESKTOP_MODE_EMULATES_CONFIGURATION_OF:String = Constant_PlatformName.ANDROID;

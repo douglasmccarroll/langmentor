@@ -327,7 +327,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       }
    }
 
-   private function createIndex_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion():Dictionary { /////
+   private function createIndex_ExplanatoryAudioFileDuration_by_ChunkVO_ForCurrentLessonVersion():Dictionary {
       var result:Dictionary = new Dictionary();
       var index_ChunkVOs_by_LocationInOrder:Dictionary = new Dictionary();
       for each (var chunkVO:ChunkVO in _currentLessons.currentLessonChunks_SortedByLocationInOrder) {

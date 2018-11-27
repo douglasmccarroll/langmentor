@@ -685,7 +685,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function processCurrentLessonsLengthChange():void {
          if (currentLessons.length == 0) {
-            (FlexGlobals.topLevelApplication as App_LanguageMentor_Base).displayMobileDialog(_ALERT_MESSAGE__ALL_LESSONS_LEARNED, onNoRemainingLessonsAlertCallback);
+            Utils_ANEs.showAlert_OkayButton(_ALERT_MESSAGE__ALL_LESSONS_LEARNED, onNoRemainingLessonsAlertCallback);
             return;
          }
       }
