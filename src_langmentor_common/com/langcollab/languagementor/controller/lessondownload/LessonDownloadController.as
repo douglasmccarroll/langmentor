@@ -246,7 +246,6 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
    }
 
    public function isLessonEligibleForDownloading(lessonId:String, lessonVersion:String, contentProviderId:String, lessonLevel:uint):Boolean {
-      //// also check that lesson xml file's level matches that in lesson_list
       if (!_model.isLessonLevelSelectedForDownloading(lessonLevel))
          return false;
       if (!isLessonDownloaded(lessonId, contentProviderId)) {
@@ -270,7 +269,6 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
    }
 
    public function isLessonEligibleForDownloadingButCurrentlySelected(lessonId:String, lessonVersion:String, contentProviderId:String, lessonLevel:uint):Boolean {
-      //// also check that lesson xml file's level matches that in lesson_list
       if (!_model.isLessonLevelSelectedForDownloading(lessonLevel))
          return false;
       if (!isLessonDownloaded(lessonId, contentProviderId)) {

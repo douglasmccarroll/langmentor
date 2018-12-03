@@ -695,7 +695,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          setCurrentLessonAndChunkIndexes(currentLessonIndex, newChunkIndex);
          Log.debug("CurrentLessons.iterateChunk(): new currentChunkIndex: " + currentChunkIndex);
       } else {
-         // No unsuppressed chunk in 'direction' in currLV
+         // No unsuppressed chunk in 'direction' in current lesson version
          if (direction == -1) {
             // Move to last chunk in previous lesson
             var newLessonIndex:uint = getIndexForNextOrPreviousSelectedLessonVersion(currentLessonIndex, -1);

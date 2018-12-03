@@ -47,6 +47,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.LessonVersionVO;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.binding.utils.BindingUtils;
       import mx.binding.utils.ChangeWatcher;
@@ -335,6 +336,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var vo:LessonVersionVO = currentLessons.currentLessonVO;
          if (!vo)
             return;
+         currentLessons.pauseCurrentLessonVersionIfPlaying();
          navigator.pushView(View_Credits_Lesson, vo, navigator.context);
       }
 
@@ -458,8 +460,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             AudioPlayer.getInstance().stop();
             showHideMicrophoneImage();
             model.mostRecentDownloadProcessStartAllowedEventTime = new Date();
-         }
-         else {
+         } else {
             _button_PlayPause.label = _BUTTON_LABEL__PAUSE;
          }
       }

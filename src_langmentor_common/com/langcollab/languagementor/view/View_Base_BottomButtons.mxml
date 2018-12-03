@@ -19,7 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
                 xmlns:s = "library://ns.adobe.com/flex/spark"
-                xmlns:button = "com.brightworks.component.button.*"
+                xmlns:button="com.langcollab.languagementor.component.button.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 creationComplete = "onCreationComplete()"
                 viewActivate = "onViewActivate()">
@@ -83,7 +83,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       protected function addButton(label:String, clickHandler:Function):void {
-         var button:NormalButton = new NormalButton();
+         var button:Button_Standard = new Button_Standard();
          button.label = label;
          button.visible = false;
          button.addEventListener(MouseEvent.CLICK, clickHandler);
@@ -195,7 +195,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       </s:Scroller>
       <s:BorderContainer id = "buttonContainer"
                          width = "100%"
-                         backgroundColor = "0x333333"
+                         backgroundColor = "0x8888CC"
                          bottom = "0">
          <s:layout>
             <s:HorizontalLayout horizontalAlign = "center"
@@ -209,11 +209,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             I can't get doubleClick to work here - specifically in Send Problem Report - even though it works in intro views -
             this may be because the processor is much busier (downloading) in Send Problem Report.
             -->
-            <button:NormalButton id = "primaryBottomButton"
-                                 label = "{BUTTON_LABEL__OK}"
-                                 click = "onPrimaryBottomButtonClick(event)"
-                                 visible = "false"
-                                 width = "60%"/>
+            <button:Button_Standard id = "primaryBottomButton"
+                                    label = "{BUTTON_LABEL__OK}"
+                                    click = "onPrimaryBottomButtonClick(event)"
+                                    visible = "false"
+                                    width = "60%"/>
          </s:HGroup>
       </s:BorderContainer>
    </s:VGroup>

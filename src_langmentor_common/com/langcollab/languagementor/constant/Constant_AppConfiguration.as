@@ -23,7 +23,6 @@ public class Constant_AppConfiguration {
    // Constants that we may modify when configuring a release
    //// Some of these constants should be in a "project-specific" or "app-specific" constants file
 
-   public static const APP_ID:String = "com.brightworks.LangMentor.standard";
    public static const APP_NAME:String = "Language Mentor";
    public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.38;
 

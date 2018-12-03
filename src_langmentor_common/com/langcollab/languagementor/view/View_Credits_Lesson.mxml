@@ -59,14 +59,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override public function doGoHome():void {
          switch (contextType) {
-            case ViewContext.CONTEXT_TYPE__MORE:
-               navigator.pushView(View_Home, null, null, transition_SlideView_Left);
-               break;
             case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
                navigator.pushView(View_Home, null, null, transition_SlideView_Right);
                break;
             default:
-               Log.error("View_Credits_Lesson.doGoBack(): No case for: " + contextType);
+               navigator.pushView(View_Home, null, null, transition_SlideView_Left);
          }
       }
 
