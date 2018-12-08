@@ -296,7 +296,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          return true;
       var exists:Boolean = Utils_File.ensureDirectoryExists(Utils_LangCollab.downloadedLessonsDirectoryURL);
       if (exists) {
-         var result:Boolean = (Utils_File.getAvailableFileSystemSpace(Utils_LangCollab.downloadedLessonsDirectoryURL) > (Utils_File.BYTES_IN_MEGABYTE * 300));
+         var result:Boolean = (Utils_File.getAvailableFileSystemSpace(Utils_LangCollab.downloadedLessonsDirectoryURL) > (Utils_File.BYTES_IN_MEGABYTE * 500)); // Yes, we need 500 MB available, or else some way to avoid this: https://bugbase.adobe.com/index.cfm?event=bug&id=3711301
          return result;
       } else {
          Log.error("LessonDownloadController.isSufficientLessonStorageSpaceAvailable(): Unable to ensure storage directory exists, so we can't measure available file system space");

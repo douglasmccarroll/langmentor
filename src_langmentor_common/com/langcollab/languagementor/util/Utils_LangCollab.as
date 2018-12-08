@@ -51,11 +51,11 @@ public class Utils_LangCollab {
    }
 
    public static function get downloadedLessonsDirectoryURL():String {
-      return Utils_AIR.documentStorageDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DOCUMENT_STORAGE_FOLDER_NAME + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DOWNLOADED_LESSONS_FOLDER_NAME;
+      return Utils_AIR.applicationStorageDirectory + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DOCUMENT_STORAGE_FOLDER_NAME + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DOWNLOADED_LESSONS_FOLDER_NAME;
    }
 
    public static function get sqLiteDatabaseFileDirectoryURL():String {
-      return Utils_AIR.documentStorageDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DB_FOLDER_NAME;
+      return Utils_AIR.applicationStorageDirectory + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__DB_FOLDER_NAME;
    }
 
    public static function get sqLiteDatabaseFileURL():String {
@@ -63,7 +63,7 @@ public class Utils_LangCollab {
    }
 
    public static function get tempAudioFileDirectoryURL():String {
-      return Utils_AIR.documentStorageDirectoryURL + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__TEMP_AUDIO_FOLDER_NAME;
+      return Utils_AIR.applicationStorageDirectory + File.separator + Constant_LangMentor_Misc.FILEPATHINFO__TEMP_AUDIO_FOLDER_NAME;
    }
 
    public static function get tempAudioFileURL():String {
@@ -155,7 +155,7 @@ public class Utils_LangCollab {
       model.wipeData();
       lessonDownloadController.wipeData();
       Utils_Database.createNewDBFileFromTemplate(sqLiteDatabaseFileURL, appStatePersistenceManager);
-      return Utils_File.deleteDirectory(Utils_AIR.documentStorageDirectoryURL);
+      return Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
    }
 
 

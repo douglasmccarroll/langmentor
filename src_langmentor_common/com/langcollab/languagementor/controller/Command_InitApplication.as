@@ -60,12 +60,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
       Log.info("Command_InitApplication.execute()");
       ToolTip.maxWidth = 150;
       // Next lines are for cases where we're init'ing after data wipe
-      // Update: I'm not sure that the above comment is accurate, i.e. I think that these lines are for both a) a first-time use scenario, and b) an after-data-wipe scenario. But I'm not sure, and am not going to take time to research this thoroughly right now.
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
-      if (!appStatePersistenceManager.retrieveIsAutoDownloadLessonsSaved())
-         model.autoDownloadLessons = true;
-      if (!appStatePersistenceManager.retrieveIsUseRecommendedLibrariesSaved())
-         model.useRecommendedLibraries = false;
       if (!Utils_System.isRunningOnDesktop()) {
          // This may be needed on iOS, and may be needed on Android at some point.
          // It breaks when set while running in the AIR simulator on the desktop.
@@ -77,7 +72,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          // so we delete all app data.
          Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
          appStatePersistenceManager.isDataWipeActivityBlockActive = false;
-         Utils_File.deleteDirectory(Utils_AIR.documentStorageDirectoryURL);
+         Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
          Utils_File.ensureDirectoryExists(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL);
          Utils_Database.ensureDBFileExists(Utils_LangCollab.sqLiteDatabaseFileURL, appStatePersistenceManager);
          model.init();

@@ -45,8 +45,12 @@ public class Utils_Database {
       if (!dbTemplateFile.exists) {
          Log.fatal("Utils_Database.createNewDBFileFromTemplate(): DB template file not found at: " + dbTemplateFile.nativePath);
       }
-      dbTemplateFile.copyTo(dbFile, true);
-      appStatePersistenceManager.persistDataSchemaAppVersion(Utils_AIR.appVersionNumber);                                                          
+      try {
+         dbTemplateFile.copyTo(dbFile, true);
+      } catch (e:Error) {
+         Log.fatal("Utils_Database.createNewDBFileFromTemplate() - Copy DB template file failure - Template: " + dbTemplateFile.nativePath + " New file: " + dbFile.nativePath);
+      }
+      appStatePersistenceManager.persistDataSchemaAppVersion(Utils_AIR.appVersionNumber);
    }
 
    public static function doesDBFileExist(sqLiteDatabaseFileURL:String):Boolean {

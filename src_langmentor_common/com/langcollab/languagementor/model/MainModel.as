@@ -918,6 +918,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    public function initSingleton():void {
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
+      // If they're not already set, set defaults for autoDownloadLessons and useRecommendedLibraries
+      if (!_appStatePersistenceManager.retrieveIsAutoDownloadLessonsSaved())
+         _autoDownloadLessons = true;
+      if (!_appStatePersistenceManager.retrieveIsUseRecommendedLibrariesSaved())
+         _useRecommendedLibraries = false;
       _currentLessons = CurrentLessons.getInstance();
    }
 
