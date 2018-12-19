@@ -162,12 +162,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (model.getLessonVersionCount() < 1) {
             // No downloaded lessons
             var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
-            Utils_ANEs.showAlert_Toast(message, true);  ///// Go back to using showAlert_OkayButton()?
+            Utils_ANEs.showAlert_OkayButton(message);
             return;
          }
          else if (currentLessons.length == 0) {
             // No selected lessons
-            Utils_ANEs.showAlert_Toast("No lessons are currently selected.", true);   ///// Go back to using showAlert_OkayButton()?
+            Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
             return;
          }
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_PlayLessons_Saved()) {
@@ -184,7 +184,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.debug("View_Home.moveLeft()");
          if (model.getLessonVersionCount() < 1) {
             var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
-            Utils_ANEs.showAlert_Toast(message, true);    ///// Go back to using showAlert_OkayButton()?
+            Utils_ANEs.showAlert_OkayButton(message);
             return;
          }
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_SelectLessons_Saved()) {
