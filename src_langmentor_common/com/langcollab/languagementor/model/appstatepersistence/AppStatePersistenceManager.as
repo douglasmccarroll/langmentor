@@ -19,6 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.model.appstatepersistence {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
+import com.brightworks.util.persistence.ByteArrayPersistenceManager;
 import com.brightworks.util.singleton.SingletonManager;
 import com.langcollab.languagementor.vo.LessonVersionVO;
 import com.langcollab.languagementor.vo.LevelVO;
@@ -78,17 +79,12 @@ public class AppStatePersistenceManager implements IManagedSingleton {
 
    public var isDataWipeActivityBlockActive:Boolean;
 
-   private var _persistenceManager:PersistenceManager;
+   private var _persistenceManager:ByteArrayPersistenceManager;
 
    public function AppStatePersistenceManager(manager:SingletonManager) {
       _instance = this;
       registerClassAlias("com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo", LessonVersionInfo);
-      _persistenceManager = new PersistenceManager();
-      var success:Boolean = _persistenceManager.load();
-      if (!success) {
-         _persistenceManager = null;
-         Log.warn("AppStatePersistenceManager constructor: _persistenceManager.load() failed");
-      }
+      _persistenceManager = new ByteArrayPersistenceManager();
    }
 
    public static function getInstance():AppStatePersistenceManager {

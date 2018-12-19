@@ -4,6 +4,7 @@ import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.constant.Constant_PlatformName;
 import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.ILoggingConfigProvider;
+import com.brightworks.techreport.TechReport;
 import com.brightworks.util.AppActiveElapsedTimeTimer;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
@@ -18,11 +19,16 @@ import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
+import com.langcollab.languagementor.view.View_DeviceDoesntSupportLangMentor;
 import com.langcollab.languagementor.vo.LanguageVO;
+
+import flash.desktop.NativeApplication;
 
 import flash.events.TimerEvent;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
+
+import spark.components.ViewNavigatorApplication;
 
 public class ConfigFileInfo implements ILoggingConfigProvider {
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_ALWAYS_NODES:String = "problemDescription_MultipleAlwaysNodes";
@@ -416,7 +422,22 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       Log.debug("ConfigFileInfo.onRootConfigFileDownloadComplete()");
       _model.downloadBandwidthRecorder.reportFileDownloader(_fileDownloader_RootConfigFile);
       var fileData:ByteArray = FileDownloader(event.target).fileData;
-      _fileXML_LanguageMentorRootConfig = new XML(String(fileData));
+      try {
+         _fileXML_LanguageMentorRootConfig = new XML(String(fileData));
+      } catch (e:Error) {
+         if (e is TypeError) {
+            // I don't know why but we're getting this error when we have no internet connection
+            // So we treat this in the same way we treat other download failures
+            var report:FileDownloaderErrorReport = new FileDownloaderErrorReport();
+            report.ioErrorEventText = "Download failure caught in onRootConfigFileDownloadComplete()";
+            var event:BwEvent = new BwEvent(BwEvent.FAILURE, report);
+            onRootConfigFileDownloadFailure(event);
+         }
+         else {
+            Log.fatal("ConfigFileInfo.onRootConfigFileDownloadComplete() - Error converting root config file data to XML: " + e.message);
+         }
+         return;
+      }
       /// Use a validateAndPopulateRootConfigFileXML() method
       _mainConfigFolderURL = _fileXML_LanguageMentorRootConfig.mainConfigFolderURL[0].toString();
       updateLanguageVOsWithHasRecommendedLibrariesInfo(_fileXML_LanguageMentorRootConfig);
@@ -444,6 +465,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
             techReport.miscInfoList.push("_rootConfigFileDownloader is null in onRootConfigFileDownloadFailure()");
          ConfigFileInfoTechReport(techReport).isRootConfigFileDownloadFailure = true;
          reportFault();
+         NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.NO_INTERNET_CONNECTION));
       }
    }
 

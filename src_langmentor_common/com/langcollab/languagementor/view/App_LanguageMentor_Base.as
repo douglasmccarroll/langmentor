@@ -19,6 +19,7 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
+import com.brightworks.event.BwEvent;
 import com.brightworks.util.audio.Utils_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.Log;
@@ -201,6 +202,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivateApp);
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+      NativeApplication.nativeApplication.addEventListener(BwEvent.NO_INTERNET_CONNECTION, onNoInternetConnection);
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
       if ((_appStatePersistenceManager.retrieveAppInstallDate()) &&
             (_appStatePersistenceManager.retrieveIsTargetLanguageIdSaved())) {
@@ -245,6 +247,10 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
             break;
          }
       }
+   }
+
+   private function onNoInternetConnection(e:BwEvent):void {
+      navigator.pushView(View_CannotAccessInternet);
    }
 
    private function onUncaughtError(event:UncaughtErrorEvent):void {
