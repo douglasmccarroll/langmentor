@@ -150,9 +150,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       navigationContent.push(homeButton);
    }
 
-   private function onDeactivateApp(event:Event):void {
-
-      //// stop audio if in record-playback mode?
+   private function onDeactivateApp(event:Event):void {  ///// stop audio if a) iOS (? android too ?), and b) mic has been used
 
       // This happens when the device sends the app into the background - i.e. when 
       // the phone rings, when a clock alarm goes off, when the user presses the home button, etc...

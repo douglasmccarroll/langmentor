@@ -202,7 +202,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       _microphone = Microphone.getMicrophone();
       if (_microphone) {
          _microphone.rate = 44;
-         _microphone.gain = 25; // Docs: "A value of 50 acts like a multiplier of one and specifies normal volume." ... But it's recording at much too high a level ...
+         _microphone.gain = 25; ///// test    // Docs: "A value of 50 acts like a multiplier of one and specifies normal volume." ... But it's recording at much too high a level ...
          _microphone.setSilenceLevel(0, 2000);
          _recorder = new MicRecorder(new WaveEncoder(), _microphone);
       }
