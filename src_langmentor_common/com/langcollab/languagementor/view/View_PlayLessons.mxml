@@ -21,7 +21,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:text = "com.brightworks.component.text.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
-                actionBarVisible = "{Utils_System.platformName != Constant_PlatformName.ANDROID}"
                 title = "Play Lessons"
                 initialize = "onInitialize()"
                 preinitialize = "onPreinitialize()"

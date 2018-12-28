@@ -34,12 +34,24 @@ langmentorview|App_LanguageMentor_Base {
 }
 
 langmentorbutton|Button_ActionBar_Home {
-    icon: Embed(source='/assets/icons/home_icon.png');
+    icon: Embed(source='/assets/icons/home_icon_48x48.png');
+}
+@media (application-dpi: 480) {
+    langmentorbutton|Button_ActionBar_Home {
+       icon: Embed(source='/assets/icons/home_icon_72x72.png');
+    }
 }
 
 langmentorbutton|Button_ActionBar_LeftArrow {
-    icon: Embed(source='/assets/icons/arrow_left_icon.png');
+    icon: Embed(source='/assets/icons/arrow_left_icon_48x48.png');
 }
+@media (application-dpi: 480) {
+    langmentorbutton|Button_ActionBar_LeftArrow {
+        icon: Embed(source='/assets/icons/arrow_left_icon_72x72.png');
+    }
+}
+
+
 
 langmentorlearningmodelist|ItemRenderer_LearningModeList {
     background: Embed(source='/assets/backgrounds/item_renderer_background_up.png', scaleGridLeft=10, scaleGridTop=20, scaleGridRight=11, scaleGridBottom=21);

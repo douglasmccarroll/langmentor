@@ -253,7 +253,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("View_Home.onCreationComplete()");
-        _isCreationCompleteCalled = true;
+         _isCreationCompleteCalled = true;
          doPostInitStuff();
          if (!_isPostInitStuffDone)
             activateBusyIndicator();

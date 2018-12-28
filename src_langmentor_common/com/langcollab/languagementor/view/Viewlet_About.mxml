@@ -86,7 +86,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var multiDpiBitmapSource:MultiDPIBitmapSource = new MultiDPIBitmapSource();
          multiDpiBitmapSource.source160dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_160;
          multiDpiBitmapSource.source240dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_240;
-         multiDpiBitmapSource.source320dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320;
+         multiDpiBitmapSource.source320dpi = Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320; ///// add higher resolutions
          var image:Image = new Image();
          image.horizontalCenter = 0;
          image.source = multiDpiBitmapSource;
