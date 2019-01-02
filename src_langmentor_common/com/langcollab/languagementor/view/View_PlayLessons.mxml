@@ -871,9 +871,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                       verticalAlign = "top"
                       horizontalCenter = "0">
                <s:Image id = "microphoneImage"
-                        source = "{Resources_Image.IMAGE__MICROPHONE}"
                         alpha = "0"
-                        horizontalCenter = "0"/>
+                        horizontalCenter = "0">
+                  <s:source>
+                     <s:MultiDPIBitmapSource source160dpi = "{Resources_Image.IMAGE__MICROPHONE_160}"
+                                             source240dpi = "{Resources_Image.IMAGE__MICROPHONE_240}"
+                                             source320dpi = "{Resources_Image.IMAGE__MICROPHONE_320}"
+                                             source480dpi = "{Resources_Image.IMAGE__MICROPHONE_480}"/>
+                  </s:source>
+               </s:Image>
             </s:VGroup>
             <text:CenteredMobileText id = "textField_ChunkText"
                                      height = "100%"

@@ -76,7 +76,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             <s:source>
                <s:MultiDPIBitmapSource source160dpi = "{Resources_Image.IMAGE__BRIGHTWORKS_LOGO_160}"
                                        source240dpi = "{Resources_Image.IMAGE__BRIGHTWORKS_LOGO_240}"
-                                       source320dpi = "{Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320}"/>
+                                       source320dpi = "{Resources_Image.IMAGE__BRIGHTWORKS_LOGO_320}"
+                                       source480dpi = "{Resources_Image.IMAGE__BRIGHTWORKS_LOGO_480}"/>
             </s:source>
          </s:Image>
          <s:TextArea width = "100%"

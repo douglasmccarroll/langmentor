@@ -1379,7 +1379,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    // - is set in init() - as announced via change event here - notifies View_Home - via binding - model is ready
    // - also various other classes check this prop - should probably be renamed isModelInitialized
    private function initTargetLanguageBasedDataIfReady():void {
-      if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
+      if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
          // This isn't "standard" mentor type, which means that the target language is specified in this constant...
          _currentTargetLanguageId = getLanguageIdFromIso639_3Code(Constant_AppConfiguration.LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE);
          _appStatePersistenceManager.persistTargetLanguageId(_currentTargetLanguageId);

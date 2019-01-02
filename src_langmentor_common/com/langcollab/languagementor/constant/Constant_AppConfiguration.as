@@ -26,7 +26,9 @@ public class Constant_AppConfiguration {
    public static const APP_NAME:String = "Language Mentor";
    public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.38;
 
-   public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL;
+   public static const ANE_KEY__DISTRIQT:String = "98155715608ffab13dca8e229e61a652b48d7c4dEUVop6JnfJMHpLfs/3hlXoYAife3mQhdT1sJO17n/+2pKXb5vsdE6/qAalKa4xBGRqkT5l0vmXsm9meI7rA5zLKdYCNfE3YUcDbqtKeyYo1QCBgz1VkJtqgrg5MNddunL14u2QlxYbedeTrdXZUsZA4sAO4Qt1/YUcZtCoyU72y4Gyqzvrc93isc4vSYVqI+c9UHEHMlMR9MWajgaLBbFNP00J/TO2BzutE+NwWIomm94EeoRLF6MwKmCr8v359IUz3zsMUwd4fS14g1XPiWVXqSmyYswDbvos0+hMfZqC4ijjHnbqPqH/RkARgxNBkBdxvLNSPYYlEIcfQUgYwl6Q==";
+
+   public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL;
    public static const CURRENT_MENTOR_TYPE__DISPLAY_NAME:String = Constant_MentorTypes.MENTOR_TYPE_DISPLAY_NAME__GLOBAL;
 
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;

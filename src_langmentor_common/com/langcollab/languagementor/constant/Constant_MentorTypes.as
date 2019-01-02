@@ -22,7 +22,7 @@ public class Constant_MentorTypes {
    public static const MENTOR_TYPE_DISPLAY_NAME__GLOBAL:String = "Language Mentor"
    public static const MENTOR_TYPE_DISPLAY_NAME__ENG:String = "English Language Mentor"
    public static const MENTOR_TYPE_DISPLAY_NAME__ENG__CMN:String = "English Language Mentor for Mandarin Chinese speakers"
-   public static const MENTOR_TYPE_CODE__GLOBAL:String = "global" // User selects target language
+   public static const MENTOR_TYPE_CODE__UNIVERSAL:String = "universal" // User selects target language
    public static const MENTOR_TYPE_CODE__ENG:String = "eng"
    public static const MENTOR_TYPE_CODE__ENG__CMN:String = "eng_cmn"
 

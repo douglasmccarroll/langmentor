@@ -71,7 +71,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Agreement";
          viewletGroup.addElement(textWidget);
-         if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__GLOBAL) {
+         if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
             textWidget.text = "Select Language";
             viewletGroup.addElement(textWidget);

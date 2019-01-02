@@ -10,6 +10,9 @@ public class Resources_Image {
    [Embed(source="/assets/images/brightworks_logo_320.png")]
    public static const IMAGE__BRIGHTWORKS_LOGO_320:Class;
 
+   [Embed(source="/assets/images/brightworks_logo_480.png")]
+   public static const IMAGE__BRIGHTWORKS_LOGO_480:Class;
+
    [Embed(source="/assets/images/langmentor_logo_160.png")]
    public static const IMAGE__LANGMENTOR_LOGO_160:Class;
 
@@ -19,8 +22,20 @@ public class Resources_Image {
    [Embed(source="/assets/images/langmentor_logo_320.png")]
    public static const IMAGE__LANGMENTOR_LOGO_320:Class;
 
-   [Embed(source="/assets/images/microphone_100x120.png")]
-   public static const IMAGE__MICROPHONE:Class;
+   [Embed(source="/assets/images/langmentor_logo_480.png")]
+   public static const IMAGE__LANGMENTOR_LOGO_480:Class;
+
+   [Embed(source="/assets/images/microphone_160.png")]
+   public static const IMAGE__MICROPHONE_160:Class;
+
+   [Embed(source="/assets/images/microphone_240.png")]
+   public static const IMAGE__MICROPHONE_240:Class;
+
+   [Embed(source="/assets/images/microphone_320.png")]
+   public static const IMAGE__MICROPHONE_320:Class;
+
+   [Embed(source="/assets/images/microphone_480.png")]
+   public static const IMAGE__MICROPHONE_480:Class;
 
    [Embed(source="/assets/icons/dual_language_icon_30x30.png")]
    public static const ICON__BUBBLE_DOUBLE_30x30:Class;
