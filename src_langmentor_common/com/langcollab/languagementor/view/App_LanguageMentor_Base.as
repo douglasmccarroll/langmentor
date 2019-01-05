@@ -191,11 +191,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          navigator.pushView(View_ScreenResolutionTooLow);
          return;
       }
-      if ((!Utils_ANEs.isANEBasedMediaPlayerSupported()) && (!Utils_System.isRunningOnDesktop())) {
-         Log.error("App_LanguageMentor_Base.onPreinitialize(): MediaPlayer ANE isn't supported");
-         navigator.pushView(View_DeviceDoesntSupportLangMentor);
-         return;
-      }
       NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onActivateApp);
       NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivateApp);
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
