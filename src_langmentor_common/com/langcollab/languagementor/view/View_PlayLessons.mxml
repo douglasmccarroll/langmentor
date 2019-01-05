@@ -24,11 +24,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 title = "Play Lessons"
                 initialize = "onInitialize()"
                 preinitialize = "onPreinitialize()"
-                viewActivate = "onViewActivate()">
+                viewActivate = "onViewActivate()"
+                viewDeactivate = "onViewDeactivate()">
 
    <fx:Script>
         <![CDATA[
       import com.brightworks.base.Callbacks;
+      import com.brightworks.constant.Constant_AudioModeConfig;
       import com.brightworks.constant.Constant_PlatformName;
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.audio.Utils_Audio_Files;
@@ -681,6 +683,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          showHideMicrophoneImage();
          updateTextBoxesText();
          Log.debug("View_PlayLessons.onViewActivate(): finished");
+      }
+
+      private function onViewDeactivate():void {
+         if (Constant_AudioModeConfig.AUDIO_MODE__CURRENT == Constant_AudioModeConfig.AUDIO_MODE__STANDARD) {
+            currentLessons.pauseCurrentLessonVersionIfPlaying();
+         }
       }
 
       private function processCurrentLessonsLengthChange():void {

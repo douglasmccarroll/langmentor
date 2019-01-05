@@ -19,6 +19,7 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
+import com.brightworks.constant.Constant_AudioModeConfig;
 import com.brightworks.event.BwEvent;
 import com.brightworks.util.audio.Utils_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
@@ -151,7 +152,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onDeactivateApp(event:Event):void {  ///// stop audio if a) iOS (? android too ?), and b) mic has been used
-
       // This happens when the device sends the app into the background - i.e. when 
       // the phone rings, when a clock alarm goes off, when the user presses the home button, etc...
       if (Utils_System.isRunningOnDesktop()) {
