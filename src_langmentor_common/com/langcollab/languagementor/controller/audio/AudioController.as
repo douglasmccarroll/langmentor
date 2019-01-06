@@ -209,6 +209,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
    public function pausePlayingAudioIfAny():void {
       Log.info(["AudioController.pausePlayingAudioIfAny()"]);
+      AudioPlayer.getInstance().stop();
       clearTimer_StartLesson();
       stopLeafFinishCheckProcess();
       if (_currentLessonVersionAudioSequence)

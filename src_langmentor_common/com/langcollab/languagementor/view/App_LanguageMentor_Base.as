@@ -151,7 +151,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       navigationContent.push(homeButton);
    }
 
-   private function onDeactivateApp(event:Event):void {  ///// stop audio if a) iOS (? android too ?), and b) mic has been used
+   private function onDeactivateApp(event:Event):void { 
       // This happens when the device sends the app into the background - i.e. when 
       // the phone rings, when a clock alarm goes off, when the user presses the home button, etc...
       if (Utils_System.isRunningOnDesktop()) {
@@ -161,6 +161,10 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       } else {
          Log.info("App_LanguageMentor_Base.onDeactivateApp()");
          _model.isAppRunningInBackground = true;
+         if (Constant_AudioModeConfig.AUDIO_MODE__CURRENT == Constant_AudioModeConfig.AUDIO_MODE__STANDARD) {
+            _currentLessons.pauseCurrentLessonVersionIfPlaying();
+         }
+
       }
    }
 
