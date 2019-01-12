@@ -38,7 +38,7 @@ langmentorbutton|Button_ActionBar_Home {
 }
 @media (application-dpi: 480) {
     langmentorbutton|Button_ActionBar_Home {
-       icon: Embed(source='/assets/icons/home_icon_72x72.png');
+       icon: Embed(source='/assets/icons/home_icon_100x100.png');
     }
 }
 
@@ -47,7 +47,7 @@ langmentorbutton|Button_ActionBar_LeftArrow {
 }
 @media (application-dpi: 480) {
     langmentorbutton|Button_ActionBar_LeftArrow {
-        icon: Embed(source='/assets/icons/arrow_left_icon_72x72.png');
+        icon: Embed(source='/assets/icons/arrow_left_icon_100x100.png');
     }
 }
 
