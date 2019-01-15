@@ -49,6 +49,7 @@ public class SequenceStrategy_Chunk extends SequenceStrategy {
       orderSpecList_Explanatory = new ArrayCollection();
       orderSpecList_Explanatory.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS);
       orderSpecList_Explanatory.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_EXPLANATORY);
+      orderSpecList_Explanatory.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS);
    }
 
    public override function dispose():void {

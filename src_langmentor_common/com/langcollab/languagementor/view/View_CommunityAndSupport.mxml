@@ -65,9 +65,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          _listDataProvider = new ArrayCollection();
          _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
-         _listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
+         /////_listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
          _listDataProvider.addItem({label: LIST_OPTION__SEND_PROBLEM_REPORT, value: LIST_OPTION__SEND_PROBLEM_REPORT});
-         _listDataProvider.addItem({label: LIST_OPTION__SHARE_ON_FACEBOOK, value: LIST_OPTION__SHARE_ON_FACEBOOK});
+         /////_listDataProvider.addItem({label: LIST_OPTION__SHARE_ON_FACEBOOK, value: LIST_OPTION__SHARE_ON_FACEBOOK});
          _listDataProvider.addItem({label: LIST_OPTION__UPGRADE, value: LIST_OPTION__UPGRADE})
       }
 
