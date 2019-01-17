@@ -380,6 +380,7 @@ INSERT INTO TextDisplayType VALUES ('3', 'textTargetLanguagePhonetic');
 CREATE TABLE LessonVersion (
   lessonVersionSignature TEXT NOT NULL,
   contentProviderId TEXT NOT NULL,
+  libraryId TEXT NOT NULL,
   publishedLessonVersionId TEXT,
   publishedLessonVersionVersion TEXT,
   assetsFileSize INTEGER,

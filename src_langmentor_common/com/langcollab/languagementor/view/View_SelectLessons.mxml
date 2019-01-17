@@ -33,11 +33,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
       import com.langcollab.languagementor.event.Event_LessonVersionList;
       import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
+      import com.langcollab.languagementor.vo.LessonVersionVO;
+
+      import mx.collections.ArrayCollection;
+      import mx.collections.Sort;
+      import mx.collections.SortField;
 
       import mx.core.FlexGlobals;
 
       private var _isDisposed:Boolean = false;
       private var _lessonSelectorList:LessonVersionList;
+      private var _toggledLessonsHistoryList:Array;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -83,8 +89,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       public function doGoBack_LeaveSelectLessons():void {
+         setCurrentLessonVersion();
          navigator.pushView(View_Home, null, null, transition_SlideView_Right);
          if (AppStatePersistenceManager.getInstance().retrieveIsLessonVersionEntryCountSaved() && (AppStatePersistenceManager.getInstance().retrieveLessonVersionEntryCount() >= Constant_AppConfiguration.LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT)) {
+            /////  Should we, instead of this: AppStatePersistenceManager.getInstance().retrieveLessonVersionEntryCount()
+            /////                     do "retrieveLessonVersionEntryCountSinceLastDisplayOfRatingsPrompt()"  ?
             Log.info("View_SelectLessons.doGoBack_LeaveSelectLessons(): Calling Utils_ANEs.showRatingsPrompt()");
             Utils_ANEs.showRatingsPrompt();
          }
@@ -117,6 +126,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //          Private Methods
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function addLessonToToggledLessonsHistoryList(lvvo:LessonVersionVO):void {
+         if (_toggledLessonsHistoryList.indexOf(lvvo) == -1)
+               _toggledLessonsHistoryList.push(lvvo);
+      }
 
       private function createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected():String {
          var repeatNativeModeString:String = model.getLearningModeDisplayNameFromLabelToken(Constant_LearningModeLabels.REPEAT_TARGET);
@@ -165,6 +179,49 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          updateTitle();
       }
 
+      private function doesToggledLessonsHistoryContainAnySelectedLessonsThatMatchVO(passedLVVO:LessonVersionVO):Boolean {
+         for each (var listLVVO:LessonVersionVO in _toggledLessonsHistoryList) {
+            if (listLVVO.contentProviderId != passedLVVO.contentProviderId)
+                  continue;
+            if (listLVVO.libraryId != passedLVVO.libraryId)
+                  continue;
+            if (listLVVO.levelId != passedLVVO.levelId)
+                  continue;
+            if (currentLessons.contains(listLVVO))
+                  return true;
+         }
+         return false;
+      }
+
+      private function findFirstSelectedLessonThatMatchesVO(passedLVVO:LessonVersionVO):LessonVersionVO {
+         var index_sortableNameToVO:Dictionary = new Dictionary();
+         var sortedList_lessonsSelectedInLeafScreen:ArrayCollection = new ArrayCollection();
+         var sort:Sort = new Sort();
+         sort.fields = [new SortField()];
+         sortedList_lessonsSelectedInLeafScreen.sort = sort;
+         sortedList_lessonsSelectedInLeafScreen.refresh();
+         for each (var listLVVO:LessonVersionVO in _toggledLessonsHistoryList) {
+            if (listLVVO.contentProviderId != passedLVVO.contentProviderId)
+               continue;
+            if (listLVVO.libraryId != passedLVVO.libraryId)
+               continue;
+            if (listLVVO.levelId != passedLVVO.levelId)
+               continue;
+            if (!currentLessons.contains(listLVVO))
+               continue;
+            // Lesson is selected and is from same 'leaf' lesson selection list as passed VO
+            var sortableName:String = model.getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(listLVVO);
+            index_sortableNameToVO[sortableName] = listLVVO;
+            sortedList_lessonsSelectedInLeafScreen.addItem(sortableName);
+         }
+         if (sortedList_lessonsSelectedInLeafScreen.length == 0) {
+            Log.error("View_SelectLessons.findFirstSelectedLessonThatMatchesVO() - No matches");
+            return null;
+         }
+         var result:LessonVersionVO = index_sortableNameToVO[sortedList_lessonsSelectedInLeafScreen[0]];
+         return result;
+      }
+
       private function onLessonSelectionListLevelChange(event:Event_LessonVersionList):void {
          updateTitle();
       }
@@ -176,12 +233,38 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onLessonSelectionListToggleLessonSelected_Continued(event:Event_LessonVersionList):void {
          Log.info("View_SelectLessons.onLessonSelectionListToggleLessonSelected(): " + event.lessonVersionVO.publishedLessonVersionId);
+         addLessonToToggledLessonsHistoryList(event.lessonVersionVO);
          var c:Command_AddOrRemoveSelectedLessonVersion = new Command_AddOrRemoveSelectedLessonVersion(event.lessonVersionVO);
          c.execute();
       }
 
       private function onViewActivate():void {
          createLessonSelectorList();
+         _toggledLessonsHistoryList = [];
+      }
+
+      private function setCurrentLessonVersion():void {
+         // Rationale: If any lessons have been selected while in this screen we want to set the current lesson to one of these lessons.
+         //            But which one? From a user-experience point of view it seems to make sense to do the following:
+         //              1. Find the first lesson selection screen (i.e. the first 'leaf' list - these lists focus on one level
+         //                 within one library) where the user has selected one or more lessons.
+         //              2. Find the "first" selected lesson within that list. In this case "first" means "first according to sort order
+         //                 within the list".
+         //              3. Set this lesson as the current lesson.
+         //            Note that in both steps (1) and (2) the answer may turn out to be "none". In this case we don't change
+         //            the current lesson.
+         for each (var lvvo:LessonVersionVO in _toggledLessonsHistoryList) {
+            if (doesToggledLessonsHistoryContainAnySelectedLessonsThatMatchVO(lvvo)) {
+               var newSelectedLesson:LessonVersionVO = findFirstSelectedLessonThatMatchesVO(lvvo);
+               if (newSelectedLesson) {
+                  currentLessons.setCurrentLesson(findFirstSelectedLessonThatMatchesVO(lvvo));
+               }
+               else {
+                  // This won't happen, and if it does it's logged in findFirstSelectedLessonThatMatchesVO()
+               }
+               break;
+            }
+         }
       }
 
       private function updateTitle():void {

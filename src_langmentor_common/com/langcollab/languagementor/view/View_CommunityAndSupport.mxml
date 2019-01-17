@@ -88,12 +88,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_SendProblemReport);
                break;
             }
-            case LIST_OPTION__SHARE_ON_FACEBOOK: {
+            /*case LIST_OPTION__SHARE_ON_FACEBOOK: {
                list.selectedItems = null;
                list.invalidateProperties();
                Utils_ANEs.facebookShare();
                break;
-            }
+            }*/
             case LIST_OPTION__UPGRADE: {
                navigator.pushView(View_Upgrade);
                break;

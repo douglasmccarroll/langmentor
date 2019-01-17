@@ -577,6 +577,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       vo.nativeLanguageAudioVolumeAdjustmentFactor = downloadLessonProcessInfo.nativeLanguageAudioVolumeAdjustmentFactor;
       vo.publishedLessonVersionId = downloadLessonProcessInfo.publishedLessonVersionId;
       vo.publishedLessonVersionVersion = downloadLessonProcessInfo.publishedLessonVersionVersion;
+      vo.libraryId = downloadLessonProcessInfo.libraryId;
       vo.targetLanguageAudioVolumeAdjustmentFactor = downloadLessonProcessInfo.targetLanguageAudioVolumeAdjustmentFactor;
       vo.uploaded = false;
       return vo;

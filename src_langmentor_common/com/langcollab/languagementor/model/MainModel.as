@@ -62,7 +62,6 @@ import com.langcollab.languagementor.model.appstatepersistence.AppStatePersisten
 import com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo;
 import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
 import com.langcollab.languagementor.util.Utils_LangCollab;
-import com.langcollab.languagementor.view.App_LanguageMentor_Base;
 import com.langcollab.languagementor.vo.ChunkFileVO;
 import com.langcollab.languagementor.vo.ChunkVO;
 import com.langcollab.languagementor.vo.LanguageDisplayNameVO;
@@ -81,11 +80,10 @@ import flash.filesystem.File;
 import flash.utils.Dictionary;
 
 import mx.collections.ArrayCollection;
-import mx.core.FlexGlobals;
 import mx.rpc.events.FaultEvent;
 
 public class MainModel extends EventDispatcher implements IManagedSingleton {
-   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 1;
+   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 3;
    private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 2;
 
    private static var _instance:MainModel;

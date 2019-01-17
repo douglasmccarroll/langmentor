@@ -57,6 +57,9 @@ public class AudioSequenceLeaf_Silence extends AudioSequenceLeaf_Timer {
             case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS:
                duration = 1000;
                break;
+            case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_2000_MS:
+               duration = 2000;
+               break;
             default:
                Log.error("AudioSequenceLeaf_Silence.acquireReusable(): No case for id of : " + id);
                duration = 1000;

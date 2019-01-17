@@ -24,7 +24,7 @@ public class Constant_AppConfiguration {
    //// Some of these constants should be in a "project-specific" or "app-specific" constants file
 
    public static const APP_NAME:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.38;
+   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.41;
 
    public static const ANE_KEY__DISTRIQT:String = "98155715608ffab13dca8e229e61a652b48d7c4dEUVop6JnfJMHpLfs/3hlXoYAife3mQhdT1sJO17n/+2pKXb5vsdE6/qAalKa4xBGRqkT5l0vmXsm9meI7rA5zLKdYCNfE3YUcDbqtKeyYo1QCBgz1VkJtqgrg5MNddunL14u2QlxYbedeTrdXZUsZA4sAO4Qt1/YUcZtCoyU72y4Gyqzvrc93isc4vSYVqI+c9UHEHMlMR9MWajgaLBbFNP00J/TO2BzutE+NwWIomm94EeoRLF6MwKmCr8v359IUz3zsMUwd4fS14g1XPiWVXqSmyYswDbvos0+hMfZqC4ijjHnbqPqH/RkARgxNBkBdxvLNSPYYlEIcfQUgYwl6Q==";
 

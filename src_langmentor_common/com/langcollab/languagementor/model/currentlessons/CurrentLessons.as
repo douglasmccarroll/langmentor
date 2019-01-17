@@ -201,7 +201,16 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       if (currentLessonIndex == -1) {
          setCurrentLessonAndChunkIndexesToFirstPlayableLessonAndChunk(suppressPersistingData);
       } else if (getLessonIndex(vo) <= currentLessonIndex) {
-         setCurrentLessonAndChunkIndexes(currentLessonIndex + 1, currentChunkIndex);
+         // 20190116 dmccarroll - this comment written after modifying View_SelectLessons so that it sets the current lesson when the user exits the screen
+         // In abstract terms, this is probably a reasonable thing to do as a general strategy.
+         // Is it useful in practical terms? It doesn't look as though it is.
+         // This method is called in two places:
+         //   1. Command_AddOrRemoveSelectedLessonVersion.execute() - which is only called from the Select Lessons screen  
+         //      In this case, what we do here gets overridden - when the user leaves this screen the current lesson is usually set again
+         //   2. CurrentLessons.addAll() - I'm guessing that this is only called when we start the app and are initializing with persisted data.
+         //      We also initialize 'current selected lesson' (though I can't (quickly) find the code that does this.
+         //      So what we do here also gets overridden in that case. 
+         setCurrentLessonAndChunkIndexes(currentLessonIndex + 1, currentChunkIndex);  ///// See comment above - we should probably drop this - but we need a fair amount of testing before we release such a change
       }
       if (!suppressPersistingData)
          persistSelectedLessonVersionData();
@@ -820,8 +829,18 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          dispatchEvent(new Event("lengthChange"));
    }
 
+   public function setCurrentLesson(vo:LessonVersionVO):void {
+      var lessonIndex:int = getLessonIndex(vo);
+      if (lessonIndex == -1) {
+         Log.debug("CurrentLessons.setCurrentLesson() - Lesson is not currently selected: " + vo.publishedLessonVersionId);
+      }
+      else {
+         setCurrentLessonAndChunkIndexes(getLessonIndex(vo), getIndexForEarliestUnsuppressedChunkInLesson(vo));
+      }
+   }
+
    public function setCurrentLessonAndChunkIndexes(newLessonIndex:int, newChunkIndex:int, suppressPersistingData:Boolean = false, suppressChangeEvents:Boolean = false):void {
-      Log.debug(["CurrentLessons.setCurrentLessonAndChunkIndexes(): lessonIndex=" + newLessonIndex + " chunkIndex=" + newChunkIndex]);
+      Log.debug("CurrentLessons.setCurrentLessonAndChunkIndexes(): lessonIndex=" + newLessonIndex + " chunkIndex=" + newChunkIndex);
       if (!areNewCurrentLessonAndChunkIndexesAllowed(newLessonIndex, newChunkIndex)) {
          Log.error("CurrentLessons.setCurrentLessonAndChunkIndexes(): New values aren't allowed - areNewCurrentLessonAndChunkIndexesAllowed() should be checked before calling this method.");
          if (Utils_System.isInDebugMode()) {
