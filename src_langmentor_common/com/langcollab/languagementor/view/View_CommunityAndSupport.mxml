@@ -39,7 +39,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const LIST_OPTION__FORUMS:String = "Forums";
       private static const LIST_OPTION__RATE_LANGMENTOR:String = "Rate Language Mentor";
       private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
-      private static const LIST_OPTION__SHARE_ON_FACEBOOK:String = "Share on Facebook";
+      //private static const LIST_OPTION__SHARE_ON_FACEBOOK:String = "Share on Facebook";
       private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
 
       [Bindable]

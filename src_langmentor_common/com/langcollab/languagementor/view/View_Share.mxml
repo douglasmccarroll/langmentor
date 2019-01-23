@@ -60,7 +60,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private var _index_Buttons_to_ClickFunctions:Dictionary = new Dictionary();
       private var _isDisposed:Boolean;
-      private var _isFacebookInviteInProgress:Boolean;
+      //private var _isFacebookInviteInProgress:Boolean;
       private var _isTweetInProgress:Boolean;
       private var _naggingOptOutCheckbox:CheckBox;
 
@@ -157,13 +157,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             appStatePersistenceManager.persistNaggingDisabled(_naggingOptOutCheckbox.selected);
       }
 
-      private function onButtonClick_FacebookShare(event:MouseEvent):void {
+      /*private function onButtonClick_FacebookShare(event:MouseEvent):void {
          Log.info("View_Share.onButtonClick_FacebookInvite()");
          if (!_isFacebookInviteInProgress) {
             _isFacebookInviteInProgress = true;
             //Utils_ANEs.facebookShare(onFacebookShareResult);
          }
-      }
+      }*/
 
       private function onButtonClick_OpenAppStoreToRate(event:MouseEvent):void {
          Log.info("View_Share.onButtonClick_OpenAppStoreToRate()");
@@ -208,9 +208,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          displayNaggingOptOut();
       }
 
-      private function onFacebookShareResult():void {
+      /*private function onFacebookShareResult():void {
          _isFacebookInviteInProgress = false;
-      }
+      }*/
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>
