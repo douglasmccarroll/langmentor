@@ -444,6 +444,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS:
                case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS:
                case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_2000_MS:
+               case Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_3000_MS:
                case Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK:
                case Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE:
                case Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET:
@@ -587,13 +588,19 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS] = leaf;
-      
+
                leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS] = leaf;
-      
+
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_3000_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_3000_MS] = leaf;
+
                if (_currentLessons.currentLessonVO.isDualLanguage) {
                   var nativeLanguageFileDuration:Number = index_NativeLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
                   audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.nativeLanguageAudioVolumeAdjustmentFactor;

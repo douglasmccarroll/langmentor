@@ -28,6 +28,7 @@ public class SequenceStrategy_TargetToNativeTranslation extends SequenceStrategy
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_3000_MS);
    }
 
    public function clone():ISequenceStrategy {

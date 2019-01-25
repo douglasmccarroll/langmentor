@@ -20,7 +20,9 @@ package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
 import com.brightworks.constant.Constant_AudioModeConfig;
+import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.BwEvent;
+import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.audio.Utils_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.Log;
@@ -80,6 +82,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
       Utils_ANEs.initialize();
+      Utils_GoogleAnalytics.setIsAlphaOrBetaRelease(Constant_AppConfiguration.RELEASE_TYPE != Constant_ReleaseType.PRODUCTION);
       _singletonManager = new LangMentorSingletonManager();
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
       _audioController = AudioController.getInstance();
@@ -247,7 +250,9 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onNoInternetConnection(e:BwEvent):void {
-      navigator.pushView(View_CannotAccessInternet);
+      if (_model.getLessonVersionCount() == 0) {
+         navigator.pushView(View_CannotAccessInternet);
+      }
    }
 
    private function onUncaughtError(event:UncaughtErrorEvent):void {

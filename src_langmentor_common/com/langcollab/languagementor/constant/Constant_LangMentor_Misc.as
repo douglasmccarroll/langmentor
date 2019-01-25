@@ -68,6 +68,7 @@ public class Constant_LangMentor_Misc {
    public static const LEAF_TYPE__PAUSE_500_MS:String = "LEAF_TYPE__PAUSE_500_MS";
    public static const LEAF_TYPE__PAUSE_1000_MS:String = "LEAF_TYPE__PAUSE_1000_MS";
    public static const LEAF_TYPE__PAUSE_2000_MS:String = "LEAF_TYPE__PAUSE_2000_MS";
+   public static const LEAF_TYPE__PAUSE_3000_MS:String = "LEAF_TYPE__PAUSE_3000_MS";
    public static const LEAF_TYPE__PAUSE_ATTEMPT:String = "LEAF_TYPE__PAUSE_ATTEMPT";
    public static const LEAF_TYPE__PAUSE_REPEAT:String = "LEAF_TYPE__PAUSE_REPEAT";
    public static const LEAF_TYPE__PLAYBACK:String = "LEAF_TYPE__PLAYBACK";
