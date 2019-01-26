@@ -68,12 +68,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var textArea:TextArea;
          textArea = new TextArea();
          textArea.percentWidth = 100;
-         textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2017 - Brightworks, Inc.";
+         textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2019 - Brightworks, Inc.";
          textArea.editable = false;
          textArea.selectable = false;
          textArea.setStyle("skinClass", TextAreaSkin);
          textArea.setStyle("fontFamily", "calligraph");
-         textArea.setStyle("fontSize", 20);
+         textArea.setStyle("fontSize", Math.round(Utils_Text.getStandardFontSize() * 1.15));
          textArea.setStyle("contentBackgroundAlpha", 0);
          textArea.setStyle("borderVisible", false);
          textArea.setStyle("textAlign", "center");

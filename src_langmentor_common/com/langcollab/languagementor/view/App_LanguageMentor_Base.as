@@ -206,9 +206,11 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
       if ((_appStatePersistenceManager.retrieveAppInstallDate()) &&
             (_appStatePersistenceManager.retrieveIsTargetLanguageIdSaved())) {
+         Log.info("App_LanguageMentor_Base.onInitialize() - setting navigator.firstView to View_Home");
          _model.initTargetLanguage(_appStatePersistenceManager.retrieveTargetLanguageId());
          navigator.firstView = View_Home;
       } else {
+         Log.info("App_LanguageMentor_Base.onInitialize() - setting navigator.firstView to View_Intro_Welcome");
          navigator.firstView = View_Intro_Welcome;
       }
       if (Utils_System.isAlphaVersion()) {

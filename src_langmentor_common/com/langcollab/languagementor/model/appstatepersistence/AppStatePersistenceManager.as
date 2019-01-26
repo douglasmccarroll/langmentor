@@ -82,6 +82,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
    private var _persistenceManager:ByteArrayPersistenceManager;
 
    public function AppStatePersistenceManager(manager:SingletonManager) {
+      Log.info("AppStatePersistenceManager constructor called");
       _instance = this;
       registerClassAlias("com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo", LessonVersionInfo);
       _persistenceManager = new ByteArrayPersistenceManager();
@@ -372,6 +373,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__APP_INSTALL_DATE) as Date);
+      Log.info("AppStatePersistenceManager.retrieveAppInstallDate() - returning: " + result);
       return result;
    }
 
@@ -379,6 +381,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return false;
       var result:Boolean = Boolean(_persistenceManager.getProperty(_DATA_TYPE_NAME__AUTO_DOWNLOAD_LESSONS));
+      Log.info("AppStatePersistenceManager.retrieveAutoDownloadLessons() - returning: " + result);
       return result;
    }
 
@@ -386,6 +389,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:Number = Number(_persistenceManager.getProperty(_DATA_TYPE_NAME__CURR_APP_VERSION));
+      Log.info("AppStatePersistenceManager.retrieveCurrAppVersion() - returning: " + result);
       return result;
    }
 
@@ -393,6 +397,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__CURR_CHUNK_INDEX));
+      Log.info("AppStatePersistenceManager.retrieveCurrChunkIndex() - returning: " + result);
       return result;
    }
 
@@ -400,6 +405,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:LessonVersionInfo = LessonVersionInfo(_persistenceManager.getProperty(_DATA_TYPE_NAME__CURR_LESSON_VERSION));
+      Log.info("AppStatePersistenceManager.retrieveCurrLessonVersion() - returning: " + result);
       return result;
    }
 
@@ -407,6 +413,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:Number = Number(_persistenceManager.getProperty(_DATA_TYPE_NAME__DATA_SCHEMA_APP_VERSION));
+      Log.info("AppStatePersistenceManager.retrieveDataSchemaAppVersion() - returning: " + result);
       return result;
    }
 
@@ -414,6 +421,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__HELP__LAST_VIEW_DATE__PLAY_LESSONS) as Date);
+      Log.info("AppStatePersistenceManager.retrieveHelp_LastViewDate_PlayLessons() - returning: " + result);
       return result;
    }
 
@@ -421,6 +429,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__HELP__LAST_VIEW_DATE__SELECT_LESSONS) as Date);
+      Log.info("AppStatePersistenceManager.retrieveHelp_LastViewDate_SelectLessons() - returning: " + result);
       return result;
    }
 
@@ -428,6 +437,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__HELP__LAST_VIEW_DATE__SELECT_MODE) as Date);
+      Log.info("AppStatePersistenceManager.retrieveHelp_LastViewDate_SelectMode() - returning: " + result);
       return result;
    }
 
@@ -435,6 +445,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__HOME_SCREEN_DISPLAY_COUNT));
+      Log.info("AppStatePersistenceManager.retrieveHomeScreenDisplayCount() - returning: " + result);
       return result;
    }
 
@@ -628,6 +639,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__LESSON_VERSION_ENTRY_COUNT));
+      Log.info("AppStatePersistenceManager.retrieveLessonVersionEntryCount() - returning: " + result);
       return result;
    }
 
@@ -635,6 +647,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:XML = XML(_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE));
+      Log.info("AppStatePersistenceManager.retrieveMostRecent_NewsUpdate() - returning: " + result);
       return result;
    }
 
@@ -642,6 +655,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE__DATE_RETRIEVED) as Date);
+      Log.info("AppStatePersistenceManager.retrieveMostRecent_NewsUpdate_DateRetrieved() - returning: " + result);
       return result;
    }
 
@@ -649,6 +663,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE__DATE_VIEWED) as Date);
+      Log.info("AppStatePersistenceManager.retrieveMostRecent_NewsUpdate_DateViewed() - returning: " + result);
       return result;
    }
 
@@ -656,6 +671,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE_DATE) as Date);
+      Log.info("AppStatePersistenceManager.retrieveMostRecent_NewsUpdateDate() - returning: " + result);
       return result;
    }
 
@@ -663,6 +679,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Date = (_persistenceManager.getProperty(_DATA_TYPE_NAME__MOST_RECENT__NEWS_UPDATE_DATE__DATE_RETRIEVED) as Date);
+      Log.info("AppStatePersistenceManager.retrieveMostRecent_NewsUpdateDate_DateRetrieved() - returning: " + result);
       return result;
    }
 
@@ -670,6 +687,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return false;
       var result:Boolean = Boolean(_persistenceManager.getProperty(_DATA_TYPE_NAME__NAGGING_DISABLED));
+      Log.info("AppStatePersistenceManager.retrieveNaggingDisabled() - returning: " + result);
       return result;
    }
 
@@ -677,6 +695,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__SELECTED_LEARNING_MODE_ID));
+      Log.info("AppStatePersistenceManager.retrieveSelectedLearningModeId() - returning: " + result);
       return result;
    }
 
@@ -684,6 +703,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Array = _persistenceManager.getProperty(_DATA_TYPE_NAME__SELECTED_LESSON_DOWNLOAD_LEVELS) as Array;
+      Log.info("AppStatePersistenceManager.retrieveSelectedLessonDownloadLevels() - returning: " + result);
       return result;
    }
 
@@ -691,6 +711,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return null;
       var result:Vector.<LessonVersionInfo> = Vector.<LessonVersionInfo>(_persistenceManager.getProperty(_DATA_TYPE_NAME__SELECTED_LESSON_VERSIONS));
+      Log.info("AppStatePersistenceManager.retrieveSelectedLessonVersions() - returning: " + result);
       return result;
    }
 
@@ -698,6 +719,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return -1;
       var result:int = int(_persistenceManager.getProperty(_DATA_TYPE_NAME__TARGET_LANGUAGE_ID));
+      Log.info("AppStatePersistenceManager.retrieveTargetLanguageId() - returning: " + result);
       return result;
    }
 
@@ -705,6 +727,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       if (!_persistenceManager)
          return false;
       var result:Boolean = Boolean(_persistenceManager.getProperty(_DATA_TYPE_NAME__USE_RECOMMENDED_LIBRARIES));
+      Log.info("AppStatePersistenceManager.retrieveUseRecommendedLibraries() - returning: " + result);
       return result;
    }
 

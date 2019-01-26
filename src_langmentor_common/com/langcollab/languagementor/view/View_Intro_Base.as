@@ -77,8 +77,10 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
       // No longer used:
             // View_Intro_AutoDownloads
             // View_Intro_LibraryPreferencesSaved
-      else if (this is View_Intro_SetupComplete)
+      else if (this is View_Intro_SetupComplete) {
+         saveSettings();
          doIntroDone();
+      }
       else {
          doIntroDone();
          Log.error("View_Intro_Base.onContinueButtonClick(): no case for current view class");
