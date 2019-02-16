@@ -60,6 +60,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an Open Platform";
          addElement(textWidget);
          addElement(new Spacer());
+
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Anyone can create lessons for any language";
          addElement(textWidget);
