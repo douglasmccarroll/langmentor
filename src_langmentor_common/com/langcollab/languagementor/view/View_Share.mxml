@@ -51,6 +51,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.controls.Spacer;
@@ -146,7 +147,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _naggingOptOutCheckbox.selected = appStatePersistenceManager.retrieveNaggingDisabled();
          viewletGroup.addElement(_naggingOptOutCheckbox);
          var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
-         textWidget.text = "Select this checkbox if you don't " + 'want Language Mentor to display the "Share" link on the Home screen.';
+         textWidget.text = "Select this checkbox if you don't " + 'want ' + Constant_MentorTypeSpecific.APP_NAME__SHORT + ' to display the "Share" link on the Home screen.';
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
@@ -173,11 +174,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var widget:IUIWidget_Text;
          widget = new UIWidget_Viewlet__Heading();
-         widget.text = "If you like Language Mentor, please let others know about us!";
+         widget.text = "If you like " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ", please let others know about us!";
          viewletGroup.addElement(widget);
          viewletGroup.addElement(new Spacer());
          widget = new UIWidget_Viewlet__Text();
-         widget.text = "Language Mentor is an open platform supported by its users and developers. Please help us spread the word!";
+         widget.text = Constant_MentorTypeSpecific.SHARE_SCREEN__A_GOOD_REASON_FOR_SHARING;
          viewletGroup.addElement(widget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
@@ -185,7 +186,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          widget.text = "Give us a positive rating on the " + Utils_System.getAppStoreName();
          viewletGroup.addElement(widget);
          viewletGroup.addElement(new Spacer());
-         displayButtons(["Rate Language Mentor"], [onButtonClick_OpenAppStoreToRate]);
+         displayButtons(["Rate " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ""], [onButtonClick_OpenAppStoreToRate]);
 
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());

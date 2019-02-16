@@ -666,7 +666,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
                var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
       
-               var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.START_DELAY__INITIAL + AudioRecorder.START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING + recordingStopDelayDuration;
+               var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.RECORDING_START_DELAY_DURATION + recordingStopDelayDuration;
       
                leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);

@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.controls.Spacer;
 
@@ -71,7 +72,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             messageText = "Hmm... We don't seem to be able to get information on available upgrades. Please ensure that you have an Internet connection and try again.";
          }
          else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion) {
-            messageText = "Congratulations! You're running the most recent version of Language Mentor.";
+            messageText = "Congratulations! You're running the most recent version of " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ".";
          }
          else {
             if (Utils_AIR.appVersionNumber >= model.configFileInfo.requiredVersion_LibraryAccess) {

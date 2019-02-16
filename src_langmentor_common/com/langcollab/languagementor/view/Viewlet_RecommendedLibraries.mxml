@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.event.BwEvent;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_ArrayVectorEtc;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.model.LessonDownloadInfo_Library;
 
       private static const INDENT:String = "    ";
@@ -73,6 +74,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
+         explanationDisplayViewlet.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will use the libraries listed below.";
          lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
          if (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive)) {
             lessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess();
@@ -85,7 +87,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function updateUI():void {
          if (lessonDownloadController.isGetRecommendedLibrariesInfoProcessActive) {
-            infoDisplayViewlet.text = "Searching for recommended libraries......";
+            resultsDisplayViewlet.text = "Searching for recommended libraries......";
          }
          else {
             var foundLibraryCount:Number = 0;
@@ -111,14 +113,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      text += INDENT + recommendedLibraryCount + ": " + libraryInfo.libraryName + "\n";
                   }
                }
-               infoDisplayViewlet.text = text;
+               resultsDisplayViewlet.text = text;
             }
             else {
                if (isInternetConnectionProblem) {
-                  infoDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
+                  resultsDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
                }
                else {
-                  infoDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
+                  resultsDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
                }
             }
          }
@@ -140,12 +142,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                   change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
                                   selected = "{model.useRecommendedLibraries}"/>
          <s:Spacer/>
-         <uiwidget:UIWidget_Viewlet__Text
-               text = "If you select this option, Language Mentor will use the libraries listed below."/>
+         <uiwidget:UIWidget_Viewlet__Text id = "explanationDisplayViewlet"/>
          <s:Spacer/>
          <s:Spacer/>
       </s:VGroup>
-      <uiwidget:UIWidget_Viewlet__Text id = "infoDisplayViewlet"
+      <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
                                        text = "Searching for recommended libraries..."
                                        fontFamily = "_sans"
                                        height = "100%"/>

@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.controller.Command_InitApplication;
       import com.langcollab.languagementor.util.Utils_LangCollab;
 
@@ -155,7 +156,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onViewActivate():void {
-         textDisplayLabel.text = "Are you SURE? This will delete ALL lessons and settings and restore Language Mentor to the state it was in when it was initially installed.";
+         textDisplayLabel.text = "Are you SURE? This will delete ALL lessons and settings and restore " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to the state it was in when it was initially installed.";
       }
 
       private function stopTimer():void {

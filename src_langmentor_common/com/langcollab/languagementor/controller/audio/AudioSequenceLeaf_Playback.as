@@ -68,7 +68,7 @@ public class AudioSequenceLeaf_Playback extends AudioSequenceLeaf {
       Log.debug("AudioSequenceLeaf_Playback.startFromBeginning()");
       super.startFromBeginning();
       AudioRecorder.getInstance().addEventListener(Event.SOUND_COMPLETE, onElementComplete);
-      AudioRecorder.getInstance().startPlayback(duration);
+      AudioRecorder.getInstance().startPlayback();   ///// In ANE-based audio we pass 'duration' into this call;
    }
 
    public override function stop():void {

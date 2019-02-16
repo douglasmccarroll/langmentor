@@ -20,31 +20,14 @@ package com.langcollab.languagementor.constant {
 import com.brightworks.constant.Constant_ReleaseType;
 
 public class Constant_AppConfiguration {
-   // Constants that we may modify when configuring a release
-   //// Some of these constants should be in a "project-specific" or "app-specific" constants file
 
-   public static const APP_NAME:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.41;
-
-   public static const ANE_KEY__DISTRIQT:String = "98155715608ffab13dca8e229e61a652b48d7c4dEUVop6JnfJMHpLfs/3hlXoYAife3mQhdT1sJO17n/+2pKXb5vsdE6/qAalKa4xBGRqkT5l0vmXsm9meI7rA5zLKdYCNfE3YUcDbqtKeyYo1QCBgz1VkJtqgrg5MNddunL14u2QlxYbedeTrdXZUsZA4sAO4Qt1/YUcZtCoyU72y4Gyqzvrc93isc4vSYVqI+c9UHEHMlMR9MWajgaLBbFNP00J/TO2BzutE+NwWIomm94EeoRLF6MwKmCr8v359IUz3zsMUwd4fS14g1XPiWVXqSmyYswDbvos0+hMfZqC4ijjHnbqPqH/RkARgxNBkBdxvLNSPYYlEIcfQUgYwl6Q==";
-
-   public static const CURRENT_MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL;
-   public static const CURRENT_MENTOR_TYPE__DISPLAY_NAME:String = Constant_MentorTypes.MENTOR_TYPE_DISPLAY_NAME__GLOBAL;
+   public static const RELEASE_TYPE:String = Constant_ReleaseType.PRODUCTION;      /////
 
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__DESKTOP:Number = 100;
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__IOS:Number = 10;
    public static const BANDWIDTH_LIMITING__TIME_PERIOD_IN_MINUTES:uint = 5;
-
-   public static const LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE:String = "eng";
-   public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "eng";
-
-   public static const RELEASE_TYPE:String = Constant_ReleaseType.BETA;      /////
-
-
-   // Constants that we don't usually modify for a new release
-
-   public static const BRIGHTWORKS_BLURB:String = "Language Mentor technology is lovingly crafted by the dwarves and elves of Brightworks, deep in the primal forests of Massachusetts. We specialize in cross-platform development of mobile learning apps. Our technology is available under various licenses from open source (GPL) to white-label apps custom branded for our clients\n\nHow may we be of service?\nhttp://www.brightworks.com";
+   public static const BRIGHTWORKS_BLURB:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + "'s technology is lovingly crafted by the dwarves and elves of Brightworks, deep in the primal forests of Massachusetts. We specialize in cross-platform development of mobile learning apps. Our technology is available under various licenses from open source (GPL) to white-label apps custom branded for our clients\n\nHow may we be of service?\nhttp://www.brightworks.com";
    public static const EXPLANATORY_AUDIO_FILE_BODY_STRING:String = "xply";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
    public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";
@@ -52,10 +35,6 @@ public class Constant_AppConfiguration {
    public static const REQUIRED_SCREEN_RESOLUTION__X:uint = 320;
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;
    public static const USER_ACTION_REQUIRED_WAIT_INTERVAL:Number = 400;
-
-   public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Check out Language Mentor! - A free and open language learning platform";
-   // public static const SHARING__FACEBOOK_SHARE_TEXT:String = "Give the Chinese Language Mentor app a try!";
-   public static const SHARING__FACEBOOK_SHARE_URL:String = "http://languagecollaborative.com";
 
 }
 }

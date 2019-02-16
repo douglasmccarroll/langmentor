@@ -32,6 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.controls.Spacer;
@@ -134,7 +135,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = "To start a lesson, press the Play button. To pause, press it again.";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "Once you've mastered a chunk, you can press the I Know This! button. Language Mentor will no longer drill you on that chunk.";
+         textWidget.text = "Once you've mastered a chunk, you can press the I Know This! button. " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will no longer drill you on that chunk.";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = 'To clear a lesson of these "I Know This" settings and return it to its original state, select or deselect it in the Select Lessons screen.';
@@ -145,9 +146,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "To practice pronunciation, select Record & Playback.";
          viewletGroup.addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "You'll notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
-         viewletGroup.addElement(textWidget);
+         if (Constant_MentorTypeSpecific.CREATIVE_SYNTAX__DISPLAY_EXPLANATION) {
+            textWidget = new UIWidget_Viewlet__Bullet_Text();
+            textWidget.text = "You'll notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
+            viewletGroup.addElement(textWidget);
+         }
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Once you're familiar with this screen, we suggest that you start experimenting with different learning modes. You can do this by going to the Home screen, pressing Select Mode, and changing the current mode.";
          viewletGroup.addElement(textWidget);

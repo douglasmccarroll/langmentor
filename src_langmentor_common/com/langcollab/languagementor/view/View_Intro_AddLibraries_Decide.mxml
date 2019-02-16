@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import flash.events.MouseEvent;
 
@@ -115,7 +116,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      "Add Library or Libraries";
          viewletGroup.addElement(_addLibrariesCheckbox);
          textWidget = new UIWidget_Viewlet__Text();
-         textWidget.text = "Select this option if you'd like to specify one or more libraries for Language Mentor to download lessons from.";
+         textWidget.text = "Select this option if you'd like to specify one or more libraries for " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to download lessons from.";
          viewletGroup.addElement(textWidget);
       }
       ]]>

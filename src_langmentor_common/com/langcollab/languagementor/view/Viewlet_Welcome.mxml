@@ -31,6 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.controls.Spacer;
 
@@ -58,7 +59,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
          textWidget = new UIWidget_Viewlet__Heading();
-         textWidget.text = "Welcome to Language Mentor!";
+         textWidget.text = "Welcome to " + Constant_MentorTypeSpecific.APP_NAME__SHORT + "!";
          textWidget.addEventListener(MouseEvent.CLICK, onWelcomeTextClick);
          addElement(textWidget);
          addElement(new Spacer());
@@ -77,7 +78,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addElement(new Spacer());
          addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bold_Text();
-         textWidget.text = "Thanks for trying Language Mentor!";
+         textWidget.text = "Thanks for trying " + Constant_MentorTypeSpecific.APP_NAME__SHORT + "!";
          addElement(textWidget);
       }
 

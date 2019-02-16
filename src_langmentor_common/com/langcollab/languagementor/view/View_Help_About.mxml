@@ -20,13 +20,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 <view:View_Base_BottomButtons xmlns:fx = "http://ns.adobe.com/mxml/2009"
                               xmlns:view = "com.langcollab.languagementor.view.*"
                               creationComplete = "onCreationComplete()"
-                              title = "About Language Mentor">
+                              initialize="onInitialize()">
 
    <fx:Declarations>
    </fx:Declarations>
 
    <fx:Script>
         <![CDATA[
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+
       private var _isDisposed:Boolean = false;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -52,6 +54,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var viewlet:Viewlet_About = new Viewlet_About();
          viewletGroup.addElement(viewlet);
       }
+
+      private function onInitialize():void {
+         title = "About " + Constant_MentorTypeSpecific.APP_NAME__FULL;
+      }
+
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

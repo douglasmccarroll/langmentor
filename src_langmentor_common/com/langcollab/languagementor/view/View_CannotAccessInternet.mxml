@@ -31,11 +31,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Utils_Layout;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       private var _isDisposed:Boolean = false;
 
       private function onCreationComplete():void {
-         textArea.text = "We're sorry, but " + Constant_AppConfiguration.APP_NAME + " cannot access the Internet. Please ensure that you have an internet connection and try again.";
+         textArea.text = "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " cannot access the Internet. Please ensure that you have an internet connection and try again.";
       }
 
       private function onOkayButtonClick():void {

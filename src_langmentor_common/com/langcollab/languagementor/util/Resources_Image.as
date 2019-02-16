@@ -13,17 +13,17 @@ public class Resources_Image {
    [Embed(source="/assets/images/brightworks_logo_480.png")]
    public static const IMAGE__BRIGHTWORKS_LOGO_480:Class;
 
-   [Embed(source="/assets/images/langmentor_logo_160.png")]
-   public static const IMAGE__LANGMENTOR_LOGO_160:Class;
+   [Embed(source="/assets/images/home_screen_logo_160.png")]
+   public static const IMAGE__HOME_SCREEN_LOGO_160:Class;
 
-   [Embed(source="/assets/images/langmentor_logo_240.png")]
-   public static const IMAGE__LANGMENTOR_LOGO_240:Class;
+   [Embed(source="/assets/images/home_screen_logo_240.png")]
+   public static const IMAGE__HOME_SCREEN_LOGO_240:Class;
 
-   [Embed(source="/assets/images/langmentor_logo_320.png")]
-   public static const IMAGE__LANGMENTOR_LOGO_320:Class;
+   [Embed(source="/assets/images/home_screen_logo_320.png")]
+   public static const IMAGE__HOME_SCREEN_LOGO_320:Class;
 
-   [Embed(source="/assets/images/langmentor_logo_480.png")]
-   public static const IMAGE__LANGMENTOR_LOGO_480:Class;
+   [Embed(source="/assets/images/home_screen_logo_480.png")]
+   public static const IMAGE__HOME_SCREEN_LOGO_480:Class;
 
    [Embed(source="/assets/images/microphone_160.png")]
    public static const IMAGE__MICROPHONE_160:Class;

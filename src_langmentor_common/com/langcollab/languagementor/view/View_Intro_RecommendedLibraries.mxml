@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.controls.Spacer;
 
@@ -86,7 +87,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _useRecommendedLibrariesCheckbox.selected = true;
             viewletGroup.addElement(_useRecommendedLibrariesCheckbox);
             textWidget = new UIWidget_Viewlet__Text();
-            textWidget.text = "If you select this option, Language Mentor will download lessons from libraries that we recommend. You can change this option later if you like.";
+            textWidget.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will download lessons from libraries that we recommend. You can change this option later if you like.";
             viewletGroup.addElement(textWidget);
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
@@ -105,7 +106,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget.text = "We recommend lesson libraries when possible, but we're currently unable to suggest libraries for learning " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
             viewletGroup.addElement(textWidget);
             textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "Would you like to specify one or more lesson libraries for Language Mentor to use? If so, please click Next, and use the next screen to add the libraries";
+            textWidget.text = "Would you like to specify one or more lesson libraries for " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to use? If so, please click Next, and use the next screen to add the libraries";
             viewletGroup.addElement(textWidget);
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());

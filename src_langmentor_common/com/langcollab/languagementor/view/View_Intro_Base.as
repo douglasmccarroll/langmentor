@@ -3,6 +3,7 @@ import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 
 import flash.events.MouseEvent;
@@ -45,7 +46,12 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
             // Intro bypass for dev mode
             bypassIntroScreens();
          } else {
-            navigator.pushView(View_Intro_OpenPlatform);
+            if (!Constant_MentorTypeSpecific.MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR) {
+               navigator.pushView(View_Intro_OpenPlatform);
+            }
+            else {
+               navigator.pushView(View_Intro_LessonLevels);
+            }
          }
       }
       // No longer used:
@@ -54,7 +60,7 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
             // View_Intro_Safety
             // View_Intro_Agreement
       else if (this is View_Intro_OpenPlatform) {
-         if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
+         if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             navigator.pushView(View_Intro_SelectLanguage);
          } else {
             navigator.pushView(View_Intro_RecommendedLibraries);

@@ -28,6 +28,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.collections.ArrayCollection;
@@ -122,7 +123,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _listDataProvider.addItem(_LIST_OPTION__HELP);
          _listDataProvider.addItem(_LIST_OPTION__MANAGE_DATA);
          _listDataProvider.addItem(_LIST_OPTION__MANAGE_DOWNLOADS);
-         _listDataProvider.addItem(_LIST_OPTION__MANAGE_LIBRARIES);
+         if (!Constant_MentorTypeSpecific.MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR) {
+            _listDataProvider.addItem(_LIST_OPTION__MANAGE_LIBRARIES);
+         }
          list.dataProvider = _listDataProvider;
       }
       ]]>

@@ -36,6 +36,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.controls.Spacer;
@@ -47,7 +48,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private static const _BUTTON_LABEL__CLOSE:String = "Close App";
       private static const _BUTTON_LABEL__SEND_INFO:String = "Send Info";
-      private static const _HEADING__FATAL_ERROR:String = "We're sorry - Language Mentor has encountered a problem";
+      private static const _HEADING__FATAL_ERROR:String = "We're sorry - " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " has encountered a problem";
       private static const _HEADING__THANKS_FOR_YOUR_FEEDBACK:String = "Thanks for your feedback!";
       private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. " + _MESSAGE__OPTIONAL + " Thanks!";
       private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "Please press " + _BUTTON_LABEL__SEND_INFO + " to send us diagnostic information. " + _MESSAGE__OPTIONAL;

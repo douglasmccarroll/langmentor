@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
       import com.brightworks.util.Utils_ANEs;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.collections.ArrayCollection;
 
@@ -40,7 +41,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const LIST_OPTION__RATE_LANGMENTOR:String = "Rate Language Mentor";
       private static const LIST_OPTION__SEND_PROBLEM_REPORT:String = "Send Problem Report";
       //private static const LIST_OPTION__SHARE_ON_FACEBOOK:String = "Share on Facebook";
-      private static const LIST_OPTION__UPGRADE:String = "Upgrade Language Mentor";
+      private static const LIST_OPTION__UPGRADE:String = "Upgrade " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
 
       [Bindable]
       private var _listDataProvider:ArrayCollection;
@@ -64,7 +65,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          _listDataProvider = new ArrayCollection();
-         _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
+         if (Constant_MentorTypeSpecific.FORUMS__IS_OPTION_DISPLAYED) {
+            _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
+         }
          /////_listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
          _listDataProvider.addItem({label: LIST_OPTION__SEND_PROBLEM_REPORT, value: LIST_OPTION__SEND_PROBLEM_REPORT});
          /////_listDataProvider.addItem({label: LIST_OPTION__SHARE_ON_FACEBOOK, value: LIST_OPTION__SHARE_ON_FACEBOOK});
@@ -88,12 +91,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_SendProblemReport);
                break;
             }
-            /*case LIST_OPTION__SHARE_ON_FACEBOOK: {
-               list.selectedItems = null;
-               list.invalidateProperties();
-               Utils_ANEs.facebookShare();
-               break;
-            }*/
+               /*case LIST_OPTION__SHARE_ON_FACEBOOK: {
+                  list.selectedItems = null;
+                  list.invalidateProperties();
+                  Utils_ANEs.facebookShare();
+                  break;
+               }*/
             case LIST_OPTION__UPGRADE: {
                navigator.pushView(View_Upgrade);
                break;

@@ -62,9 +62,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       private function onCreationComplete():void {
-         /*var textWidget:UIWidget_Viewlet__Text = new UIWidget_Viewlet__Text();
-         textWidget.text = "Language Mentor®, Version " + Utils_System.appVersion + ", Copyright 2009-2013, Brightworks, Inc.";
-         addElement(textWidget);*/
          var textArea:TextArea;
          textArea = new TextArea();
          textArea.percentWidth = 100;

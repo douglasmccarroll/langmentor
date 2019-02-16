@@ -25,6 +25,7 @@ import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.util.Utils_Database;
 import com.langcollab.languagementor.util.Utils_LangCollab;
 
@@ -78,7 +79,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          model.init();
       }
       else if ((!(appStatePersistenceManager.retrieveIsDataSchemaAppVersionSaved())) ||
-            (appStatePersistenceManager.retrieveDataSchemaAppVersion() < Constant_AppConfiguration.APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA)) {
+            (appStatePersistenceManager.retrieveDataSchemaAppVersion() < Constant_MentorTypeSpecific.APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA)) {
          // Our data schema's app version is lower than our current minimum supported data schema app version.
          // In this situation we delete all data.
          // Messages in the app that encourage users to upgrade to a new version warn them if this will happen.

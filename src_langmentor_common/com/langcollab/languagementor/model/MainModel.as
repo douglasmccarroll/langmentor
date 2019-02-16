@@ -56,6 +56,7 @@ import com.brightworks.vo.IVO;
 import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 import com.langcollab.languagementor.controller.Command_LoadLearningModeDescriptions;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -407,6 +408,12 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(_currentTargetLanguageVO.id, _currentNativeLanguageVO.id);
       /// Previously, we got this from resource XML - should we return to something like this?
       //return getLanguageNameTranslation(_currentTargetLanguageResourceXML, _currentNativeLanguageVO.iso639_3Code);
+   }
+
+   public function getCurrentTargetLanguageISO639_3Code():String {
+      if (!_currentTargetLanguageVO)
+         return null;
+      return _currentTargetLanguageVO.iso639_3Code;
    }
 
    public function getDownloadedLessonSelectionTreeData():ArrayCollection {
@@ -906,7 +913,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       _data = new Data(Utils_LangCollab.sqLiteDatabaseFileURL);
       //_data.dbAccessReportCallback = onDBAccessReport;
       initCache();
-      _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_AppConfiguration.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
+      _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
       initLessonsSelectionTreeSortOptions();
       _isDBDataInitialized = true;
       initTargetLanguageBasedDataIfReady();
@@ -1127,6 +1134,14 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    public function setAutoDownloadLessonsWithoutPersistingSetting(value:Boolean):void {
       _autoDownloadLessons = value;
+   }
+
+   public function updateCurrentTargetLanguageVO_hasRecommendedLibraries(b:Boolean):void {
+      if (!_currentTargetLanguageVO) {
+         Log.error("MainModel.updateCurrentTargetLanguageVO_hasRecommendedLibraries() - _currentTargetLanguageVO is null")
+         return;
+      }
+      _currentTargetLanguageVO.hasRecommendedLibraries = b;
    }
 
    public function updateVO_NoKeyPropChangesAllowed(callingMethodName:String, vo:IVO, updatedPropNames:Array):MainModelDBOperationReport {
@@ -1377,9 +1392,9 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    // - is set in init() - as announced via change event here - notifies View_Home - via binding - model is ready
    // - also various other classes check this prop - should probably be renamed isModelInitialized
    private function initTargetLanguageBasedDataIfReady():void {
-      if (Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
+      if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
          // This isn't "standard" mentor type, which means that the target language is specified in this constant...
-         _currentTargetLanguageId = getLanguageIdFromIso639_3Code(Constant_AppConfiguration.LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE);
+         _currentTargetLanguageId = getLanguageIdFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE);
          _appStatePersistenceManager.persistTargetLanguageId(_currentTargetLanguageId);
       }
       if (_currentTargetLanguageId == -1)
@@ -1463,9 +1478,9 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private function reportAppStartupToAnalytics():void {
       var data:String = "";
-      data += "appName=" + Constant_AppConfiguration.APP_NAME + ":";
+      data += "appName=" + Constant_MentorTypeSpecific.APP_NAME__FULL + ":";
       data += "appVersion=" + String(Utils_AIR.appVersionNumber) + ":";
-      data += "mentorType=" + Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE + ":";
+      data += "mentorType=" + Constant_MentorTypeSpecific.MENTOR_TYPE__CODE + ":";
       data += "languages=" + getNativeLanguageIso639_3Code() + ">" + getTargetLanguageIso639_3Code();
       Utils_GoogleAnalytics.trackAppStartup(data);
    }

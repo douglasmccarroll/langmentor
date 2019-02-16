@@ -32,6 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.util.Log;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       public var suggestYesOption:Boolean = false;
 
@@ -70,6 +71,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
+         explanatoryTextWidget.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will search for new lessons and download them as they become available. You won’t need to do anything."
          if (suggestYesOption) {
             _userChoice = true;
             radioButtonGroup.selection = yesRadioButton;
@@ -110,8 +112,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       <s:RadioButton id = "yesRadioButton"
                      group = "{radioButtonGroup}"
                      label = "Yes"/>
-      <uiwidget:UIWidget_Viewlet__Text
-            text = "If you select this option, Language Mentor will search for new lessons and download them as they become available. You won’t need to do anything."/>
+      <uiwidget:UIWidget_Viewlet__Text id = "explanatoryTextWidget"/>
       <s:Spacer/>
       <s:RadioButton id = "noRadioButton"
                      group = "{radioButtonGroup}"

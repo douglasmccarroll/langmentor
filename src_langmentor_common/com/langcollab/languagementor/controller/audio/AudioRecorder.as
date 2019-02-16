@@ -21,37 +21,37 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
-import com.brightworks.util.Utils_System;
-import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.singleton.SingletonManager;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.events.SampleDataEvent;
 import flash.events.TimerEvent;
 import flash.media.Microphone;
-import flash.utils.ByteArray;
+import flash.media.Sound;
+import flash.media.SoundChannel;
+import flash.sampler.getSize;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
-import flash.utils.setTimeout;
 
-import org.bytearray.micrecorder.MicRecorder;
-import org.bytearray.micrecorder.encoder.WaveEncoder;
+[Event(name="soundComplete", type="flash.events.Event")]
 
 public class AudioRecorder extends EventDispatcher implements IManagedSingleton {
+   public static const RECORDING_START_DELAY_DURATION:uint = START_DELAY__INITIAL + _START_DELAY__PUBLIC_IS_CURRENTLY_RECORDING_FLAG;
    public static const START_DELAY__INITIAL:uint = 500;
-   public static const START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING:uint = 350;
+
+   private static const _START_DELAY__PUBLIC_IS_CURRENTLY_RECORDING_FLAG:uint = 350;
    private static var _instance:AudioRecorder;
 
-   private var _isAttemptingPlayback:Boolean;
    private var _isPlaybackActive:Boolean;
    private var _isRecordingActive:Boolean;
    private var _microphone:Microphone;
-   private var _playbackTimer:Timer;                                      // We start this timer when we start playback
-   private var _recordedSamples:ByteArray;
-   private var _recorder:MicRecorder;
-   private var _recordingTimer_SetPublicIsCurrentlyRecordingDelay:Timer;  // Once we start recording, we wait a bit before announcing to the world that we're recording - once we announce this the microphone icon appears, prompting the user to start speaking
-   private var _recordingTimer_StartDelay:Timer;                          //// Experiment  // We wait a bit before we start recording. At this point I'm not sure why we do this. Years have passed since I wrote this code. I probably had a good reason to do this, but I'm not sure it still applies.
-   private var _recordingTimer_StopDelay:Timer;                           // After we stop displaying the microphone icon to the user we continue recording for a bit because we don't want to cut off the ending of what they record.
+   private var _playbackChannel:SoundChannel;
+   private var _playbackSound:Sound;
+   private var _recordedAudio:ByteArray;
+   private var _recordingTimer_SetPublicIsCurrentlyRecordingDelay:Timer;
+   private var _recordingTimer_StartDelay:Timer;
+   private var _recordingTimer_StopDelay:Timer;
 
    // ****************************************************
    //
@@ -88,30 +88,48 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    public function AudioRecorder(manager:SingletonManager) {
       Log.info("AudioRecorder constructor");
       _instance = this;
-      if (Utils_System.isRunningOnDesktop()) {
-         initializeMicAndRecorder();
-      } else {
-         Utils_ANEs.requestMicrophonePermission(onMicrophonePermissionRequestResponse);
+      _recordedAudio = new ByteArray();
+      attemptToActivateMicrophone();
+   }
+
+   public function attemptToActivateMicrophone():void {
+      Utils_ANEs.requestMicrophonePermission(attemptToActivateMicrophone_Continued);
+   }
+
+   private function attemptToActivateMicrophone_Continued(permissionGranted:Boolean):void {
+      if (permissionGranted) {
+         _microphone = Microphone.getMicrophone();
+         if (_microphone) {
+            _microphone.rate = 44;
+            _microphone.gain = 50; // Docs: "A value of 50 acts like a multiplier of one and specifies normal volume. ... Values above 50 specify higher than normal volume."
+            _microphone.setSilenceLevel(0, 2000);
+         }
       }
    }
 
    public function clear():void {
-      Log.debug("AudioRecorder.clear()");
-      if(_recorder)
-         _recorder.stop();
-      _isAttemptingPlayback = false;
+      Log.info("AudioRecorder.clear()");
       _isPlaybackActive = false;
       _isRecordingActive = false;
-      _recordedSamples = null;
-      stopPlaybackTimer();
       stopRecordingTimer_StartDelay();
-      stopRecordingTimer_SetPublicIsCurrentlyRecordingDelay();
-      stopRecordingTimer_StopDelay()
+      if (_microphone)
+         _microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onNewRecordingSampleData);
       setPublicIsCurrentlyRecordingFlag(false);
+      if (_playbackSound) {
+         _playbackSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onGetPlaybackSampleData);
+         // _playbackSound.close() throws an IOError. I assume that this is because we never call its load() method, and there is nothing to close.
+         _playbackSound = null;
+      }
+      if (_playbackChannel) {
+         _playbackChannel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
+         _playbackChannel.stop();
+         _playbackChannel = null;
+      }
+      _recordedAudio.clear();
    }
 
    public static function getInstance():AudioRecorder {
-      Log.debug("AudioRecorder.getInstance()");
+      Log.info("AudioRecorder.getInstance()");
       if (_instance == null)
          throw new Error("Singleton not initialized");
       return _instance;
@@ -121,54 +139,44 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       Log.info("AudioRecorder.initSingleton()");
    }
 
-   public function isRecorderAvailable():Boolean {
-      Log.debug("AudioRecorder.isRecorderAvailable()");
-      return (_recorder != null);
+   public function isMicrophoneAvailable():Boolean {
+      Log.info("AudioRecorder.isMicrophoneAvailable()");
+      return (_microphone != null);
    }
 
-   public function startPlayback(duration:int):void {
-      _isAttemptingPlayback = true;
-      if (_recordedSamples) {
-         Log.info("AudioRecorder.startPlayback() - starting playback");
-         _isAttemptingPlayback = false;
-         _isPlaybackActive = true;
-         AudioPlayer.getInstance().playWavSample(_recordedSamples);
-         _recordedSamples = null;
-         _playbackTimer = new Timer(duration);
-         _playbackTimer.addEventListener(TimerEvent.TIMER, onPlaybackTimer);
-         _playbackTimer.start();
-      } else if (_isAttemptingPlayback) {
-         Log.info("AudioRecorder.startPlayback() - _recordedSamples is null - wait and try again in a bit");
-         setTimeout(startPlayback, 200, [duration]);
-      }
-
+   public function startPlayback():void {
+      Log.info("AudioRecorder.startPlayback()");
+      _isPlaybackActive = true;
+      _recordedAudio.position = 0;
+      _playbackSound = new Sound();
+      _playbackSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onGetPlaybackSampleData);
+      _playbackChannel = _playbackSound.play();
+      _playbackChannel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
    }
 
    public function startRecording():void {
       Log.info("AudioRecorder.startRecording()");
-      if (!isRecorderAvailable()) {
-         Log.error("AudioRecorder.startRecording: Microphone not available - check isRecorderAvailable() before calling this method")
+      if (!isMicrophoneAvailable()) {
+         Log.error("AudioRecorder.startRecording: Microphone not available - check isMicrophoneAvailable() before calling this method")
          return;
       }
       clear();
       _isRecordingActive = true;
       _isMicrophoneUsedInSession = true;
-      _recordingTimer_StartDelay = new Timer(START_DELAY__INITIAL);
+      _recordingTimer_StartDelay = new Timer(500);
       _recordingTimer_StartDelay.addEventListener(TimerEvent.TIMER, onRecordingTimer_StartDelay);
       _recordingTimer_StartDelay.start();
-      AudioPlayer.getInstance().playSilenceFile();
    }
 
    public function stopPlayback():void {
       Log.info("AudioRecorder.stopPlayback()");
-      _isAttemptingPlayback = false;
       clear();
    }
 
    public function stopRecording(recordingStopDelayDuration:uint = 0):void {
-      Log.info("AudioRecorder.stopRecording()");
-      if (!isRecorderAvailable()) {
-         // We call this method from at least one of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
+      Log.info("AudioRecorder.stopRecording(): _recordedAudio's size: " + getSize(_recordedAudio));
+      if (!isMicrophoneAvailable()) {
+         // We call this method from at least on of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
          return;
       }
       if (!_isCurrentlyRecording)
@@ -193,65 +201,57 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    private function actuallyStopRecording(event:TimerEvent = null):void {
       Log.info("AudioRecorder.actuallyStopRecording()");
-      _recorder.stop();
-      _recordedSamples = _recorder.output;
-      AudioPlayer.getInstance().playSilenceFile();
+      _microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onNewRecordingSampleData);
    }
 
-   private function initializeMicAndRecorder():void {
-      _microphone = Microphone.getMicrophone();
-      if (_microphone) {
-         _microphone.rate = 44;
-         _microphone.gain = 18; ///// test    // Docs: "A value of 50 acts like a multiplier of one and specifies normal volume." ... But it's recording at much too high a level ...
-         _microphone.setSilenceLevel(0, 2000);
-         _recorder = new MicRecorder(new WaveEncoder(), _microphone);
+   private function onGetPlaybackSampleData(event:SampleDataEvent):void {
+      if (!_isPlaybackActive)
+         return;
+      if (_recordedAudio.bytesAvailable <= 0)
+         return;
+      for (var i:int = 0; i < 8192; i++) {
+         var sample:Number = 0;
+         if (_recordedAudio.bytesAvailable > 0) {
+            sample = _recordedAudio.readFloat();
+         }
+         event.data.writeFloat(sample);
+         event.data.writeFloat(sample);
       }
    }
 
-   private function onMicrophonePermissionRequestResponse(permissionGranted:Boolean):void {
-      if (permissionGranted) {
-         initializeMicAndRecorder();
-      }
+   private function onNewRecordingSampleData(event:SampleDataEvent):void {
+      _recordedAudio.writeBytes(event.data);
    }
 
-   private function onPlaybackTimer(event:TimerEvent):void {
-      Log.info("AudioRecorder.onPlaybackTimer()");
-      stopPlaybackTimer()
+   private function onPlaybackComplete(event:Event):void {
+      Log.info("AudioRecorder.onPlaybackComplete()");
+      clear();
       dispatchEvent(new Event(Event.SOUND_COMPLETE));
    }
 
    private function onRecordingTimer_SetPublicIsCurrentlyRecordingDelay(event:TimerEvent):void {
-      Log.info("AudioRecorder.onRecordingTimer_SetPublicIsCurrentlyRecordingDelay()");
+      Log.debug("AudioRecorder.onRecordingTimer_SetPublicIsCurrentlyRecordingDelay()");
       stopRecordingTimer_SetPublicIsCurrentlyRecordingDelay();
       setPublicIsCurrentlyRecordingFlag(true);
    }
 
    private function onRecordingTimer_StartDelay(event:TimerEvent):void {
-      Log.info("AudioRecorder.onRecordingTimer_StartDelay()");
+      Log.debug("AudioRecorder.onRecordingTimer_StartDelay()");
       stopRecordingTimer_StartDelay();
-      _recorder.record();
-      _recordingTimer_SetPublicIsCurrentlyRecordingDelay = new Timer(START_DELAY__PAUSE_BEFORE_INFORMING_USER_WE_ARE_RECORDING, 1);
+      _microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, onNewRecordingSampleData);
+      _recordingTimer_SetPublicIsCurrentlyRecordingDelay = new Timer(350, 1);
       _recordingTimer_SetPublicIsCurrentlyRecordingDelay.addEventListener(TimerEvent.TIMER, onRecordingTimer_SetPublicIsCurrentlyRecordingDelay);
       _recordingTimer_SetPublicIsCurrentlyRecordingDelay.start();
    }
 
    private function onRecordingTimer_StopDelay(event:TimerEvent):void {
-      Log.info("AudioRecorder.onRecordingTimer_StopDelay()");
+      Log.debug("AudioRecorder.onRecordingTimer_StopDelay()");
       stopRecordingTimer_StopDelay();
       actuallyStopRecording();
    }
 
-   private function stopPlaybackTimer():void {
-      Log.debug("AudioRecorder.stopPlaybackTimer()");
-      if (_playbackTimer) {
-         _playbackTimer.stop();
-         _playbackTimer.removeEventListener(TimerEvent.TIMER, onPlaybackTimer);
-         _playbackTimer = null;
-      }
-   }
-
    private function stopRecordingTimer_SetPublicIsCurrentlyRecordingDelay():void {
-      Log.debug("AudioRecorder.stopRecordingTimer_SetPublicIsCurrentlyRecordingDelay()");
+      Log.info("AudioRecorder.stopRecordingTimer_SetPublicIsCurrentlyRecordingDelay()");
       if (_recordingTimer_SetPublicIsCurrentlyRecordingDelay) {
          _recordingTimer_SetPublicIsCurrentlyRecordingDelay.stop();
          _recordingTimer_SetPublicIsCurrentlyRecordingDelay.removeEventListener(TimerEvent.TIMER, onRecordingTimer_SetPublicIsCurrentlyRecordingDelay);
@@ -260,7 +260,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    }
 
    private function stopRecordingTimer_StartDelay():void {
-      Log.debug("AudioRecorder.stopRecordingTimer_StartDelay()");
+      Log.info("AudioRecorder.stopRecordingTimer_StartDelay()");
       if (_recordingTimer_StartDelay) {
          _recordingTimer_StartDelay.stop();
          _recordingTimer_StartDelay.removeEventListener(TimerEvent.TIMER, onRecordingTimer_StartDelay);
@@ -269,7 +269,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    }
 
    private function stopRecordingTimer_StopDelay():void {
-      Log.debug("AudioRecorder.stopRecordingTimer_StopDelay()");
+      Log.info("AudioRecorder.stopRecordingTimer_StopDelay()");
       if (_recordingTimer_StopDelay) {
          _recordingTimer_StopDelay.stop();
          _recordingTimer_StopDelay.removeEventListener(TimerEvent.TIMER, onRecordingTimer_StopDelay);

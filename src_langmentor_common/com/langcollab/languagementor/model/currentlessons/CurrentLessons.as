@@ -210,7 +210,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          //   2. CurrentLessons.addAll() - I'm guessing that this is only called when we start the app and are initializing with persisted data.
          //      We also initialize 'current selected lesson' (though I can't (quickly) find the code that does this.
          //      So what we do here also gets overridden in that case. 
-         setCurrentLessonAndChunkIndexes(currentLessonIndex + 1, currentChunkIndex);  ///// See comment above - we should probably drop this - but we need a fair amount of testing before we release such a change
+         setCurrentLessonAndChunkIndexes(currentLessonIndex + 1, currentChunkIndex);  /// See comment above - we should probably drop this - but we need a fair amount of testing before we release such a change
       }
       if (!suppressPersistingData)
          persistSelectedLessonVersionData();

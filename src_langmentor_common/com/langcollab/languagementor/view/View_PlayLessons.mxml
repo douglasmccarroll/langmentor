@@ -645,7 +645,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case Constant_LearningModeLabels.REPEAT_TARGET: {
                setButtonEnabled_Translate(false);
                setButtonEnabled_Record(true);
-               _button_Record.enabled = AudioRecorder.getInstance().isRecorderAvailable();
+               _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
                _button_Record.selected = audioController.isRecordMode;
                break;
             }

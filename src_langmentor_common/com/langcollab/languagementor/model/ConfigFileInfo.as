@@ -18,6 +18,7 @@ import com.brightworks.util.download.FileDownloader;
 import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 import com.langcollab.languagementor.view.View_DeviceDoesntSupportLangMentor;
 import com.langcollab.languagementor.vo.LanguageVO;
@@ -254,7 +255,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          var stagingOrMentorTypeCode:String =
                Utils_System.isAlphaOrBetaVersion() ?
                      Constant_AppConfiguration.RELEASE_TYPE :
-                     Constant_AppConfiguration.CURRENT_MENTOR_TYPE__CODE;
+                     Constant_MentorTypeSpecific.MENTOR_TYPE__CODE;
          var platformName:String;
          switch (Utils_System.platformName) {
             case Constant_PlatformName.ANDROID:
@@ -488,6 +489,9 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          var vo:LanguageVO = _model.getLanguageVOFromIso639_3Code(iso639_3Code);
          vo.hasRecommendedLibraries = true;
          _model.updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfo", vo, ["hasRecommendedLibraries"]);
+         if (_model.getCurrentTargetLanguageISO639_3Code() == iso639_3Code) {   // This also evaluates to false if the currentTargetLanguage hasn't been set yet - which occurs in some scenarios - but this isn't a problem because the value has also been set in the DB (above)
+            _model.updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
+         }
       }
    }
 

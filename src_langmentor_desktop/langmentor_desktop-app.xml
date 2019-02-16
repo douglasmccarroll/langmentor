@@ -1,40 +1,14 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
 <application xmlns = "http://ns.adobe.com/air/application/30.0">
-
-
-   <!-- ############################################################################################### -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!--           We maintain 6 different app-descriptor files for this project - two                   -->
-   <!--           each for Android, iOS and desktop versions. The desktop version is,                   -->
-   <!--           more specifically, a 'desktop emulator' or 'desktop simulator' version                -->
-   <!--           which we use when testing this (mobile only) app on the desktop.                      -->
-   <!--           There are two copies of each of the three types because some of the info              -->
-   <!--           in these files is private, and we maintain a private version, which we                -->
-   <!--           use when compiling the project, and a public version which is included                -->
-   <!--           in the publicly released version of our code. If you're using this public             -->
-   <!--           code you should search these files for '##########' and provide                       -->
-   <!--           replacements for this string. Also be aware that while we try to keep the             -->
-   <!--           public version in sync with the private (aka 'actual') versions, you may              -->
-   <!--           need to tweak the public versions a bit before you use them.                          -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!--                                                                                                 -->
-   <!-- ############################################################################################### -->
-
-
-   <id>com.brightworks.LangMentor.global</id>
+   <id>com.brightworks.LangMentor.universal</id>
 
    <filename>LangMentor</filename>
 
-   <name>LangMentor</name>
+   <name>Language Mentor</name>
 
-   <versionNumber>1.33.0</versionNumber>
+   <versionNumber>1.41.01</versionNumber>
 
-   <versionLabel>1.33</versionLabel>
+   <versionLabel>1.41</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->

@@ -31,11 +31,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Utils_Layout;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       private var _isDisposed:Boolean = false;
 
       private function onCreationComplete():void {
-         textArea.text = "We're sorry, but this device can't run " + Constant_AppConfiguration.APP_NAME;
+         textArea.text = "We're sorry, but this device can't run " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
       }
 
       private function onOkayButtonClick():void {

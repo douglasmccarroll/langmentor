@@ -29,6 +29,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.controls.Spacer;
 
@@ -56,7 +57,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
          textWidget = new UIWidget_Viewlet__Heading();
-         textWidget.text = "Language Mentor is an Open Platform";
+         textWidget.text = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an Open Platform";
          addElement(textWidget);
          addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bullet_Text();

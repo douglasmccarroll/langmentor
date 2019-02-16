@@ -31,6 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       private var _isDisposed:Boolean = false;
 
@@ -59,10 +60,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          widget.text = "Our Forums";
          viewletGroup.addElement(widget);
          widget = new UIWidget_Viewlet__Text();
-         widget.text = "The Language Collaborative's forums are the best place to get answers to your questions about Language Mentor, to report problems, and to suggest new features.";
+         widget.text = Constant_MentorTypeSpecific.FORUMS__EXPLANATORY_TEXT__1;
          viewletGroup.addElement(widget);
          widget = new UIWidget_Viewlet__Bold_Text();
-         widget.text = "Please join us at LanguageCollaborative.com";
+         widget.text = Constant_MentorTypeSpecific.FORUMS__EXPLANATORY_TEXT__2;
          viewletGroup.addElement(widget);
       }
       ]]>

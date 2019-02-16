@@ -28,12 +28,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.collections.ArrayCollection;
 
       //private static const _LIST_OPTION__:String = "";
-      private static const _LIST_OPTION__ABOUT:String = "About Language Mentor";
+      private static const _LIST_OPTION__ABOUT:String = "About " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
       private static const _LIST_OPTION__LEARNING_MODES:String = "Learning Modes";
       private static const _LIST_OPTION__OPEN_PLATFORM:String = "Open Platform";
       private static const _LIST_OPTION__PLAYING_LESSONS:String = "Playing Lessons";
@@ -111,7 +112,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onViewActivate():void {
          _listDataProvider = new ArrayCollection();
          _listDataProvider.addItem(_LIST_OPTION__WELCOME);
-         _listDataProvider.addItem(_LIST_OPTION__OPEN_PLATFORM);
+         if (!Constant_MentorTypeSpecific.MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR) {
+            _listDataProvider.addItem(_LIST_OPTION__OPEN_PLATFORM);
+         }
          _listDataProvider.addItem(_LIST_OPTION__PRIVACY_POLICY);
          _listDataProvider.addItem(_LIST_OPTION__SELECTING_LESSONS);
          _listDataProvider.addItem(_LIST_OPTION__PLAYING_LESSONS);
