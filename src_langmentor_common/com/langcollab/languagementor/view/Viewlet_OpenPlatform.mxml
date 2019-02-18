@@ -26,10 +26,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.util.Utils_System;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+      import com.langcollab.languagementor.constant.Constant_MentorTypes;
+      import com.langcollab.languagementor.model.MainModel;
 
       import mx.controls.Spacer;
 
@@ -60,7 +64,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an Open Platform";
          addElement(textWidget);
          addElement(new Spacer());
-
+         if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = Constant_MentorTypeSpecific.APP_NAME__FULL + " is built on the Language Mentor platform. This app is the same as the universal Language Mentor app, except that German has been pre-selected as the language that will be studied.";
+            addElement(textWidget);
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = 'What does "Open Platform" mean?';
+            addElement(textWidget);
+         }
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Anyone can create lessons for any language";
          addElement(textWidget);
@@ -76,9 +87,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Users decide which libraries they wish to use";
          addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "For more information about how to to create lessons, please visit us at LanguageCollaborative.com";
-         addElement(textWidget);
+         if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
+            textWidget = new UIWidget_Viewlet__Bullet_Text();
+            textWidget.text = "For more information about how to to create lessons, please visit us at LanguageCollaborative.com";
+            addElement(textWidget);
+         }
+         else {
+            addElement(new Spacer());
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = "If you're interested in creating lessons for Language Mentor, we suggest that you download the universal version of the app (simply search for" + ' "Language Mentor" on the ' + Utils_System.getAppStoreName() + ") and visit us at our website at LanguageCollaborative.com.";
+            addElement(textWidget);
+         }
       }
       ]]>
     </fx:Script>
