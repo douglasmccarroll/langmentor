@@ -28,14 +28,12 @@
       <image29x29>assets/icons/app_icon_29x29.png</image29x29>
       <image36x36>assets/icons/app_icon_36x36.png</image36x36>
       <image48x48>assets/icons/app_icon_48x48.png</image48x48>
-      <image50x50>assets/icons/app_icon_50x50.png</image50x50>
       <image57x57>assets/icons/app_icon_57x57.png</image57x57>
-      <image58x58>assets/icons/app_icon_58x58.png</image58x58>
       <image72x72>assets/icons/app_icon_72x72.png</image72x72>
-      <image100x100>assets/icons/app_icon_100x100.png</image100x100>
       <image114x114>assets/icons/app_icon_114x114.png</image114x114>
       <image120x120>assets/icons/app_icon_120x120.png</image120x120>
-      <image144x144>assets/icons/app_icon_144x144.png</image144x144>
+      <image128x128>assets/icons/app_icon_128x128.png</image128x128>
+      <image512x512>assets/icons/app_icon_512x512.png</image512x512>
    </icon>
 
    <iPhone>
