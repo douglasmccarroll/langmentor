@@ -106,10 +106,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_ManageLibraries, null, null, transition_SlideView_Left);
                break;
             }
-            case _LIST_OPTION__PLAY: {
-               navigator.pushView(View_Play, null, null, transition_SlideView_Left);
-               break;
-            }
             default: {
                Log.fatal("View.onListChange(): No case for " + list.selectedItem);
             }

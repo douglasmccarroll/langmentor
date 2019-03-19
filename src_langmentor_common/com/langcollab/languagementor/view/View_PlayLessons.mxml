@@ -791,7 +791,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textField_ChunkText.text = "Tap Here To\nShow/Hide Text";
          }
          textField_ChunkText.fontSize = fontSize;
-         var leading:Number = 2 * Math.round(Utils_Text.getStandardFontSize());
+         var leading:Number = Math.round(Utils_Text.getStandardFontSize() * .43);
          textField_ChunkText.setStyle("leading", leading);
       }
 
@@ -846,11 +846,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          </s:Group>
          <s:Group id = "group_LoopButton"
                   height = "100%"
-                  width = "22%">
+                  width = "20%">
          </s:Group>
          <s:Group id = "group_CreditsButton"
                   height = "100%"
-                  width = "22%">
+                  width = "24%">
          </s:Group>
          <s:Group id = "group_RecordAndTranslateButtons"
                   height = "100%"

@@ -900,7 +900,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getURL_RootInfoFolder():String {
-      var result:String = Constant_LangMentor_Misc.FILEPATHINFO__ROOT_INFO_FOLDER_URL;
+      var result:String = Constant_MentorTypeSpecific.ROOT_INFO_FOLDER_URL;
       if (Utils_System.isRunningOnDesktop())
          result = Utils_URL.convertUrlToDesktopServerUrl(result);
       return result;
