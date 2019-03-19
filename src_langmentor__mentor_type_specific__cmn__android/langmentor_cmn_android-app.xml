@@ -1,0 +1,122 @@
+<?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
+<application xmlns = "http://ns.adobe.com/air/application/31.0">
+
+   <id>com.brightworks.LangMentor.cmn</id>
+
+   <filename>LangMentor</filename>
+
+   <name>Chinese LangMentor</name>
+
+   <versionNumber>1.41.09</versionNumber>
+
+   <versionLabel>1.41.09</versionLabel>
+
+
+   <!-- Settings for the application's initial window. Required. -->
+   <initialWindow>
+      <!-- The main SWF or HTML file of the application. Required. -->
+      <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
+      <content>langmentor_android.swf</content>
+
+      <aspectRatio>portrait</aspectRatio>
+      <fullScreen>false</fullScreen>
+      <visible>true</visible>
+      <softKeyboardBehavior>none</softKeyboardBehavior>
+      <autoOrients>false</autoOrients>
+   </initialWindow>
+
+   <icon>
+      <image36x36>assets/icons/app_icon_36x36.png</image36x36>
+      <image48x48>assets/icons/app_icon_48x48.png</image48x48>
+      <image72x72>assets/icons/app_icon_72x72.png</image72x72>
+   </icon>
+
+   <android>
+      <colorDepth>16bit</colorDepth>
+      <manifestAdditions>
+         <![CDATA[
+            <manifest android:installLocation="preferExternal">
+                <application android:hardwareAccelerated="true">
+
+                    <!-- For Distriqt MediaPlayer extension -->
+                    <service android:name="com.distriqt.extension.mediaplayer.audio.AudioPlayerService" android:enabled="true" android:exported="true"></service>
+
+                    <!-- For MyFlashLabs extensions -->
+                    <activity>
+                        <intent-filter>
+                            <action android:name="android.intent.action.MAIN" />
+                            <category android:name="android.intent.category.LAUNCHER" />
+                        </intent-filter>
+                        <intent-filter>
+                            <action android:name="android.intent.action.VIEW" />
+                            <category android:name="android.intent.category.BROWSABLE" />
+                            <category android:name="android.intent.category.DEFAULT" />
+                            <data android:scheme="com.brightworks.LangMentor.standard" />
+                        </intent-filter>
+                    </activity>
+
+                    <!-- For MyFlashLabs BarCode extension -->
+                    <activity
+                        android:name="com.google.zxing.client.android.CaptureActivity"
+                        android:clearTaskOnLaunch="true"
+                        android:screenOrientation="landscape"
+                        android:configChanges="orientation|keyboardHidden"
+                        android:stateNotNeeded="true"
+                        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                        android:windowSoftInputMode="stateAlwaysHidden" />
+                    <activity
+                        android:name="com.doitflash.barcode.utils.ExBridge" />
+                    <service android:name="com.distriqt.extension.mediaplayer.audio.AudioPlayerService" android:enabled="true" android:exported="true"></service>
+
+                </application>
+
+                <supports-screens
+                    android:anyDensity="true"
+                    android:smallScreens="true"
+                    android:normalScreens="true"
+                    android:largeScreens="true"
+                    android:xlargeScreens="true"/>
+                <uses-permission android:name="android.permission.INTERNET"/>
+                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+                <uses-permission android:name="android.permission.READ_PHONE_STATE"/>  <!--Results in "device id & call information" request to user - needed so that app can pause when phone gets a call.-->
+                <!--The DISABLE_KEYGUARD and WAKE_LOCK permissions should be toggled together
+                in order to access AIR's SystemIdleMode APIs-->
+                <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+                <uses-permission android:name="android.permission.WAKE_LOCK"/>
+                <uses-permission android:name="android.permission.CAMERA"/>
+                <uses-feature android:name="android.hardware.camera" android:required="false"/>
+                <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+                <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
+                <uses-feature android:name="android.hardware.camera.landscape" android:required="false" />
+                <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+                <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+                <!--The ACCESS_NETWORK_STATE and ACCESS_WIFI_STATE permissions should be toggled
+                    together in order to use AIR's NetworkInfo APIs-->
+                <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+                <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+                <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+                <uses-permission android:name="android.permission.VIBRATE"/>
+                <uses-sdk android:targetSdkVersion="27"/>
+                <uses-sdk android:minSdkVersion="26"/>
+            </manifest>
+        ]]>
+      </manifestAdditions>
+   </android>
+   <extensions>
+      <extensionID>com.distriqt.Bolts</extensionID>
+      <extensionID>com.distriqt.androidsupport.AppCompatV7</extensionID>
+      <extensionID>com.distriqt.androidsupport.CardViewV7</extensionID>
+      <extensionID>com.distriqt.androidsupport.CustomTabs</extensionID>
+      <extensionID>com.distriqt.androidsupport.Design</extensionID>
+      <extensionID>com.distriqt.androidsupport.InstallReferrer</extensionID>
+      <extensionID>com.distriqt.androidsupport.RecyclerViewV7</extensionID>
+      <extensionID>com.distriqt.androidsupport.V4</extensionID>
+      <extensionID>com.distriqt.Core</extensionID>
+      <extensionID>com.distriqt.Dialog</extensionID>
+      <extensionID>com.distriqt.MediaPlayer</extensionID>
+      <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
+      <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
+      <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
+      <extensionID>com.myflashlab.air.extensions.rateMe</extensionID>
+   </extensions>
+</application>

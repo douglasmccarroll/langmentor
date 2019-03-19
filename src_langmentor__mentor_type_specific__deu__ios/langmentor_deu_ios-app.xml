@@ -1,0 +1,109 @@
+<?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
+<application xmlns = "http://ns.adobe.com/air/application/32.0">
+
+   <id>com.brightworks.LangMentor.deu</id>
+
+   <filename>LangMentor</filename>
+
+   <name>German LangMentor</name>
+
+   <versionNumber>1.41.08</versionNumber>
+   <versionLabel>1.41.08</versionLabel>
+
+
+   <!-- Settings for the application's initial window. Required. -->
+   <initialWindow>
+      <!-- The main SWF or HTML file of the application. Required. -->
+      <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
+      <content>langmentor_ios.swf</content>
+
+      <aspectRatio>portrait</aspectRatio>
+      <fullScreen>false</fullScreen>
+      <visible>true</visible>
+      <softKeyboardBehavior>none</softKeyboardBehavior>
+      <autoOrients>false</autoOrients>
+   </initialWindow>
+
+   <icon>
+      <image16x16>assets/icons/Icon-16.png</image16x16>
+      <!--<image20x20>assets/icons/Icon-20.png</image20x20>-->
+      <image29x29>assets/icons/Icon-29.png</image29x29>
+      <image32x32>assets/icons/Icon-32.png</image32x32>
+      <image40x40>assets/icons/Icon-40.png</image40x40>
+      <image48x48>assets/icons/Icon-48.png</image48x48>
+      <image50x50>assets/icons/Icon-50.png</image50x50>
+      <!--<image55x55>assets/icons/Icon-55.png</image55x55>-->
+      <image57x57>assets/icons/Icon-57.png</image57x57>
+      <image58x58>assets/icons/Icon-58.png</image58x58>
+      <image60x60>assets/icons/Icon-60.png</image60x60>
+      <!--<image64x64>assets/icons/Icon-64.png</image64x64>-->
+      <image72x72>assets/icons/Icon-72.png</image72x72>
+      <image76x76>assets/icons/Icon-76.png</image76x76>
+      <image80x80>assets/icons/Icon-80.png</image80x80>
+      <image87x87>assets/icons/Icon-87.png</image87x87>
+      <!--<image88x88>assets/icons/Icon-88.png</image88x88>-->
+      <image100x100>assets/icons/Icon-100.png</image100x100>
+      <image114x114>assets/icons/Icon-114.png</image114x114>
+      <image120x120>assets/icons/Icon-120.png</image120x120>
+      <image128x128>assets/icons/Icon-128.png</image128x128>
+      <image144x144>assets/icons/Icon-144.png</image144x144>
+      <image152x152>assets/icons/Icon-152.png</image152x152>
+      <image167x167>assets/icons/Icon-167.png</image167x167>
+      <!--<image172x172>assets/icons/Icon-172.png</image172x172>-->
+      <image180x180>assets/icons/Icon-180.png</image180x180>
+      <!--<image196x196>assets/icons/Icon-196.png</image196x196>-->
+      <!--<image256x256>assets/icons/Icon-256.png</image256x256>-->
+      <image512x512>assets/icons/Icon-512.png</image512x512>
+      <image1024x1024>assets/icons/Icon-1024.png</image1024x1024>
+   </icon>
+
+   <iPhone>
+      <!--<Entitlements>      This block will probably make warnings from app store go away, but also seems to cause 'verification failed' message when
+         <![CDATA[                               I deploy directly to iPhone, unless I add 'push notifications' to provisioning profile
+         <key>aps-environment</key>
+         <string>production</string>
+      ]]>
+      </Entitlements>-->
+      <InfoAdditions>
+         <![CDATA[
+
+            <key>MinimumOSVersion</key>
+            <string>9.0</string>
+            <key>NSBluetoothPeripheralUsageDescription</key>
+            <string>Language Mentor uses Bluetooth devices so that you can listen to language lessons using a Bluetooth earpiece.</string>
+            <key>NSCalendarsUsageDescription</key>
+            <string>Language Mentor does not access any calendars. If you see this message please select Don't Allow.</string>
+            <key>NSCameraUsageDescription</key>
+            <string>Camera is used by Language Mentor's QR code scanner, which you'll use if you if you wish to add new language lesson library URLs to the app.</string>
+            <key>NSContactsUsageDescription</key>
+            <string>Language Mentor does not access any contacts. If you see this message please press Don't Allow.</string>
+            <key>NSMicrophoneUsageDescription</key>
+       		<string>Language Mentor uses the microphone to record your voice, so that you can listen and check your pronunciation.</string>
+            <key>UIStatusBarStyle</key>
+            <string>UIStatusBarStyleLightContent</string>
+            <key>NSAppTransportSecurity</key>
+            <!-- For now, this allows us to continue to use http rather than https - get certs for the subdomains that we access? -->
+            <dict>
+              <key>NSAllowsArbitraryLoads</key>
+              <true/>
+            </dict>
+            <key>UIBackgroundModes</key>
+            <array>
+               <string>audio</string>
+            </array>
+
+          ]]>
+      </InfoAdditions>
+      <requestedDisplayResolution>high</requestedDisplayResolution>
+   </iPhone>
+
+   <extensions>
+      <extensionID>com.distriqt.Core</extensionID>
+      <extensionID>com.distriqt.Dialog</extensionID>
+      <extensionID>com.distriqt.MediaPlayer</extensionID>
+      <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
+      <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
+      <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
+      <extensionID>com.myflashlab.air.extensions.rateMe</extensionID>
+   </extensions>
+</application>
