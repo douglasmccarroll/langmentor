@@ -98,7 +98,11 @@ public class Command_LoadLearningModeDescriptions extends Command_Base__LangMent
       }
    }
 
-   private function onLoadFailure(o:Object):void {
+   private function onLoadFailure(o:Object, oo:Object = null):void {
+      if (oo) {
+         // For debugging. When does this happen?
+         var foo:int = 1;
+      }
       if (_isDisposed)
          return;
       fault();

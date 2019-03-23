@@ -865,10 +865,24 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return _currentTargetLanguageVO.iso639_3Code;
    }
 
-   public function getTargetLanguageResource(type:String):String {
-      if (!_currentTargetLanguageResourceXML)
-         return null;
-      var result:String = _currentTargetLanguageResourceXML[type].toString();
+   public function getTargetLanguageResource(nodePathList:Array):String {
+      var result:String;
+      var nodeCount:uint = nodePathList.length;
+      var currNode:XML = _currentTargetLanguageResourceXML;
+      for (var i:int = 0; i < nodeCount; i++) {
+         if (!currNode)
+               return null;
+         var nodeName:String = nodePathList[i];
+         if (currNode[nodeName].length() == 1) {
+            var isFinalNode:Boolean = (i == (nodeCount - 1));
+            if (isFinalNode) {
+               result = currNode[nodeName].toString();
+            }
+            else {
+               currNode = currNode[nodeName][0];
+            }
+         }
+      }
       if (result == "")
          return null;
       return result;

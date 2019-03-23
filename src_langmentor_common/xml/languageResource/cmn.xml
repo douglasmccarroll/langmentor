@@ -1,3 +1,10 @@
 <languageResource>
    <languageExample>你好</languageExample>
+   <hasPhoneticText>true</hasPhoneticText>
+   <languageSpecificDisplayStrings>
+	   <eng>
+		   <displayModeName_targetLanguage>Hanzi</displayModeName_targetLanguage>
+		   <displayModeName_targetLanguagePhonetic>Pinyin</displayModeName_targetLanguagePhonetic>
+	   </eng>	   
+   </languageSpecificDisplayStrings>	   
 </languageResource>

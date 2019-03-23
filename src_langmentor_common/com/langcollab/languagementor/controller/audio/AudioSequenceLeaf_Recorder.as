@@ -27,7 +27,6 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    private static var _availableInstancePool:Array = [];
 
    private var _recordingStopDelayDuration:uint;
-   private var _suppressRecording:Boolean;
    private var _timer:Timer;
 
    // ****************************************************
@@ -42,7 +41,7 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
          throw new Error("AudioSequenceLeaf_Recorder: create instances with acquireReusable()");
    }
 
-   public static function acquireReusable(id:Object, duration:uint, recordingStopDelayDuration:uint = 0, suppressRecording:Boolean = false):AudioSequenceLeaf_Recorder {
+   public static function acquireReusable(id:Object, duration:uint, recordingStopDelayDuration:uint = 0):AudioSequenceLeaf_Recorder {
       var result:AudioSequenceLeaf_Recorder;
       if (_availableInstancePool.length > 0) {
          result = _availableInstancePool.pop();
@@ -54,7 +53,6 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
       result.id = id;
       result.duration = duration + recordingStopDelayDuration;
       result._recordingStopDelayDuration = recordingStopDelayDuration;
-      result._suppressRecording = suppressRecording;
       return result;
    }
 
@@ -72,18 +70,15 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    override public function startFromBeginning():void {
       Log.info("AudioSequenceLeaf_Recorder.startFromBeginning(): duration:" + duration + " recordingStopDelayDuration:" + _recordingStopDelayDuration);
       super.startFromBeginning();
-      if (!_suppressRecording) {
-         AudioRecorder.getInstance().startRecording();
-         _timer = new Timer(duration - _recordingStopDelayDuration, 1);
-         _timer.addEventListener(TimerEvent.TIMER, onTimer);
-         _timer.start();
-      }
+      AudioRecorder.getInstance().startRecording();
+      _timer = new Timer(duration - _recordingStopDelayDuration, 1);
+      _timer.addEventListener(TimerEvent.TIMER, onTimer);
+      _timer.start();
    }
 
    override public function stop():void {
       Log.debug("AudioSequenceLeaf_Recorder.stop()");
-      if (!_suppressRecording)
-         stopRecording();
+      stopRecording();
       super.stop();
    }
 
@@ -112,7 +107,7 @@ public class AudioSequenceLeaf_Recorder extends AudioSequenceLeaf_Timer {
    private function stopRecording():void {
       Log.info("AudioSequenceLeaf_Recorder.onTimer()");
       stopTimer();
-      if (!_suppressRecording && (AudioRecorder.getInstance()))
+      if (AudioRecorder.getInstance())
          AudioRecorder.getInstance().stopRecording(_recordingStopDelayDuration);
    }
 

@@ -353,7 +353,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       //									locationInOrder : 1,
       //                         textAudio : null,                       | All 5 of these are optional, i.e. some are used in some cases, others in other cases.
       //                         textDisplay : null,                     | In chunks with a chunkType of Default, it depends on whether this is a single or dual-language
-      //                         textNativeLanguage : "Hi",              | lesson, whether the target language uses phonetic text, etc.
+      //                         textNativeLanguage : "Hi",              | lesson, whether the language has phonetic text such as pinyin for Chinese, etc.
       //                         textTargetLanguage : "Hola",            | In chunks with a chunkType of Explanatory, we use textAudio and textDisplay. See second
       //                         textTargetLanguagePhonetic : null,      | chunk in this example.
       //									audioFileData :	{

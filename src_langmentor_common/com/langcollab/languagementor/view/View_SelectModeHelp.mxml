@@ -113,7 +113,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          // dmccarroll 20121113 ///
          // This is a kludge which has the effect of using "Hello (in [target language])" for the target language example in cases where we do not yet have a
          // target language example.
-         var targetLanguageExample:String = model.getTargetLanguageResource("languageExample");
+         var targetLanguageExample:String = model.getTargetLanguageResource(["languageExample"]);
          if (!targetLanguageExample)
             targetLanguageExample =
                   "Hello (in " +

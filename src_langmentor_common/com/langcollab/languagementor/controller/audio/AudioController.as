@@ -657,24 +657,19 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT] = leaf;
       
-               // We don't do recording if there's no text displayed, as this probably indicates that we don't have native language audio.
-               // This can happen in title chunks, and perhaps in other cases. This is a bit kludgy /// Ideally this would be specified in
-               // the XML for the chunk.
-               var suppressRecording:Boolean = !_currentLessons.doesChunkHaveDefaultDisplayText(chunkVO);
-      
                // On at least some devices, we need to keep recording longer than the desired recording time in
                // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
                var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
       
                var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.RECORDING_START_DELAY_DURATION + recordingStopDelayDuration;
       
-               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
+               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT] = leaf;
       
-               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT, durationIncludingAllDelays, recordingStopDelayDuration, suppressRecording);
+               leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT, durationIncludingAllDelays, recordingStopDelayDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);

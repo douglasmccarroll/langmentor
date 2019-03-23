@@ -265,11 +265,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       return false;
    }
 
-   public function doesChunkHaveDefaultDisplayText(vo:ChunkVO):Boolean {
-      var text:String = Utils_String.removeWhiteSpaceIncludingLineReturnsFromBeginningAndEndOfString(getChunkDefaultDisplayText(vo));
-      return (text.length > 0);
-   }
-
    public function doesLessonVersionContainAnyUnsuppressedChunks(lvvo:LessonVersionVO):Boolean {
       var chunkVOs:Array = (Utils_ArrayVectorEtc.useVoEqualsFunctionToGetItemFromDictionary(lvvo, _index_ChunkListsSortedByLocationInOrder_by_LessonVersionVO, true) as Array);
       for each (var cvo:ChunkVO in chunkVOs) {
@@ -431,6 +426,12 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          dispatchEvent(new Event("lengthChange"));
    }
 
+   public function getChunkDefaultTextDisplayTypeName(vo:ChunkVO):String {   ///// no longer used?
+      var lvvo:LessonVersionVO = getLessonForChunk(vo);
+      var typeName:String = _model.getTextDisplayTypeTypeNameFromId(lvvo.defaultTextDisplayTypeId);
+      return typeName;
+   }
+
    public function getChunkNativeDisplayText(chunkVO:ChunkVO):String {
       return chunkVO.textNativeLanguage;
    }
@@ -464,36 +465,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       for each (var lv:LessonVersionVO in currentLessons) {
          if (doesLessonVersionContainAnyUnsuppressedChunks(lv))
             result++;
-      }
-      return result;
-   }
-
-   public function getCurrentChunkDefaultDisplayText():String {
-      if (!currentChunkVO) {
-         Log.error("CurrentLessons.getCurrentChunkDefaultDisplayText(): No current chunk");
-         return "";
-      }
-      return getChunkDefaultDisplayText(currentChunkVO);
-   }
-
-   public function getCurrentDisplayText():String {
-      var result:String = "";
-      if (!currentChunkVO)
-         return result;
-      if (_audioController.currentLeafType) {
-         if (_audioController.currentLeafType == Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE) {
-            //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
-            result = getChunkNativeDisplayText(currentChunkVO);
-         } else {
-            result = getChunkDefaultDisplayText(currentChunkVO);
-         }
-      } else {
-         if (isCurrentLessonAlphaReviewVersion()) {
-            //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
-            result = getChunkNativeDisplayText(currentChunkVO);
-         } else {
-            result = getChunkDefaultDisplayText(currentChunkVO);
-         }
       }
       return result;
    }
@@ -600,6 +571,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
       var result:LessonVersionVO = SortableLessonVersionInfo(_currentLessons[index]).lessonVersionVO;
       return result;
+   }
+
+   public function getLessonForChunk(vo:ChunkVO):LessonVersionVO {
+      var lvvo:LessonVersionVO = LessonVersionVO(Utils_ArrayVectorEtc.useVoEqualsFunctionToGetItemFromDictionary(vo, _index_LessonVersionVOs_by_ChunkVO, true));
+      return lvvo;
    }
 
    public function getLessonIndex(vo:LessonVersionVO):int {
@@ -964,37 +940,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          return -1;
       }
       return list.length;
-   }
-
-   private function getChunkDefaultDisplayText(chunkVO:ChunkVO):String {
-      var result:String = "";
-      var lvvo:LessonVersionVO = LessonVersionVO(Utils_ArrayVectorEtc.useVoEqualsFunctionToGetItemFromDictionary(chunkVO, _index_LessonVersionVOs_by_ChunkVO, true));
-      var typeName:String = _model.getTextDisplayTypeTypeNameFromId(lvvo.defaultTextDisplayTypeId);
-      switch (chunkVO.chunkType) {
-         case ChunkVO.CHUNK_TYPE__DEFAULT: {
-            switch (typeName) {
-               case Constant_TextDisplayTypeNames.NATIVE_LANGUAGE:
-                  result = chunkVO.textNativeLanguage;
-                  break;
-               case Constant_TextDisplayTypeNames.TARGET_LANGUAGE:
-                  result = chunkVO.textTargetLanguage;
-                  break;
-               case Constant_TextDisplayTypeNames.TARGET_LANGUAGE_PHONETIC:
-                  result = chunkVO.textTargetLanguagePhonetic;
-                  break;
-               default:
-                  Log.error("CurrentLessons.getChunkDefaultDisplayText(): No match for typeName: " + typeName);
-            }
-            break;
-         }
-         case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
-            result = chunkVO.textDisplay;
-            break;
-         }
-         default:
-            Log.error("CurrentLessons.getChunkDefaultDisplayText(): No match for chunkType: " + chunkVO.chunkType);
-      }
-      return result;
    }
 
    private function getIndexForNextOrPreviousSelectedLessonVersionWithUnsuppressedChunks(direction:int):uint {

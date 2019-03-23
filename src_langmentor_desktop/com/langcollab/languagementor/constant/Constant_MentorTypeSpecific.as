@@ -28,9 +28,10 @@ public class Constant_MentorTypeSpecific {
    public static const FORUMS__EXPLANATORY_TEXT__2:String = "Please join us at LanguageCollaborative.com";
    public static const FORUMS__IS_OPTION_DISPLAYED:Boolean= true;
    public static const LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE:String = "eng";
-   public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "deu";
-   public static const MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__ENG__DEU;
+   public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "eng";
+   public static const MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL;
    public static const MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR:Boolean = false;
+   public static const ROOT_INFO_FOLDER_URL:String = "http://lessons.languagecollaborative.com/";
    public static const SHARE_SCREEN__A_GOOD_REASON_FOR_SHARING:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an open platform supported by its users and developers. Please help us spread the word!";
 
 }

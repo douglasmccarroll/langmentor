@@ -43,10 +43,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+      import com.langcollab.languagementor.constant.Constant_TextDisplayTypeNames;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
       import com.langcollab.languagementor.util.Resources_Image;
+      import com.langcollab.languagementor.vo.ChunkVO;
       import com.langcollab.languagementor.vo.LessonVersionVO;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
@@ -68,6 +71,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__RECORD:String = "Record &\nPlayback";
       private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
       private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
+      private static const _TEXT_DISPLAY_MODE__NATIVE_TEXT:String = "TEXT_DISPLAY_MODE__NATIVE_TEXT";
+      private static const _TEXT_DISPLAY_MODE__NONE:String = "TEXT_DISPLAY_MODE__NONE";
+      private static const _TEXT_DISPLAY_MODE__TARGET_TEXT:String = "TEXT_DISPLAY_MODE__TARGET_TEXT";
+      private static const _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:String = "TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC";
 
       private var _button_Credits:Button_Standard;
       private var _button_IKnowThis:Button_Standard;
@@ -83,9 +90,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
       [Bindable]
-      private var _isChunkTextDisplayed:Boolean = true;
+      private var _currentTextDisplayMode:String = _TEXT_DISPLAY_MODE__NONE;
+      private var _index_dialogOptionIndexes_to_textDisplayMode:Dictionary;
       private var _isDisposed:Boolean = false;
-      private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
+      //// alpha mode private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
       private var _mostRecentUserActionTime:Number;
       private var _mostRecentUserInitiatedChunkNavigationTime:Number;
       private var _mostRecentUserInitiatedIKnowThisTime:Number;
@@ -122,6 +130,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override public function dispose():void {
          super.dispose();
+         _index_dialogOptionIndexes_to_textDisplayMode = null;
          if (_isDisposed)
             return;
          _isDisposed = true;
@@ -312,6 +321,53 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          onDo_Translate();
       }
 
+      private function onChunkTextTextFieldClick():void {
+         var isNativeTextAvailable:Boolean = model.isAppDualLanguage();
+         var isTargetPhoneticTextAvailable:Boolean;
+         var hasPhoneticTextValueFromLanguageResourceFile_IfSpecified:String = model.getTargetLanguageResource(["hasPhoneticText"]);
+         if (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified) {
+            isTargetPhoneticTextAvailable = (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified == "true");
+         }
+         var availableTextModeCount:uint = 1; // We start with 1 because target language text is always available
+         if (isNativeTextAvailable)
+               availableTextModeCount++;
+         if (isTargetPhoneticTextAvailable)
+               availableTextModeCount++;
+         if (availableTextModeCount == 1) {
+            // We do nothing - there is no other text mode for the user to switch to
+            return;
+         }
+         _index_dialogOptionIndexes_to_textDisplayMode = new Dictionary();
+         var dialogOptionList:Array = [];
+         var currentIndex:uint = 0;
+         if (isTargetPhoneticTextAvailable) {
+            var textDisplayModeDisplayName_TargetLanguagePhonetic:String = model.getTargetLanguageResource(["languageSpecificDisplayStrings", model.getNativeLanguageIso639_3Code(), "displayModeName_targetLanguagePhonetic"]);
+            if (!textDisplayModeDisplayName_TargetLanguagePhonetic) {
+               // If we haven't specified a display name for phonetic texxt in the target language's language resource XML file, we simply use "Phonetic" plus the target language's name, e.g. "Phonetic Klingon"
+               // When would we want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call phonetic target language text "Pinyin".
+               textDisplayModeDisplayName_TargetLanguagePhonetic = "Phonetic " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+            }
+            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC;
+            dialogOptionList.push(textDisplayModeDisplayName_TargetLanguagePhonetic)
+            currentIndex++;
+         }
+         var textDisplayModeDisplayName_TargetLanguage:String = model.getTargetLanguageResource(["languageSpecificDisplayStrings", model.getNativeLanguageIso639_3Code(), "displayModeName_targetLanguage"]);
+         if (!textDisplayModeDisplayName_TargetLanguage) {
+            // If we haven't specified a display name in the language resource XML file for the target language, we simply use the target language's name.
+            // When would want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call target language text "Hanzi".
+            textDisplayModeDisplayName_TargetLanguage = model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+         }
+         _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__TARGET_TEXT;
+         dialogOptionList.push(textDisplayModeDisplayName_TargetLanguage);
+         currentIndex++;
+         if (isNativeTextAvailable) {
+            var textDisplayModeDisplayName_NativeLanguage:String = model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
+            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__NATIVE_TEXT;
+            dialogOptionList.push(textDisplayModeDisplayName_NativeLanguage);
+         }
+         Utils_ANEs.showAlert_MultipleOptions("Select a Text Display Mode", dialogOptionList, onTextDisplayModeDialogCallback);
+      }
+
       private function onCurrentChunkVOChange(newValue:int):void {
          if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
             _button_PlayPause.enabled = false;
@@ -347,7 +403,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          var isAbortNeeded:Boolean = false;
          if ((audioController.mostRecentAutoChunkFinishInitiatedIterateChunk > 0) &&
                ((Utils_DateTime.getCurrentMS_BasedOnDate() - audioController.mostRecentAutoChunkFinishInitiatedIterateChunk) < _CHUNK_START_I_KNOW_THIS_ABORT_TIME)) {
@@ -369,7 +425,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_Audio_Files.playClick();
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-            _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+            //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
             callLater(onDo_IKnowThis_DispatchCommand);
          }
       }
@@ -402,27 +458,27 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          }
 
+         //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
          // This is distinctly kludgy. If we're reviewing an alpha review version lesson, and the app isn't 'playing', i.e. auto-advance isn't on,
          // we want the first tap of the > button to NOT advance to the next chunk. Instead, we want to switch from native language text
          // to target language text. All this falls completely outside a primary design paradigm of Language Mentor, which is that AudioController
          // and its associated classes are responsible for advancing from leaf to leaf in a chunk, and that no other code can do this. So, we're faking
          // it here. We're not 'changing the leaf', we are ignoring leafs, and simply changing the text that we display to the user.
-         if ((currentLessons.isCurrentLessonAlphaReviewVersion()) &&
+         /*if ((currentLessons.isCurrentLessonAlphaReviewVersion()) &&
                (!_isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge)) {
             // Kludge
             _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = true;
-            //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
             textField_ChunkText.text = currentLessons.getCurrentChunkDefaultDisplayText();
             _button_PreviousChunk.enabled = true;
-         }
-         else {
-            // Standard non-kludgy logic
-            _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
-            AudioPlayer.getInstance().stop();
-            microphoneImage.alpha = 0;
-            _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-            callLater(onDo_NextChunk_Continued);
-         }
+         }*/
+         //// alpha mode else {
+         // Standard non-kludgy logic
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         AudioPlayer.getInstance().stop();
+         microphoneImage.alpha = 0;
+         _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
+         callLater(onDo_NextChunk_Continued);
+         //// alpha mode }
       }
 
       private function onDo_NextChunk_Continued():void {
@@ -433,7 +489,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          if (!currentLessons.isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {
             Log.error("View_PlayLessons.onDo_NextLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
@@ -454,7 +510,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          currentLessons.togglePlayPause();
          if (currentLessons.isLessonPaused) {
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
@@ -474,16 +530,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Log.error("View_PlayLessons.onDo_PreviousChunk(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
          }
-         var isPreviousUserActionKludge:Boolean = _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge;
-         _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
-         if (isPreviousUserActionKludge) {
-            textField_ChunkText.text = currentLessons.getCurrentDisplayText();
-         } else {
-            AudioPlayer.getInstance().stop();
-            microphoneImage.alpha = 0;
-            _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-            callLater(onDo_PreviousChunk_Continued);
-         }
+         //// alpha mode var isPreviousUserActionKludge:Boolean = _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge;
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         //// alpha mode if (isPreviousUserActionKludge) {
+         //// alpha mode    textField_ChunkText.text = currentLessons.getCurrentDisplayText();
+         //// alpha mode } else {
+         AudioPlayer.getInstance().stop();
+         microphoneImage.alpha = 0;
+         _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
+         callLater(onDo_PreviousChunk_Continued);
+         //// alpha mode }
       }
 
       private function onDo_PreviousChunk_Continued():void {
@@ -494,7 +550,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          if (!currentLessons.isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {
             Log.error("View_PlayLessons.onDo_PreviousLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
@@ -538,11 +594,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentLessons.length == preCommandSelectedLessonCount - 1) {
             Utils_ANEs.showAlert_Toast("Lesson Finished");
          }
-      }
-
-      private function onGroup_ChunkText_Click():void {
-         _isChunkTextDisplayed = !_isChunkTextDisplayed;
-         updateChunkTextTextBoxText();
       }
 
       private function onInitialize():void {
@@ -672,6 +723,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
       }
 
+      private function onTextDisplayModeDialogCallback(optionIndex:int = -1):void {
+         if (optionIndex == -1) {
+            // User has cancelled
+            return;
+         }
+         _currentTextDisplayMode = _index_dialogOptionIndexes_to_textDisplayMode[optionIndex];
+         _index_dialogOptionIndexes_to_textDisplayMode = null;
+         updateChunkTextTextBoxText();
+      }
+
+
+
+
       private function onViewActivate():void {
          Log.debug("View_PlayLessons.onViewActivate()");
          if ((!currentLessons.isLessonPlaying) || currentLessons.isLessonPaused) {
@@ -744,51 +808,63 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function updateChunkTextTextBoxText():void {
-         var fontSize:uint;
-         if (currentLessons.isCurrentLessonAlphaReviewVersion())
-            _isChunkTextDisplayed = true;
-         if (_isChunkTextDisplayed) {
-            if ((textField_ChunkText.height == 0) || (textField_ChunkText.width == 0))
-               return;
-            var chunkText:String = currentLessons.getCurrentDisplayText();
-            if (chunkText == null)
-               chunkText = "";
-            textField_ChunkText.text = chunkText;
+         //// Implement alpha-mode before using alpha mode
+         if ((textField_ChunkText.height == 0) || (textField_ChunkText.width == 0))
+            return;
+         var fontSize:uint = Utils_Text.getStandardFontSize();
+         var displayText:String = "";
+         if (currentLessons.currentChunkVO) {
+            switch (currentLessons.currentChunkVO.chunkType) {
+               case ChunkVO.CHUNK_TYPE__DEFAULT: {
+                  switch (_currentTextDisplayMode) {
+                     case _TEXT_DISPLAY_MODE__NATIVE_TEXT:
+                        displayText = currentLessons.currentChunkVO.textNativeLanguage;
+                        break;
+                     case _TEXT_DISPLAY_MODE__NONE:
+                        fontSize = Math.round(Utils_Text.getStandardFontSize() * 1.5);
+                        displayText = "Tap Here To\nSwitch Between Text\nDisplay Modes";
+                        break;
+                     case _TEXT_DISPLAY_MODE__TARGET_TEXT:
+                        displayText = currentLessons.currentChunkVO.textTargetLanguage;
+                        break;
+                     case _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:
+                        displayText = currentLessons.currentChunkVO.textTargetLanguagePhonetic;
+                        break;
+                     default:
+                        Log.error("View_PlayLessons.updateChunkTextTextBoxText() - no case for: " + _currentTextDisplayMode);
+                  }
+                  break;
+               }
+               case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
+                  if (_currentTextDisplayMode != _TEXT_DISPLAY_MODE__NONE) {
+                     displayText = currentLessons.currentChunkVO.textDisplay;
+                  }
+                  break;
+               }
+               default:
+                  Log.error("View_PlayLessons.updateChunkTextTextBoxText(): No match for chunkType: " + currentLessons.currentChunkVO.chunkType);
+            }
+         }
+         if (!displayText)
+               displayText = "";
+         if (_currentTextDisplayMode == _TEXT_DISPLAY_MODE__NONE) {
+            textField_ChunkText.text = displayText
+         }
+         else {
+            textField_ChunkText.text = displayText;
             var charCountBelowWhichWeIncreaseFontSize:uint = 70;
             var textFieldHorizontalInches:Number = textField_ChunkText.width / Capabilities.screenDPI;
             var textFieldVerticalInches:Number = textField_ChunkText.height / Capabilities.screenDPI;
             var textFieldSquareInches:Number = textFieldHorizontalInches * textFieldVerticalInches;
             var textFieldSquareInchesSquareRoot:Number = Math.sqrt(textFieldSquareInches);
             fontSize = (textFieldSquareInchesSquareRoot * Capabilities.screenDPI) / 10;
-            if (chunkText.length < charCountBelowWhichWeIncreaseFontSize) {
-               var lengthProportion:Number = charCountBelowWhichWeIncreaseFontSize / chunkText.length;
+            if (displayText.length < charCountBelowWhichWeIncreaseFontSize) {
+               var lengthProportion:Number = charCountBelowWhichWeIncreaseFontSize / displayText.length;
                var shortTextAdjustmentFactor:Number = (((lengthProportion - 1) * .17) + 1);
                shortTextAdjustmentFactor = Math.min(shortTextAdjustmentFactor, 1.5);
                //trace("##### " + shortTextAdjustmentFactor);
                fontSize = Math.round(fontSize * shortTextAdjustmentFactor);
             }
-            // Utils_Text.getStandardFontSize() computes the standard font size based on DPI and horizontal resolution. Here we adjust the font size
-            // based on the ratio of the text box's height and width. In other words, if the box's height is small compared to its width, we'd need
-            // to make the font size smaller so that the text will fit, and vice versa.  experimentationBasedAdjustment is (surprise!) based on
-            // experimentation, rather than logic.
-            /*var heightDividedByWidth:Number = textField_ChunkText.height / textField_ChunkText.width;
-             var experimentationBasedAdjustment:Number =
-             (Utils_System.isIOS()) ?
-             3.5 :
-             2.4;
-             fontSize = Math.round(Utils_Text.getStandardFontSize() * heightDividedByWidth * experimentationBasedAdjustment);
-             if (chunkText.length < 60)
-             {
-             var lengthProportion:Number = 80 / chunkText.length;
-             var adjustmentFactor:Number = (((lengthProportion - 1) * .17) + 1);
-             adjustmentFactor = Math.min(adjustmentFactor, 1.5);
-             //trace("##### " + adjustmentFactor);
-             fontSize = Math.round(fontSize * adjustmentFactor);
-             }*/
-         }
-         else {
-            fontSize = Math.round(Utils_Text.getStandardFontSize() * 1.7);
-            textField_ChunkText.text = "Tap Here To\nShow/Hide Text";
          }
          textField_ChunkText.fontSize = fontSize;
          var leading:Number = Math.round(Utils_Text.getStandardFontSize() * .43);
@@ -893,7 +969,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                      height = "100%"
                                      width = "100%"
                                      fontWeight = "bold"
-                                     mouseDown = "onGroup_ChunkText_Click()"/>
+                                     mouseDown = "onChunkTextTextFieldClick()"/>
 
          </s:Group>
          <s:Line xFrom = "0"
