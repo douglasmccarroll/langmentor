@@ -31,10 +31,8 @@ import com.brightworks.util.download.FileSetDownloaderErrorReport;
 import com.brightworks.util.download.FileSetDownloaderFileInfo;
 import com.brightworks.util.download.FileSetDownloaderFilesInfo;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
-import com.langcollab.languagementor.constant.Constant_TextDisplayTypeNames;
 import com.langcollab.languagementor.model.LessonDownloadInfo_Lesson;
 import com.langcollab.languagementor.model.LessonDownloadInfo_Library;
-import com.langcollab.languagementor.util.ChunkXMLConsistencyChecker;
 
 import flash.events.TimerEvent;
 import flash.system.Security;
@@ -829,10 +827,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
                   bError = true;
                   problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__MULTIPLE_FILE_NAME_ROOT_NODES);
                }
-            }
-            if (ChunkXMLConsistencyChecker.isAnyChunkNodesContainMultipleTextNodesOfSameType(lessonXML.chunks[0])) {
-               bError = true;
-               problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__MULTIPLE_TEXT_NODES_OF_SAME_TYPE_IN_CHUNK_NODES);
             }
          }
       }

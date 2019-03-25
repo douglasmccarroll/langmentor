@@ -21,6 +21,7 @@ import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.persistence.ByteArrayPersistenceManager;
 import com.brightworks.util.singleton.SingletonManager;
+import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
 import com.langcollab.languagementor.vo.LessonVersionVO;
 import com.langcollab.languagementor.vo.LevelVO;
 
@@ -59,6 +60,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
    private static const _DATA_TYPE_NAME__IS_NAGGING_DISABLED_SAVED:String = "isNaggingDisabledSaved";
    private static const _DATA_TYPE_NAME__IS_SELECTED_LEARNING_MODE_ID_SAVED:String = "isSelectedLearningModeIdSaved";
    private static const _DATA_TYPE_NAME__IS_TARGET_LANGUAGE_ID_SAVED:String = "isTargetLanguageIdSaved";
+   private static const _DATA_TYPE_NAME__IS_TEXT_DISPLAY_MODE_SAVED:String = "isTextDisplayModeSaved";
    private static const _DATA_TYPE_NAME__IS_USE_RECOMMENDED_LIBRARIES_SAVED:String = "isUseRecommendedLibrariesSaved";
    private static const _DATA_TYPE_NAME__IS_SELECTED_LESSON_DOWNLOAD_LEVELS_SAVED:String = "isSelectedLessonDownloadLevelsSaved";
    private static const _DATA_TYPE_NAME__IS_SELECTED_LESSON_VERSIONS_SAVED:String = "isSelectedLessonVersionsSaved";
@@ -73,6 +75,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
    private static const _DATA_TYPE_NAME__SELECTED_LESSON_DOWNLOAD_LEVELS:String = "selectedLessonDownloadLevels";
    private static const _DATA_TYPE_NAME__SELECTED_LESSON_VERSIONS:String = "selectedLessonVersions";
    private static const _DATA_TYPE_NAME__TARGET_LANGUAGE_ID:String = "targetLanguageId";
+   private static const _DATA_TYPE_NAME__TEXT_DISPLAY_MODE:String = "textDisplayMode";
    private static const _DATA_TYPE_NAME__USE_RECOMMENDED_LIBRARIES:String = "useRecommendedLibraries";
 
    private static var _instance:AppStatePersistenceManager;
@@ -359,6 +362,16 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       _persistenceManager.save();
    }
 
+   public function persistTextDisplayMode(value:String):void {
+      if (!_persistenceManager)
+         return;
+      if (isDataWipeActivityBlockActive)
+         return;
+      _persistenceManager.setProperty(_DATA_TYPE_NAME__TEXT_DISPLAY_MODE, value);
+      _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_TEXT_DISPLAY_MODE_SAVED, true);
+      _persistenceManager.save();
+   }
+
    public function persistUseRecommendedLibraries(value:Boolean):void {
       if (!_persistenceManager)
          return;
@@ -612,6 +625,13 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       return result;
    }
 
+   public function retrieveIsTextDisplayModeSaved():Boolean {
+      if (!_persistenceManager)
+         return false;
+      var result:Boolean = Boolean(_persistenceManager.getProperty(_DATA_TYPE_NAME__IS_TEXT_DISPLAY_MODE_SAVED));
+      return result;
+   }
+
    public function retrieveIsUseRecommendedLibrariesSaved():Boolean {
       if (!_persistenceManager)
          return false;
@@ -723,6 +743,14 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       return result;
    }
 
+   public function retrieveTextDisplayMode():String {
+      if (!_persistenceManager)
+         return Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
+      var result:String = String(_persistenceManager.getProperty(_DATA_TYPE_NAME__TEXT_DISPLAY_MODE));
+      Log.info("AppStatePersistenceManager.retrieveTargetLanguageId() - returning: " + result);
+      return result;
+   }
+
    public function retrieveUseRecommendedLibraries():Boolean {
       if (!_persistenceManager)
          return false;
@@ -759,6 +787,7 @@ public class AppStatePersistenceManager implements IManagedSingleton {
       _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_SELECTED_LESSON_DOWNLOAD_LEVELS_SAVED, false);
       _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_SELECTED_LESSON_VERSIONS_SAVED, false);
       _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_TARGET_LANGUAGE_ID_SAVED, false);
+      _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_TEXT_DISPLAY_MODE_SAVED, false);
       _persistenceManager.setProperty(_DATA_TYPE_NAME__IS_USE_RECOMMENDED_LIBRARIES_SAVED, false);
    }
 

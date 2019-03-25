@@ -43,11 +43,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
-      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
-      import com.langcollab.languagementor.constant.Constant_TextDisplayTypeNames;
+      import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
+      import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.ChunkVO;
       import com.langcollab.languagementor.vo.LessonVersionVO;
@@ -71,17 +71,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__RECORD:String = "Record &\nPlayback";
       private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
       private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
-      private static const _TEXT_DISPLAY_MODE__NATIVE_TEXT:String = "TEXT_DISPLAY_MODE__NATIVE_TEXT";
-      private static const _TEXT_DISPLAY_MODE__NONE:String = "TEXT_DISPLAY_MODE__NONE";
-      private static const _TEXT_DISPLAY_MODE__TARGET_TEXT:String = "TEXT_DISPLAY_MODE__TARGET_TEXT";
-      private static const _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:String = "TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC";
 
       private var _button_Credits:Button_Standard;
       private var _button_IKnowThis:Button_Standard;
       private var _button_Loop:Button_Toggle_Standard;
       private var _button_NextChunk:Button_Standard;
       private var _button_NextLesson:Button_Standard;
-      private var _button_PlayPause:Button_Standard;
+       private var _button_PlayPause:Button_Standard;
       private var _button_PreviousChunk:Button_Standard;
       private var _button_PreviousLesson:Button_Standard;
       private var _button_Record:Button_Toggle_Standard;
@@ -90,7 +86,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
       [Bindable]
-      private var _currentTextDisplayMode:String = _TEXT_DISPLAY_MODE__NONE;
+      private var _currentTextDisplayMode:String = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
       private var _index_dialogOptionIndexes_to_textDisplayMode:Dictionary;
       private var _isDisposed:Boolean = false;
       //// alpha mode private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
@@ -347,7 +343,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                // When would we want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call phonetic target language text "Pinyin".
                textDisplayModeDisplayName_TargetLanguagePhonetic = "Phonetic " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
             }
-            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC;
+            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC;
             dialogOptionList.push(textDisplayModeDisplayName_TargetLanguagePhonetic)
             currentIndex++;
          }
@@ -357,12 +353,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             // When would want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call target language text "Hanzi".
             textDisplayModeDisplayName_TargetLanguage = model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
          }
-         _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__TARGET_TEXT;
+         _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT;
          dialogOptionList.push(textDisplayModeDisplayName_TargetLanguage);
          currentIndex++;
          if (isNativeTextAvailable) {
             var textDisplayModeDisplayName_NativeLanguage:String = model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
-            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = _TEXT_DISPLAY_MODE__NATIVE_TEXT;
+            _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT;
             dialogOptionList.push(textDisplayModeDisplayName_NativeLanguage);
          }
          Utils_ANEs.showAlert_MultipleOptions("Select a Text Display Mode", dialogOptionList, onTextDisplayModeDialogCallback);
@@ -624,6 +620,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onPreinitialize():void {
          Log.debug("View_PlayLessons.onPreinitialize()");
+         if (AppStatePersistenceManager.getInstance().retrieveIsTextDisplayModeSaved()) {
+            _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
+         }
          _button_Credits = new Button_Standard();
          _button_IKnowThis = new Button_Standard();
          _button_IKnowThis.clickSoundEnabled = false; // Because we handle that here, i.e. either click or thud, in onDo_IKnowThis()
@@ -729,6 +728,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          }
          _currentTextDisplayMode = _index_dialogOptionIndexes_to_textDisplayMode[optionIndex];
+         AppStatePersistenceManager.getInstance().persistTextDisplayMode(_currentTextDisplayMode);
          _index_dialogOptionIndexes_to_textDisplayMode = null;
          updateChunkTextTextBoxText();
       }
@@ -817,17 +817,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             switch (currentLessons.currentChunkVO.chunkType) {
                case ChunkVO.CHUNK_TYPE__DEFAULT: {
                   switch (_currentTextDisplayMode) {
-                     case _TEXT_DISPLAY_MODE__NATIVE_TEXT:
+                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT:
                         displayText = currentLessons.currentChunkVO.textNativeLanguage;
                         break;
-                     case _TEXT_DISPLAY_MODE__NONE:
+                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE:
                         fontSize = Math.round(Utils_Text.getStandardFontSize() * 1.5);
-                        displayText = "Tap Here To\nSwitch Between Text\nDisplay Modes";
+                        displayText = "Tap Here To\nSelect a Text\nDisplay Mode";
                         break;
-                     case _TEXT_DISPLAY_MODE__TARGET_TEXT:
+                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT:
                         displayText = currentLessons.currentChunkVO.textTargetLanguage;
                         break;
-                     case _TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:
+                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:
                         displayText = currentLessons.currentChunkVO.textTargetLanguagePhonetic;
                         break;
                      default:
@@ -836,7 +836,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   break;
                }
                case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
-                  if (_currentTextDisplayMode != _TEXT_DISPLAY_MODE__NONE) {
+                  if (_currentTextDisplayMode != Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE) {
                      displayText = currentLessons.currentChunkVO.textDisplay;
                   }
                   break;
@@ -847,7 +847,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          if (!displayText)
                displayText = "";
-         if (_currentTextDisplayMode == _TEXT_DISPLAY_MODE__NONE) {
+         if (_currentTextDisplayMode == Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE) {
             textField_ChunkText.text = displayText
          }
          else {
