@@ -31,7 +31,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.base.Callbacks;
       import com.brightworks.constant.Constant_AudioModeConfig;
-      import com.brightworks.constant.Constant_PlatformName;
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
@@ -39,8 +38,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_DateTime;
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
-      import com.langcollab.languagementor.component.button.Button_Standard;
-      import com.langcollab.languagementor.component.button.Button_Toggle_Standard;
+      import com.langcollab.languagementor.component.button.Button_Standard_Blue;
+      import com.langcollab.languagementor.component.button.Button_Standard_Green;
+      import com.langcollab.languagementor.component.button.Button_Toggle_Standard_Blue;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
@@ -51,7 +51,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.ChunkVO;
       import com.langcollab.languagementor.vo.LessonVersionVO;
-      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.binding.utils.BindingUtils;
       import mx.binding.utils.ChangeWatcher;
@@ -72,16 +71,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
       private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
 
-      private var _button_Credits:Button_Standard;
-      private var _button_IKnowThis:Button_Standard;
-      private var _button_Loop:Button_Toggle_Standard;
-      private var _button_NextChunk:Button_Standard;
-      private var _button_NextLesson:Button_Standard;
-       private var _button_PlayPause:Button_Standard;
-      private var _button_PreviousChunk:Button_Standard;
-      private var _button_PreviousLesson:Button_Standard;
-      private var _button_Record:Button_Toggle_Standard;
-      private var _button_Translate:Button_Standard;
+      private var _button_Credits:Button_Standard_Blue;
+      private var _button_IKnowThis:Button_Standard_Green;
+      private var _button_Loop:Button_Toggle_Standard_Blue;
+      private var _button_NextChunk:Button_Standard_Blue;
+      private var _button_NextLesson:Button_Standard_Blue;
+       private var _button_PlayPause:Button_Standard_Blue;
+      private var _button_PreviousChunk:Button_Standard_Blue;
+      private var _button_PreviousLesson:Button_Standard_Blue;
+      private var _button_Record:Button_Toggle_Standard_Blue;
+      private var _button_Translate:Button_Standard_Blue;
       [Bindable]
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
@@ -623,17 +622,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (AppStatePersistenceManager.getInstance().retrieveIsTextDisplayModeSaved()) {
             _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
          }
-         _button_Credits = new Button_Standard();
-         _button_IKnowThis = new Button_Standard();
+         _button_Credits = new Button_Standard_Blue();
+         _button_IKnowThis = new Button_Standard_Green();
          _button_IKnowThis.clickSoundEnabled = false; // Because we handle that here, i.e. either click or thud, in onDo_IKnowThis()
-         _button_Loop = new Button_Toggle_Standard();
-         _button_NextChunk = new Button_Standard();
-         _button_NextLesson = new Button_Standard();
-         _button_PlayPause = new Button_Standard();
-         _button_PreviousChunk = new Button_Standard();
-         _button_PreviousLesson = new Button_Standard();
-         _button_Record = new Button_Toggle_Standard();
-         _button_Translate = new Button_Standard();
+         _button_Loop = new Button_Toggle_Standard_Blue();
+         _button_NextChunk = new Button_Standard_Blue();
+         _button_NextLesson = new Button_Standard_Blue();
+         _button_PlayPause = new Button_Standard_Blue();
+         _button_PreviousChunk = new Button_Standard_Blue();
+         _button_PreviousLesson = new Button_Standard_Blue();
+         _button_Record = new Button_Toggle_Standard_Blue();
+         _button_Translate = new Button_Standard_Blue();
          _button_Credits.label = _BUTTON_LABEL__CREDITS;
          _button_IKnowThis.label = _BUTTON_LABEL__I_KNOW_THIS;
          _button_Loop.label = _BUTTON_LABEL__LOOP;

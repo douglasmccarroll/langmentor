@@ -146,6 +146,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          <s:Spacer/>
          <s:Spacer/>
       </s:VGroup>
+      <s:Spacer/>
+      <s:Spacer/>
+      <s:Spacer/>
+      <s:Spacer/>
       <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
                                        text = "Searching for recommended libraries..."
                                        fontFamily = "_sans"

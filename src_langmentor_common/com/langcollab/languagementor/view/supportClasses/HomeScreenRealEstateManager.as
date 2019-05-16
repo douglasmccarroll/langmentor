@@ -1,7 +1,7 @@
 package com.langcollab.languagementor.view.supportClasses {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_Dispose;
-import com.langcollab.languagementor.component.button.Button_Standard;
+import com.langcollab.languagementor.component.button.Button_Standard_Blue;
 import com.langcollab.languagementor.component.button.HomeScreenBackgroundButton;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;
@@ -92,7 +92,7 @@ public class HomeScreenRealEstateManager {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function populateScreenAreaGroup_Bottom(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard();
+      var bttn:Button_Standard_Blue = new Button_Standard_Blue();
       bttn.label = "More";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
@@ -124,7 +124,7 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_Left(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard();
+      var bttn:Button_Standard_Blue = new Button_Standard_Blue();
       bttn.label = "Select\nMode";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
@@ -132,7 +132,7 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_Right(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard();
+      var bttn:Button_Standard_Blue = new Button_Standard_Blue();
       bttn.label = "Select\nLessons";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
@@ -140,7 +140,7 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_Top(group:Group, clickFunction:Function):void {
-      var bttn:Button_Standard = new Button_Standard();
+      var bttn:Button_Standard_Blue = new Button_Standard_Blue();
       bttn.label = "Play\nLessons";
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;

@@ -1,7 +1,7 @@
 package com.langcollab.languagementor.component.button {
 
+import com.brightworks.skins.button.ButtonSkin_Flat_Blue;
 import com.brightworks.util.audio.Utils_Audio_Files;
-import com.brightworks.skins.button.ButtonSkin_Flat;
 
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
@@ -27,7 +27,6 @@ public class Button_Toggle_Standard extends ToggleButton {
       super();
       percentHeight = 100;
       percentWidth = 100;
-      setStyle("skinClass", ButtonSkin_Flat);
       addEventListener(MouseEvent.CLICK, onClick);
    }
 

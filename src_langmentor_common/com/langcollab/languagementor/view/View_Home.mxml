@@ -143,7 +143,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _realEstateManager.populateScreenAreaGroup(group_TopLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_LEFT, onButtonClick_NewDownloads);
          _realEstateManager.populateScreenAreaGroup(group_TopRight, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_RIGHT, onButtonClick_NewsUpdate);
          _realEstateManager.populateScreenAreaGroup(group_BottomLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_LEFT, onButtonClick_Share);
-         _realEstateManager.populateScreenAreaGroup(group_BottomRight, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_RIGHT, onButtonClick_Credits);
       }
 
       private function isCurrScreenDisplayFirstForApp():Boolean {
@@ -205,12 +204,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function moveUp():void {
          Log.debug("View_Home.moveUp()");
          navigator.pushView(View_More, null, null, transition_SlideView_Up);
-      }
-
-      private function onButtonClick_Credits(event:Event):void {
-         Log.debug("View_Home.onButtonClick_Credits()");
-         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
-         navigator.pushView(View_Credits, null, ctxt, transition_SlideView_Left);
       }
 
       private function onButtonClick_More(event:Event):void {
