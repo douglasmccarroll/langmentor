@@ -178,7 +178,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    private function onFatalLog():void {
       var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__FATAL_ERROR);
       if ((navigator) && (navigator.activeView)) {
-         navigator.pushView(View_SendProblemReport, null, ctxt, View_Base(navigator.activeView).transition_CrossFade);
+         navigator.pushView(View_SendFeedback, null, ctxt, View_Base(navigator.activeView).transition_CrossFade);
       } else {
          NativeApplication.nativeApplication.exit();
       }

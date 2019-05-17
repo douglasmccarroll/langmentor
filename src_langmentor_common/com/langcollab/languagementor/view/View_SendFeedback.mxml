@@ -47,16 +47,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import spark.components.ViewMenuItem;
 
       private static const _BUTTON_LABEL__CLOSE:String = "Close App";
-      private static const _BUTTON_LABEL__SEND_INFO:String = "Send Info";
+      private static const _BUTTON_LABEL__SEND_FEEDBACK:String = "Send Feedback";
       private static const _HEADING__FATAL_ERROR:String = "We're sorry - " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " has encountered a problem";
       private static const _HEADING__THANKS_FOR_YOUR_FEEDBACK:String = "Thanks for your feedback!";
-      private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. " + _MESSAGE__OPTIONAL + " Thanks!";
-      private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "Please press " + _BUTTON_LABEL__SEND_INFO + " to send us diagnostic information. " + _MESSAGE__OPTIONAL;
+      private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. Thanks!";
+      private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "We look forward to reading your feedback. If you'd like a response, please include your name and email address.";
       private static const _MESSAGE__ONCLICK__CLOSING_APP:String = "Closing...";
-      private static const _MESSAGE__ONCLICK__SENDING_REPORT:String = "Sending Diagnostic Information";
+      private static const _MESSAGE__ONCLICK__SENDING_REPORT:String = "Sending Feedback";
       private static const _MESSAGE__LOG_RESULT__COMPLETE:String = "Your feedback has been sent.";
       private static const _MESSAGE__LOG_RESULT__FAILURE:String = "We're sorry, Language Mentor is unable to send your feedback. Please ensure that your device is connected to the Internet and try again. If you continue to encounter this problem " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US;
-      private static const _MESSAGE__OPTIONAL:String = "Optional: Give us some details on the problem and what you were doing when it occurred. If you'd like a response, please include your name and email address.";
 
       private var _headingWidget:UIWidget_Viewlet__Heading;
       private var _isDisposed:Boolean = false;
@@ -97,8 +96,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_SendProblemReport.onPrimaryBottomButtonClick()");
          if (_isLogAttemptDone) {
             doGoBack();
-         }
-         else {
+         } else {
             primaryBottomButton.enabled = false;
             _userCommentTextArea.enabled = false;
             _messageTextWidget.text =
@@ -142,12 +140,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             if (!Utils_System.isRunningOnDesktop())
                currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
             NativeApplication.nativeApplication.exit();
-         }
-         else {
+         } else {
             if (success) {
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__COMPLETE;
-            }
-            else {
+            } else {
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__FAILURE
             }
          }
@@ -157,7 +153,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isInUserClosesAppMode())
             primaryBottomButton.label = _BUTTON_LABEL__CLOSE;
          else
-            primaryBottomButton.label = _BUTTON_LABEL__SEND_INFO;
+            primaryBottomButton.label = _BUTTON_LABEL__SEND_FEEDBACK;
          _headingWidget = new UIWidget_Viewlet__Heading();
          _headingWidget.text =
                (contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) ?

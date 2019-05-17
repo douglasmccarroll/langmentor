@@ -23,6 +23,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()"
                    implements = "com.brightworks.interfaces.IDisposable"
+                   initialize = "onInitialize()"
                    xmlns:checkbox = "com.brightworks.component.checkbox.*">
 
    <fx:Metadata>
@@ -41,7 +42,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       public var displayRecommendedLibrariesHeading:Boolean = true;
       [Bindable]
-      public var displayUseRecommendedLibrariesCheckbox:Boolean = false;
+      public var displayContents:Boolean = false;
 
       private var _isDisposed:Boolean;
 
@@ -74,11 +75,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
-         explanationDisplayViewlet.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will use the libraries listed below.";
          lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
          if (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive)) {
             lessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess();
          }
+      }
+
+      private function onInitialize():void {
+         explanationDisplayViewlet.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will use the libraries listed below.";
       }
 
       private function onLessonDownloadsNewInfo(event:BwEvent):void {
@@ -88,8 +92,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function updateUI():void {
          if (lessonDownloadController.isGetRecommendedLibrariesInfoProcessActive) {
             resultsDisplayViewlet.text = "Searching for recommended libraries......";
-         }
-         else {
+         } else {
             var foundLibraryCount:Number = 0;
             var isInternetConnectionProblem:Boolean = false;
             if ((lessonDownloadController) &&
@@ -98,8 +101,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   (Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) > 0)) {
                foundLibraryCount =
                      Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library);
-            }
-            else if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
+            } else if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
                isInternetConnectionProblem = true;
             }
             if (foundLibraryCount > 0) {
@@ -114,29 +116,24 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   }
                }
                resultsDisplayViewlet.text = text;
-            }
-            else {
+            } else {
                if (isInternetConnectionProblem) {
                   resultsDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
-               }
-               else {
+               } else {
                   resultsDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
                }
             }
          }
+         invalidateDisplayList();
       }
       ]]>
     </fx:Script>
 
-   <fx:Declarations>
-      <s:RadioButtonGroup id = "radioButtonGroup"/>
-   </fx:Declarations>
-
    <s:VGroup horizontalAlign = "left"
              height = "100%"
              width = "100%">
-      <s:VGroup visible = "{displayUseRecommendedLibrariesCheckbox}"
-                includeInLayout = "{displayUseRecommendedLibrariesCheckbox}">
+      <s:VGroup visible = "true"
+                includeInLayout = "true">
          <checkbox:NormalCheckBox id = "useRecommendedLibrariesCheckbox"
                                   label = "Use Recommended Libraries"
                                   change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
@@ -145,15 +142,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          <uiwidget:UIWidget_Viewlet__Text id = "explanationDisplayViewlet"/>
          <s:Spacer/>
          <s:Spacer/>
+         <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
+                                          text = "Searching for recommended libraries..."
+                                          fontFamily = "_sans"
+                                          height = "50%"/>
       </s:VGroup>
-      <s:Spacer/>
-      <s:Spacer/>
-      <s:Spacer/>
-      <s:Spacer/>
-      <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
-                                       text = "Searching for recommended libraries..."
-                                       fontFamily = "_sans"
-                                       height = "100%"/>
    </s:VGroup>
 </view:Viewlet_Base>
 

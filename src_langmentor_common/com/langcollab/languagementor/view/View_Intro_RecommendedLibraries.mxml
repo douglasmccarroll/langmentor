@@ -82,18 +82,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             viewletGroup.addElement(textWidget);
             viewletGroup.addElement(new Spacer());
             viewletGroup.addElement(new Spacer());
-            _useRecommendedLibrariesCheckbox = new NormalCheckBox();
-            _useRecommendedLibrariesCheckbox.label = "Use Recommended Libraries";
-            _useRecommendedLibrariesCheckbox.selected = true;
-            viewletGroup.addElement(_useRecommendedLibrariesCheckbox);
-            textWidget = new UIWidget_Viewlet__Text();
-            textWidget.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will download lessons from libraries that we recommend. You can change this option later if you like.";
-            viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
-            viewletGroup.addElement(new Spacer());
-            textWidget = new UIWidget_Viewlet__Bold_Text();
-            textWidget.text = "Recommended Libraries:";
-            viewletGroup.addElement(textWidget);
             _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
             _recommendedLibrariesViewlet.displayRecommendedLibrariesHeading = false;
             viewletGroup.addElement(_recommendedLibrariesViewlet);

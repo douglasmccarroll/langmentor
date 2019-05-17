@@ -206,8 +206,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                    width = "100%"
                    horizontalAlign = "center">
             <!--
-            I can't get doubleClick to work here - specifically in Send Problem Report - even though it works in intro views -
-            this may be because the processor is much busier (downloading) in Send Problem Report.
+            I can't get doubleClick to work here - specifically in Send Feedback - even though it works in intro views -
+            this may be because the processor is much busier (downloading) in Send Feedback.
             -->
             <button:Button_Standard id = "primaryBottomButton"
                                     label = "{BUTTON_LABEL__OK}"

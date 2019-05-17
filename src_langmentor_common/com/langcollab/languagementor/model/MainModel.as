@@ -185,7 +185,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       _appStatePersistenceManager.persistSelectedLessonDownloadLevels(value);
    }
 
-   private var _useRecommendedLibraries:Boolean = false;
+   private var _useRecommendedLibraries:Boolean = true;
 
    [Bindable]
    public function get useRecommendedLibraries():Boolean {
@@ -941,7 +941,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       if (!_appStatePersistenceManager.retrieveIsAutoDownloadLessonsSaved())
          _autoDownloadLessons = true;
       if (!_appStatePersistenceManager.retrieveIsUseRecommendedLibrariesSaved())
-         _useRecommendedLibraries = false;
+         _useRecommendedLibraries = true;
       _currentLessons = CurrentLessons.getInstance();
    }
 

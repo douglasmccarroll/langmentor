@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/31.0">
+<application xmlns = "http://ns.adobe.com/air/application/32.0">
 
    <id>com.brightworks.LangMentor.cmn</id>
 
@@ -7,9 +7,9 @@
 
    <name>Chinese LangMentor</name>
 
-   <versionNumber>1.41.09</versionNumber>
+   <versionNumber>1.41.12</versionNumber>
 
-   <versionLabel>1.41.09</versionLabel>
+   <versionLabel>1.41.12</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->

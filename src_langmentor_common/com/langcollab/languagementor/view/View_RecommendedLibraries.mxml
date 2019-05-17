@@ -75,7 +75,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onCreationComplete():void {
          _initialRecommendedLibrariesValue = model.useRecommendedLibraries;
          _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
-         _recommendedLibrariesViewlet.displayUseRecommendedLibrariesCheckbox = true;
+         _recommendedLibrariesViewlet.displayContents = true;
          viewletGroup.addElement(_recommendedLibrariesViewlet);
       }
       ]]>

@@ -48,7 +48,7 @@ import spark.transitions.ViewTransitionDirection;
 public class View_Base extends View {
    private static const VIEW_MENU_ITEM_LABEL__CREDITS:String = "Credits";
    private static const VIEW_MENU_ITEM_LABEL__HELP:String = "Help";
-   private static const VIEW_MENU_ITEM_LABEL__SEND_PROBLEM_REPORT:String = "Send Problem Report";
+   private static const VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK:String = "Send Feedback";
 
    public var transition_CrossFade:CrossFadeViewTransition;
 
@@ -167,7 +167,7 @@ public class View_Base extends View {
       vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
       viewMenuItems.push(vmi);
       vmi = new ViewMenuItem();
-      vmi.label = VIEW_MENU_ITEM_LABEL__SEND_PROBLEM_REPORT;
+      vmi.label = VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK;
       vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
       viewMenuItems.push(vmi);
 
@@ -187,7 +187,7 @@ public class View_Base extends View {
    protected function onBaseDoubleClick(event:MouseEvent):void {
       if (this is View_Intro_Base)
          return;
-      if (!Utils_System.isAlphaVersion() && (!(this is View_SendProblemReport)))
+      if (!Utils_System.isAlphaVersion() && (!(this is View_SendFeedback)))
          return;
       var logDataString:String = Log.createLogInfoSummaryString() + "\n\n" + Log.getLogInfoForClipboard();
       Log.copyRecentInfoToClipboard();
@@ -293,8 +293,8 @@ public class View_Base extends View {
             navigator.pushView(View_Help, null, null, transition_CrossFade);
             break;
          }
-         case VIEW_MENU_ITEM_LABEL__SEND_PROBLEM_REPORT: {
-            navigator.pushView(View_SendProblemReport, null, null, transition_CrossFade);
+         case VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK: {
+            navigator.pushView(View_SendFeedback, null, null, transition_CrossFade);
             break;
          }
          default: {
