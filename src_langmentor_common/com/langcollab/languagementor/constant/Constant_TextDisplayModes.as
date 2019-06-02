@@ -20,6 +20,7 @@
 
 package com.langcollab.languagementor.constant {
 public class Constant_TextDisplayModes {
+   public static const TEXT_DISPLAY_MODE__INITIAL_EXPLANATION:String = "TEXT_DISPLAY_MODE__INITIAL_EXPLANATION";
    public static const TEXT_DISPLAY_MODE__NATIVE_TEXT:String = "TEXT_DISPLAY_MODE__NATIVE_TEXT";
    public static const TEXT_DISPLAY_MODE__NONE:String = "TEXT_DISPLAY_MODE__NONE";
    public static const TEXT_DISPLAY_MODE__TARGET_TEXT:String = "TEXT_DISPLAY_MODE__TARGET_TEXT";

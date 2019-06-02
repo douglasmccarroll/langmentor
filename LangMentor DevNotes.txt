@@ -41,43 +41,32 @@ The Event/Command relationship described above is a bit rigid. In some cases we'
 
 Cloud Storage - DreamObjects
 ****************************
-$72/TB/month for both storage and transfer out
-Transfer in and API calls are free
-Assume:
-  50 lessons
-  10,000 active users, 1 hour per day, 1.5 auto-downloads per user, so 15,000 auto-downloads
-  On average, user turnover & re-downloads cause each user to download all lessons every 6 months
-So, 83K lesson downloads each month
-English (single language) lessons will average around 1MB, Chinese (dual) around 2MB        <<<<<<<<<<<<<<<<<<<<<<  divide by 4
-For English, this would be 83GB/Month, $6
-For Chinese, $12
-For a million English users, $600/month
+Pay-as-you-go plan costs (2019.05):
+  Storage: $26/TB
+  Transfer-out: $52/TB
+Transfer-in and API calls are free
+Lesson Download Cost?:
+  1,000,000 Users
+  Each downloads 100 lessons once every 6 months - averaging 17 per month
+  Lessons average 1 MB in size
+  1,000,000 * 17 MB = 16 TB per month - at a cost of ~$800/month, $10K/year
+Lesson Storage Cost?:
+  1 MB - per year - $.000025 - i.e. essentially free  
+Lesson Creator Cost?:
+  WAV files for median lesson - ~10 MB
+  Assume an average of 3 versions per file
+  Conservatively, 50 MB per lesson
+  Storage cost: $.015/year
+  Transfer-out costs
+    Deploying lessons is virtually zero
+	Local backups?
+	  Assume each user will back a lesson up an average of 10 times
+	  I.e. .5 GB transfer-out - $.025 - over life of lesson
 
-Cloud Storage - S3
-******************
-Storage: $125/TB/month
-Transfer: $120/TB
-GET requests: $1/million
-Assume:
-  50 lessons
-  10,000 active users, 2 hours per day, 3 auto downloads, total of 30,000 auto-downloads per day, ~1,000,000 per month
-  All users turn over or re-download lessons every 4 month - 2500 downloads of all lessons each month
-  Lesson files: 3 MB per lesson                                                                                            <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< .5 MB per lesson is probably more realistic
-    Transfer: 3MB * 50 lessons * 2500 = 400GB                    48.00 month   - This will improve if users select which lessons to download       <<<<<<<<<<<<<<<< 8.00
-  Non-lesson info files - 10 files - 1 KB each - 10 KB total
-    GET requests: 10M per month                                  10.00 month
-	Transfer: 10GB per month                                      1.20 month
-  Lesson XML: 6KB per lesson
-    Download all each time we auto download:
-	  GET requests: 50 lessons * 1M = 10M month                  10.00 month 
-	  Transfer: 10M * 6KB = 60GB                                  7.20 month
-	Only download when new:                                                    - If users select lessons to download, cost will be between these 2 options
-	  GET requests: 50 lessons * 2500 = 125K month                0.12 month
-	  Transfer: 125K * 6KB = 750MB month                          0.09 month
-Bottom line: Conservatively, each user costs two thirds of a cent per month, or $.08 per year 
-  If we get $10/year income from 1/125 of users, this pays for this bandwidth
-
-
+  	
+	
+  
+ 
 Commands & Controllers
 **********************
 
@@ -293,6 +282,11 @@ Process:
     
 
 
+White Labeling
+**************
+See 'LangCollab Checklists.txt' file
+
+ 
 XML Files: language_mentor_info.xml
 ***********************************
  

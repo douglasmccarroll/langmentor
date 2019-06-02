@@ -115,7 +115,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onDeleteButtonClick_Continued():void {
-         var isDeleteDirectorySuccess:Boolean = Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
+         var isDeleteDirectorySuccess:Boolean = Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController, audioController);
          cancelButton.visible = false;
          cancelButton.includeInLayout = false;
          deleteButton.visible = false;

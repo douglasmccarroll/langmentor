@@ -71,7 +71,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          // Either this app has never been installed, or it has been uninstalled. In the latter case,
          // there may still be data on the SD card. We want to start from a clean slate in this case,
          // so we delete all app data.
-         Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
+         Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController, audioController);
          appStatePersistenceManager.isDataWipeActivityBlockActive = false;
          Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
          Utils_File.ensureDirectoryExists(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL);
@@ -86,7 +86,7 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          // It's possible that users may upgrade without getting such a message, in which case they will not have been warned. ///
          // In the future we should update the data schema in most or all of these cases, but at this
          // point we don't have enough resources to do this.
-         Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController);
+         Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController, audioController);
          model.init();
       }
       else {

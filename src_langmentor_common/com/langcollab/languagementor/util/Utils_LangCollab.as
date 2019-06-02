@@ -24,6 +24,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.MP3FileInfo;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -151,8 +152,11 @@ public class Utils_LangCollab {
    public static function wipeData(
          model:MainModel,
          appStatePersistenceManager:AppStatePersistenceManager,
-         lessonDownloadController:LessonDownloadController):Boolean {
+         lessonDownloadController:LessonDownloadController,
+         audioController:AudioController ):Boolean {
       model.wipeData();
+      audioController.onStopLoopMode();
+      audioController.onStopRecordMode();
       lessonDownloadController.wipeData();
       Utils_Database.createNewDBFileFromTemplate(sqLiteDatabaseFileURL, appStatePersistenceManager);
       return Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);

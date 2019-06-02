@@ -135,7 +135,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          nextButton.enabled = false;
          var textWidget:IUIWidget_Text;
          textWidget = new UIWidget_Viewlet__Heading();
-         textWidget.text = "Setup is almost complete - downloading lessons";
+         textWidget.text = "Setup is almost complete - downloading first lesson";
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());

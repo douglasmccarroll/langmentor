@@ -143,6 +143,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _realEstateManager.populateScreenAreaGroup(group_TopLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_LEFT, onButtonClick_NewDownloads);
          _realEstateManager.populateScreenAreaGroup(group_TopRight, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__TOP_RIGHT, onButtonClick_NewsUpdate);
          _realEstateManager.populateScreenAreaGroup(group_BottomLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_LEFT, onButtonClick_Share);
+         if (audioController)
+            audioController.pausePlayingAudioIfAny();  // This is here because, on one occasion, I somehow managed to go from the Play Lessons screen to this screen without the audio stopping - so this is here to make doubly sure that audio stops when we leave that screen
       }
 
       private function isCurrScreenDisplayFirstForApp():Boolean {

@@ -39,7 +39,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.component.button.Button_Standard_Blue;
-      import com.langcollab.languagementor.component.button.Button_Standard_Green;
+      import com.langcollab.languagementor.component.button.Button_Standard_Purple;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard_Blue;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
@@ -72,11 +72,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
 
       private var _button_Credits:Button_Standard_Blue;
-      private var _button_IKnowThis:Button_Standard_Green;
+      private var _button_IKnowThis:Button_Standard_Purple;
       private var _button_Loop:Button_Toggle_Standard_Blue;
       private var _button_NextChunk:Button_Standard_Blue;
       private var _button_NextLesson:Button_Standard_Blue;
-       private var _button_PlayPause:Button_Standard_Blue;
+      private var _button_PlayPause:Button_Standard_Blue;
       private var _button_PreviousChunk:Button_Standard_Blue;
       private var _button_PreviousLesson:Button_Standard_Blue;
       private var _button_Record:Button_Toggle_Standard_Blue;
@@ -85,13 +85,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
       [Bindable]
-      private var _currentTextDisplayMode:String = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
+      private var _currentTextDisplayMode:String = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
       private var _index_dialogOptionIndexes_to_textDisplayMode:Dictionary;
       private var _isDisposed:Boolean = false;
       //// alpha mode private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
       private var _mostRecentUserActionTime:Number;
       private var _mostRecentUserInitiatedChunkNavigationTime:Number;
       private var _mostRecentUserInitiatedIKnowThisTime:Number;
+      private var _savedTextDisplayMode:String;
+      private var _textModeDialogOptionList:Array;
       private var _timer_ShowHideMicrophoneImage:Timer;
       private var _watcher_CurrentChunkIndex:ChangeWatcher;
       private var _watcher_IsCurrentlyRecording:ChangeWatcher;
@@ -325,9 +327,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          var availableTextModeCount:uint = 1; // We start with 1 because target language text is always available
          if (isNativeTextAvailable)
-               availableTextModeCount++;
+            availableTextModeCount++;
          if (isTargetPhoneticTextAvailable)
-               availableTextModeCount++;
+            availableTextModeCount++;
          if (availableTextModeCount == 1) {
             // We do nothing - there is no other text mode for the user to switch to
             return;
@@ -360,8 +362,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT;
             dialogOptionList.push(textDisplayModeDisplayName_NativeLanguage);
          }
-         Utils_ANEs.showAlert_MultipleOptions("Select a Text Display Mode", dialogOptionList, onTextDisplayModeDialogCallback);
+         _savedTextDisplayMode = _currentTextDisplayMode;
+         _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
+         updateChunkTextTextBoxText();
+         _textModeDialogOptionList = dialogOptionList;
+         callLater(onChunkTextTextFieldClick_Continued);
       }
+
+      private function onChunkTextTextFieldClick_Continued():void {
+         Utils_ANEs.showAlert_MultipleOptions("Select a Text Display Mode", _textModeDialogOptionList, onTextDisplayModeDialogCallback);
+      }
+
 
       private function onCurrentChunkVOChange(newValue:int):void {
          if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
@@ -412,8 +423,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          if (isAbortNeeded) {
             Utils_Audio_Files.playFailureSound();
-         }
-         else {
+         } else {
             microphoneImage.alpha = 0;
             textField_ChunkText.text = "";
             AudioPlayer.getInstance().stop();
@@ -438,8 +448,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          microphoneImage.alpha = 0;
          if (_button_Loop.selected) {
             audioController.onStartLoopMode();
-         }
-         else {
+         } else {
             audioController.onStopLoopMode();
          }
       }
@@ -568,8 +577,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          if (_button_Record.selected) {
             audioController.onStartRecordMode();
-         }
-         else {
+         } else {
             audioController.onStopRecordMode();
          }
          showHideMicrophoneImage();
@@ -623,7 +631,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
          }
          _button_Credits = new Button_Standard_Blue();
-         _button_IKnowThis = new Button_Standard_Green();
+         _button_IKnowThis = new Button_Standard_Purple();
          _button_IKnowThis.clickSoundEnabled = false; // Because we handle that here, i.e. either click or thud, in onDo_IKnowThis()
          _button_Loop = new Button_Toggle_Standard_Blue();
          _button_NextChunk = new Button_Standard_Blue();
@@ -715,8 +723,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _timer_ShowHideMicrophoneImage = new Timer(250, 1);
             _timer_ShowHideMicrophoneImage.addEventListener(TimerEvent.TIMER, showHideMicrophoneImage);
             _timer_ShowHideMicrophoneImage.start();
-         }
-         else {
+         } else {
             showHideMicrophoneImage();
          }
       }
@@ -724,23 +731,23 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onTextDisplayModeDialogCallback(optionIndex:int = -1):void {
          if (optionIndex == -1) {
             // User has cancelled
-            return;
+            _currentTextDisplayMode = _savedTextDisplayMode;
+         } else {
+            _currentTextDisplayMode = _index_dialogOptionIndexes_to_textDisplayMode[optionIndex];
+            AppStatePersistenceManager.getInstance().persistTextDisplayMode(_currentTextDisplayMode);
          }
-         _currentTextDisplayMode = _index_dialogOptionIndexes_to_textDisplayMode[optionIndex];
-         AppStatePersistenceManager.getInstance().persistTextDisplayMode(_currentTextDisplayMode);
-         _index_dialogOptionIndexes_to_textDisplayMode = null;
          updateChunkTextTextBoxText();
+         _index_dialogOptionIndexes_to_textDisplayMode = null;
+         _savedTextDisplayMode = null;
+         _textModeDialogOptionList = null;
       }
-
-
 
 
       private function onViewActivate():void {
          Log.debug("View_PlayLessons.onViewActivate()");
          if ((!currentLessons.isLessonPlaying) || currentLessons.isLessonPaused) {
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
-         }
-         else {
+         } else {
             _button_PlayPause.label = _BUTTON_LABEL__PAUSE;
          }
          showHideMicrophoneImage();
@@ -796,8 +803,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                (!(currentLessons)) ||
                (!audioController.isRecordMode)) {
             microphoneImage.alpha = 0;
-         }
-         else {
+         } else {
             if (AudioRecorder.getInstance().isCurrentlyRecording) {
                microphoneImage.alpha = .5;
             } else {
@@ -813,43 +819,46 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var fontSize:uint = Utils_Text.getStandardFontSize();
          var displayText:String = "";
          if (currentLessons.currentChunkVO) {
-            switch (currentLessons.currentChunkVO.chunkType) {
-               case ChunkVO.CHUNK_TYPE__DEFAULT: {
-                  switch (_currentTextDisplayMode) {
-                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT:
-                        displayText = currentLessons.currentChunkVO.textNativeLanguage;
-                        break;
-                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE:
-                        fontSize = Math.round(Utils_Text.getStandardFontSize() * 1.5);
-                        displayText = "Tap Here To\nSelect a Text\nDisplay Mode";
-                        break;
-                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT:
-                        displayText = currentLessons.currentChunkVO.textTargetLanguage;
-                        break;
-                     case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:
-                        displayText = currentLessons.currentChunkVO.textTargetLanguagePhonetic;
-                        break;
-                     default:
-                        Log.error("View_PlayLessons.updateChunkTextTextBoxText() - no case for: " + _currentTextDisplayMode);
+            if (_currentTextDisplayMode == Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION) {
+               fontSize = Math.round(Utils_Text.getStandardFontSize() * 1.5);
+               displayText = "Tap Here To\nSelect a Text\nDisplay Mode";
+            } else {
+               switch (currentLessons.currentChunkVO.chunkType) {
+                  case ChunkVO.CHUNK_TYPE__DEFAULT: {
+                     switch (_currentTextDisplayMode) {
+                        case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT:
+                           displayText = currentLessons.currentChunkVO.textNativeLanguage;
+                           break;
+                        case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE:
+                           displayText = "";
+                           break;
+                        case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT:
+                           displayText = currentLessons.currentChunkVO.textTargetLanguage;
+                           break;
+                        case Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC:
+                           displayText = currentLessons.currentChunkVO.textTargetLanguagePhonetic;
+                           break;
+                        default:
+                           Log.error("View_PlayLessons.updateChunkTextTextBoxText() - no case for: " + _currentTextDisplayMode);
+                     }
+                     break;
                   }
-                  break;
-               }
-               case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
-                  if (_currentTextDisplayMode != Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE) {
-                     displayText = currentLessons.currentChunkVO.textDisplay;
+                  case ChunkVO.CHUNK_TYPE__EXPLANATORY: {
+                     if (_currentTextDisplayMode != Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE) {
+                        displayText = currentLessons.currentChunkVO.textDisplay;
+                     }
+                     break;
                   }
-                  break;
+                  default:
+                     Log.error("View_PlayLessons.updateChunkTextTextBoxText(): No match for chunkType: " + currentLessons.currentChunkVO.chunkType);
                }
-               default:
-                  Log.error("View_PlayLessons.updateChunkTextTextBoxText(): No match for chunkType: " + currentLessons.currentChunkVO.chunkType);
             }
          }
          if (!displayText)
-               displayText = "";
+            displayText = "";
          if (_currentTextDisplayMode == Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE) {
             textField_ChunkText.text = displayText
-         }
-         else {
+         } else {
             textField_ChunkText.text = displayText;
             var charCountBelowWhichWeIncreaseFontSize:uint = 70;
             var textFieldHorizontalInches:Number = textField_ChunkText.width / Capabilities.screenDPI;
