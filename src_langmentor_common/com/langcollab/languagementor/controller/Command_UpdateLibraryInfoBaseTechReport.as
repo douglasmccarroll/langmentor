@@ -29,7 +29,7 @@ import flash.utils.Dictionary;
 public class Command_UpdateLibraryInfoBaseTechReport extends TechReport implements ITechReport, IDisposable {
    public var configFileInfoTechReport:ConfigFileInfoTechReport;
    public var index_languageSpecificFileName_to_fileDownloaderErrorReport:Dictionary;
-   public var isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess:Boolean;
+   public var isAppVersionLowerThanRequiredDataSchemaVersion:Boolean;
    // The next two properties aren't named very well. Neither one alone is actually a failure. Each just indicates that the library XML file doesn't have one type of lesson.
    // For this to really be a failure both need to be set to true.
    public var isLanguageSpecificInfoFileDownloadFailure_DualLanguage:Boolean;

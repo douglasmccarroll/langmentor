@@ -17,6 +17,7 @@
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.vo {
+import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.vo.IVO;
 import com.brightworks.vo.VO;
 
@@ -36,6 +37,7 @@ public class LessonVersionVO extends VO implements IVO {
    public var libraryId:String;
    public var publishedLessonVersionId:String;
    public var publishedLessonVersionVersion:String;
+   public var releaseType:String;
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
    //
@@ -67,20 +69,6 @@ public class LessonVersionVO extends VO implements IVO {
       setPropList.push("defaultTextDisplayTypeId");
       if (_defaultTextDisplayTypeId != value) {
          _defaultTextDisplayTypeId = value;
-         dispatchEvent(new Event("valueChange"));
-      }
-   }
-
-   private var _isAlphaReviewVersion:Boolean;
-
-   public function get isAlphaReviewVersion():Boolean {
-      return _isAlphaReviewVersion;
-   }
-
-   public function set isAlphaReviewVersion(value:Boolean):void {
-      setPropList.push("isAlphaReviewVersion");
-      if (_isAlphaReviewVersion != value) {
-         _isAlphaReviewVersion = value;
          dispatchEvent(new Event("valueChange"));
       }
    }

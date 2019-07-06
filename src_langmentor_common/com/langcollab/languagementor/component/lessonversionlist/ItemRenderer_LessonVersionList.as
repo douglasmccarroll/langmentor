@@ -33,8 +33,8 @@ import flash.text.TextField;
 
 public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
 
-   private var _contentField:TextField;
-   private var _contentFieldTextHeight:int = 0;
+   private var _contentTextField:TextField;
+   private var _contentTextFieldTextHeight:int = 0;
    private var _singleOrDualLanguageIndicator:Bitmap;
    private var _unscaledHeight:int = 0;
    private var _unscaledWidth:int = 0;
@@ -70,10 +70,10 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
    override protected function createChildren():void {
-      _contentField = Utils_Text.createSimpleTextField(Math.round(Utils_Text.getStandardFontSize() * 1.15));
-      _contentField.wordWrap = true;
-      _contentField.multiline = true;
-      addChild(_contentField);
+      _contentTextField = Utils_Text.createSimpleTextField(Math.round(Utils_Text.getStandardFontSize() * 1.15));
+      _contentTextField.wordWrap = true;
+      _contentTextField.multiline = true;
+      addChild(_contentTextField);
       if (data)
          setValues();
    }
@@ -86,7 +86,7 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
    override protected function setValues():void {
       if (data.hasOwnProperty("value"))
          _value = data.value;
-      _contentField.htmlText = data.label;
+      _contentTextField.htmlText = data.label;
    }
 
    override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
@@ -116,8 +116,8 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
          _singleOrDualLanguageIndicator.y = (unscaledHeight - _singleOrDualLanguageIndicator.height) / 2;
          consumedWidth += _singleOrDualLanguageIndicator.width + padding;
       }
-      _contentField.width = unscaledWidth - (consumedWidth + padding);
-      _contentField.x = consumedWidth + padding;
+      _contentTextField.width = unscaledWidth - (consumedWidth + padding);
+      _contentTextField.x = consumedWidth + padding;
       drawBackground();
    }
 
@@ -153,11 +153,11 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
    private function onEnterFrame(event:Event):void {
       if (_unscaledHeight <= 0)
          return;
-      if (_contentField.textHeight == _contentFieldTextHeight)
+      if (_contentTextField.textHeight == _contentTextFieldTextHeight)
          return;
-      _contentFieldTextHeight = _contentField.textHeight;
-      _contentField.y = (_unscaledHeight - _contentField.textHeight) / 2;
-      _contentField.height = _contentField.textHeight + 20;
+      _contentTextFieldTextHeight = _contentTextField.textHeight;
+      _contentTextField.y = (_unscaledHeight - _contentTextField.textHeight) / 2;
+      _contentTextField.height = _contentTextField.textHeight + 20;
    }
 
 }

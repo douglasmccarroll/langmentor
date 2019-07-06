@@ -304,7 +304,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                         lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
                   if (updateInfoCommandReport) {
-                     if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess) {
+                     if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
                         // This could occur if the user just wiped all data with Delete All Data
                         // Though they probably would have already been informed that they need to upgrade
                         displayContent_Downloading_Failure();

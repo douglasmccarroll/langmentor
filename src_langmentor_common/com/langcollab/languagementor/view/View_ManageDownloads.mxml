@@ -26,13 +26,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.constant.Constant_ReleaseType;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Dispose;
+      import com.brightworks.util.Utils_System;
 
       import mx.collections.ArrayCollection;
 
       //private static const _LIST_OPTION__:String = "";
       private static const _LIST_OPTION__AUTOMATIC_DOWNLOADS:String = "Automatic Downloads";
+      private static const _LIST_OPTION__DOWNLOAD_BETA_LESSONS:String = "Download Beta Lessons";
       private static const _LIST_OPTION__LESSON_DOWNLOADS_INFO:String = "Lesson Download Info";
       private static const _LIST_OPTION__LESSON_LEVELS:String = "Select Lesson Levels";
       private static const _LIST_OPTION__START_LESSON_DOWNLOADS:String = "Start Lesson Downloads";
@@ -75,6 +78,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_AutomaticDownloads, null, null, transition_SlideView_Left);
                break;
             }
+            case _LIST_OPTION__DOWNLOAD_BETA_LESSONS: {
+               navigator.pushView(View_DownloadBetaLessons, null, null, transition_SlideView_Left);
+               break;
+            }
             case _LIST_OPTION__LESSON_DOWNLOADS_INFO: {
                navigator.pushView(View_LessonDownloadInfo, null, null, transition_SlideView_Left);
                break;
@@ -96,6 +103,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onViewActivate():void {
          _listDataProvider = new ArrayCollection();
          //_listDataProvider.addItem(_LIST_OPTION__AUTOMATIC_DOWNLOADS);
+         if (Utils_System.appReleaseType == Constant_ReleaseType.PRODUCTION) {
+            _listDataProvider.addItem(_LIST_OPTION__DOWNLOAD_BETA_LESSONS);
+         }
          _listDataProvider.addItem(_LIST_OPTION__LESSON_DOWNLOADS_INFO);
          _listDataProvider.addItem(_LIST_OPTION__LESSON_LEVELS);
          _listDataProvider.addItem(_LIST_OPTION__START_LESSON_DOWNLOADS);

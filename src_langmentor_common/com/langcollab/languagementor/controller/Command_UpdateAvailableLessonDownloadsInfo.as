@@ -71,11 +71,11 @@ public class Command_UpdateAvailableLessonDownloadsInfo extends Command_UpdateLi
          return;
       Log.debug("Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads() - not disposed yet");
       var appVersion:Number = Utils_AIR.appVersionNumber;
-      if (appVersion < model.configFileInfo.requiredVersion_LibraryAccess) {
-         Log.info("Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads(): appVersion < requiredVersion_LibraryAccess");
-         Log.info("     requiredVersion_LibraryAccess: " + model.configFileInfo.requiredVersion_LibraryAccess);
+      if (appVersion < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+         Log.info("Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads(): appVersion < mostRecentVersionRequiredDataSchemaVersion");
+         Log.info("     mostRecentVersionRequiredDataSchemaVersion: " + model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion);
          Log.info("     appVersion: " + appVersion);
-         Command_UpdateAvailableLessonDownloadsInfoTechReport(techReport).isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess = true;
+         Command_UpdateAvailableLessonDownloadsInfoTechReport(techReport).isAppVersionLowerThanRequiredDataSchemaVersion = true;
          reportResultsAndDispose();
          return;
       }

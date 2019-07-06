@@ -36,10 +36,10 @@ public class DownloadLessonProcessInfo implements IDisposable {
    public var downloadFileNameBody:String;
    public var downloadFileNameExtension:String;
    public var downloadFolderURL:String;
-   public var isAlphaReviewVersion:Boolean;
    public var isDualLanguage:Boolean;
    public var iso639_3Code_NativeLanguage:String;
    public var iso639_3Code_TargetLanguage:String;
+   public var lessonReleaseType:String;
    public var levelId:uint;
    public var levelLocationInLevelsOrder:int;
    public var libraryId:String;

@@ -96,7 +96,6 @@ public class Command_InitApplication extends Command_Base__LangMentor {
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
       appStatePersistenceManager.persistCurrAppVersion(Utils_AIR.appVersionNumber);
       lessonDownloadController.init();
-      model.retrievePersistedAppStateData();
       //Utils_ANEs.googleAnalyticsTrackAppStartup(Utils_LangCollab.appVersion);
       result();
       dispose();

@@ -47,7 +47,7 @@ public class Utils_LangCollab {
    public static function get appVersion():String {
       var result:String = Utils_AIR.appVersionLabel;
       if (Utils_System.isAlphaOrBetaVersion())
-         result += " " + Constant_AppConfiguration.RELEASE_TYPE;
+         result += " " + Constant_AppConfiguration.APP_RELEASE_TYPE;
       return result;
    }
 

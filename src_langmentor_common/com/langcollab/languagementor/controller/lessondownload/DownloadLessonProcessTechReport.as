@@ -72,7 +72,7 @@ public class DownloadLessonProcessTechReport implements ITechReport, IDisposable
    public var errorTypeList:Array = [];
    public var index_fileName_to_namingError:Dictionary = new Dictionary();
    public var isErrorReported:Boolean = false;
-   public var isAlphaReviewVersion:Boolean = false;
+   public var lessonReleaseType:String;
    public var isUpdateOfPreviouslyDownloadedLesson:Boolean;
    public var publishedLessonVersionId:String;
    public var time_StartDeleteExistingVersionOfLesson:Number;

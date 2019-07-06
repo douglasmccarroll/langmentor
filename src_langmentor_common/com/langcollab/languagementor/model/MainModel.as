@@ -43,6 +43,7 @@ import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
+import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_String;
@@ -73,7 +74,10 @@ import com.langcollab.languagementor.vo.LessonVersionTargetLanguageVO;
 import com.langcollab.languagementor.vo.LessonVersionVO;
 import com.langcollab.languagementor.vo.LevelVO;
 import com.langcollab.languagementor.vo.LibraryVO;
+import com.langcollab.languagementor.vo.ReleaseTypeVO;
 import com.langcollab.languagementor.vo.TextDisplayTypeVO;
+
+import flash.desktop.NativeApplication;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -129,6 +133,9 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    private var _index_LevelIDs_by_LabelToken:Dictionary = new Dictionary();
    private var _index_LevelVOs_by_ID:Dictionary = new Dictionary();
    private var _index_LevelVOs_by_LabelToken:Dictionary = new Dictionary();
+   private var _index_ReleaseTypeVOs_by_ReleaseTypeToken:Dictionary = new Dictionary();
+   private var _index_ReleaseTypeVOs_by_ID:Dictionary = new Dictionary();
+   private var _index_ReleaseTypeVOs_by_LabelToken:Dictionary = new Dictionary();
    private var _index_TextDisplayTypeID_by_TextDisplayTypeName:Dictionary = new Dictionary();
    private var _index_TextDisplayTypeName_by_TextDisplayTypeID:Dictionary = new Dictionary();
    private var _index_TextDisplayTypeVOs_by_TypeName:Dictionary = new Dictionary();
@@ -150,6 +157,18 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public function set autoDownloadLessons(value:Boolean):void {
       _autoDownloadLessons = value;
       _appStatePersistenceManager.persistAutoDownloadLessons(value);
+   }
+
+   private var _hasUserSelectedDownloadBetaLessonsOption:Boolean = false;
+
+   [Bindable]
+   public function get hasUserSelectedDownloadBetaLessonsOption():Boolean {
+      return _hasUserSelectedDownloadBetaLessonsOption;
+   }
+
+   public function set hasUserSelectedDownloadBetaLessonsOption(value:Boolean):void {
+      _hasUserSelectedDownloadBetaLessonsOption = value;
+      _appStatePersistenceManager.persistHasUserSelectedDownloadBetaLessonsOption(value);
    }
 
    [Bindable(event="isDataInitializedChange")]
@@ -838,6 +857,16 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return lvnlVO.libraryName;
    }
 
+   public function getReleaseTypeVOs():Array {
+      var queryVO:ReleaseTypeVO = new ReleaseTypeVO();
+      var report:MainModelDBOperationReport = selectData("getReleaseTypeVOs", queryVO);
+      if (report.isAnyProblems)
+         Log.fatal(["MainModel.getReleaseTypeVOs(): selectData() reports problem", report]);
+      var result:Array = report.resultData.slice();
+      report.dispose();
+      return result;
+   }
+
    public function getSingleOrNoLessonVersionVOFromContentProviderIdAndPublishedLessonVersionId(contentProviderId:String, lessonId:String):LessonVersionVO {
       var matchingVOs:Array = getLessonVersionVOsFromContentProviderIdAndPublishedLessonVersionId(contentProviderId, lessonId);
       if (matchingVOs.length == 0)
@@ -926,11 +955,6 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       configFileInfo = new ConfigFileInfo(this);
       _data = new Data(Utils_LangCollab.sqLiteDatabaseFileURL);
       //_data.dbAccessReportCallback = onDBAccessReport;
-      initCache();
-      _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
-      initLessonsSelectionTreeSortOptions();
-      _isDBDataInitialized = true;
-      initTargetLanguageBasedDataIfReady();
       var cb:Callbacks = new Callbacks(onLoadConfigDataComplete, onLoadConfigDataFailure);
       configFileInfo.loadData(cb);
    }
@@ -1023,6 +1047,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (report.resultData.length == 1);
    }
 
+   public function isReleaseTypeAStandardReleaseTypeLabelToken(releaseType:String):Boolean {
+      var vo:ReleaseTypeVO = _index_ReleaseTypeVOs_by_ReleaseTypeToken[releaseType];
+      return (vo != null);
+   }
+
    public function isTargetLanguageSelected():Boolean {
       return (_currentTargetLanguageVO != null);
    }
@@ -1035,6 +1064,8 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public function retrievePersistedAppStateData():void {
       if (!_appStatePersistenceManager.isEnabled())
          return;
+      if (_appStatePersistenceManager.retrieveIsHasUserSelectedDownloadBetaLessonsOptionSaved())
+         _hasUserSelectedDownloadBetaLessonsOption = _appStatePersistenceManager.retrieveHasUserSelectedDownloadBetaLessonsOption();
       if (_appStatePersistenceManager.retrieveIsAutoDownloadLessonsSaved()) {
          // dmccarroll 20121129
          // We set autoDownloadLessons rather than _autoDownloadLessons because that triggers binding
@@ -1219,6 +1250,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       currentApplicationState = 0;
       currentLearningModeId = 0;
       _isDBDataInitialized = false;
+      hasUserSelectedDownloadBetaLessonsOption = false;
       lessonsSelectionTreeSortOptions = null;
       // Dispose Cache
       Utils_Dispose.disposeDictionary(_index_LanguageIDs_by_Iso639_3Code, true);
@@ -1228,6 +1260,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       Utils_Dispose.disposeDictionary(_index_LevelIDs_by_LabelToken, true);
       Utils_Dispose.disposeDictionary(_index_LevelVOs_by_ID, true);
       Utils_Dispose.disposeDictionary(_index_LevelVOs_by_LabelToken, true);
+      Utils_Dispose.disposeDictionary(_index_ReleaseTypeVOs_by_ReleaseTypeToken, true);
       Utils_Dispose.disposeDictionary(_index_TextDisplayTypeID_by_TextDisplayTypeName, true);
       Utils_Dispose.disposeDictionary(_index_TextDisplayTypeName_by_TextDisplayTypeID, true);
       Utils_Dispose.disposeDictionary(_index_TextDisplayTypeVOs_by_TypeName, true);
@@ -1369,6 +1402,13 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
          _index_LevelVOs_by_ID[levelVO.id] = levelVO;
          _index_LevelVOs_by_LabelToken[levelVO.labelToken] = levelVO;
       }
+      // ReleaseType
+      voList = getReleaseTypeVOs();
+      for each (var releaseTypeVO:ReleaseTypeVO in voList) {
+         _index_ReleaseTypeVOs_by_ReleaseTypeToken[releaseTypeVO.labelToken] = releaseTypeVO;
+         _index_ReleaseTypeVOs_by_ID[releaseTypeVO.id] = releaseTypeVO;
+         _index_ReleaseTypeVOs_by_LabelToken[releaseTypeVO.labelToken] = releaseTypeVO;
+      }
       // TextDisplayType
       voList = getTextDisplayTypeVOs();
       for each (var textDisplayTypeVO:TextDisplayTypeVO in voList) {
@@ -1462,12 +1502,24 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private function onLoadConfigDataComplete(techReport:ConfigFileInfoTechReport):void {
       Log.debug("MainModel.onLoadConfigDataComplete()");
-      if (Utils_AIR.appVersionNumber < configFileInfo.requiredVersion_LibraryAccess) {
-         var message:String = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
-         if (Utils_AIR.appVersionNumber < configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-            message += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
-         }
-         Utils_ANEs.showAlert_OkayButton(message);  ///// if we're running in the background, this should wait until we're in the foreground again
+      if (Utils_AIR.appVersionNumber < configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+         var message:String = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
+         Utils_ANEs.showAlert_OkayButton(message, onUpdateRequiredAlertClose);
+         // We wipe data to ensure that when the new version is installed a new DB file is created, and the user starts from a clean slate.
+         _appStatePersistenceManager.wipeData();
+         Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
+         Utils_File.deleteDirectory(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL);
+      }
+      else {
+         // We now have our config data, and the DB version is okay, so we can continue on with stuff that would be in the init() method if we didn't need to confirm these details first...
+         initCache();
+         retrievePersistedAppStateData();
+         _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
+         initLessonsSelectionTreeSortOptions();
+         _isDBDataInitialized = true;
+         initTargetLanguageBasedDataIfReady();
+         updateLanguageVOsWithHasRecommendedLibrariesInfo();
+         configFileInfo.doLowPriorityDataFetching();
       }
    }
 
@@ -1490,6 +1542,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       }
    }
 
+   private function onUpdateRequiredAlertClose():void {
+      NativeApplication.nativeApplication.exit();
+   }
+
    private function reportAppStartupToAnalytics():void {
       var data:String = "";
       data += "appName=" + Constant_MentorTypeSpecific.APP_NAME__FULL + ":";
@@ -1505,6 +1561,26 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       else
          currentLearningModeId = getDefaultLearningModeId();
    }
+
+   private function updateLanguageVOsWithHasRecommendedLibrariesInfo():void {
+      //// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
+      //// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
+      var nativeLanguagesNode:XML = configFileInfo.languagePairsWithRecommendedLibrariesInfo.nativeLanguages[0];
+      var nativeLanguageNode:XML = nativeLanguagesNode[getCurrentNativeLanguageISO639_3Code()][0];
+      var targetLanguagesNode:XML = nativeLanguageNode.targetLanguages[0];
+      for (var i:int = 0; i < targetLanguagesNode.children().length(); i++) {
+         var targetLanguageNode:XML = targetLanguagesNode.children()[i];
+         var iso639_3Code:String = targetLanguageNode.name();
+         var vo:LanguageVO = getLanguageVOFromIso639_3Code(iso639_3Code);
+         vo.hasRecommendedLibraries = true;
+         updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfo", vo, ["hasRecommendedLibraries"]);
+         if (getCurrentTargetLanguageISO639_3Code() == iso639_3Code) {   // This also evaluates to false if the currentTargetLanguage hasn't been set yet - which occurs in some scenarios - but this isn't a problem because the value has also been set in the DB (above)
+            updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
+         }
+      }
+   }
+
+
 
 }
 }

@@ -110,49 +110,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__HELP)) {
-            textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "On the Home screen, press Play Lessons";
-            viewletGroup.addElement(textWidget);
-         }
-         else if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__SCREEN_INTRO)) {
-            textWidget = new UIWidget_Viewlet__Text();
-            textWidget.text = 'This "how to" screen contains a fair amount of information, but we recommend that you take a few seconds and read it now. It will be time well spent.\n\nAlternatively, you can return to these instructions later by going to More > Help from the Home screen.';
-            viewletGroup.addElement(textWidget);
-         }
-         else {
-            Log.warn(["View_Help_Play_Lessons.onCreationComplete(): Context not handled", navigator.context]);
-         }
-         viewletGroup.addElement(new Spacer());
-         viewletGroup.addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "Lessons are divided into chunks.";
+         textWidget.text = "Lessons are divided into chunks. You can move between chunks with the < and > buttons.";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "You can move between chunks with the < and > buttons, and between lessons with the << and >> buttons.";
+         textWidget.text = "Once you've mastered a chunk, press the I Know This! button. " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will no longer drill you on that chunk.";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "To start a lesson, press the Play button. To pause, press it again.";
-         viewletGroup.addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "Once you've mastered a chunk, you can press the I Know This! button. " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will no longer drill you on that chunk.";
-         viewletGroup.addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = 'To clear a lesson of these "I Know This" settings and return it to its original state, select or deselect it in the Select Lessons screen.';
-         viewletGroup.addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "If you select Loop, each chunk will be repeated until you press < or >.";
-         viewletGroup.addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "To practice pronunciation, select Record & Playback.";
+         textWidget.text = 'To restore a lesson so that you are drilled on all chunks, simply deselect the lesson, then reselect it, in the Select Lessons screen.';
          viewletGroup.addElement(textWidget);
          if (Constant_MentorTypeSpecific.CREATIVE_SYNTAX__DISPLAY_EXPLANATION) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "You'll notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
+            textWidget.text = "You may notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
             viewletGroup.addElement(textWidget);
          }
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "Once you're familiar with this screen, we suggest that you start experimenting with different learning modes. You can do this by going to the Home screen, pressing Select Mode, and changing the current mode.";
+         textWidget.text = "You should also experiment with Language Mentor's five learning modes, as they determine the manner in which content is presented to you in this screen. See the Select Mode screen for details.";
          viewletGroup.addElement(textWidget);
 
       }

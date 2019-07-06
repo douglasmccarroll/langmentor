@@ -111,35 +111,33 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
             message += Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE;
-         }
-         else if (lessonDownloadController.isLessonDownloadProcessActive) {
+         } else if (lessonDownloadController.isLessonDownloadProcessActive) {
             message += updateUI_CreateLessonDownloadInProcessString();
-         }
-         else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
+         } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
             // The "update info" process is finished, but no lesson downloads are in progress. While this is a perfectly normal state of affairs,
             // it's possible that a problem occurred the last time the "update info" process ran.
             var explanation:String;
             var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                   lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
             if (updateInfoCommandReport) {
-               if (updateInfoCommandReport.isAppVersionIsLowerThanMinimumClientVersion_LibraryListAccess) {
-                  explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
+               if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
+                  explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
                   if (Utils_AIR.appVersionNumber < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-                     explanation += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
+                     explanation += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
                   }
-               }
-               else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
+               } 
+	       else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
-               }
-               else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
+               } 
+	       else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
                   if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES;
                   } else {
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER;
                   }
-               }
-               else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
-                        updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
+               } 
+	       else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+                     updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
                   explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
                }
                updateInfoCommandReport.dispose();
@@ -152,8 +150,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             }
             if (explanation) {
                message += explanation + "\n\n";
-            }
-            else {
+            } 
+	    else {
                var foo:int = 0; // for debugging
             }
          }
@@ -199,8 +197,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (hours < 50) {
             var hoursString:String = (hours == 1) ? "hour" : "hours";
             message = hours + " " + hoursString + " ago";
-         }
-         else {
+         } 
+	 else {
             var days:uint = Math.floor(hours / 24);
             message = days + " days"
          }

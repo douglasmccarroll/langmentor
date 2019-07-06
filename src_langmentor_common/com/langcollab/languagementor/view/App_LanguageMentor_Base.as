@@ -76,13 +76,13 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    public function App_LanguageMentor_Base() {
       super();
       NativeApplication.nativeApplication.executeInBackground = true;
-      Utils_System.releaseType = Constant_AppConfiguration.RELEASE_TYPE;
+      Utils_System.appReleaseType = Constant_AppConfiguration.APP_RELEASE_TYPE;
       Log.init(Utils_AIR.appName, onFatalLog, null, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
       frameRate = 6;
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
       Utils_ANEs.initialize();
-      Utils_GoogleAnalytics.setIsAlphaOrBetaRelease(Constant_AppConfiguration.RELEASE_TYPE != Constant_ReleaseType.PRODUCTION);
+      Utils_GoogleAnalytics.setIsAlphaOrBetaRelease(Constant_AppConfiguration.APP_RELEASE_TYPE != Constant_ReleaseType.PRODUCTION);
       _singletonManager = new LangMentorSingletonManager();
       _appStatePersistenceManager = AppStatePersistenceManager.getInstance();
       _audioController = AudioController.getInstance();

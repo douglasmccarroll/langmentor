@@ -56,6 +56,7 @@ public class View_Base extends View {
    protected var audioController:AudioController = AudioController.getInstance();
    protected var currentLessons:CurrentLessons = CurrentLessons.getInstance();
    protected var isCustomGesturesEnabled:Boolean = false;
+   [Bindable]
    protected var model:MainModel = MainModel.getInstance();
    protected var lessonDownloadController:LessonDownloadController = LessonDownloadController.getInstance();
    protected var transition_SlideView_Down:SlideViewTransition;

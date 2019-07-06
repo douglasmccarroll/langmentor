@@ -29,12 +29,12 @@ public class LessonDownloadInfo_Lesson implements IDisposable {
    public var lessonDescription:String;
    public var lessonDownloadFolderURL:String;
    public var lessonId:String;
-   public var lessonIsAlphaReviewVersion:Boolean;
    public var lessonIsDualLanguage:Boolean;
    public var lessonLevelToken:String;
    public var lessonName:String;
    public var lessonNativeLanguageAudioVolumeAdjustmentFactor:Number;
    public var lessonPublishedLessonVersionVersion:String;
+   public var lessonReleaseType:String;
    public var lessonSortName:String;
    public var lessonTags:XML;
    public var lessonTargetLanguageAudioVolumeAdjustmentFactor:Number;

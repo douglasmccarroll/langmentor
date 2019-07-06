@@ -18,6 +18,7 @@
 */
 package com.langcollab.languagementor.controller.lessondownload {
 import com.brightworks.component.mobilealert.MobileAlert;
+import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.db.SQLiteQueryData_Insert;
 import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.IDisposable;
@@ -209,7 +210,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
    }
 
    public function get lessonVersionSignature():String {
-      if (downloadLessonProcessInfo.isAlphaReviewVersion)
+      if (downloadLessonProcessInfo.lessonReleaseType == Constant_ReleaseType.ALPHA)
          return "AlphaReview_" + downloadLessonProcessInfo.downloadFileNameBody;
       var result:String;
       switch (status) {
@@ -237,10 +238,10 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       techReport.contentProviderId = downloadLessonProcessInfo.contentProviderId;
       techReport.downloadFileExtension = downloadLessonProcessInfo.downloadFileNameExtension;
       techReport.downloadURLRoot = downloadLessonProcessInfo.downloadFolderURL;
-      techReport.isAlphaReviewVersion = downloadLessonProcessInfo.isAlphaReviewVersion;
+      techReport.lessonReleaseType = downloadLessonProcessInfo.lessonReleaseType;
       techReport.publishedLessonVersionId = downloadLessonProcessInfo.publishedLessonVersionId;
       populateChunkInfo();
-      if (downloadLessonProcessInfo.isAlphaReviewVersion) {
+      if (downloadLessonProcessInfo.lessonReleaseType == Constant_ReleaseType.ALPHA) {
          initProcessFunctionProcess(startProcess_VersionUpgradeStuff);
       } else {
          /// kludge
@@ -570,14 +571,14 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       var vo:LessonVersionVO = new LessonVersionVO();
       vo.contentProviderId = downloadLessonProcessInfo.contentProviderId;
       vo.defaultTextDisplayTypeId = downloadLessonProcessInfo.defaultTextDisplayTypeId;
-      vo.isAlphaReviewVersion = downloadLessonProcessInfo.isAlphaReviewVersion;
       vo.isDualLanguage = downloadLessonProcessInfo.isDualLanguage;
       vo.lessonVersionSignature = lessonVersionSignature;
       vo.levelId = downloadLessonProcessInfo.levelId;
+      vo.libraryId = downloadLessonProcessInfo.libraryId;
       vo.nativeLanguageAudioVolumeAdjustmentFactor = downloadLessonProcessInfo.nativeLanguageAudioVolumeAdjustmentFactor;
       vo.publishedLessonVersionId = downloadLessonProcessInfo.publishedLessonVersionId;
       vo.publishedLessonVersionVersion = downloadLessonProcessInfo.publishedLessonVersionVersion;
-      vo.libraryId = downloadLessonProcessInfo.libraryId;
+      vo.releaseType = downloadLessonProcessInfo.lessonReleaseType;
       vo.targetLanguageAudioVolumeAdjustmentFactor = downloadLessonProcessInfo.targetLanguageAudioVolumeAdjustmentFactor;
       vo.uploaded = false;
       return vo;

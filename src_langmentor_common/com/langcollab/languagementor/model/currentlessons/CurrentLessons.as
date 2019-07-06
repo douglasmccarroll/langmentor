@@ -39,6 +39,7 @@
 
  */
 package com.langcollab.languagementor.model.currentlessons {
+import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.Event_Audio;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
@@ -662,7 +663,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
    public function isCurrentLessonAlphaReviewVersion():Boolean {
       if (!currentLessonVO)
          return false;
-      return currentLessonVO.isAlphaReviewVersion;
+      return (currentLessonVO.releaseType == Constant_ReleaseType.ALPHA);
    }
 
    public function iterateChunk(direction:int, isUserInitiated:Boolean):void {

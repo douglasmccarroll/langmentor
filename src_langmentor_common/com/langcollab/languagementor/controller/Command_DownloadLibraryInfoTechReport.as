@@ -33,6 +33,7 @@ public class Command_DownloadLibraryInfoTechReport extends TechReport implements
    public static const PROB_DESC__LESSON_LIST_XML__LESSON_VERSION_IS_NOT_A_NUMBER:String = "Lesson list XML lesson node has version that isn't a number";
    public static const PROB_DESC__LESSON_LIST_XML__LEVEL_IS_NOT_A_STANDARD_LEVEL:String = "Lesson list XML lesson node has no level or level isn't a standard level";
    public static const PROB_DESC__LESSON_LIST_XML__MALFORMED_XML:String = "lesson_list.xml's XML contains problems which make it impossible to parse.";
+   public static const PROB_DESC__LESSON_LIST_XML__RELEASETYPE_IS_NOT_A_STANDARD_RELEASETYPE:String = "Lesson list XML lesson node has no releaseType or releaseType isn't a standard releaseType";
    public static const PROB_DESC__LESSON_XML__CHUNK_CONSISTENCY_PROBLEM:String = "One or more chunk text types exist in some but not all chunk nodes";
    public static const PROB_DESC__LESSON_XML__DOWNLOAD_FAILURE:String = "Unable to download lesson XML file.";
    public static const PROB_DESC__LESSON_XML__INDICATES_DUAL_LANG_BUT_LESSON_IS_IN_SINGLE_LANG_DOWNLOAD_FOLDER:String = "Lesson XML indicates dual language, but lesson is in single language download folder";

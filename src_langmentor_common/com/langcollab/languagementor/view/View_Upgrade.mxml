@@ -70,19 +70,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var messageText:String;
          if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
             messageText = "Hmm... We don't seem to be able to get information on available upgrades. Please ensure that you have an Internet connection and try again.";
-         }
-         else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion) {
+         } else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion) {
             messageText = "Congratulations! You're running the most recent version of " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ".";
-         }
-         else {
-            if (Utils_AIR.appVersionNumber >= model.configFileInfo.requiredVersion_LibraryAccess) {
+         } else {
+            if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
                messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE;
-            }
-            else {
-               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS;
-            }
-            if (appStatePersistenceManager.retrieveDataSchemaAppVersion() < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-               messageText += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE;
+            } else {
+               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
             }
          }
          _messageTextWidget = new UIWidget_Viewlet__Text();

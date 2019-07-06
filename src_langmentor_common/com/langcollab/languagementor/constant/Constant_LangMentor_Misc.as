@@ -47,8 +47,7 @@ public class Constant_LangMentor_Misc {
    public static const FILEPATHINFO__LANGUAGE_MENTOR_LIBRARY_FILE_NAME:String = "language_mentor_library";
    public static const FILEPATHINFO__LANGUAGE_RESOURCE_FOLDER_NAME:String = "xml" + File.separator + "languageResource";
    public static const FILEPATHINFO__LESSON_COMPRESSED_FILE_EXTENSION:String = "zip";
-   public static const FILEPATHINFO__LESSON_LIST_FILE_NAME__PRODUCTION:String = "lesson_list";
-   public static const FILEPATHINFO__LESSON_LIST_FILE_NAME__STAGING:String = "aaa_lesson_list";
+   public static const FILEPATHINFO__LESSON_LIST_FILE_NAME:String = "lesson_list";
    public static const FILEPATHINFO__MENTOR_NEWS_UPDATE_FILE_NAME_ROOT:String = "mentor_news_update_";
    public static const FILEPATHINFO__MENTOR_NEWS_UPDATE_DATE_FILE_NAME_ROOT:String = "mentor_news_update_date_";
    public static const FILEPATHINFO__MENTOR_TYPE_FILE_NAME_ROOT:String = "mentor_type__";
@@ -80,8 +79,7 @@ public class Constant_LangMentor_Misc {
    public static const MESSAGE__CONTACT_US:String = "contact us via the forums at LanguageCollaborative.com";
    public static const MESSAGE__REPORT_PROBLEM:String = "Please report this problem on the forums at LanguageCollaborative.com";
    public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE:String = "A newer version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
-   public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRED_TO_DOWNLOAD_LESSONS:String = "Please Upgrade\n\nA new version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available, and an upgrade is necessary before more new lessons can be downloaded.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
-   public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_REQUIRES_DATA_WIPE:String = "Note: This new version uses a new data format, so once you update, you'll need to re-download lessons, etc.\n\nWe apologize for this inconvenience.";
+   public static const MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT:String = "Please Upgrade\n\nA new version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available, and an upgrade is necessary in order to continue using the app.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.\n\nNote: You'll need to re-download lessons, etc. We apologize for this inconvenience.";
 
    // Language Tokens
    public static const TOKEN_FONT_SIZE_HEADING:String = "%heading_font_size%";

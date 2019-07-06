@@ -65,6 +65,8 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
 
    private static const _TIMER_TIMEOUT_MS:int = 30000;
 
+   public var languagePairsWithRecommendedLibrariesInfo:XML;
+
    private var _appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    private var _callbackList:Array = [];
    private var _downloadFailureCount:uint;
@@ -113,12 +115,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       return _mostRecentVersionRequiredDataSchemaVersion;
    }
 
-   private var _requiredVersion_LibraryAccess:Number;
-
-   public function get requiredVersion_LibraryAccess():Number {
-      return _requiredVersion_LibraryAccess;
-   }
-
    private var _techReport:ConfigFileInfoTechReport;
 
    public function get techReport():ConfigFileInfoTechReport {
@@ -133,6 +129,16 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
 
    public function ConfigFileInfo(model:MainModel) {
       _model = model;
+   }
+
+   // dmccarroll 2012
+   // "High priority data" includes the mentor type file data
+   // "Low priority data" includes news updates etc.
+   // High priority data is fetched each time loadData() is called (currently every time the app is started) and is stored in this class's properties.
+   // Low priority data is typically fetched on a less frequent schedule, and is stored using _appStatePersistenceManager.
+   // This class does callbacks to report results when the high-priority stuff is done, then proceeds to do low priority stuff, with no callbacks/reporting.
+   public function doLowPriorityDataFetching():void {
+      fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdateDate();
    }
 
    public function getLogToServerMaxStringLength(level:uint):uint {
@@ -254,7 +260,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       else {
          var stagingOrMentorTypeCode:String =
                Utils_System.isAlphaOrBetaVersion() ?
-                     Constant_AppConfiguration.RELEASE_TYPE :
+                     Constant_AppConfiguration.APP_RELEASE_TYPE :
                      Constant_MentorTypeSpecific.MENTOR_TYPE__CODE;
          var platformName:String;
          switch (Utils_System.platformName) {
@@ -286,16 +292,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       if (Utils_System.platformName == Constant_PlatformName.WINDOWS_DESKTOP)
          Utils_ANEs.showAlert_Toast(platformName + "_" + stagingOrMentorTypeCode);
       return result;
-   }
-
-   // dmccarroll 2012
-   // "High priority data" includes the mentor type file data
-   // "Low priority data" includes news updates etc.
-   // High priority data is fetched each time loadData() is called (currently every time the app is started) and is stored in this class's properties.
-   // Low priority data is typically fetched on a less frequent schedule, and is stored using _appStatePersistenceManager.
-   // This class does callbacks to report results when the high-priority stuff is done, then proceeds to do low priority stuff, with no callbacks/reporting.
-   private function doLowPriorityDataFetching():void {
-      fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdateDate();
    }
 
    private function fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdate():void {
@@ -400,7 +396,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       _isDataLoaded_MentorTypeFile = true;
       Log.setConfigProvider(this);
       reportResult();
-      doLowPriorityDataFetching();
    }
 
    private function onMentorTypeFileDownloadFailure(event:BwEvent):void {
@@ -442,7 +437,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       }
       /// Use a validateAndPopulateRootConfigFileXML() method
       _mainConfigFolderURL = _fileXML_LanguageMentorRootConfig.mainConfigFolderURL[0].toString();
-      updateLanguageVOsWithHasRecommendedLibrariesInfo(_fileXML_LanguageMentorRootConfig);
+      languagePairsWithRecommendedLibrariesInfo = _fileXML_LanguageMentorRootConfig.languagePairsWithRecommendedLibrariesInfo[0];
       _fileDownloader_MentorTypeFile = new FileDownloader();
       _fileDownloader_MentorTypeFile.downloadFolderURL = _model.getURL_MainConfigFolder();
       _fileDownloader_MentorTypeFile.downloadFileName = createMentorTypeFileFileName();
@@ -477,28 +472,9 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       reportFault();
    }
 
-   private function updateLanguageVOsWithHasRecommendedLibrariesInfo(xml:XML):void {
-      /// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
-      /// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
-      var nativeLanguagesNode:XML = xml.languagePairsWithRecommendedLibrariesInfo[0].nativeLanguages[0];
-      var nativeLanguageNode:XML = nativeLanguagesNode[_model.getCurrentNativeLanguageISO639_3Code()][0];
-      var targetLanguagesNode:XML = nativeLanguageNode.targetLanguages[0];
-      for (var i:int = 0; i < targetLanguagesNode.children().length(); i++) {
-         var targetLanguageNode:XML = targetLanguagesNode.children()[i];
-         var iso639_3Code:String = targetLanguageNode.name();
-         var vo:LanguageVO = _model.getLanguageVOFromIso639_3Code(iso639_3Code);
-         vo.hasRecommendedLibraries = true;
-         _model.updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfo", vo, ["hasRecommendedLibraries"]);
-         if (_model.getCurrentTargetLanguageISO639_3Code() == iso639_3Code) {   // This also evaluates to false if the currentTargetLanguage hasn't been set yet - which occurs in some scenarios - but this isn't a problem because the value has also been set in the DB (above)
-            _model.updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
-         }
-      }
-   }
-
    private function refreshMentorTypeDataFromXML():void {
       _mostRecentVersion = Utils_XML.readNumberNode(_fileXML_MentorType.mostRecentVersion[0]);
       _mostRecentVersionRequiredDataSchemaVersion = Utils_XML.readNumberNode(_fileXML_MentorType.mostRecentVersionRequiredDataSchemaVersion[0]);
-      _requiredVersion_LibraryAccess = Utils_XML.readNumberNode(_fileXML_MentorType.requiredVersion_LibraryAccess[0]);
       _index_LogLevel_to_IsLoggingEnabled = new Dictionary();
       _index_LogLevel_to_IsLogToServerEnabled = new Dictionary();
       _index_LogLevel_to_LogToServerMaxStringLength = new Dictionary();

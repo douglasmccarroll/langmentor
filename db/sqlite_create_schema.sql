@@ -368,6 +368,15 @@ INSERT INTO Level VALUES ('11','Advanced_Lower',      '11');
 INSERT INTO Level VALUES ('12','Advanced_Middle',     '12');
 INSERT INTO Level VALUES ('13','Advanced_Upper',      '13');
 
+CREATE TABLE ReleaseType (
+  id INTEGER NOT NULL UNIQUE,
+  labelToken TEXT NOT NULL UNIQUE,
+  locationInOrder INTEGER NOT NULL UNIQUE
+)  ;
+INSERT INTO ReleaseType VALUES ('1', 'Alpha',      '1');
+INSERT INTO ReleaseType VALUES ('2', 'Beta',       '2');
+INSERT INTO ReleaseType VALUES ('3', 'Production', '3');
+
 CREATE TABLE TextDisplayType (
   id INTEGER NOT NULL UNIQUE,
   typeName  TEXT NOT NULL UNIQUE
@@ -385,11 +394,11 @@ CREATE TABLE LessonVersion (
   publishedLessonVersionVersion TEXT,
   assetsFileSize INTEGER,
   defaultTextDisplayTypeId INTEGER,
-  isAlphaReviewVersion BOOL,
   isDualLanguage BOOL,
   levelId INTEGER NOT NULL,
   nativeLanguageAudioVolumeAdjustmentFactor REAL,
   paidContent BOOL,
+  releaseType TEXT NOT NULL,
   targetLanguageAudioVolumeAdjustmentFactor REAL,
   xmlFileSize INTEGER,
   uploaded BOOL

@@ -60,6 +60,7 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
    private var _includeLessonInfo:Boolean;
    private var _index_lessonId_to_lessonDownloadFolderURL:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonPublishedVersion:Dictionary = new Dictionary();
+   private var _index_lessonId_to_lessonReleaseType:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonType:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonXML:Dictionary = new Dictionary();
    private var _isDisposed:Boolean = false;
@@ -112,6 +113,10 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       if (_index_lessonId_to_lessonPublishedVersion) {
          Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonPublishedVersion, true);
          _index_lessonId_to_lessonPublishedVersion = null;
+      }
+      if (_index_lessonId_to_lessonReleaseType) {
+         Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonReleaseType, true);
+         _index_lessonId_to_lessonReleaseType = null;
       }
       if (_index_lessonId_to_lessonType) {
          Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonType, true);
@@ -414,7 +419,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
             if (XMLList(lessonXML.description).length() > 0)
                lessonDownloadInfo_Lesson.lessonDescription = lessonXML.description[0].toString();
             lessonDownloadInfo_Lesson.lessonId = lessonId;
-            lessonDownloadInfo_Lesson.lessonIsAlphaReviewVersion = Utils_XML.readBooleanNode(lessonXML.isAlphaReviewVersion[0]);
             lessonDownloadInfo_Lesson.lessonIsDualLanguage = Utils_XML.readBooleanNode(lessonXML.isDualLanguage[0]);
             lessonDownloadInfo_Lesson.lessonLevelToken = lessonXML.level[0].toString();
             if (XMLList(lessonXML.nativeLanguageAudioVolumeAdjustmentFactor).length() == 1)
@@ -430,6 +434,8 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
             lessonDownloadInfo_Lesson.lessonDefaultTextDisplayTypeId =
                   model.getTextDisplayTypeIdFromTypeName(lessonXML.defaultTextDisplayType[0].toString());
             lessonDownloadInfo_Lesson.lessonPublishedLessonVersionVersion = _index_lessonId_to_lessonPublishedVersion[lessonId];
+            lessonDownloadInfo_Lesson.lessonReleaseType = _index_lessonId_to_lessonReleaseType[lessonId];
+
             if (XMLList(lessonXML.tags).length() > 0)
                lessonDownloadInfo_Lesson.lessonTags = lessonXML.tags[0];
             if (XMLList(lessonXML.targetLanguageAudioVolumeAdjustmentFactor).length() == 1)
@@ -514,9 +520,11 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
                var lessonVersion:String = lessonNode.@version;
                if (lessonVersion == "")
                   lessonVersion = "0";
+               var lessonReleaseType:String = String(lessonNode.@releaseType).toLowerCase(); // While lesson_list.xml's releaseType is capitalized (to enhance readability), in this code we want to use lower-case values, as defined in Constant_ReleaseType
                if (lessonDownloadController.isLessonEligibleForDownloadingButCurrentlySelected(
                      lessonId,
                      lessonVersion,
+                     lessonReleaseType,
                      _lessonDownloadInfo_Library.contentProviderId,
                      model.getLevelIdFromLevelLabelToken(lessonNode.@level))) {
                   techReport.count_LessonUpdatesNotDownloadedBecauseInSelectedLessons++;
@@ -524,11 +532,13 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
                if (!lessonDownloadController.isLessonEligibleForDownloading(
                      lessonId,
                      lessonVersion,
+                     lessonReleaseType,
                      _lessonDownloadInfo_Library.contentProviderId,
                      model.getLevelIdFromLevelLabelToken(lessonNode.@level))) {
                   continue;
                }
                isWillDownloadOneOrMoreLessonXMLFiles = true;
+               _index_lessonId_to_lessonReleaseType[lessonId] = lessonReleaseType;
                _index_lessonId_to_lessonType[lessonId] = lessonType;
                _index_lessonId_to_lessonPublishedVersion[lessonId] = lessonVersion;
                var fileInfo:FileSetDownloaderFileInfo = new FileSetDownloaderFileInfo();
@@ -614,10 +624,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
    }
 
    private function startLessonInfoDownloads():void {
-      var lessonListFileName:String =
-            Utils_System.isAlphaOrBetaVersion() ?
-                  Constant_LangMentor_Misc.FILEPATHINFO__LESSON_LIST_FILE_NAME__STAGING :
-                  Constant_LangMentor_Misc.FILEPATHINFO__LESSON_LIST_FILE_NAME__PRODUCTION;
       _lessonListFileSetDownloader = new FileSetDownloader(true);
       var filesInfo:FileSetDownloaderFilesInfo = new FileSetDownloaderFilesInfo();
       _lessonListFileSetDownloader.filesInfo = filesInfo;
@@ -625,14 +631,14 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       if (doesSingleLanguageLessonInfoIndicateContentForCurrTargetLanguage()) {
          fileInfo = new FileSetDownloaderFileInfo();
          fileInfo.fileFolderURL = getSingleLanguageFolderURL();
-         fileInfo.fileNameBody = lessonListFileName;
+         fileInfo.fileNameBody = Constant_LangMentor_Misc.FILEPATHINFO__LESSON_LIST_FILE_NAME;
          fileInfo.fileNameExtension = "xml";
          filesInfo.addFileInfo(_LESSON_TYPE__SINGLE_LANGUAGE, fileInfo);
       }
       if (doesDualLanguageLessonInfoIndicateContentForCurrTargetLanguage()) {
          fileInfo = new FileSetDownloaderFileInfo();
          fileInfo.fileFolderURL = getDualLanguageFolderURL();
-         fileInfo.fileNameBody = lessonListFileName;
+         fileInfo.fileNameBody = Constant_LangMentor_Misc.FILEPATHINFO__LESSON_LIST_FILE_NAME;
          fileInfo.fileNameExtension = "xml";
          filesInfo.addFileInfo(_LESSON_TYPE__DUAL_LANGUAGE, fileInfo);
       }
@@ -681,6 +687,10 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
          if (!model.isLessonLevelAStandardLevelLabelToken(lessonNode.@level)) {
             bError = true;
             techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_LIST_XML__LEVEL_IS_NOT_A_STANDARD_LEVEL + ": " + lessonNode.toString());
+         }
+         if (!model.isReleaseTypeAStandardReleaseTypeLabelToken(lessonNode.@releaseType)) {
+            bError = true;
+            techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_LIST_XML__RELEASETYPE_IS_NOT_A_STANDARD_RELEASETYPE + ": " + lessonNode.toString());
          }
       }
       return (!bError);

@@ -20,6 +20,7 @@ package com.langcollab.languagementor.controller.lessondownload {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.constant.Constant_PlatformName;
+import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.IDisposable;
 import com.brightworks.interfaces.IManagedSingleton;
@@ -245,9 +246,12 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       return true;
    }
 
-   public function isLessonEligibleForDownloading(lessonId:String, lessonVersion:String, contentProviderId:String, lessonLevel:uint):Boolean {
+   public function isLessonEligibleForDownloading(lessonId:String, lessonVersion:String, lessonReleaseType:String, contentProviderId:String, lessonLevel:uint):Boolean {
       if (!_model.isLessonLevelSelectedForDownloading(lessonLevel))
          return false;
+      if (!isLessonReleaseTypeEligibleForDownloading(lessonReleaseType)) {
+         return false;
+      }
       if (!isLessonDownloaded(lessonId, contentProviderId)) {
          Log.info("LessonDownloadController.isLessonEligibleForDownloading(): (!isLessonDownloaded(lessonId, contentProviderId)) evaluates to true, so return true");
          return true;
@@ -259,16 +263,22 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          return false;
       }
       if (_currentLessons.contains(existingLVVO)) {
+         // We don't download lessons that are currently selected. To do so would create too much complexity, e.g. how would we inform the user?, what if they were in the middle of the lesson?, etc...
          return false;
-      } else if (isLessonVersionPublishedVersionLessThan(existingLVVO, lessonVersion)) {
+      }
+      else if (isLessonVersionPublishedVersionLessThan(existingLVVO, lessonVersion)) {
          Log.info("LessonDownloadController.isLessonEligibleForDownloading(): (isLessonVersionPublishedVersionLessThan(existingLVVO, lessonVersion)) evaluates to true, so return true");
          return true;
-      } else {
+      }
+      else {
          return false;
       }
    }
 
-   public function isLessonEligibleForDownloadingButCurrentlySelected(lessonId:String, lessonVersion:String, contentProviderId:String, lessonLevel:uint):Boolean {
+   public function isLessonEligibleForDownloadingButCurrentlySelected(lessonId:String, lessonVersion:String, lessonReleaseType:String, contentProviderId:String, lessonLevel:uint):Boolean {
+      if (!isLessonReleaseTypeEligibleForDownloading(lessonReleaseType)) {
+         return false;
+      }
       if (!_model.isLessonLevelSelectedForDownloading(lessonLevel))
          return false;
       if (!isLessonDownloaded(lessonId, contentProviderId)) {
@@ -289,6 +299,53 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       } else {
          return false;
       }
+   }
+
+   private function isLessonReleaseTypeEligibleForDownloading(lessonReleaseType:String):Boolean {
+      switch(lessonReleaseType) {
+         case Constant_ReleaseType.ALPHA:
+            // If lesson is Alpha, only Alpha and Beta apps download
+            switch (Utils_System.appReleaseType) {
+               case Constant_ReleaseType.ALPHA:
+               case Constant_ReleaseType.BETA:
+                  break;
+               case Constant_ReleaseType.PRODUCTION:
+                  return false;
+                  break;
+               default:
+                  Log.error("LessonDownloadController.isLessonEligibleForDownloading(): No case for appReleaseType - '" + Utils_System.appReleaseType + "' - this should have been caught before this.");
+            }
+            break;
+         case Constant_ReleaseType.BETA:
+            // If lesson is Beta, we download with Alpha and Beta apps, and with Production apps if user has chosen the 'download beta lessons' option
+            switch (Utils_System.appReleaseType) {
+               case Constant_ReleaseType.ALPHA:
+               case Constant_ReleaseType.BETA:
+                  break;
+               case Constant_ReleaseType.PRODUCTION:
+                  if (!_model.hasUserSelectedDownloadBetaLessonsOption) {
+                     return false;
+                  }
+                  break;
+               default:
+                  Log.error("LessonDownloadController.isLessonEligibleForDownloading(): No case for appReleaseType - '" + Utils_System.appReleaseType + "' - this should have been caught before this.");
+            }
+            break;
+         case Constant_ReleaseType.PRODUCTION:
+            // If lesson is Production, always eligible for download
+            switch (Utils_System.appReleaseType) {
+               case Constant_ReleaseType.ALPHA:
+               case Constant_ReleaseType.BETA:
+               case Constant_ReleaseType.PRODUCTION:
+                  break;
+               default:
+                  Log.error("LessonDownloadController.isLessonEligibleForDownloading(): No case for appReleaseType - '" + Utils_System.appReleaseType + "' - this should have been caught before this.");
+            }
+            break;
+         default:
+            Log.error("LessonDownloadController.isLessonEligibleForDownloading(): No case for lessonReleaseType - '" + lessonReleaseType + "' - this should have been caught before this.");
+      }
+      return true;
    }
 
    public function isSufficientLessonStorageSpaceAvailable():Boolean {
@@ -380,6 +437,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
             if (isLessonEligibleForDownloading(
                   lessonId,
                   lessonDownloadInfo_Lesson.lessonPublishedLessonVersionVersion,
+                  lessonDownloadInfo_Lesson.lessonReleaseType,
                   lessonDownloadInfo_Library.contentProviderId,
                   _model.getLevelIdFromLevelLabelToken(lessonDownloadInfo_Lesson.lessonLevelToken))) {
                result++;
@@ -616,12 +674,12 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
             downloadLessonProcessInfo.downloadFileNameBody = lessonId;
             downloadLessonProcessInfo.downloadFileNameExtension = Constant_LangMentor_Misc.FILEPATHINFO__LESSON_COMPRESSED_FILE_EXTENSION;
             downloadLessonProcessInfo.downloadFolderURL = lessonDownloadInfo_Lesson.lessonDownloadFolderURL;
-            downloadLessonProcessInfo.isAlphaReviewVersion = lessonDownloadInfo_Lesson.lessonIsAlphaReviewVersion;
             downloadLessonProcessInfo.isDualLanguage = lessonDownloadInfo_Lesson.lessonIsDualLanguage;
             downloadLessonProcessInfo.iso639_3Code_NativeLanguage = _model.getNativeLanguageIso639_3Code();
             downloadLessonProcessInfo.iso639_3Code_TargetLanguage = _model.getTargetLanguageIso639_3Code();
             downloadLessonProcessInfo.levelId = _model.getLevelIdFromLevelLabelToken(lessonDownloadInfo_Lesson.lessonLevelToken);
             downloadLessonProcessInfo.levelLocationInLevelsOrder = _model.getLevelLocationInOrderFromLevelId(downloadLessonProcessInfo.levelId);
+            downloadLessonProcessInfo.libraryId = libraryId;
             downloadLessonProcessInfo.nativeLanguageAudioVolumeAdjustmentFactor = lessonDownloadInfo_Lesson.lessonNativeLanguageAudioVolumeAdjustmentFactor;
             downloadLessonProcessInfo.nativeLanguageContentProviderName = nativeLanguageContentProviderName;
             downloadLessonProcessInfo.nativeLanguageLessonName = lessonDownloadInfo_Lesson.lessonName;
@@ -633,7 +691,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
             downloadLessonProcessInfo.nativeLanguageLibraryName = nativeLanguageLibraryName;
             downloadLessonProcessInfo.publishedLessonVersionId = lessonId;
             downloadLessonProcessInfo.publishedLessonVersionVersion = lessonDownloadInfo_Lesson.lessonPublishedLessonVersionVersion;
-            downloadLessonProcessInfo.libraryId = libraryId;
+            downloadLessonProcessInfo.lessonReleaseType = lessonDownloadInfo_Lesson.lessonReleaseType;
             downloadLessonProcessInfo.tags = lessonDownloadInfo_Lesson.lessonTags;
             downloadLessonProcessInfo.targetLanguageAudioVolumeAdjustmentFactor = lessonDownloadInfo_Lesson.lessonTargetLanguageAudioVolumeAdjustmentFactor;
             downloadLessonProcessInfo.saveFolderFilePath = Utils_LangCollab.downloadedLessonsDirectoryURL + File.separator + contentProviderId + File.separator + lessonId;
