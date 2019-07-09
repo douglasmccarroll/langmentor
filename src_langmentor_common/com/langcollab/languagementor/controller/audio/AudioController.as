@@ -173,6 +173,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
    public function onStartRecordMode():void {
       Log.info("AudioController.onStartRecordMode()");
+      AudioRecorder.getInstance().attemptToActivateMicrophone();
       setIsRecordMode(true);
       if ((_currentLessonVersionAudioSequence) && (_currentPrimaryChunkSequenceStrategy)) {
          stopLeafFinishCheckProcess();

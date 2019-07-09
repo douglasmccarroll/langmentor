@@ -91,9 +91,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addEventListener(Event.ACTIVATE, onActivate);
          addEventListener(Event.DEACTIVATE, onDeactivate);
          var padding:int = Math.round(stageWebViewRect.width / 20);
+         var actionBarHeight:int = Utils_System.isIOS() ? Math.round(navigator.actionBar.height * 1.5) : navigator.actionBar.height;
          _stageWebView = new StageWebView();
          _stageWebView.stage = stage;
-         _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, stageWebViewRect.width - padding, stageWebViewRect.height - padding);
+         _stageWebView.viewPort = new Rectangle(padding, actionBarHeight + padding, stageWebViewRect.width - padding, stageWebViewRect.height - padding);
          var modeId:uint = uint(data);
          var htmlString:String = model.learningModeDescriptionsHTML[modeId];
          htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);

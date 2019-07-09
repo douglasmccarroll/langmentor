@@ -160,21 +160,29 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function getMostRecentNewsUpdateHTML():String {
-      if (!isMostRecentNewsUpdateAvailableForDisplay()) {
+      return ""; /// Disabled 'news update / notifications' functionality
+      /*if (!isMostRecentNewsUpdateAvailableForDisplay()) {
          Log.error("ConfigFileInfo.():getMostRecentNewsUpdateBody(): isMostRecentNewsUpdateAvailableForDisplay() returns false - should be checked before this method is called");
          return "";
       }
       var formatVersionNode:XML = getMostRecentNewsUpdateFormatVersionNode();
-      return formatVersionNode.html[0].toString();
+      return formatVersionNode.html[0].toString();*/
    }
 
    public function getMostRecentNewsUpdateLinkText():String {
-      if (!isMostRecentNewsUpdateAvailableForDisplay()) {
+      return ""; /// Disabled 'news update / notifications' functionality
+      /*if (!isMostRecentNewsUpdateAvailableForDisplay()) {
          Log.error("ConfigFileInfo.():getMostRecentNewsUpdateLinkText(): isMostRecentNewsUpdateAvailableForDisplay() returns false - should be checked before this method is called");
          return "";
       }
       var formatVersionNode:XML = getMostRecentNewsUpdateFormatVersionNode();
-      return formatVersionNode.linkText[0].toString();
+      if (formatVersionNode) {
+         return formatVersionNode.linkText[0].toString();
+      }
+      else {
+         // This is happening when I attempt to force a link display by commenting out conditional code - I don't think that it happens in production
+         return "";
+      }*/
    }
 
    public function isLoggingEnabled(level:uint):Boolean {
@@ -196,7 +204,8 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {
-      if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
+      return false; /// Disabled 'news update / notifications' functionality
+      /*if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
          return false; // We don't have a retrieved news update
       if (_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateViewed_Saved()) {
          // We've viewed an update
@@ -213,7 +222,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          return false; // Something is wrong. This is sad.
       if (!getMostRecentNewsUpdateFormatVersionNode())
          return false;
-      return true;
+      return true;*/
    }
 
    public function loadData(callbacks:Callbacks):void {

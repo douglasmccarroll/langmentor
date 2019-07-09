@@ -60,7 +60,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override protected function onViewActivate():void {
          var widget:IUIWidget_Text;
-         if (model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay()) {
+         /// Disabled 'news update / notifications' functionality
+         /*if (model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay()) {
             var padding:int = 10;
             _stageWebView = new StageWebView();
             _stageWebView.stage = stage;
@@ -78,7 +79,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             widget = new UIWidget_Viewlet__Text();
             widget.text = "Oops... Please accept our abject apologies - we can't seem to find any news updates.";
             viewletGroup.addElement(widget);
-         }
+         }*/
       }
       ]]>
     </fx:Script>

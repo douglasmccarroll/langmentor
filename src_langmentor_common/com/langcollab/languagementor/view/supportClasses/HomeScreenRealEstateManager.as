@@ -159,14 +159,15 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_TopRight(group:Group, clickFunction:Function):void {
-      if (!_model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay())
+      return; /// Disabled 'news update / notifications' functionality
+      /*if (!_model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay())
          return;
       var linkText:String = _model.configFileInfo.getMostRecentNewsUpdateLinkText();
       var bttn:HomeScreenBackgroundButton = new HomeScreenBackgroundButton();
       bttn.text = linkText;
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
-      group.addElement(bttn);
+      group.addElement(bttn);*/
    }
 
 

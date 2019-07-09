@@ -19,12 +19,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
                    xmlns:s = "library://ns.adobe.com/flex/spark"
+                   xmlns:checkbox = "com.brightworks.component.checkbox.*"
                    xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    creationComplete = "onCreationComplete()"
                    implements = "com.brightworks.interfaces.IDisposable"
-                   initialize = "onInitialize()"
-                   xmlns:checkbox = "com.brightworks.component.checkbox.*">
+                   initialize = "onInitialize()">
 
    <fx:Metadata>
       [Event(name="complete", type="flash.events.Event")]
@@ -133,7 +133,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
              height = "100%"
              width = "100%">
       <s:VGroup visible = "true"
-                includeInLayout = "true">
+                includeInLayout = "true"
+                width = "100%">
          <checkbox:NormalCheckBox id = "useRecommendedLibrariesCheckbox"
                                   label = "Use Recommended Libraries"
                                   change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
@@ -145,7 +146,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
                                           text = "Searching for recommended libraries..."
                                           fontFamily = "_sans"
-                                          height = "50%"/>
+                                          height = "50%"
+                                          width = "100%"/>
       </s:VGroup>
    </s:VGroup>
 </view:Viewlet_Base>

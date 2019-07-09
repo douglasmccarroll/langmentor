@@ -89,7 +89,6 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
       Log.info("AudioRecorder constructor");
       _instance = this;
       _recordedAudio = new ByteArray();
-      attemptToActivateMicrophone();
    }
 
    public function attemptToActivateMicrophone():void {
