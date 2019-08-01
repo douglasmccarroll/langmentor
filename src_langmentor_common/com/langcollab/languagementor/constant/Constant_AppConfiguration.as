@@ -21,7 +21,7 @@ import com.brightworks.constant.Constant_ReleaseType;
 
 public class Constant_AppConfiguration {
 
-   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.BETA;      /////
+   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.PRODUCTION;      /////
 
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__DESKTOP:Number = 100;
@@ -31,7 +31,6 @@ public class Constant_AppConfiguration {
    public static const EXPLANATORY_AUDIO_FILE_BODY_STRING:String = "xply";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
    public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";
-   public static const LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT:int = 25;
    public static const REQUIRED_SCREEN_RESOLUTION__X:uint = 320;
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;
    public static const USER_ACTION_REQUIRED_WAIT_INTERVAL:Number = 400;

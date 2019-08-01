@@ -15,6 +15,8 @@ import spark.components.Group;
 
 public class HomeScreenRealEstateManager {
 
+   public static const CONTENT_MODE__LOGO:String = "contentMode_Logo";
+   public static const CONTENT_MODE__NEWS_UPDATE_BUTTON:String = "contentMode_NewsUpdateButton";
    public static const SCREEN_AREA_LABEL__BOTTOM:String = "screenAreaLabel_Bottom";
    public static const SCREEN_AREA_LABEL__BOTTOM_LEFT:String = "screenAreaLabel_BottomLeft";
    public static const SCREEN_AREA_LABEL__BOTTOM_RIGHT:String = "screenAreaLabel_BottomRight";
@@ -159,15 +161,14 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_TopRight(group:Group, clickFunction:Function):void {
-      return; /// Disabled 'news update / notifications' functionality
-      /*if (!_model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay())
+      if (!_model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay())
          return;
       var linkText:String = _model.configFileInfo.getMostRecentNewsUpdateLinkText();
       var bttn:HomeScreenBackgroundButton = new HomeScreenBackgroundButton();
       bttn.text = linkText;
       bttn.addEventListener(MouseEvent.CLICK, clickFunction);
       _index_ClickFunctions_to_Targets[clickFunction] = bttn;
-      group.addElement(bttn);*/
+      group.addElement(bttn);
    }
 
 

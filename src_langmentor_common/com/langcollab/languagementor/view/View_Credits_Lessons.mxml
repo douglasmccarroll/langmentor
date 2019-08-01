@@ -57,8 +57,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_Credits_Lessons.doGoBack()");
          if (_lessonSelectorList.isListAtTopLevel()) {
             navigator.popView(transition_SlideView_Right);
-         }
-         else {
+         } else {
             _lessonSelectorList.handleBackButton();
          }
       }
@@ -69,7 +68,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case ViewContext.CONTEXT_TYPE__MORE:
                navigator.pushView(View_Home, null, null, transition_SlideView_Left);
                break;
-            case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON:
+               //   deprecated !
+               Log.warn("View_Credits_Lessons.doGoBack() - contextType should be deprecated: " + contextType);
                navigator.pushView(View_Home, null, null, transition_SlideView_Right);
                break;
             default:

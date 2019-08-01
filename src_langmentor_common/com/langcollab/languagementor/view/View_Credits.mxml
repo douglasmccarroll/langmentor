@@ -70,7 +70,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case ViewContext.CONTEXT_TYPE__MORE:
                navigator.pushView(View_Home, null, navigator.context, transition_SlideView_Left);
                break;
-            case ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON:
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON:
                navigator.popView(transition_SlideView_Right);
                break;
             default:

@@ -19,7 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
                    xmlns:s = "library://ns.adobe.com/flex/spark"
-                   xmlns:experimental = "http://flex.apache.org/experimental/ns"
+                   xmlns:container = "com.brightworks.container.*"
                    xmlns:view = "com.langcollab.languagementor.view.*"
                    width = "100%">
 
@@ -63,21 +63,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function callback_ShowEnterURLView():void {
          Log.info("Viewlet_AddLibraries.callback_ShowEnterURLView()");
-         navigator.selectedItem = enterURLView;
+         navigator.selectedItemById = "enterURLView";
       }
 
       private function callback_ShowScanQRCodeView():void {
          Log.info("Viewlet_AddLibraries.callback_ShowScanQRCodeView()");
-         navigator.selectedItem = scanQRCodeView;
+         navigator.selectedItemById = "scanQRCodeView";
+
+
       }
       ]]>
     </fx:Script>
 
    <s:Spacer/>
-   <experimental:Navigator id = "navigator"
-                           borderVisible = "false"
-                           height = "{height}"
-                           width = "{width}">
+   <container:Navigator id = "navigator"
+                        height = "{height}"
+                        width = "{width}">
       <view:Subviewlet_AddLibrary__Intro id = "introView"
                                          showEnterURLViewCallback = "{callback_ShowEnterURLView}"
                                          showScanQRCodeViewCallback = "{callback_ShowScanQRCodeView}"
@@ -90,5 +91,5 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                                  libraryAddedCallback = "{callback_LibraryAdded}"
                                                  showEnterURLViewCallback = "{callback_ShowEnterURLView}"
                                                  width = "100%"/>
-   </experimental:Navigator>
+   </container:Navigator>
 </view:Viewlet_Base>

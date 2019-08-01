@@ -38,7 +38,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import mx.collections.ArrayCollection;
 
       private static const LIST_OPTION__FORUMS:String = "Forums";
-      private static const LIST_OPTION__RATE_LANGMENTOR:String = "Rate Language Mentor";
       private static const LIST_OPTION__SEND_FEEDBACK:String = "Send Feedback";
       //private static const LIST_OPTION__SHARE_ON_FACEBOOK:String = "Share on Facebook";
       private static const LIST_OPTION__UPGRADE:String = "Upgrade " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
@@ -68,9 +67,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (Constant_MentorTypeSpecific.FORUMS__IS_OPTION_DISPLAYED) {
             _listDataProvider.addItem({label: LIST_OPTION__FORUMS, value: LIST_OPTION__FORUMS});
          }
-         /////_listDataProvider.addItem({label: LIST_OPTION__RATE_LANGMENTOR, value: LIST_OPTION__RATE_LANGMENTOR});
          _listDataProvider.addItem({label: LIST_OPTION__SEND_FEEDBACK, value: LIST_OPTION__SEND_FEEDBACK});
-         /////_listDataProvider.addItem({label: LIST_OPTION__SHARE_ON_FACEBOOK, value: LIST_OPTION__SHARE_ON_FACEBOOK});
          _listDataProvider.addItem({label: LIST_OPTION__UPGRADE, value: LIST_OPTION__UPGRADE})
       }
 
@@ -79,12 +76,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          switch (list.selectedItem.value) {
             case LIST_OPTION__FORUMS: {
                navigator.pushView(View_Forums);
-               break;
-            }
-            case LIST_OPTION__RATE_LANGMENTOR: {
-               list.selectedItems = null;
-               list.invalidateProperties();
-               Utils_ANEs.showRatingsPrompt();
                break;
             }
             case LIST_OPTION__SEND_FEEDBACK: {

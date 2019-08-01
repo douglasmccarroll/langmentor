@@ -21,7 +21,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:button = "com.brightworks.component.button.*"
                 xmlns:checkbox = "com.brightworks.component.checkbox.*"
-                xmlns:experimental = "http://flex.apache.org/experimental/ns"
+                xmlns:container = "com.brightworks.container.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 enterFrame = "onEnterFrame()"
                 initialize = "onInitialize()"
@@ -67,7 +67,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override public function doGoBack():void {
          Log.info("View_Diagnostics.doGoBack()");
          if (navigatorComp.selectedItem == settingsView)
-            navigatorComp.selectedItem = dataView;
+            navigatorComp.selectedItemById = "dataView";
          else
             super.doGoBack();
       }
@@ -170,12 +170,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onSettingsButtonClick():void {
          Log.info("View_Diagnostics.onSettingsButtonClick()");
-         navigatorComp.selectedItem = settingsView;
+         navigatorComp.selectedItemById = "settingsView";
       }
 
       private function onSettingsViewOkayButtonClick():void {
          Log.info("View_Diagnostics.onSettingsViewOkayButtonClick()");
-         navigatorComp.selectedItem = dataView;
+         navigatorComp.selectedItemById = "dataView";
       }
 
       private function onViewActivate():void {
@@ -187,10 +187,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       ]]>
     </fx:Script>
 
-   <experimental:Navigator id = "navigatorComp"
-                           borderVisible = "false"
-                           height = "100%"
-                           width = "100%">
+   <container:Navigator id = "navigatorComp"
+                        height = "100%"
+                        width = "100%">
       <s:VGroup id = "dataView"
                 width = "100%"
                 height = "100%">
@@ -251,5 +250,5 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             </s:HGroup>
          </s:VGroup>
       </s:VGroup>
-   </experimental:Navigator>
+   </container:Navigator>
 </view:View_Base>

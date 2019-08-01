@@ -37,6 +37,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.controls.Spacer;
@@ -50,9 +51,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__SEND_FEEDBACK:String = "Send Feedback";
       private static const _HEADING__FATAL_ERROR:String = "We're sorry - " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " has encountered a problem";
       private static const _HEADING__THANKS_FOR_YOUR_FEEDBACK:String = "Thanks for your feedback!";
-      private static const _MESSAGE__INITIAL__PLEASE_RESTART:String = "Please restart the application. Thanks!";
+      private static const _MESSAGE__INITIAL__CLOSING_DUE_TO_FATAL_ERROR:String = "Please restart the application.\n\nDiagnostic data will be sent to us to help us prevent this problem in future versions of " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ". Could you take a few moments and provide a brief description of what you were doing within this app when this problem occurred?\n\nThanks!";
       private static const _MESSAGE__INITIAL__PLEASE_SEND:String = "We look forward to reading your feedback. If you'd like a response, please include your name and email address.";
-      private static const _MESSAGE__ONCLICK__CLOSING_APP:String = "Closing...";
+      private static const _MESSAGE__ONCLICK__CLOSING_APP_ANDROID:String = "Closing...";
+      private static const _MESSAGE__ONCLICK__CLOSING_APP_IOS:String = "Closing... \n\nIf " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " doesn't close on it's own, you can close it by pressing your phone's home button twice in quick succession, then swiping upward on " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ".";
+      private static const _MESSAGE__ONCLICK__CLOSING_APP_UNKNOWN_PLATFORM:String = "Closing...";
       private static const _MESSAGE__ONCLICK__SENDING_REPORT:String = "Sending Feedback";
       private static const _MESSAGE__LOG_RESULT__COMPLETE:String = "Your feedback has been sent.";
       private static const _MESSAGE__LOG_RESULT__FAILURE:String = "We're sorry, Language Mentor is unable to send your feedback. Please ensure that your device is connected to the Internet and try again. If you continue to encounter this problem " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US;
@@ -99,10 +102,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          } else {
             primaryBottomButton.enabled = false;
             _userCommentTextArea.enabled = false;
-            _messageTextWidget.text =
-                  isInUserClosesAppMode() ?
-                        _MESSAGE__ONCLICK__CLOSING_APP :
-                        _MESSAGE__ONCLICK__SENDING_REPORT;
+            var messageText:String;
+            if (isInFatalErrorMode()) {
+               if (Utils_System.isAndroid()) {
+                  messageText = _MESSAGE__ONCLICK__CLOSING_APP_ANDROID;
+               }
+               else if (Utils_System.isIOS()) {
+                  messageText = _MESSAGE__ONCLICK__CLOSING_APP_IOS;
+               }
+               else {
+                  messageText = _MESSAGE__ONCLICK__CLOSING_APP_UNKNOWN_PLATFORM;
+               }
+            }
+            else {
+               messageText = _MESSAGE__ONCLICK__SENDING_REPORT;
+            }
+            _messageTextWidget.text = messageText;
             Log.userInitiatedLogToServer(createUserMessage(), logErrorCallback);
          }
       }
@@ -125,18 +140,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             result = _userCommentTextArea.text;
          else
             result = "User sent report, but entered no message.";
+         result = " ---------- " + result + " ---------- ";
          return result;
       }
 
-      private function isInUserClosesAppMode():Boolean {
-         return ((contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR) && (Utils_System.platformName != Constant_PlatformName.IOS));
+      private function isInFatalErrorMode():Boolean {
+         return (contextType == ViewContext.CONTEXT_TYPE__FATAL_ERROR);
       }
 
       private function logErrorCallback(success:Boolean):void {
          primaryBottomButton.enabled = true;
          primaryBottomButton.label = BUTTON_LABEL__OK;
          _isLogAttemptDone = true;
-         if (isInUserClosesAppMode()) {
+         if (isInFatalErrorMode()) {
             if (!Utils_System.isRunningOnDesktop())
                currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
             NativeApplication.nativeApplication.exit();
@@ -150,7 +166,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onCreationComplete():void {
-         if (isInUserClosesAppMode())
+         if (isInFatalErrorMode())
             primaryBottomButton.label = _BUTTON_LABEL__CLOSE;
          else
             primaryBottomButton.label = _BUTTON_LABEL__SEND_FEEDBACK;
@@ -162,8 +178,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(_headingWidget);
          viewletGroup.addElement(new Spacer());
          _messageTextWidget = new UIWidget_Viewlet__Text();
-         if (isInUserClosesAppMode())
-            _messageTextWidget.text = _MESSAGE__INITIAL__PLEASE_RESTART;
+         if (isInFatalErrorMode())
+            _messageTextWidget.text = _MESSAGE__INITIAL__CLOSING_DUE_TO_FATAL_ERROR;
          else
             _messageTextWidget.text = _MESSAGE__INITIAL__PLEASE_SEND;
          viewletGroup.addElement(_messageTextWidget);
@@ -177,7 +193,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onInitialize():void {
-         if (isInUserClosesAppMode())
+         if (isInFatalErrorMode())
             navigationContent = [];
       }
 

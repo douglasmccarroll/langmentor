@@ -48,9 +48,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             "No new lessons found.";
       private static const _MESSAGE__UNEXPLAINED:String =
             "We're sorry, we're unable to obtain new lesson info. Please " + Constant_LangMentor_Misc.MESSAGE__CONTACT_US + ".";
-      private static const _MESSAGE__ZERO_LIBRARIES_CHECKED:String =
-            "We're sorry, we weren't able to download any libraries. We're not sure what the problem is, but this problem is usually cause by a poor or nonexistent internet connection. " +
-            "Please ensure that this device is connected to the internet and try again.";
+      private static const _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS:String =
+            "We're sorry, we weren't able to download any lessons. Please ensure that this device is connected to the internet and try again.";
 
 
       public var startLessonDownloads:Boolean = false;
@@ -125,33 +124,29 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   if (Utils_AIR.appVersionNumber < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
                      explanation += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
                   }
-               } 
-	       else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
+               } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
-               } 
-	       else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
+               } else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
                   if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES;
                   } else {
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER;
                   }
-               } 
-	       else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+               } else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
                      updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
-                  explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
+                  explanation = _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS;
                }
                updateInfoCommandReport.dispose();
             }
             if (!explanation) {
                if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
-                  explanation = _MESSAGE__ZERO_LIBRARIES_CHECKED;
+                  explanation = _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS;
                else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0)
                   explanation = _MESSAGE__NO_NEW_LESSONS_FOUND;
             }
             if (explanation) {
                message += explanation + "\n\n";
-            } 
-	    else {
+            } else {
                var foo:int = 0; // for debugging
             }
          }
@@ -197,8 +192,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (hours < 50) {
             var hoursString:String = (hours == 1) ? "hour" : "hours";
             message = hours + " " + hoursString + " ago";
-         } 
-	 else {
+         } else {
             var days:uint = Math.floor(hours / 24);
             message = days + " days"
          }

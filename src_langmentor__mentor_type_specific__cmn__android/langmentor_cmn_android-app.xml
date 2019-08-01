@@ -102,7 +102,6 @@
       </manifestAdditions>
    </android>
    <extensions>
-      <extensionID>com.distriqt.Bolts</extensionID>
       <extensionID>com.distriqt.androidsupport.AppCompatV7</extensionID>
       <extensionID>com.distriqt.androidsupport.CardViewV7</extensionID>
       <extensionID>com.distriqt.androidsupport.CustomTabs</extensionID>
@@ -110,12 +109,13 @@
       <extensionID>com.distriqt.androidsupport.InstallReferrer</extensionID>
       <extensionID>com.distriqt.androidsupport.RecyclerViewV7</extensionID>
       <extensionID>com.distriqt.androidsupport.V4</extensionID>
+	  <extensionID>com.distriqt.ApplicationRater</extensionID>
+      <extensionID>com.distriqt.Bolts</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.MediaPlayer</extensionID>
-      <extensionID>com.myflashlab.air.extensions.barcode</extensionID>
+	  <extensionID>com.distriqt.Scanner</extensionID>
       <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
       <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
-      <extensionID>com.myflashlab.air.extensions.rateMe</extensionID>
    </extensions>
 </application>

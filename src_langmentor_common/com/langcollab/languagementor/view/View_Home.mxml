@@ -165,16 +165,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
             Utils_ANEs.showAlert_OkayButton(message);
             return;
-         }
-         else if (currentLessons.length == 0) {
+         } else if (currentLessons.length == 0) {
             // No selected lessons
             Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
             return;
          }
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_PlayLessons_Saved()) {
             navigator.pushView(View_PlayLessons, null, null, transition_SlideView_Down);
-         }
-         else {
+         } else {
             var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
             ctxt.nextViewClass = View_PlayLessons;
             navigator.pushView(View_Help_Play_Lessons, null, ctxt, transition_SlideView_Down);
@@ -188,11 +186,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_ANEs.showAlert_OkayButton(message);
             return;
          }
+         var ctxt:ViewContext;
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_SelectLessons_Saved()) {
-            navigator.pushView(View_SelectLessons, null, null, transition_SlideView_Left);
-         }
-         else {
-            var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
+            ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
+            navigator.pushView(View_SelectLessons, null, ctxt, transition_SlideView_Left);
+         } else {
+            ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
             ctxt.nextViewClass = View_SelectLessons;
             navigator.pushView(View_Help_Select_Lessons, null, ctxt, transition_SlideView_Left);
          }
@@ -215,19 +214,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onButtonClick_Share(event:Event):void {
          Log.debug("View_Home.onButtonClick_NagLink()");
-         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON);
          navigator.pushView(View_Share, null, ctxt, transition_SlideView_Right);
       }
 
       private function onButtonClick_NewDownloads(event:Event):void {
          Log.debug("View_Home.onButtonClick_NewDownloads()");
-         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON);
          navigator.pushView(View_NewDownloads, null, ctxt, transition_SlideView_Right);
       }
 
       private function onButtonClick_NewsUpdate(event:Event):void {
          Log.debug("View_Home.onButtonClick_NewsUpdate()");
-         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON);
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON);
          navigator.pushView(View_NewsUpdate, null, ctxt, transition_SlideView_Left);
       }
 

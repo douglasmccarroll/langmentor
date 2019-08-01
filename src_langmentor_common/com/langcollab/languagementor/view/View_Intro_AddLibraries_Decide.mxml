@@ -18,8 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                      xmlns:mx = "library://ns.adobe.com/flex/mx"
-                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
                       title = "Intro &amp; Setup: Add Libraries">

@@ -237,7 +237,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var lvtlvo:LessonVersionTargetLanguageVO =
             getLessonVersionTargetLanguageVOFromLessonVersionVOFromDB(vo);
       if (!lvtlvo)
-         Log.fatal(["MainModel.addLessonVersionVOToCache(): Cannot retreive LessonVersionTargetLanguageVO for LessonVersionVO from DB", vo]);
+         Log.fatal(["MainModel.addLessonVersionVOToCache(): Cannot retrieve LessonVersionTargetLanguageVO for LessonVersionVO from DB", vo]);
       _index_LessonVersionTargetLanguageVOs_by_LessonVersionVO[vo] = lvtlvo;
    }
 
@@ -441,15 +441,17 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
          Log.fatal(["MainModel.getDownloadedLessonSelectionTreeData(): selectData() reports problem", report]);
       var tempDownloadedLessonData:ArrayCollection = new ArrayCollection();
       for each (var vo:LessonVersionVO in report.resultData) {
-         var lessonVersionDescriptorObject:Object = new Object();
-         lessonVersionDescriptorObject.libraryDisplayString = getLibraryNativeLanguageNameFromLessonVersionVO(vo);
-         lessonVersionDescriptorObject.levelDisplayString = getNativeLanguageLevelLabelFromLevelId(vo.levelId);
-         lessonVersionDescriptorObject.levelSortInfo = getLevelLocationInOrderFromLevelId(vo.levelId);
-         // VO instance is used when leaf is selected/deselected in Tree UI
-         lessonVersionDescriptorObject.lessonVersionVO = vo;
-         lessonVersionDescriptorObject.nameDisplayString = getLessonVersionNativeLanguageNameFromLessonVersionVO(vo);
-         lessonVersionDescriptorObject.sortableNameString = getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(vo);
-         tempDownloadedLessonData.addItem(lessonVersionDescriptorObject);
+         if (isLessonLevelSelectedForDownloading(vo.levelId)) {
+            var lessonVersionDescriptorObject:Object = new Object();
+            lessonVersionDescriptorObject.libraryDisplayString = getLibraryNativeLanguageNameFromLessonVersionVO(vo);
+            lessonVersionDescriptorObject.levelDisplayString = getNativeLanguageLevelLabelFromLevelId(vo.levelId);
+            lessonVersionDescriptorObject.levelSortInfo = getLevelLocationInOrderFromLevelId(vo.levelId);
+            // VO instance is used when leaf is selected/deselected in Tree UI
+            lessonVersionDescriptorObject.lessonVersionVO = vo;
+            lessonVersionDescriptorObject.nameDisplayString = getLessonVersionNativeLanguageNameFromLessonVersionVO(vo);
+            lessonVersionDescriptorObject.sortableNameString = getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(vo);
+            tempDownloadedLessonData.addItem(lessonVersionDescriptorObject);
+         }
       }
       var result:ArrayCollection = Utils_Tree.createDataSourceObject(tempDownloadedLessonData, lessonsSelectionTreeSortOptions);
       report.dispose();

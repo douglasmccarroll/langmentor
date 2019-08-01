@@ -1,0 +1,137 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2018 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                xmlns:s = "library://ns.adobe.com/flex/spark"
+                xmlns:button = "com.brightworks.component.button.*"
+                xmlns:view = "com.langcollab.languagementor.view.*"
+                title = 'Deselect All Lessons'
+                viewActivate = "onViewActivate()">
+
+   <fx:Declarations>
+   </fx:Declarations>
+
+   <fx:Script>
+        <![CDATA[
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_AIR;
+      import com.brightworks.util.Utils_Text;
+      import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
+      import com.langcollab.languagementor.controller.Command_Data_UpdateVosOfType;
+      import com.langcollab.languagementor.controller.Command_Data_UpdateVosOfTypeTechReport;
+      import com.langcollab.languagementor.vo.ChunkVO;
+
+      private var _isDisposed:Boolean = false;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
+
+      override public function doGoBack():void {
+         Log.info("View_DeselectAllLessons.doGoBack()");
+         navigator.popView(transition_SlideView_Right);
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function onCancelButtonClick():void {
+         Log.info("View_DeselectAllLessons.onCancelButtonClick()");
+         navigator.popView(transition_SlideView_Right);
+      }
+
+      private function onDeselectButtonClick():void {
+         Log.info("View_DeselectAllLessons.onDeleteButtonClick()");
+         textDisplayLabel.text = "Deselecting...";
+         cancelButton.enabled = false;
+         deselectButton.enabled = false;
+         Utils_AIR.keepSystemAwake();
+         callLater(onDeselectButtonClick_Continued);
+      }
+
+      private function onDeselectButtonClick_Continued():void {
+         currentLessons.removeAll(true, true);
+         cancelButton.visible = false;
+         cancelButton.includeInLayout = false;
+         deselectButton.visible = false;
+         okayButton.visible = true;
+         okayButton.includeInLayout = true;
+         textDisplayLabel.text = "        Done  :)";
+      }
+
+      private function onOkayButtonClick():void {
+         Log.info("View_DeselectAllLessons.onOkayButtonClick()");
+         doGoBack();
+      }
+
+      private function onViewActivate():void {
+         var lessonOrLessonsString:String = (currentLessons.length == 1) ? "lesson is" : "lessons are";
+         var itOrAllString:String = (currentLessons.length == 1) ? "it" : "all of them";
+         textDisplayLabel.text = currentLessons.length + " " + lessonOrLessonsString + " currently selected. Would you like to deselect " + itOrAllString + "?";
+      }
+      ]]>
+    </fx:Script>
+
+   <s:VGroup height = "100%"
+             width = "100%"
+             horizontalAlign = "center"
+             bottom = "10"
+             top = "10"
+             left = "10"
+             right = "10">
+      <s:HGroup width = "80%"
+                height = "100%"
+                verticalAlign = "middle">
+         <s:Label id = "textDisplayLabel"
+                  fontSize = "{Math.round(Utils_Text.getStandardFontSize() * 1.5)}"
+                  width = "100%"/>
+      </s:HGroup>
+      <button:NormalButton id = "deselectButton"
+                           label = "Deselect Lessons"
+                           click = "onDeselectButtonClick()"
+                           width = "75%"
+                           height = "12%"/>
+      <s:Spacer/>
+      <button:NormalButton id = "cancelButton"
+                           label = "Cancel"
+                           click = "onCancelButtonClick()"
+                           width = "75%"
+                           height = "12%"/>
+      <button:NormalButton id = "okayButton"
+                           label = "OK"
+                           click = "onOkayButtonClick()"
+                           visible = "false"
+                           includeInLayout = "false"
+                           width = "75%"
+                           height = "12%"/>
+      <s:Spacer/>
+   </s:VGroup>
+</view:View_Base>

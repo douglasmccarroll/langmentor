@@ -160,18 +160,16 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function getMostRecentNewsUpdateHTML():String {
-      return ""; /// Disabled 'news update / notifications' functionality
-      /*if (!isMostRecentNewsUpdateAvailableForDisplay()) {
+      if (!isMostRecentNewsUpdateAvailableForDisplay()) {
          Log.error("ConfigFileInfo.():getMostRecentNewsUpdateBody(): isMostRecentNewsUpdateAvailableForDisplay() returns false - should be checked before this method is called");
          return "";
       }
       var formatVersionNode:XML = getMostRecentNewsUpdateFormatVersionNode();
-      return formatVersionNode.html[0].toString();*/
+      return formatVersionNode.html[0].toString();
    }
 
    public function getMostRecentNewsUpdateLinkText():String {
-      return ""; /// Disabled 'news update / notifications' functionality
-      /*if (!isMostRecentNewsUpdateAvailableForDisplay()) {
+      if (!isMostRecentNewsUpdateAvailableForDisplay()) {
          Log.error("ConfigFileInfo.():getMostRecentNewsUpdateLinkText(): isMostRecentNewsUpdateAvailableForDisplay() returns false - should be checked before this method is called");
          return "";
       }
@@ -182,7 +180,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       else {
          // This is happening when I attempt to force a link display by commenting out conditional code - I don't think that it happens in production
          return "";
-      }*/
+      }
    }
 
    public function isLoggingEnabled(level:uint):Boolean {
@@ -203,9 +201,8 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       return result;
    }
 
-   public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {
-      return false; /// Disabled 'news update / notifications' functionality
-      /*if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
+   public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {      ///// working?
+      if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
          return false; // We don't have a retrieved news update
       if (_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateViewed_Saved()) {
          // We've viewed an update
@@ -222,7 +219,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          return false; // Something is wrong. This is sad.
       if (!getMostRecentNewsUpdateFormatVersionNode())
          return false;
-      return true;*/
+      return true;
    }
 
    public function loadData(callbacks:Callbacks):void {
@@ -324,18 +321,19 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    private function fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdateDate():void {
+      var daysElapsedSinceRetrieval:Number = 0;
       var isNewsUpdateDateEverRetrievedAndPersisted:Boolean = _appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdateDate_DateRetrieved_Saved()
       if (isNewsUpdateDateEverRetrievedAndPersisted) {
          var retrievalDate:Date = _appStatePersistenceManager.retrieveMostRecent_NewsUpdateDate_DateRetrieved();
-         var daysElapsedSinceRetrieval:Number = Utils_DateTime.computeDaysBeforePresent(retrievalDate);
+         daysElapsedSinceRetrieval = Utils_DateTime.computeDaysBeforePresent(retrievalDate);
       }
-      if ((!isNewsUpdateDateEverRetrievedAndPersisted) || (daysElapsedSinceRetrieval > 5)) {
+      if ((!isNewsUpdateDateEverRetrievedAndPersisted) || (daysElapsedSinceRetrieval > 1)) { 
          _fileDownloader_MentorNewsUpdateInfo = new FileDownloader();
          _fileDownloader_MentorNewsUpdateInfo.downloadFolderURL = _model.getURL_MainConfigFolder();
          _fileDownloader_MentorNewsUpdateInfo.downloadFileName = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_NEWS_UPDATE_DATE_FILE_NAME_ROOT + _model.getNativeLanguageIso639_3Code();
          _fileDownloader_MentorNewsUpdateInfo.downloadFileExtension = "txt";
-         _fileDownloader_MentorNewsUpdateInfo.addEventListener(BwEvent.COMPLETE, onMentorNewsUpdateInfoFileDownloadComplete);
-         _fileDownloader_MentorNewsUpdateInfo.addEventListener(BwEvent.FAILURE, onMentorNewsUpdateInfoFileDownloadFailure);
+         _fileDownloader_MentorNewsUpdateInfo.addEventListener(BwEvent.COMPLETE, onMentorNewsUpdateDateFileDownloadComplete);
+         _fileDownloader_MentorNewsUpdateInfo.addEventListener(BwEvent.FAILURE, onMentorNewsUpdateDateFileDownloadFailure);
          _fileDownloader_MentorNewsUpdateInfo.start();
       }
    }
@@ -375,7 +373,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       // Do nothing else - this is low priority info
    }
 
-   private function onMentorNewsUpdateInfoFileDownloadComplete(event:BwEvent):void {
+   private function onMentorNewsUpdateDateFileDownloadComplete(event:BwEvent):void {
       _model.downloadBandwidthRecorder.reportFileDownloader(_fileDownloader_MentorNewsUpdateInfo);
       var fileData:ByteArray = FileDownloader(event.target).fileData;
       var dateString:String = Utils_String.removeWhiteSpaceIncludingLineReturnsFromBeginningAndEndOfString(String(fileData));
@@ -387,7 +385,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       }
    }
 
-   private function onMentorNewsUpdateInfoFileDownloadFailure(event:BwEvent):void {
+   private function onMentorNewsUpdateDateFileDownloadFailure(event:BwEvent):void {
       _model.downloadBandwidthRecorder.reportFileDownloader(_fileDownloader_MentorNewsUpdateInfo);
       // Do nothing else - this is low priority info
    }

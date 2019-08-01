@@ -36,8 +36,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_ArrayVectorEtc;
       import com.brightworks.util.Utils_Layout;
+      import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
+      import com.langcollab.languagementor.vo.LessonVersionVO;
       import com.langcollab.languagementor.vo.LevelVO;
 
+      private var _deselectedLessonCount:uint;
       private var _isDisposed:Boolean = false;
       private var _levelsSelectedAtStartup:Array = [];
 
@@ -60,7 +64,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isSelectedLevelsChanged())
             Utils_ANEs.showAlert_Toast("Changes have not been saved.");
          dispose();
-         super.doGoBack();
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__MANAGE_DOWNLOADS:
+               navigator.pushView(View_ManageDownloads, null, null, transition_SlideView_Right);
+               break;
+            case ViewContext.CONTEXT_TYPE__MANAGE_LESSONS:
+               navigator.pushView(View_ManageLessons, null, null, transition_SlideView_Right);
+               break;
+            case ViewContext.CONTEXT_TYPE__MORE:
+               navigator.pushView(View_More, null, null, transition_SlideView_Right);
+               break;
+            default:
+               Log.error("View_LessonLevels.doGoBack(): No case for: " + contextType);
+         }
       }
 
       override public function doGoHome():void {
@@ -97,17 +113,49 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          super.doGoBack();
       }
 
+      private function onLevelsDeselectedAlertClose():void {
+         Log.info("View_LessonLevels.onSubmitButtonClick_Continued()");
+         dispose();
+         super.doGoBack();
+      }
+
       private function onSubmitButtonClick():void {
          Log.info("View_LessonLevels.onSubmitButtonClick()");
          if (viewlet.selectedLevels.length == 0) {
-            MobileDialog.open("Please select at least one level.");
+            Utils_ANEs.showAlert_OkayButton("Please select at least one level.");
             return;
          }
-         model.selectedLessonDownloadLevels_PrimaryLevels = viewlet.selectedLevels;
-         if (isSelectedLevelsChanged())
+         if (isSelectedLevelsChanged()) {
+            model.selectedLessonDownloadLevels_PrimaryLevels = viewlet.selectedLevels;
+            // Deselect any currently selected lessons that have a level other than the new selected levels
+            _deselectedLessonCount = 0;
+            for each (var selectedLessonVersionVO:LessonVersionVO in currentLessons.currentLessons) {
+               if (!model.isLessonLevelSelectedForDownloading(selectedLessonVersionVO.levelId)) {
+                  var c:Command_AddOrRemoveSelectedLessonVersion =
+                        new Command_AddOrRemoveSelectedLessonVersion(selectedLessonVersionVO);
+                  c.execute();
+                  _deselectedLessonCount++;
+               }
+            }
             lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
-         dispose();
-         super.doGoBack();
+            if (_deselectedLessonCount > 0) {
+               var lessonOrLessonsString:String = (_deselectedLessonCount == 1) ? " lesson has been " : " lessons have been ";
+               var lessonLevelOrLevelsString:String = (_deselectedLessonCount == 1) ? " its level doesn't " : " their levels don't ";
+               var selectedLevelOrLevelsString:String = (viewlet.selectedLevels.length == 1) ? "level" : "levels";
+               var message:String = _deselectedLessonCount + lessonOrLessonsString + "deselected because" + lessonLevelOrLevelsString + "match the " + selectedLevelOrLevelsString + " that you have selected.";
+               Utils_ANEs.showAlert_OkayButton(message, onLevelsDeselectedAlertClose);
+            }
+            else {
+               dispose();
+               super.doGoBack();
+            }
+
+         }
+         else {
+            // No changes made, but we simply allow the user to do this
+            dispose();
+            super.doGoBack();
+         }
       }
 
       private function onViewActivate():void {

@@ -102,8 +102,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             feedbackTextWidget.text = "Adding library. Please wait...";
             startAddLibraryProcess(scannedString);
             startBusyIndicator();
-         }
-         else {
+         } else {
             feedbackTextWidget.text = "QR Code doesn't contain a valid URL. (Retrieved: " + '"' + scannedString + '")';
             scanButton.label = _SCAN_BUTTON_LABEL__SCAN_AGAIN;
          }
@@ -114,12 +113,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (_isCameraPermissionObtained) {
             activateCodeScanner();
          } else {
-            Utils_ANEs.requestCameraPermission(onCameraPermissionRequestResponse_OnScanButtonClick);
+            Utils_ANEs.requestCameraPermissionForScanner(onCameraPermissionRequestResponse_OnScanButtonClick);
          }
       }
 
       private function onShow():void {
-         Utils_ANEs.requestCameraPermission(onCameraPermissionRequestResponse_Initial);
+         Utils_ANEs.requestCameraPermissionForScanner(onCameraPermissionRequestResponse_Initial);
          feedbackTextWidget.text = "";
       }
       ]]>

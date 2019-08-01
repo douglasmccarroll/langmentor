@@ -62,7 +62,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override public function doGoBack():void {
          Log.info("View_NewDownloads.doGoBack()");
-         if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
+         if (contextType == ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON)
             navigator.pushView(View_Home, null, null, transition_SlideView_Left);
          else
             super.doGoBack();
@@ -76,7 +76,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
          Log.info("View_NewDownloads.onPrimaryBottomButtonClick()");
-         if (contextType == ViewContext.CONTEXT_TYPE__MAIN_SCREEN_LINK_BUTTON)
+         if (contextType == ViewContext.CONTEXT_TYPE__HOME_SCREEN_LINK_BUTTON)
             navigator.pushView(View_Home, null, null, transition_SlideView_Left);
          else
             super.onPrimaryBottomButtonClick(event);

@@ -40,6 +40,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _LIST_OPTION__LESSON_LEVELS:String = "Select Lesson Levels";
       private static const _LIST_OPTION__MANAGE_DATA:String = "Manage Data";
       private static const _LIST_OPTION__MANAGE_DOWNLOADS:String = "Manage Downloads";
+      private static const _LIST_OPTION__MANAGE_LESSONS:String = "Manage Lessons";
       private static const _LIST_OPTION__MANAGE_LIBRARIES:String = "Manage Libraries";
       private static const _LIST_OPTION__PLAY:String = "Play";
 
@@ -81,13 +82,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onListChange():void {
          Log.info("View_More.onListChange(): " + list.selectedItem);
+         var ctxt:ViewContext;
          switch (list.selectedItem) {
             case _LIST_OPTION__COMMUNITY_AND_SUPPORT: {
                navigator.pushView(View_CommunityAndSupport, null, null, transition_SlideView_Left);
                break;
             }
             case _LIST_OPTION__CREDITS: {
-               var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__MORE);
+               ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__MORE);
                navigator.pushView(View_Credits, null, ctxt, transition_SlideView_Left);
                break;
             }
@@ -96,7 +98,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                break;
             }
             case _LIST_OPTION__LESSON_LEVELS: {
-               navigator.pushView(View_LessonLevels, null, null, transition_SlideView_Left);
+               ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__MORE);
+               navigator.pushView(View_LessonLevels, null, ctxt, transition_SlideView_Left);
                break;
             }
             case _LIST_OPTION__MANAGE_DATA: {
@@ -105,6 +108,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             }
             case _LIST_OPTION__MANAGE_DOWNLOADS: {
                navigator.pushView(View_ManageDownloads, null, null, transition_SlideView_Left);
+               break;
+            }
+            case _LIST_OPTION__MANAGE_LESSONS: {
+               navigator.pushView(View_ManageLessons, null, null, transition_SlideView_Left);
                break;
             }
             case _LIST_OPTION__MANAGE_LIBRARIES: {
@@ -124,6 +131,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _listDataProvider.addItem(_LIST_OPTION__HELP);
          _listDataProvider.addItem(_LIST_OPTION__MANAGE_DATA);
          _listDataProvider.addItem(_LIST_OPTION__MANAGE_DOWNLOADS);
+         _listDataProvider.addItem(_LIST_OPTION__MANAGE_LESSONS);
          if (!Constant_MentorTypeSpecific.MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR) {
             _listDataProvider.addItem(_LIST_OPTION__MANAGE_LIBRARIES);
          }

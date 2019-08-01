@@ -21,25 +21,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 xmlns:list = "com.brightworks.component.list.*"
                 xmlns:view = "com.langcollab.languagementor.view.*"
                 implements = "com.brightworks.interfaces.IDisposable"
-                title = "Manage Downloads"
+                title = "Manage Lessons"
                 viewActivate = "onViewActivate()">
 
    <fx:Script>
         <![CDATA[
-      import com.brightworks.constant.Constant_ReleaseType;
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_Dispose;
-      import com.brightworks.util.Utils_System;
+      import com.langcollab.languagementor.util.Utils_LangCollab;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       import mx.collections.ArrayCollection;
 
-      //private static const _LIST_OPTION__:String = "";
-      private static const _LIST_OPTION__AUTOMATIC_DOWNLOADS:String = "Automatic Downloads";
-      private static const _LIST_OPTION__DOWNLOAD_BETA_LESSONS:String = "Download Beta Lessons";
-      private static const _LIST_OPTION__LESSON_DOWNLOADS_INFO:String = "Lesson Download Info";
-      private static const _LIST_OPTION__LESSON_LEVELS:String = "Select Lesson Levels";
-      private static const _LIST_OPTION__START_LESSON_DOWNLOADS:String = "Start Lesson Downloads";
+      private static const _LIST_OPTION__DESELECT_ALL_LESSONS:String = "Deselect All Lessons";
+      private static const _LIST_OPTION__SELECT_LESSONS:String = "Select Lessons";
+      private static const _LIST_OPTION__SELECT_LESSON_LEVELS:String = "Select Lesson Levels";
 
       private var _isDisposed:Boolean = false;
       private var _listDataProvider:ArrayCollection;
@@ -62,7 +59,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       override public function doGoBack():void {
-         Log.info("View_ManageDownloads.doGoBack()");
+         Log.info("View_ManageLessons.doGoBack()");
          navigator.pushView(View_More, null, null, transition_SlideView_Right);
       }
 
@@ -73,45 +70,56 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       private function onListChange():void {
-         Log.info("View_ManageDownloads.onListChange(): " + list.selectedItem);
+         Log.info("View_ManageLessons.onListChange(): " + list.selectedItem);
          var ctxt:ViewContext;
          switch (list.selectedItem) {
-            case _LIST_OPTION__AUTOMATIC_DOWNLOADS: {
-               navigator.pushView(View_AutomaticDownloads, null, null, transition_SlideView_Left);
+            case _LIST_OPTION__DESELECT_ALL_LESSONS: {
+               if (model.getLessonVersionCount() < 1) {
+                  // No downloaded lessons
+                  Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
+                  return;
+               }
+               else if (currentLessons.length == 0) {
+                  // No selected lessons
+                  Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
+                  return;
+               }
+               navigator.pushView(View_DeselectAllLessons, null, null, transition_SlideView_Left);
                break;
             }
-            case _LIST_OPTION__DOWNLOAD_BETA_LESSONS: {
-               navigator.pushView(View_DownloadBetaLessons, null, null, transition_SlideView_Left);
+            case _LIST_OPTION__SELECT_LESSONS: {
+               if (model.getLessonVersionCount() < 1) {
+                  var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
+                  Utils_ANEs.showAlert_OkayButton(message);
+                  return;
+               }
+               if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_SelectLessons_Saved()) {
+                  ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__MANAGE_LESSONS);
+                  navigator.pushView(View_SelectLessons, null, ctxt, transition_SlideView_Left);
+               }
+               else {
+                  ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
+                  ctxt.nextViewClass = View_SelectLessons;
+                  navigator.pushView(View_Help_Select_Lessons, null, ctxt, transition_SlideView_Left);
+               }
                break;
             }
-            case _LIST_OPTION__LESSON_DOWNLOADS_INFO: {
-               navigator.pushView(View_LessonDownloadInfo, null, null, transition_SlideView_Left);
-               break;
-            }
-            case _LIST_OPTION__LESSON_LEVELS: {
-               ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__MANAGE_DOWNLOADS);
+            case _LIST_OPTION__SELECT_LESSON_LEVELS: {
+               ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__MANAGE_LESSONS);
                navigator.pushView(View_LessonLevels, null, ctxt, transition_SlideView_Left);
                break;
             }
-            case _LIST_OPTION__START_LESSON_DOWNLOADS: {
-               navigator.pushView(View_StartLessonDownloads, null, null, transition_SlideView_Left);
-               break;
-            }
             default: {
-               Log.fatal("View_ManageDownloads.onListChange(): No case for " + list.selectedItem);
+               Log.fatal("View_ManageLessons.onListChange(): No case for " + list.selectedItem);
             }
          }
       }
 
       private function onViewActivate():void {
          _listDataProvider = new ArrayCollection();
-         //_listDataProvider.addItem(_LIST_OPTION__AUTOMATIC_DOWNLOADS);
-         if (Utils_System.appReleaseType == Constant_ReleaseType.PRODUCTION) {
-            _listDataProvider.addItem(_LIST_OPTION__DOWNLOAD_BETA_LESSONS);
-         }
-         _listDataProvider.addItem(_LIST_OPTION__LESSON_DOWNLOADS_INFO);
-         _listDataProvider.addItem(_LIST_OPTION__LESSON_LEVELS);
-         _listDataProvider.addItem(_LIST_OPTION__START_LESSON_DOWNLOADS);
+         _listDataProvider.addItem(_LIST_OPTION__DESELECT_ALL_LESSONS);
+         _listDataProvider.addItem(_LIST_OPTION__SELECT_LESSONS);
+         _listDataProvider.addItem(_LIST_OPTION__SELECT_LESSON_LEVELS);
          list.dataProvider = _listDataProvider;
       }
       ]]>

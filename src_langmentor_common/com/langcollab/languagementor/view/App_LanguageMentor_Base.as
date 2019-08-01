@@ -127,7 +127,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    private function onActionBarHomeButtonClick(event:MouseEvent):void {
       Utils_Audio_Files.playClick();
-      View_Base(navigator.activeView).doGoHome();
+      if ((navigator) && (navigator.activeView))
+         View_Base(navigator.activeView).doGoHome();
    }
 
    private function onActivateApp(event:Event):void {

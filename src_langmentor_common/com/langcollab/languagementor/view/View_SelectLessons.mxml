@@ -27,12 +27,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_ANEs;
+      import com.brightworks.util.Utils_ANEs;
       import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
       import com.langcollab.languagementor.event.Event_LessonVersionList;
       import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
+      import com.langcollab.languagementor.view.View_ManageLessons;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
       import com.langcollab.languagementor.vo.LessonVersionVO;
 
       import mx.collections.ArrayCollection;
@@ -88,17 +91,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
       }
 
-      public function doGoBack_LeaveSelectLessons():void {
-         setCurrentLessonVersion();
-         navigator.pushView(View_Home, null, null, transition_SlideView_Right);
-         if (AppStatePersistenceManager.getInstance().retrieveIsLessonVersionEntryCountSaved() && (AppStatePersistenceManager.getInstance().retrieveLessonVersionEntryCount() >= Constant_AppConfiguration.LESSON_ENTRY_COUNT_REQUIRED_BEFORE_DISPLAYING_RATE_APP_PROMPT)) {
-            /////  Should we, instead of this: AppStatePersistenceManager.getInstance().retrieveLessonVersionEntryCount()
-            /////                     do "retrieveLessonVersionEntryCountSinceLastDisplayOfRatingsPrompt()"  ?
-            Log.info("View_SelectLessons.doGoBack_LeaveSelectLessons(): Calling Utils_ANEs.showRatingsPrompt()");
-            Utils_ANEs.showRatingsPrompt();
-         }
-      }
-
       override public function doGoHome():void {
          Log.info("View_SelectLessons.doGoHome()");
          if (model.getCurrentLearningModeVO().isDualLanguage) {
@@ -109,16 +101,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
             }
             else {
-               doGoBack_LeaveSelectLessons()
+               doGoHome_Continued()
             }
          }
          else {
-            doGoBack_LeaveSelectLessons()
+            doGoHome_Continued()
          }
-      }
-
-      public function doGoHome_Continued():void {
-         doGoBack_LeaveSelectLessons()
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -191,6 +179,28 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   return true;
          }
          return false;
+      }
+
+      private function doGoBack_LeaveSelectLessons():void {
+         setCurrentLessonVersion();
+         navigator.popView(transition_SlideView_Right);
+         Utils_ANEs.showRatingsPromptIfAppropriate();
+      }
+
+      private function doGoHome_Continued():void {
+         setCurrentLessonVersion();
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON:
+               navigator.pushView(View_Home, null, null, transition_SlideView_Right);
+               break;
+            case ViewContext.CONTEXT_TYPE__MANAGE_LESSONS:
+               navigator.pushView(View_Home, null, null, transition_SlideView_Left);
+               break;
+            default:
+               Log.error("View_SelectLessons.doGoHome_Continued(): No case for: " + contextType);
+               navigator.pushView(View_Home, null, null, transition_SlideView_Left);
+         }
+         Utils_ANEs.showRatingsPromptIfAppropriate();
       }
 
       private function findFirstSelectedLessonThatMatchesVO(passedLVVO:LessonVersionVO):LessonVersionVO {

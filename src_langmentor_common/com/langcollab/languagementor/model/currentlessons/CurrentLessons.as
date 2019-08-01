@@ -46,13 +46,10 @@ import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.Utils_ANEs;
-import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.singleton.SingletonManager;
-import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.event.Event_CurrentLessonsAudioTimer;
 import com.langcollab.languagementor.model.MainModel;
@@ -424,12 +421,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
       if (length != previousLength)
          dispatchEvent(new Event("lengthChange"));
-   }
-
-   public function getChunkDefaultTextDisplayTypeName(vo:ChunkVO):String {   ///// no longer used?
-      var lvvo:LessonVersionVO = getLessonForChunk(vo);
-      var typeName:String = _model.getTextDisplayTypeTypeNameFromId(lvvo.defaultTextDisplayTypeId);
-      return typeName;
    }
 
    public function getChunkNativeDisplayText(chunkVO:ChunkVO):String {
