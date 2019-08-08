@@ -260,7 +260,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onModelDataInitialized(event:Event):void {
          Log.debug("View_Home.onModelDataInitialized()");
          if (_watcher_IsModelDataInitialized) {
-            _watcher_IsModelDataInitialized.unwatch();
+            _watcher_IsModelDataInitialized.unwatch(); //
             _watcher_IsModelDataInitialized = null;
          }
          doPostInitStuff();
