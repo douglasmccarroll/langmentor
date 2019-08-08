@@ -103,7 +103,7 @@ Run / Clear app data
 ErrorReport Classes
 *******************
 
-Update 20150519: We're starting to move from ErrorReport to TechReport classes. The basic idea here is that it is often the case that the info that we want to report doesn't fall neatly into 'error' or 'success' categories, so it's better to have more general classes that can contain properties that meets the needs of their clients.
+Update 20150519: We're starting to move from ErrorReport to TechReport classes. The basic idea here is that it is often the case that the info that we want to report doesn't fall neatly into 'error' or 'success' categories, so it's better to have more general classes that can contain properties that meet the needs of their clients.
 
 Many of our classes have corresponding ErrorReport classes. For example, FileDownloader has a corresponding FileDownloaderErrorReport class. This allows us to pass out detailed error info to client code. The client code may simply pass the info into a Log method, or may add it to its own ErrorReport class and pass the assembled info out to its client.
 
