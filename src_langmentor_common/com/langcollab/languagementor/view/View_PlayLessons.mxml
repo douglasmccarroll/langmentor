@@ -42,6 +42,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.button.Button_Standard_Purple;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard_Blue;
       import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.constant.Constant_DownloadedLessons_SingleOrDualLanguageOrBoth;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
@@ -69,7 +70,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__PREVIOUS_LESSON:String = "<<";
       private static const _BUTTON_LABEL__RECORD:String = "Record &\nPlayback";
       private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
-      private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 2000;
+      private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 1200;
 
       private var _button_Credits:Button_Standard_Blue;
       private var _button_IKnowThis:Button_Standard_Purple;
@@ -85,10 +86,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
       [Bindable]
-      private var _currentTextDisplayMode:String = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
+      private var _currentTextDisplayMode:String = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
       private var _index_dialogOptionIndexes_to_textDisplayMode:Dictionary;
       private var _isDisposed:Boolean = false;
-      //// alpha mode private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
+      ///alpha mode private var _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge:Boolean;
       private var _mostRecentUserActionTime:Number;
       private var _mostRecentUserInitiatedChunkNavigationTime:Number;
       private var _mostRecentUserInitiatedIKnowThisTime:Number;
@@ -375,7 +376,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
 
       private function onCurrentChunkVOChange(newValue:int):void {
-         if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
+         setButtonEnabled_Translate();
+         updateTextBoxesText();
+
+         ///alpha review stuff
+         /*if (currentLessons.isCurrentLessonAlphaReviewVersion()) {
             _button_PlayPause.enabled = false;
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
          } else {
@@ -386,8 +391,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          _button_Loop.enabled = !currentLessons.isCurrentLessonAlphaReviewVersion();
          _button_Record.enabled = !currentLessons.isCurrentLessonAlphaReviewVersion();
-         _button_Translate.enabled = !currentLessons.isCurrentLessonAlphaReviewVersion();
-         updateTextBoxesText();
+         _button_Translate.enabled = !currentLessons.isCurrentLessonAlphaReviewVersion();*/
       }
 
       private function onCurrentLessonsLengthChange(newValue:uint):void {
@@ -409,7 +413,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          var isAbortNeeded:Boolean = false;
          if ((audioController.mostRecentAutoChunkFinishInitiatedIterateChunk > 0) &&
                ((Utils_DateTime.getCurrentMS_BasedOnDate() - audioController.mostRecentAutoChunkFinishInitiatedIterateChunk) < _CHUNK_START_I_KNOW_THIS_ABORT_TIME)) {
@@ -430,7 +434,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_Audio_Files.playClick();
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-            //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+            ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
             callLater(onDo_IKnowThis_DispatchCommand);
          }
       }
@@ -462,7 +466,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          }
 
-         //// This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
+         ///alpha This code and other alpha-mode code may not work due to changes made when implementing the Explanatory chunk type
          // This is distinctly kludgy. If we're reviewing an alpha review version lesson, and the app isn't 'playing', i.e. auto-advance isn't on,
          // we want the first tap of the > button to NOT advance to the next chunk. Instead, we want to switch from native language text
          // to target language text. All this falls completely outside a primary design paradigm of Language Mentor, which is that AudioController
@@ -475,14 +479,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textField_ChunkText.text = currentLessons.getCurrentChunkDefaultDisplayText();
             _button_PreviousChunk.enabled = true;
          }*/
-         //// alpha mode else {
+         ///alpha mode else {
          // Standard non-kludgy logic
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
          _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
          callLater(onDo_NextChunk_Continued);
-         //// alpha mode }
+         ///alpha mode }
       }
 
       private function onDo_NextChunk_Continued():void {
@@ -493,7 +497,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          if (!currentLessons.isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {
             Log.error("View_PlayLessons.onDo_NextLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
@@ -514,7 +518,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          currentLessons.togglePlayPause();
          if (currentLessons.isLessonPaused) {
             _button_PlayPause.label = _BUTTON_LABEL__PLAY;
@@ -534,16 +538,16 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Log.error("View_PlayLessons.onDo_PreviousChunk(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
          }
-         //// alpha mode var isPreviousUserActionKludge:Boolean = _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge;
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
-         //// alpha mode if (isPreviousUserActionKludge) {
-         //// alpha mode    textField_ChunkText.text = currentLessons.getCurrentDisplayText();
-         //// alpha mode } else {
+         ///alpha mode var isPreviousUserActionKludge:Boolean = _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode if (isPreviousUserActionKludge) {
+         ///alpha mode    textField_ChunkText.text = currentLessons.getCurrentDisplayText();
+         ///alpha mode } else {
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
          _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
          callLater(onDo_PreviousChunk_Continued);
-         //// alpha mode }
+         ///alpha mode }
       }
 
       private function onDo_PreviousChunk_Continued():void {
@@ -554,7 +558,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentlyInUserActionRequiredWaitInterval())
             return;
          _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         //// alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
+         ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
          if (!currentLessons.isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {
             Log.error("View_PlayLessons.onDo_PreviousLesson(): isAnySelectedLessonVersionsHaveUnsuppressedChunks returns false");
             return;
@@ -601,6 +605,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onInitialize():void {
          Log.debug("View_PlayLessons.onInitialize()");
+         var isTargetPhoneticTextAvailable:Boolean;
+         var hasPhoneticTextValueFromLanguageResourceFile_IfSpecified:String = model.getTargetLanguageResource(["hasPhoneticText"]);
+         if (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified) {
+            isTargetPhoneticTextAvailable = (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified == "true");
+         }
+         if (model.isAppDualLanguage()) {
+            _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
+         }
+         else {
+            if (isTargetPhoneticTextAvailable) {
+               _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
+            }
+            else {
+               _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT
+            }
+         }
          if (!currentLessons.currentLessonVO) {
             Log.error("View_PlayLessons.onInitialize(): currentLessons.currentLesson is null");
             navigator.pushView(View_Home, null, null, transition_SlideView_Up);
@@ -694,27 +714,28 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          switch (learningModeLabel) {
             case Constant_LearningModeLabels.LISTEN_TO_TARGET: {
                setButtonEnabled_Record(false);
-               setButtonEnabled_Translate(true);
+               setButtonVisible_Translate(true);
                break;
             }
             case Constant_LearningModeLabels.NATIVE_TO_TARGET_LEARNING:
             case Constant_LearningModeLabels.NATIVE_TO_TARGET_TRANSLATION:
             case Constant_LearningModeLabels.REPEAT_TARGET: {
-               setButtonEnabled_Translate(false);
                setButtonEnabled_Record(true);
+               setButtonVisible_Translate(false);
                _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
                _button_Record.selected = audioController.isRecordMode;
                break;
             }
             case Constant_LearningModeLabels.TARGET_TO_NATIVE_TRANSLATION: {
                setButtonEnabled_Record(false);
-               setButtonEnabled_Translate(false);
+               setButtonVisible_Translate(false);
                break;
             }
             default: {
                throw new Error("Screen_PlayLessons.onPreinitialize(): no match for case of '" + learningModeLabel + "'.");
             }
          }
+         setButtonEnabled_Translate();
          Log.debug("View_PlayLessons.onPreinitialize(): finished");
       }
 
@@ -771,14 +792,22 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function setButtonEnabled_Record(value:Boolean):void {
          if (_button_Record) {
             _button_Record.enabled = value;
-            //_button_Record.includeInLayout = value;
-            //_button_Record.visible = value;
          }
       }
 
-      private function setButtonEnabled_Translate(value:Boolean):void {
+      private function setButtonEnabled_Translate():void {
+         if (!_button_Translate)
+               return;
+         if (model.getLearningModeTokenFromID(model.currentLearningModeId) == Constant_LearningModeLabels.LISTEN_TO_TARGET) {
+            _button_Translate.enabled = currentLessons.isCurrentLessonDualLanguage();
+         }
+         else {
+            _button_Translate.enabled = false;
+         }
+      }
+
+      private function setButtonVisible_Translate(value:Boolean):void {
          if (_button_Translate) {
-            _button_Translate.enabled = value;
             _button_Translate.includeInLayout = value;
             _button_Translate.visible = value;
          }
@@ -813,7 +842,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function updateChunkTextTextBoxText():void {
-         //// Implement alpha-mode before using alpha mode
+         ///alpha Implement alpha-mode before using alpha mode
          if ((textField_ChunkText.height == 0) || (textField_ChunkText.width == 0))
             return;
          var fontSize:uint = Utils_Text.getStandardFontSize();

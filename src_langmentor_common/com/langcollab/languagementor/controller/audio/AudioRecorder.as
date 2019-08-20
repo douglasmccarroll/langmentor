@@ -21,6 +21,7 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
+import com.brightworks.util.Utils_System;
 import com.brightworks.util.singleton.SingletonManager;
 
 import flash.events.Event;
@@ -140,6 +141,9 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function isMicrophoneAvailable():Boolean {
       Log.info("AudioRecorder.isMicrophoneAvailable()");
+      if (Utils_System.isRunningOnDesktop()) {
+         return true; // We dummy this so that we can test appearance of Record/Playback button
+      }
       return (_microphone != null);
    }
 
@@ -155,6 +159,9 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function startRecording():void {
       Log.info("AudioRecorder.startRecording()");
+      if (Utils_System.isRunningOnDesktop()) {
+         return;
+      }
       if (!isMicrophoneAvailable()) {
          Log.error("AudioRecorder.startRecording: Microphone not available - check isMicrophoneAvailable() before calling this method")
          return;
@@ -174,6 +181,9 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function stopRecording(recordingStopDelayDuration:uint = 0):void {
       Log.info("AudioRecorder.stopRecording(): _recordedAudio's size: " + getSize(_recordedAudio));
+      if (Utils_System.isRunningOnDesktop()) {
+         return;
+      }
       if (!isMicrophoneAvailable()) {
          // We call this method from at least on of our subclass's dispose() methods, whether or not the microphone is available, so this isn't an error condition
          return;

@@ -170,10 +170,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
             return;
          }
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_PlayLessons_Saved()) {
-            navigator.pushView(View_PlayLessons, null, null, transition_SlideView_Down);
+            navigator.pushView(View_PlayLessons, null, ctxt, transition_SlideView_Down);
          } else {
-            var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
             ctxt.nextViewClass = View_PlayLessons;
             navigator.pushView(View_Help_Play_Lessons, null, ctxt, transition_SlideView_Down);
          }
@@ -186,12 +186,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_ANEs.showAlert_OkayButton(message);
             return;
          }
-         var ctxt:ViewContext;
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
          if (appStatePersistenceManager.retrieveIsHelp_LastViewDate_SelectLessons_Saved()) {
-            ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
             navigator.pushView(View_SelectLessons, null, ctxt, transition_SlideView_Left);
          } else {
-            ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
             ctxt.nextViewClass = View_SelectLessons;
             navigator.pushView(View_Help_Select_Lessons, null, ctxt, transition_SlideView_Left);
          }
@@ -260,7 +258,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onModelDataInitialized(event:Event):void {
          Log.debug("View_Home.onModelDataInitialized()");
          if (_watcher_IsModelDataInitialized) {
-            _watcher_IsModelDataInitialized.unwatch(); //
+            _watcher_IsModelDataInitialized.unwatch();
             _watcher_IsModelDataInitialized = null;
          }
          doPostInitStuff();

@@ -46,7 +46,6 @@ public class Command_DownloadLibraryInfoTechReport extends TechReport implements
    public static const PROB_DESC__LESSON_XML__MULTIPLE_FILE_NAME_ROOT_NODES:String = "Lesson XML's chunk node has more than one 'fileNameRoot' node.";
    public static const PROB_DESC__LESSON_XML__MULTIPLE_IS_ALPHA_REVIEW_VERSION_NODES:String = "Lesson XML has more than one 'isAlphaReviewVersion' node.";
    public static const PROB_DESC__LESSON_XML__MULTIPLE_IS_DUAL_LANGUAGE_NODES:String = "Lesson XML has more than one 'isDualLanguage' node.";
-   public static const PROB_DESC__LESSON_XML__MULTIPLE_LEVEL_NODES:String = "Lesson XML has more than one 'level' node.";
    public static const PROB_DESC__LESSON_XML__MULTIPLE_LESSON_NAME_NODES:String = "Lesson XML has more than one 'lessonName' node.";
    public static const PROB_DESC__LESSON_XML__MULTIPLE_LESSON_SORT_NAME_NODES:String = "Lesson XML has more than one 'lessonSortName' node.";
    public static const PROB_DESC__LESSON_XML__MULTIPLE_NATIVE_LANGUAGE_AUDIO_VOLUME_ADJUSTMENT_FACTOR_NODES:String = "Lesson XML has more than one 'nativeLanguageAudioVolumeAdjustmentFactor' node.";
@@ -58,12 +57,10 @@ public class Command_DownloadLibraryInfoTechReport extends TechReport implements
    public static const PROB_DESC__LESSON_XML__NO_CHUNK_NODES:String = "Lesson XML's chunks node doesn't have any 'chunk' nodes.";
    public static const PROB_DESC__LESSON_XML__NO_DEFAULT_TEXT_DISPLAY_TYPE_NODE:String = "Lesson XML doesn't have a 'defaultTextDisplayType' node.";
    public static const PROB_DESC__LESSON_XML__NO_FILE_NAME_ROOT_NODE:String = "Lesson XML's chunk node doesn't have a 'fileNameRoot' node.";
-   public static const PROB_DESC__LESSON_XML__NO_LEVEL_NODE:String = "Lesson XML doesn't have a 'level' node.";
    public static const PROB_DESC__LESSON_XML__NO_LESSON_NAME_NODE:String = "Lesson XML doesn't have a 'lessonName' node.";
    public static const PROB_DESC__LESSON_XML__NO_NATIVE_LANGUAGE_ISO6393_CODE_NODE_AND_IS_DUAL_LANGUAGE:String = "Lesson XML doesn't have a 'nativeLanguageISO639_3Code' node, and lesson is dual-language.";
    public static const PROB_DESC__LESSON_XML__NO_TARGET_LANGUAGE_ISO6393_CODE_NODE:String = "Lesson XML doesn't have a 'targetLanguageISO639_3Code' node.";
    public static const PROB_DESC__LESSON_XML__NONSTANDARD_DEFAULT_TEXT_DISPLAY_TYPE:String = "Lesson info file specifies a defaultTextDisplayType that isn't a standard text display type.";
-   public static const PROB_DESC__LESSON_XML__NONSTANDARD_LEVEL:String = "Lesson info file specifies a level that isn't a standard Language Mentor level.";
    public static const PROB_DESC__LESSON_XML__TYPE_ERROR__NATIVE_LANGUAGE_AUDIO_VOLUME_ADJUSTMENT_FACTOR_NODE:String = "Lesson XML's 'nativeLanguageAudioVolumeAdjustmentFactor' node doesn't contain correct type of data.";
    public static const PROB_DESC__LESSON_XML__TYPE_ERROR__TARGET_LANGUAGE_AUDIO_VOLUME_ADJUSTMENT_FACTOR_NODE:String = "Lesson XML's 'targetLanguageAudioVolumeAdjustmentFactor' node doesn't contain correct type of data.";
    public static const PROB_DESC__REPOS_XML__CONTENTPROVIDERID_TOO_SHORT:String = "language_mentor_library.xml's 'contentProviderId' is too short. Please create an ID using 'reverse domain' format, e.g. 'com.mydomain'.";

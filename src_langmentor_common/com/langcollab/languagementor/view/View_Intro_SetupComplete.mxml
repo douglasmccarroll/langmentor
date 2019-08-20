@@ -234,7 +234,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget = new UIWidget_Viewlet__Bullet_Text();
             textWidget.text = "Select Manage Libraries > Add Libraries and specify one or more libraries that you'd like to use";
             if (model.doesCurrentTargetLanguageHaveRecommendedLibraries())
-               textWidget.text += ", and/or select Manage Libraries > Recommended Libraries"
+               textWidget.text += ', and/or select Manage Libraries > Recommended Libraries and enable the "Use Recommended Libraries" option'
             viewletGroup.addElement(textWidget);
          }
          textWidget = new UIWidget_Viewlet__Bullet_Text();
@@ -243,7 +243,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget.text += " (you haven't enabled auto-downloading, so you'll probably want to repeat this step occasionally in the future)";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "If so, you're all set. Once the first lesson is downloaded, go to the Home screen, Select Lessons, then Play Lessons";
+         textWidget.text = "If so, you're all set. Once one or more lessons are downloaded, go to the Home screen, then the Select Lessons screen, and select one or more lessons";
+         viewletGroup.addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "Once you've done this you can go to the Play Lessons screen and start learning " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Enjoy!";
@@ -297,7 +300,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                // The "update info" process is finished, but no lesson downloads are in progress or complete.
                // It's possible that a problem occurred the last time the "update info" process ran.
                if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
-                  displayContent_Downloading_Failure();
+                  displayContent_NoLibrariesAvailableForDownload();
                else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0)
                   displayContent_LibrariesAvailableButNoLessonsEligibleForDownload();
                else {

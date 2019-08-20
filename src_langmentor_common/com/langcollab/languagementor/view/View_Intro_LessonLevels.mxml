@@ -83,7 +83,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textGroup.paddingLeft = Utils_Layout.getStandardPadding();
          textGroup.percentWidth = 100;
          var widget:UIWidget_Viewlet__Bold_Text = new UIWidget_Viewlet__Bold_Text();
-         widget.text = "Please select the lesson levels that you'd like to download. We suggest that you start with one or two levels. You can change these settings later.";
+         widget.text = "Please select the lesson levels that you'd like to study. We suggest that you start with one or two levels. You can change these settings later.";
          textGroup.addElement(widget);
          viewletGroup.addElement(textGroup);
          var spacer:Spacer = new Spacer();

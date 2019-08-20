@@ -60,17 +60,32 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       override protected function onViewActivate():void {
+         primaryBottomButton.visible = true;
+         primaryBottomButton.label = "Okay";
          var widget:IUIWidget_Text;
          if (model.configFileInfo.isMostRecentNewsUpdateAvailableForDisplay()) {
             var padding:int = 10;
+            var viewYPos:Number;
+            var headingFontSize:String;
+            var textFontSize:String;
+            if (Utils_System.isIOS()) {
+               viewYPos = Math.round(navigator.actionBar.height * 1.5) + padding;
+               headingFontSize = "20";
+               textFontSize = "16";
+            }
+            else {
+               viewYPos = navigator.actionBar.height + padding;
+               headingFontSize = "5";
+               textFontSize = "4";
+            }
             _stageWebView = new StageWebView();
             _stageWebView.stage = stage;
-            _stageWebView.viewPort = new Rectangle(padding, navigator.actionBar.height + padding, viewletGroup.width - padding, height - (buttonContainer.height + padding));
+            _stageWebView.viewPort = new Rectangle(padding, viewYPos, viewletGroup.width - padding, height - (buttonContainer.height + padding));
             var htmlString:String = model.configFileInfo.getMostRecentNewsUpdateHTML();
             htmlString = Utils_String.removeWhiteSpaceAtBeginningsOfLines(htmlString);
             htmlString = Utils_String.removeLineBreaks(htmlString);
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, "6");
-            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, "5");
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_HEADING, headingFontSize);
+            htmlString = Utils_String.replaceAll(htmlString, Constant_LangMentor_Misc.TOKEN_FONT_SIZE_TEXT, textFontSize);
             _stageWebView.loadString(htmlString);
             appStatePersistenceManager.persistMostRecent_NewsUpdate_DateViewed(new Date());
          }

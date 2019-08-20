@@ -59,6 +59,7 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
    private var _downloadFailureCount:int = 0;
    private var _includeLessonInfo:Boolean;
    private var _index_lessonId_to_lessonDownloadFolderURL:Dictionary = new Dictionary();
+   private var _index_lessonId_to_lessonLevel:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonPublishedVersion:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonReleaseType:Dictionary = new Dictionary();
    private var _index_lessonId_to_lessonType:Dictionary = new Dictionary();
@@ -109,6 +110,10 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       if (_index_lessonId_to_lessonDownloadFolderURL) {
          Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonDownloadFolderURL, true);
          _index_lessonId_to_lessonDownloadFolderURL = null;
+      }
+      if (_index_lessonId_to_lessonLevel) {
+         Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonLevel, true);
+         _index_lessonId_to_lessonLevel = null;
       }
       if (_index_lessonId_to_lessonPublishedVersion) {
          Utils_Dispose.disposeDictionary(_index_lessonId_to_lessonPublishedVersion, true);
@@ -420,7 +425,7 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
                lessonDownloadInfo_Lesson.lessonDescription = lessonXML.description[0].toString();
             lessonDownloadInfo_Lesson.lessonId = lessonId;
             lessonDownloadInfo_Lesson.lessonIsDualLanguage = Utils_XML.readBooleanNode(lessonXML.isDualLanguage[0]);
-            lessonDownloadInfo_Lesson.lessonLevelToken = lessonXML.level[0].toString();
+            lessonDownloadInfo_Lesson.lessonLevelToken = _index_lessonId_to_lessonLevel[lessonId];
             if (XMLList(lessonXML.nativeLanguageAudioVolumeAdjustmentFactor).length() == 1)
                lessonDownloadInfo_Lesson.lessonNativeLanguageAudioVolumeAdjustmentFactor = Utils_XML.readNumberNode(lessonXML.nativeLanguageAudioVolumeAdjustmentFactor[0]);
             else
@@ -538,6 +543,8 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
                   continue;
                }
                isWillDownloadOneOrMoreLessonXMLFiles = true;
+               var lessonLevel:String = lessonNode.@level;
+               _index_lessonId_to_lessonLevel[lessonId] = lessonLevel;
                _index_lessonId_to_lessonReleaseType[lessonId] = lessonReleaseType;
                _index_lessonId_to_lessonType[lessonId] = lessonType;
                _index_lessonId_to_lessonPublishedVersion[lessonId] = lessonVersion;
@@ -684,6 +691,7 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
             bError = true;
             techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_LIST_XML__LESSON_VERSION_IS_NOT_A_NUMBER + ": " + lessonNode.toString());
          }
+         ////  What happens if there is no level attribute?
          if (!model.isLessonLevelAStandardLevelLabelToken(lessonNode.@level)) {
             bError = true;
             techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_LIST_XML__LEVEL_IS_NOT_A_STANDARD_LEVEL + ": " + lessonNode.toString());
@@ -773,16 +781,6 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       } else if (XMLList(lessonXML.targetLanguageISO639_3Code).length() > 1) {
          bError = true;
          problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__MULTIPLE_TARGET_LANGUAGE_ISO6393_CODE_NODES);
-      }
-      if (XMLList(lessonXML.level).length() < 1) {
-         bError = true;
-         problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__NO_LEVEL_NODE);
-      } else if (XMLList(lessonXML.level).length() > 1) {
-         bError = true;
-         problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__MULTIPLE_LEVEL_NODES);
-      } else if ((XMLList(lessonXML.level).length() == 1) && (!isLessonLevelAStandardLevel(lessonXML.level[0].toString()))) {
-         bError = true;
-         problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__LESSON_XML__NONSTANDARD_LEVEL);
       }
       if (XMLList(lessonXML.defaultTextDisplayType).length() < 1) {
          bError = true;

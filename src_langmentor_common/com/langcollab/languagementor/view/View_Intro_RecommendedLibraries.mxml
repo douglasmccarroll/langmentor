@@ -76,32 +76,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
-         if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
-            textWidget = new UIWidget_Viewlet__Bold_Text();
-            textWidget.text = "You can use lesson libraries that we recommend, add specific libraries, or both:";
-            viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
-            viewletGroup.addElement(new Spacer());
-            _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
-            _recommendedLibrariesViewlet.displayRecommendedLibrariesHeading = false;
-            viewletGroup.addElement(_recommendedLibrariesViewlet);
-         } else {
-            textWidget = new UIWidget_Viewlet__Heading();
-            textWidget.text = "What lesson libraries would you like to use?";
-            viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
-            textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "We recommend lesson libraries when possible, but we're currently unable to suggest libraries for learning " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
-            viewletGroup.addElement(textWidget);
-            textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "Would you like to specify one or more lesson libraries for " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to use? If so, please click Next, and use the next screen to add the libraries";
-            viewletGroup.addElement(textWidget);
-            viewletGroup.addElement(new Spacer());
-            viewletGroup.addElement(new Spacer());
-            textWidget = new UIWidget_Viewlet__Bold_Text();
-            textWidget.text = "If you’re interested in creating lesson libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", please visit us at LanguageCollaborative.com";
-            viewletGroup.addElement(textWidget);
+         if (!model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
+            Log.fatal("View_Intro_RecommendedLibraries.onCreationComplete(): Target language has no recommended libs, so we shouldn't be here");
+            return;
          }
+         textWidget = new UIWidget_Viewlet__Bold_Text();
+         textWidget.text = "You can use lesson libraries that we recommend, add specific libraries, or both:";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         _recommendedLibrariesViewlet = new Viewlet_RecommendedLibraries();
+         _recommendedLibrariesViewlet.displayRecommendedLibrariesHeading = false;
+         viewletGroup.addElement(_recommendedLibrariesViewlet);
       }
       ]]>
     </fx:Script>

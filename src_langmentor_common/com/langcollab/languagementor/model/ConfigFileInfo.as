@@ -65,7 +65,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
 
    private static const _TIMER_TIMEOUT_MS:int = 30000;
 
-   public var languagePairsWithRecommendedLibrariesInfo:XML;
+   public var targetLanguagesForWhichRecommendedLibrariesAreAvailable:XML;
 
    private var _appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
    private var _callbackList:Array = [];
@@ -444,7 +444,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       }
       /// Use a validateAndPopulateRootConfigFileXML() method
       _mainConfigFolderURL = _fileXML_LanguageMentorRootConfig.mainConfigFolderURL[0].toString();
-      languagePairsWithRecommendedLibrariesInfo = _fileXML_LanguageMentorRootConfig.languagePairsWithRecommendedLibrariesInfo[0];
+      targetLanguagesForWhichRecommendedLibrariesAreAvailable = _fileXML_LanguageMentorRootConfig.targetLanguagesForWhichRecommendedLibrariesAreAvailable[0];
       _fileDownloader_MentorTypeFile = new FileDownloader();
       _fileDownloader_MentorTypeFile.downloadFolderURL = _model.getURL_MainConfigFolder();
       _fileDownloader_MentorTypeFile.downloadFileName = createMentorTypeFileFileName();

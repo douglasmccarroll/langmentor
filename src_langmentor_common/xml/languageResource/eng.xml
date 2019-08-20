@@ -1,14 +1,17 @@
 <languageResource>
    <languageExample>Hello</languageExample>
+   <hasPhoneticText>false</hasPhoneticText>
+   <languageSpecificDisplayStrings>
+	   <eng>
+		   <displayModeName_targetLanguage>English</displayModeName_targetLanguage>
+	   </eng>	   
+   </languageSpecificDisplayStrings>	   
    <label_LearningFeedback_IKnowThis>I Know This</label_LearningFeedback_IKnowThis>
    <label_LearningMode_ListenToTarget>Listen to %target_language_name%</label_LearningMode_ListenToTarget>
-   <label_LearningMode_NativeToTargetLearning>%native_language_name% to %target_language_name% Learning
-   </label_LearningMode_NativeToTargetLearning>
-   <label_LearningMode_NativeToTargetTranslation>%native_language_name% to %target_language_name% Translation
-   </label_LearningMode_NativeToTargetTranslation>
+   <label_LearningMode_NativeToTargetLearning>%native_language_name% to %target_language_name% Learning</label_LearningMode_NativeToTargetLearning>
+   <label_LearningMode_NativeToTargetTranslation>%native_language_name% to %target_language_name% Translation</label_LearningMode_NativeToTargetTranslation>
    <label_LearningMode_RepeatTarget>Repeat %target_language_name%</label_LearningMode_RepeatTarget>
-   <label_LearningMode_TargetToNativeTranslation>%target_language_name% to %native_language_name% Translation
-   </label_LearningMode_TargetToNativeTranslation>
+   <label_LearningMode_TargetToNativeTranslation>%target_language_name% to %native_language_name% Translation</label_LearningMode_TargetToNativeTranslation>
    <label_Level_Introductory>Newbie</label_Level_Introductory>
    <label_Level_Beginner>Beginner</label_Level_Beginner>
    <label_Level_Beginner_Lower>Beginner, Lower</label_Level_Beginner_Lower>

@@ -54,19 +54,10 @@
                         </intent-filter>
                     </activity>
 
-                    <!-- For MyFlashLabs BarCode extension -->
-                    <activity
-                        android:name="com.google.zxing.client.android.CaptureActivity"
-                        android:clearTaskOnLaunch="true"
-                        android:screenOrientation="landscape"
-                        android:configChanges="orientation|keyboardHidden"
-                        android:stateNotNeeded="true"
-                        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                        android:windowSoftInputMode="stateAlwaysHidden" />
-                    <activity
-                        android:name="com.doitflash.barcode.utils.ExBridge" />
-                    <service android:name="com.distriqt.extension.mediaplayer.audio.AudioPlayerService" android:enabled="true" android:exported="true"></service>
-
+                    <!-- For distriqt Scanner extension -->
+		              <activity android:name="com.distriqt.extension.scanner.zbar.ZBarScannerActivity" />
+		              <activity android:name="com.distriqt.extension.scanner.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		              
                 </application>
 
                 <supports-screens
@@ -114,7 +105,7 @@
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.MediaPlayer</extensionID>
-	  <extensionID>com.distriqt.Scanner</extensionID>
+      <extensionID>com.distriqt.Scanner</extensionID>
       <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
       <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
    </extensions>

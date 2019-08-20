@@ -120,6 +120,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                if (isInternetConnectionProblem) {
                   resultsDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
                } else {
+                  // If you're trying to figure out why you're hitting this message when you think that you have recommended libraries which should have
+                  // been found, first check the following:
+                  //    - Does a language-specific file exist for the language(s) that your user is using/studying? (e.g. cmn_eng.xml)
+                  //    - For the library(s) listed in that file, check the library location (libraryURL) and confirm the following:
+                  //      - A language_mentor_library.xml file is in place
+                  //      - It's contents are correct
+                  //      - While you're here, you might as well also confirm that lesson files and lesson_list are, at least present
+                  //    - If everything is working in desktop mode, but no on a device, ensure that you've FTPed all of these files to the server 
                   resultsDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
                }
             }

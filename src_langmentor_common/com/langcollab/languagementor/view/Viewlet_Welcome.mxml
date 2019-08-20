@@ -72,9 +72,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = '"I Know This"' + " button allows you to focus on the content that you haven't mastered yet";
          addElement(textWidget);
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "Multiple learning modes for learning new content, translation practice, etc.";
-         addElement(textWidget);
          addElement(new Spacer());
          addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bold_Text();

@@ -98,13 +98,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
       }
 
-      protected function goToNextScreen(transition:ViewTransitionBase = null):void {
+      protected function goToNextScreen(transition:ViewTransitionBase = null, newContextType:String = null):void {
          if (!transition) {
             // Override this method in subclass and pass in the appropriate transition
             Log.error("View_Base_BottomButtons.goToNextScreen(): No transition passed");
             return;
          }
-         navigator.pushView(context.nextViewClass, null, null, transition);
+         var ctxt:ViewContext = null;
+         if (newContextType) {
+            ctxt = new ViewContext(newContextType);
+         }
+         navigator.pushView(context.nextViewClass, null, ctxt, transition);
       }
 
       protected function onPrimaryBottomButtonClick(event:MouseEvent):void {

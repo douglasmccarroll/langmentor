@@ -56,6 +56,7 @@ import com.brightworks.util.tree.Utils_Tree;
 import com.brightworks.vo.IVO;
 import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
 import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.langcollab.languagementor.constant.Constant_DownloadedLessons_SingleOrDualLanguageOrBoth;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
@@ -157,6 +158,40 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public function set autoDownloadLessons(value:Boolean):void {
       _autoDownloadLessons = value;
       _appStatePersistenceManager.persistAutoDownloadLessons(value);
+   }
+
+   // Returns a Constant_DownloadedLessons_SingleOrDualLanguageOrBoth constant
+   public function get downloadedLessonsAreSingleOrDualLanguageOrAMixOfBoth():String {
+      if (getLessonVersionCount() < 1) {
+         return Constant_DownloadedLessons_SingleOrDualLanguageOrBoth.NO_DOWNLOADED_LESSONS;
+      }
+      var oneOrMoreSingleLanguageLessonsDownloaded:Boolean;
+      var oneOrMoreDualLanguageLessonsDownloaded:Boolean;
+      for each (var lv:LessonVersionVO in getLessonVersionVOs()) {
+         if (lv.isDualLanguage) {
+            oneOrMoreDualLanguageLessonsDownloaded = true;
+         }
+         else {
+            oneOrMoreSingleLanguageLessonsDownloaded = true;
+         }
+         if (oneOrMoreSingleLanguageLessonsDownloaded && oneOrMoreDualLanguageLessonsDownloaded) {
+            break;
+         }
+      }
+      if (oneOrMoreSingleLanguageLessonsDownloaded && oneOrMoreDualLanguageLessonsDownloaded) {
+         return Constant_DownloadedLessons_SingleOrDualLanguageOrBoth.BOTH;
+      }
+      else if (oneOrMoreSingleLanguageLessonsDownloaded) {
+         return Constant_DownloadedLessons_SingleOrDualLanguageOrBoth.SINGLE;
+      }
+      else if (oneOrMoreDualLanguageLessonsDownloaded) {
+         return Constant_DownloadedLessons_SingleOrDualLanguageOrBoth.DUAL;
+      }
+      else {
+         // This shouldn't happen
+         Log.warn("MainModel.get downloadedLessonsAreSingleOrDualLanguageOrAMixOfBoth() - we have LessonVersionVOs, yet none are either single or dual-language lessons, which is impossible");
+         return Constant_DownloadedLessons_SingleOrDualLanguageOrBoth.UNKNOWN;
+      }
    }
 
    private var _hasUserSelectedDownloadBetaLessonsOption:Boolean = false;
@@ -1054,6 +1089,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (vo != null);
    }
 
+   public function isSetupProcessComplete():Boolean {
+      return ((_appStatePersistenceManager.retrieveAppInstallDate()) &&
+            (_appStatePersistenceManager.retrieveIsTargetLanguageIdSaved()));
+   }
+
    public function isTargetLanguageSelected():Boolean {
       return (_currentTargetLanguageVO != null);
    }
@@ -1249,6 +1289,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public function wipeData():void {
       _currentNativeLanguageVO = null;
       _currentTargetLanguageVO = null;
+      useRecommendedLibraries = true;
       currentApplicationState = 0;
       currentLearningModeId = 0;
       _isDBDataInitialized = false;
@@ -1444,7 +1485,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       lessonsSelectionTreeSortOptions.push(levelInfo);
    }
 
-   //// eliminate _isDBDataInitialized check - this is used in two different ways - as checked here, probably no longer needed
+   /// eliminate _isDBDataInitialized check - this is used in two different ways - as checked here, probably no longer needed
    // - is set in init() - as announced via change event here - notifies View_Home - via binding - model is ready
    // - also various other classes check this prop - should probably be renamed isModelInitialized
    private function initTargetLanguageBasedDataIfReady():void {
@@ -1565,13 +1606,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    private function updateLanguageVOsWithHasRecommendedLibrariesInfo():void {
-      //// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
-      //// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
-      var nativeLanguagesNode:XML = configFileInfo.languagePairsWithRecommendedLibrariesInfo.nativeLanguages[0];
-      var nativeLanguageNode:XML = nativeLanguagesNode[getCurrentNativeLanguageISO639_3Code()][0];
-      var targetLanguagesNode:XML = nativeLanguageNode.targetLanguages[0];
-      for (var i:int = 0; i < targetLanguagesNode.children().length(); i++) {
-         var targetLanguageNode:XML = targetLanguagesNode.children()[i];
+      /// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
+      /// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
+      for (var i:int = 0; i < configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children().length(); i++) {
+         var targetLanguageNode:XML = configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children()[i];
          var iso639_3Code:String = targetLanguageNode.name();
          var vo:LanguageVO = getLanguageVOFromIso639_3Code(iso639_3Code);
          vo.hasRecommendedLibraries = true;

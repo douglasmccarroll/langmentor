@@ -128,7 +128,7 @@ public class Command_AddLibrary extends Command_Base__LangMentor {
    }
 
    private function onConfirmLibraryXMLFileExistsComplete(o:Object = null):void {
-      //// Confirm that library has folders for target lang and/or native/target pair
+      /// Confirm that library has folders for target lang and/or native/target pair
       Log.debug("Command_AddLibrary.onConfirmLibraryXMLFileExistsComplete()");
       stopTimeoutTimer();
       model.downloadBandwidthRecorder.reportFileDownloader(_libraryFileDownloader);

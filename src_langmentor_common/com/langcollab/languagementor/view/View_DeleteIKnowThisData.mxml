@@ -102,7 +102,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onViewActivate():void {
-         textDisplayLabel.text = 'Are you sure? This will delete all "I Know This" data. This will return all chunks in all lessons to active status.';
+         textDisplayLabel.text = 'Are you sure? This will delete all "I Know This" data, which will return all chunks in all lessons to active status.';
       }
       ]]>
     </fx:Script>

@@ -521,11 +521,18 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          Log.warn("AudioController.onTimer_LeafFinishChecker(): _currentLessons.isLessonPaused == true");
          return;
       }
+      //
+      // If you've hit the Log.warn() call below, start by reading the comments at the top of this method...
       // All of the above 'if' blocks check for conditions where no leaf should be playing, and all suggest that there's a problem with this 'check' code,
       // rather than the 'leaf fails to finish' bug.
       // Once we get to this point, it seems probable that the problem actually exists in the leaf, i.e. the leaf started and should have completed, but didn't.
       //
       //  Debugging: Examine contents of leaf, including leaf.duration
+      //             If there isn't anything obvious wrong there, here are some suggestions on how to proceed:
+      //             You have gotten to this point because the 'leaf finish checker' timer has sent out a 'done' event before AudioPlayer sent out a 'complete' event.
+      //             You may want to set a breakpoint in AudioPlayer.playMp3File() and confirm that the 'play' process is starting correctly.
+      //             On the other hand, on at least one occasion, I simply reprocessed my raw audio - i.e. chunked it, processed it with Auphonic, converted it to MP3s -
+      //                and that fixed the problem. This is most likely to work if your MP3 files were created some time ago, and/or perhaps with a somewhat different process.
       //
       var leaf:AudioSequenceLeaf = _currentAudioSequenceLeaf;
       stopLeafFinishCheckProcess();

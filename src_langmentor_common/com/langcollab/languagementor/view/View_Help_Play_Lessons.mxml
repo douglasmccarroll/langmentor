@@ -60,7 +60,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case ViewContext.CONTEXT_TYPE__HELP:
                navigator.popView(transition_SlideView_Right);
                break;
-            case ViewContext.CONTEXT_TYPE__SCREEN_INTRO:
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON:
                navigator.popView(transition_SlideView_Up);
                break;
             default:
@@ -74,7 +74,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case ViewContext.CONTEXT_TYPE__HELP:
                super.doGoHome();
                break;
-            case ViewContext.CONTEXT_TYPE__SCREEN_INTRO:
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON:
                navigator.popView(transition_SlideView_Up);
                break;
             default:
@@ -88,8 +88,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      override protected function goToNextScreen(transition:ViewTransitionBase = null):void {
-         super.goToNextScreen(transition_SlideView_Down);
+      override protected function goToNextScreen(transition:ViewTransitionBase = null, newContextType:String = null):void {
+         super.goToNextScreen(transition_SlideView_Down, ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
       }
 
       override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
@@ -117,7 +117,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = "Once you've mastered a chunk, press the I Know This! button. " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will no longer drill you on that chunk.";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = 'To restore a lesson so that you are drilled on all chunks, simply deselect the lesson, then reselect it, in the Select Lessons screen.';
+         textWidget.text = 'To restore all lessons so that you will be drilled on all chunks, go to More > Manage Lessons > Delete "I Know This" Data.';
+         viewletGroup.addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = 'Or, to restore a single lesson so that you are drilled on all chunks, simply deselect the lesson, then reselect it, in the Select Lessons screen.';
          viewletGroup.addElement(textWidget);
          if (Constant_MentorTypeSpecific.CREATIVE_SYNTAX__DISPLAY_EXPLANATION) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
@@ -125,7 +128,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             viewletGroup.addElement(textWidget);
          }
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "You should also experiment with Language Mentor's five learning modes, as they determine the manner in which content is presented to you in this screen. See the Select Mode screen for details.";
+         textWidget.text = "You should also experiment with Language Mentor's learning modes (in the Select Modes screen), as they determine the manner in which content is presented to you in this screen.";
          viewletGroup.addElement(textWidget);
 
       }

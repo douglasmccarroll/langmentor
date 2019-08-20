@@ -205,8 +205,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
       NativeApplication.nativeApplication.addEventListener(BwEvent.NO_INTERNET_CONNECTION, onNoInternetConnection);
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-      if ((_appStatePersistenceManager.retrieveAppInstallDate()) &&
-            (_appStatePersistenceManager.retrieveIsTargetLanguageIdSaved())) {
+      if (_model.isSetupProcessComplete()) {
          Log.info("App_LanguageMentor_Base.onInitialize() - setting navigator.firstView to View_Home");
          _model.initTargetLanguage(_appStatePersistenceManager.retrieveTargetLanguageId());
          navigator.firstView = View_Home;

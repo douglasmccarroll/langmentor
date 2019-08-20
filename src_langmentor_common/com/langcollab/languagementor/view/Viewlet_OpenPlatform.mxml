@@ -73,7 +73,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = "Anyone can create lessons for any language";
          addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = 'Lessons are published via "lesson libraries", which can be located anywhere on the Internet';
+         textWidget.text = 'Lessons are published in "lesson libraries", which can be located anywhere on the Internet';
          addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "Individuals and institutions can create libraries and share them with the world";
@@ -86,7 +86,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addElement(textWidget);
          if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "For more information about how to to create lessons, please visit us at LanguageCollaborative.com";
+            textWidget.text = "If you'd like information about how to create lessons, please visit us at LanguageCollaborative.com";
             addElement(textWidget);
          }
          else {

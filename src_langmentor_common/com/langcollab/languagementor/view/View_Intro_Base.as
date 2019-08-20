@@ -62,13 +62,34 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
       else if (this is View_Intro_OpenPlatform) {
          if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             navigator.pushView(View_Intro_SelectLanguage);
-         } else {
+         }
+         else {
+            if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
+               navigator.pushView(View_Intro_RecommendedLibraries);
+            }
+            else {
+               model.useRecommendedLibraries = false;
+               navigator.pushView(View_Intro_AddLibraries_Decide);
+            }
+         }
+      }
+      else if (this is View_Intro_SelectLanguage) {
+         if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
             navigator.pushView(View_Intro_RecommendedLibraries);
          }
-      } else if (this is View_Intro_SelectLanguage)
-         navigator.pushView(View_Intro_RecommendedLibraries);
-      else if (this is View_Intro_RecommendedLibraries)
-         navigator.pushView(View_Intro_AddLibraries_Decide);
+         else {
+            model.useRecommendedLibraries = false;
+            navigator.pushView(View_Intro_AddLibraries_Decide);
+         }
+      }
+      else if (this is View_Intro_RecommendedLibraries) {
+         if (model.useRecommendedLibraries) {
+            navigator.pushView(View_Intro_LessonLevels);
+         }
+         else {
+            navigator.pushView(View_Intro_AddLibraries_Decide);
+         }
+      }
       else if (this is View_Intro_AddLibraries_Decide)
          Log.error("View_Intro_Base.onNextButtonClick(): View_Intro_AddLibraries_Decide should handle this, and not call super.onNextButtonClick()");
       else if (this is View_Intro_AddLibraries_Warning)

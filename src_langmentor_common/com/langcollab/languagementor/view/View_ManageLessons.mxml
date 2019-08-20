@@ -34,6 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       import mx.collections.ArrayCollection;
 
+      private static const _LIST_OPTION__DELETE_I_KNOW_THIS_DATA:String = 'Delete "I Know This" Data';
       private static const _LIST_OPTION__DESELECT_ALL_LESSONS:String = "Deselect All Lessons";
       private static const _LIST_OPTION__SELECT_LESSONS:String = "Select Lessons";
       private static const _LIST_OPTION__SELECT_LESSON_LEVELS:String = "Select Lesson Levels";
@@ -73,6 +74,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_ManageLessons.onListChange(): " + list.selectedItem);
          var ctxt:ViewContext;
          switch (list.selectedItem) {
+            case _LIST_OPTION__DELETE_I_KNOW_THIS_DATA: {
+               navigator.pushView(View_DeleteIKnowThisData, null, null, transition_SlideView_Left);
+               break;
+            }
             case _LIST_OPTION__DESELECT_ALL_LESSONS: {
                if (model.getLessonVersionCount() < 1) {
                   // No downloaded lessons
@@ -98,7 +103,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   navigator.pushView(View_SelectLessons, null, ctxt, transition_SlideView_Left);
                }
                else {
-                  ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__SCREEN_INTRO);
+                  ctxt = new ViewContext(ViewContext.CONTEXT_TYPE__HELP);
                   ctxt.nextViewClass = View_SelectLessons;
                   navigator.pushView(View_Help_Select_Lessons, null, ctxt, transition_SlideView_Left);
                }
@@ -117,6 +122,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onViewActivate():void {
          _listDataProvider = new ArrayCollection();
+         _listDataProvider.addItem(_LIST_OPTION__DELETE_I_KNOW_THIS_DATA);
          _listDataProvider.addItem(_LIST_OPTION__DESELECT_ALL_LESSONS);
          _listDataProvider.addItem(_LIST_OPTION__SELECT_LESSONS);
          _listDataProvider.addItem(_LIST_OPTION__SELECT_LESSON_LEVELS);

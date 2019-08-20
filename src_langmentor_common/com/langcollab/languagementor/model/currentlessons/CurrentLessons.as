@@ -657,6 +657,12 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       return (currentLessonVO.releaseType == Constant_ReleaseType.ALPHA);
    }
 
+   public function isCurrentLessonDualLanguage():Boolean {
+      if (!currentLessonVO)
+         return false;
+      return currentLessonVO.isDualLanguage;
+   }
+
    public function iterateChunk(direction:int, isUserInitiated:Boolean):void {
       Log.info("CurrentLessons.iterateChunk(): lesson ID: " + currentLessonVO.publishedLessonVersionId + "; currentChunkIndex: " + currentChunkIndex + "; direction: " + direction);
       if (!isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {

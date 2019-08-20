@@ -30,6 +30,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.checkbox.NormalCheckBox;
       import com.brightworks.util.Log;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
@@ -93,17 +94,30 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget.text = "Add Libraries?";
          viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
-         textWidget = new UIWidget_Viewlet__Text();
          if (View_Intro_Base.isUserStartedAddLibraryProcess) {
-            if (View_Intro_Base.isUserCompletedAddLibraryProcess)
+            if (View_Intro_Base.isUserCompletedAddLibraryProcess) {
+               textWidget = new UIWidget_Viewlet__Text();
                textWidget.text = "Would you like to add another libary or libraries?";
-            else
+               viewletGroup.addElement(textWidget);
+            }
+            else {
+               textWidget = new UIWidget_Viewlet__Text();
                textWidget.text = "Would you like to try again?";
+               viewletGroup.addElement(textWidget);
+            }
          }
          else {
+            var introText:String = (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) ? "You've chosen not to use the libraries that we recommend for learning " : "We're currently unable to suggest libraries for learning ";
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = introText + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", so you'll need to specify what library or libraries you'd like to study.";
+            viewletGroup.addElement(textWidget);
+            textWidget = new UIWidget_Viewlet__Text();
             textWidget.text = "You can add libraries by entering a URL or scanning a QR code. Typically, you would obtain these from the library’s website, your teacher, etc.";
+            viewletGroup.addElement(textWidget);
+            textWidget = new UIWidget_Viewlet__Text();
+            textWidget.text = "You can add one or more libraries now, or you can skip this step for now, complete the rest of the setup process, and do it later.";
+            viewletGroup.addElement(textWidget);
          }
-         viewletGroup.addElement(textWidget);
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
@@ -115,6 +129,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(_addLibrariesCheckbox);
          textWidget = new UIWidget_Viewlet__Text();
          textWidget.text = "Select this option if you'd like to specify one or more libraries for " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to download lessons from.";
+         viewletGroup.addElement(textWidget);
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         viewletGroup.addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Bold_Text();
+         textWidget.text = "If you’re interested in creating lesson libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", please visit us at LanguageCollaborative.com";
          viewletGroup.addElement(textWidget);
       }
       ]]>

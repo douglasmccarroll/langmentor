@@ -64,7 +64,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             case ViewContext.CONTEXT_TYPE__HELP:
                super.doGoHome();
                break;
-            case ViewContext.CONTEXT_TYPE__SCREEN_INTRO:
+            case ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON:
                navigator.popView(transition_SlideView_Right);
                break;
             default:
@@ -78,8 +78,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      override protected function goToNextScreen(transition:ViewTransitionBase = null):void {
-         super.goToNextScreen(transition_SlideView_Left);
+      override protected function goToNextScreen(transition:ViewTransitionBase = null, newContextType:String = null):void {
+         super.goToNextScreen(transition_SlideView_Left, ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);
       }
 
       override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
@@ -117,7 +117,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "To start studying the lessons that you've selected, return to the Home screen and press Play Lessons";
          viewletGroup.addElement(textWidget);
-         if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__SCREEN_INTRO)) {
+         if ((navigator.context is ViewContext) && (contextType == ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON)) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
             textWidget.text = "You can review these instructions later by going to More > Help";
             viewletGroup.addElement(textWidget);

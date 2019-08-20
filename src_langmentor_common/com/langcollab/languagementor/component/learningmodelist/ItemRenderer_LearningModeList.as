@@ -109,24 +109,27 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
       }
       var singleOrDualLanguageIndicatorClass:Class;
       if (singleOrDualLanguageIndicatorClass) {
+         // 20190811  As the code is written, we'll never enter this 'if' block
          _singleOrDualLanguageIndicator = new singleOrDualLanguageIndicatorClass();
          _singleOrDualLanguageIndicator.smoothing = true;
          addChild(_singleOrDualLanguageIndicator);
       }
       var consumedWidth:uint = 0;
       _unscaledHeight = unscaledHeight;
-      var padding:int = Math.round(unscaledHeight / 20);
-      _helpButton.x = padding * 2;
-      _helpButton.y = padding * 2;
-      _helpButton.width = _helpButton.height = unscaledHeight - (padding * 4);
-      consumedWidth = unscaledHeight;
+      var buttonSize:Number = Utils_Text.getStandardFontSize() * 4;
+      var vertPadding:int = Math.round(unscaledHeight / 7);
+      var horzPadding:int = Math.round(unscaledHeight / 10);
+      _helpButton.x = horzPadding * 2;
+      _helpButton.y = (unscaledHeight - buttonSize) / 2;
+      _helpButton.height = _helpButton.width = buttonSize;
+      consumedWidth = (horzPadding * 2) + _helpButton.width;
       if (_singleOrDualLanguageIndicator) {
          _singleOrDualLanguageIndicator.x = consumedWidth;
          _singleOrDualLanguageIndicator.y = (unscaledHeight - _singleOrDualLanguageIndicator.height) / 2;
-         consumedWidth += _singleOrDualLanguageIndicator.width + padding;
+         consumedWidth += _singleOrDualLanguageIndicator.width + horzPadding;
       }
-      _contentField.width = (unscaledWidth - (consumedWidth + padding)) - 20;
-      _contentField.x = consumedWidth + padding;
+      _contentField.width = (unscaledWidth - (consumedWidth + horzPadding)) - 20;
+      _contentField.x = consumedWidth + horzPadding;
       _background.width = unscaledWidth;
       _background.height = layoutHeight;
       _separator.width = unscaledWidth;

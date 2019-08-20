@@ -177,7 +177,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                 paddingLeft = "{Utils_Layout.getStandardPadding() * 2}"
                 paddingRight = "{Utils_Layout.getStandardPadding() * 2}">
          <uiwidget:UIWidget_Viewlet__Bold_Text
-               text = "Select the levels that you'd like to download. Future downloads will include the levels that you specify."/>
+               text = "Select the levels that you'd like to study. Future downloads will include the levels that you specify."/>
       </s:VGroup>
       <view:Viewlet_LessonLevels id = "viewlet"
                                  height = "100%"
