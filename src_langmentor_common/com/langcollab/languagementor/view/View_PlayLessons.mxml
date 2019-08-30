@@ -610,7 +610,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified) {
             isTargetPhoneticTextAvailable = (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified == "true");
          }
-         if (model.isAppDualLanguage()) {
+         if (AppStatePersistenceManager.getInstance().retrieveIsTextDisplayModeSaved()) {
+            _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
+         }
+         else if (model.isAppDualLanguage()) {
             _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
          }
          else {
@@ -647,9 +650,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onPreinitialize():void {
          Log.debug("View_PlayLessons.onPreinitialize()");
-         if (AppStatePersistenceManager.getInstance().retrieveIsTextDisplayModeSaved()) {
-            _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
-         }
          _button_Credits = new Button_Standard_Blue();
          _button_IKnowThis = new Button_Standard_Purple();
          _button_IKnowThis.clickSoundEnabled = false; // Because we handle that here, i.e. either click or thud, in onDo_IKnowThis()

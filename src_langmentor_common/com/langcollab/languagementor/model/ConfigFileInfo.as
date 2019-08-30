@@ -201,7 +201,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       return result;
    }
 
-   public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {      ///// working?
+   public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {
       if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
          return false; // We don't have a retrieved news update
       if (_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateViewed_Saved()) {

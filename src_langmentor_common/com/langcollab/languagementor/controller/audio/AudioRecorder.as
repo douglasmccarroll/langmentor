@@ -141,10 +141,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
 
    public function isMicrophoneAvailable():Boolean {
       Log.info("AudioRecorder.isMicrophoneAvailable()");
-      if (Utils_System.isRunningOnDesktop()) {
-         return true; // We dummy this so that we can test appearance of Record/Playback button
-      }
-      return (_microphone != null);
+      return !Utils_System.isRunningOnDesktop();
    }
 
    public function startPlayback():void {
