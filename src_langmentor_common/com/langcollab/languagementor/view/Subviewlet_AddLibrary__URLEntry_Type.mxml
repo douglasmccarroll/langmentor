@@ -115,8 +115,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          <s:Spacer/>
          <uiwidget:UIWidget_Viewlet__Bold_Text id = "feedbackTextWidget"
                                                width = "100%"/>
-         <s:Spacer/>
-         <s:Spacer/>
+         <s:Spacer height="100%"/>
          <button:NormalButton id = "addButton"
                               label = "Add Library"
                               click = "onAddButtonClick()"

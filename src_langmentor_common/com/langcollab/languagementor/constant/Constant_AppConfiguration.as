@@ -18,6 +18,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.constant {
 import com.brightworks.constant.Constant_ReleaseType;
+import com.brightworks.util.Log;
 
 public class Constant_AppConfiguration {
 
@@ -28,6 +29,11 @@ public class Constant_AppConfiguration {
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__IOS:Number = 10;
    public static const BANDWIDTH_LIMITING__TIME_PERIOD_IN_MINUTES:uint = 5;
    public static const BRIGHTWORKS_BLURB:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + "'s technology is lovingly crafted by the dwarves and elves of Brightworks, deep in the primal forests of Massachusetts. We specialize in cross-platform development of mobile learning apps. Our technology is available under various licenses from open source (GPL) to white-label apps custom branded for our clients\n\nHow may we be of service?\nhttp://www.brightworks.com";
+   // Default config info is used a) when config info has not yet been loaded from 'mentor type' file, and b) ? If there is a problem loading this data?
+   public static const DEFAULT_CONFIG_INFO__LOG_LEVEL__INTERNAL_LOGGING:uint = Log.LOG_LEVEL__INFO;
+   public static const DEFAULT_CONFIG_INFO__LOG_LEVEL__LOG_TO_SERVER:uint = Log.LOG_LEVEL__WARN;
+   public static const DEFAULT_CONFIG_INFO__LOG_TO_SERVER_MAX_STRING_LENGTH:uint = 8000;
+   public static const DEFAULT_CONFIG_INFO__LOG_URL:String = "https://31t88tqyx8.execute-api.us-east-1.amazonaws.com/prod/log-message";
    public static const EXPLANATORY_AUDIO_FILE_BODY_STRING:String = "xply";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
    public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";

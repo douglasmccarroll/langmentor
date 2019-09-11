@@ -7,8 +7,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.42.04</versionNumber>
-   <versionLabel>1.42.04</versionLabel>
+   <versionNumber>1.42.05</versionNumber>
+   <versionLabel>1.42.05</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -106,7 +106,5 @@
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.MediaPlayer</extensionID>
       <extensionID>com.distriqt.Scanner</extensionID>
-      <extensionID>com.myflashlab.air.extensions.dependency.overrideAir</extensionID>
-      <extensionID>com.myflashlab.air.extensions.permissionCheck</extensionID>
    </extensions>
 </application>

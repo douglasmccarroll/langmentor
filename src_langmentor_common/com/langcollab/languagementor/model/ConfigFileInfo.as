@@ -142,18 +142,18 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function getLogToServerMaxStringLength(level:uint):uint {
-      if (!_index_LogLevel_to_LogToServerMaxStringLength.hasOwnProperty("level")) {
-         // We don't log an error here because this method is used by our logging, and we'd create an infinite loop
-         return 4000;
+      if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_LogToServerMaxStringLength, level)) {
+         // Config file info not yet fully populated
+         return Constant_AppConfiguration.DEFAULT_CONFIG_INFO__LOG_TO_SERVER_MAX_STRING_LENGTH;
       }
       var result:uint = _index_LogLevel_to_LogToServerMaxStringLength[level];
       return result;
    }
 
    public function getLogToServerURL(level:uint):String {
-      if (!_index_LogLevel_to_LogURL.hasOwnProperty("level")) {
-         // We don't log an error here because this method is used by our logging, and we'd create an infinite loop
-         return "";
+      if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_IsLogToServerEnabled, level)) {
+         // Config file info not yet fully populated
+         return Constant_AppConfiguration.DEFAULT_CONFIG_INFO__LOG_URL;
       }
       var result:String = _index_LogLevel_to_LogURL[level];
       return result;
@@ -184,9 +184,9 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    }
 
    public function isLoggingEnabled(level:uint):Boolean {
-      if (!_index_LogLevel_to_IsLoggingEnabled.hasOwnProperty("level")) {
-         // We don't log an error here because this method is used by our logging, and we'd create an infinite loop
-         return false;
+      if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_IsLogToServerEnabled, level)) {
+         // Config file info not yet fully populated
+         return (level >= Constant_AppConfiguration.DEFAULT_CONFIG_INFO__LOG_LEVEL__INTERNAL_LOGGING);
       }
       var result:Boolean = _index_LogLevel_to_IsLoggingEnabled[level];
       return result;
@@ -194,8 +194,8 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
 
    public function isLogToServerEnabled(level:uint):Boolean {
       if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_IsLogToServerEnabled, level)) {
-         // We don't log an error here because this method is used by our logging, and we'd create an infinite loop
-         return false;
+         // Config file info not yet fully populated
+         return (level >= Constant_AppConfiguration.DEFAULT_CONFIG_INFO__LOG_LEVEL__LOG_TO_SERVER);
       }
       var result:Boolean = _index_LogLevel_to_IsLogToServerEnabled[level];
       return result;

@@ -20,7 +20,7 @@
 package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
-import com.brightworks.util.Utils_ANEs;
+import com.brightworks.util.Utils_Microphone;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.singleton.SingletonManager;
 
@@ -93,7 +93,7 @@ public class AudioRecorder extends EventDispatcher implements IManagedSingleton 
    }
 
    public function attemptToActivateMicrophone():void {
-      Utils_ANEs.requestMicrophonePermission(attemptToActivateMicrophone_Continued);
+      Utils_Microphone.requestMicrophonePermission(attemptToActivateMicrophone_Continued);
    }
 
    private function attemptToActivateMicrophone_Continued(permissionGranted:Boolean):void {
