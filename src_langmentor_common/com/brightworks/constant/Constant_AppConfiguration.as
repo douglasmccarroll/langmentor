@@ -16,9 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
-package com.langcollab.languagementor.constant {
+package com.brightworks.constant {
 import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.util.Log;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
 public class Constant_AppConfiguration {
 
