@@ -688,8 +688,10 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          } else if (direction == 1) {
             // We want to move to the next lesson, if there is one. Otherwise
             // we'd like to restart the current lesson.
+            if (!isUserInitiated) {   // We don't want to report 'finished lesson' if the user is 'finishing' it by clicking the 'next chunk' button
+               reportLessonFinishedToAnalytics();
+            }
             iterateLessonVersion(1, isUserInitiated);
-            reportLessonEnteredToAnalytics();
             var calledIterateLessonVersion:Boolean = true;
             Log.debug("CurrentLessons.iterateChunk(): no unsuppressed chunk after curr chunk; iterated lesson; new lesson ID: " + currentLessonVO.publishedLessonVersionId);
          } else {
@@ -723,7 +725,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          var newCurrentLessonIndex:int = getIndexForNextOrPreviousSelectedLessonVersionWithUnsuppressedChunks(direction);
          var newCurrentChunkIndex:int = getIndexForEarliestUnsuppressedChunkInLessonWithIndexOf(newCurrentLessonIndex);
          setCurrentLessonAndChunkIndexes(newCurrentLessonIndex, newCurrentChunkIndex);
-         reportLessonEnteredToAnalytics();
       } else {
          setCurrentLessonAndChunkIndexes(currentLessonIndex, getIndexForEarliestUnsuppressedChunkInCurrentLesson());
       }
@@ -1058,13 +1059,13 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _appStatePersistenceManager.persistSelectedLessonVersions(selectedLessonVersionVOsVector);
    }
 
-   private function reportLessonEnteredToAnalytics():void {
-      Log.info("CurrentLessons.reportLessonEnteredToAnalytics()");
+   private function reportLessonFinishedToAnalytics():void {
+      Log.info("CurrentLessons.reportLessonFinishedToAnalytics()");
       var lessonName:String = _model.getLessonVersionNativeLanguageNameFromLessonVersionVO(currentLessonVO);
       var lessonId:String = currentLessonVO.publishedLessonVersionId;
       var lessonVersion:String = currentLessonVO.publishedLessonVersionVersion;
       var providerId:String = currentLessonVO.contentProviderId;
-      Utils_GoogleAnalytics.trackLessonEntered(lessonName, lessonId, lessonVersion, providerId);
+      Utils_GoogleAnalytics.trackLessonFinished(lessonName, lessonId, lessonVersion, providerId);
    }
 
    private function sortArrayCollectionOfSortableLessonVersionInfoInstances(ac:ArrayCollection):void {

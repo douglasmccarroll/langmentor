@@ -32,7 +32,7 @@ import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
 import com.langcollab.languagementor.component.button.Button_ActionBar_LeftArrow;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.controller.Command_InitApplication;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.model.MainModel;

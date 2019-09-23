@@ -16,7 +16,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.Utils_XML;
 import com.brightworks.util.download.FileDownloader;
 import com.brightworks.util.download.FileDownloaderErrorReport;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;

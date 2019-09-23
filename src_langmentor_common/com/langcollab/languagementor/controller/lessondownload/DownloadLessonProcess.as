@@ -38,7 +38,7 @@ import com.brightworks.util.audio.MP3FileInfo;
 import com.brightworks.util.download.FileDownloader;
 import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.brightworks.vo.IVO;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.Command_DeleteLessonVersion;
 import com.langcollab.languagementor.controller.Command_DeleteLessonVersionTechReport;

@@ -41,7 +41,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.button.Button_Standard_Blue;
       import com.langcollab.languagementor.component.button.Button_Standard_Purple;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard_Blue;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_DownloadedLessons_SingleOrDualLanguageOrBoth;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
@@ -612,15 +612,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          if (AppStatePersistenceManager.getInstance().retrieveIsTextDisplayModeSaved()) {
             _currentTextDisplayMode = AppStatePersistenceManager.getInstance().retrieveTextDisplayMode();
-         }
-         else if (model.isAppDualLanguage()) {
+         } else if (model.isAppDualLanguage()) {
             _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
-         }
-         else {
+         } else {
             if (isTargetPhoneticTextAvailable) {
                _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__INITIAL_EXPLANATION;
-            }
-            else {
+            } else {
                _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT
             }
          }
@@ -797,11 +794,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function setButtonEnabled_Translate():void {
          if (!_button_Translate)
-               return;
+            return;
          if (model.getLearningModeTokenFromID(model.currentLearningModeId) == Constant_LearningModeLabels.LISTEN_TO_TARGET) {
             _button_Translate.enabled = currentLessons.isCurrentLessonDualLanguage();
-         }
-         else {
+         } else {
             _button_Translate.enabled = false;
          }
       }

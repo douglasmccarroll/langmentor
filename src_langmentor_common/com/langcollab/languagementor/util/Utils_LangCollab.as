@@ -22,7 +22,7 @@ import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.MP3FileInfo;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;

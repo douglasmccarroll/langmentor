@@ -2,7 +2,7 @@ package com.langcollab.languagementor.view {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_System;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 

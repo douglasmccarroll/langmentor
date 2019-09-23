@@ -28,7 +28,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.util.Utils_LangCollab;
 

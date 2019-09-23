@@ -34,7 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
 
@@ -286,17 +286,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isAnyLibrariesAvailableForDownloading()) {
             if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
                displayContent_InsufficientLessonStorageSpaceAvailable();
-            }
-            else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
+            } else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
                displayContent_Downloading_UpdatingAvailableLessonInfo();
-            }
-            else if (model.getLessonVersionCount() > 0) {
+            } else if (model.getLessonVersionCount() > 0) {
                displayContent_Downloading_FirstLessonFinished();
-            }
-            else if (lessonDownloadController.isLessonDownloadProcessActive) {
+            } else if (lessonDownloadController.isLessonDownloadProcessActive) {
                displayContent_Downloading_FirstLessonInProgress();
-            }
-            else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
+            } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
                // The "update info" process is finished, but no lesson downloads are in progress or complete.
                // It's possible that a problem occurred the last time the "update info" process ran.
                if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
@@ -311,8 +307,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                         // This could occur if the user just wiped all data with Delete All Data
                         // Though they probably would have already been informed that they need to upgrade
                         displayContent_Downloading_Failure();
-                     }
-                     else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
+                     } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
                            (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
                                  updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)) {
                         displayContent_Downloading_Failure();
@@ -320,12 +315,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   }
                   updateInfoCommandReport.dispose();
                }
-            }
-            else {
+            } else {
                displayContent_Downloading_Failure();
             }
-         }
-         else {
+         } else {
             displayContent_NoLibrariesAvailableForDownload();
          }
       }

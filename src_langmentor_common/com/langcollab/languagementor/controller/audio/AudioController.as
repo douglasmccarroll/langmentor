@@ -32,7 +32,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.singleton.SingletonManager;
 import com.brightworks.vo.IVO;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
 import com.langcollab.languagementor.event.Event_AudioProgress;

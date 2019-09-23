@@ -30,7 +30,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;

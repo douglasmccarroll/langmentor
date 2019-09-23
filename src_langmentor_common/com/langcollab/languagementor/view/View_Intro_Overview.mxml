@@ -30,7 +30,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.constant.Constant_MentorTypes;
 

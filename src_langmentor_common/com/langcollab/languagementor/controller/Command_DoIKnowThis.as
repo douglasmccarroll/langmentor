@@ -101,7 +101,7 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
       var lessonId:String = _oldLessonVersion.publishedLessonVersionId;
       var lessonVersion:String = _oldLessonVersion.publishedLessonVersionVersion;
       var providerId:String = _oldLessonVersion.contentProviderId;
-      Utils_GoogleAnalytics.trackLessonEntered(lessonName, lessonId, lessonVersion, providerId);
+      Utils_GoogleAnalytics.trackLessonFinished(lessonName, lessonId, lessonVersion, providerId);
    }
 
    private function resumeAudioIfAppropriate():void {

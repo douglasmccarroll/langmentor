@@ -29,7 +29,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_ANEs;
       import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
-      import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
       import com.langcollab.languagementor.event.Event_LessonVersionList;
@@ -77,16 +77,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                         createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
                   Utils_ANEs.showAlert_OkayButton(message, doGoBack_LeaveSelectLessons);
                   model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
-               }
-               else {
+               } else {
                   doGoBack_LeaveSelectLessons();
                }
-            }
-            else {
+            } else {
                doGoBack_LeaveSelectLessons();
             }
-         }
-         else {
+         } else {
             _lessonSelectorList.handleBackButton();
          }
       }
@@ -99,12 +96,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
                Utils_ANEs.showAlert_OkayButton(message, doGoHome_Continued);
                model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
-            }
-            else {
+            } else {
                doGoHome_Continued()
             }
-         }
-         else {
+         } else {
             doGoHome_Continued()
          }
       }
@@ -117,7 +112,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function addLessonToToggledLessonsHistoryList(lvvo:LessonVersionVO):void {
          if (_toggledLessonsHistoryList.indexOf(lvvo) == -1)
-               _toggledLessonsHistoryList.push(lvvo);
+            _toggledLessonsHistoryList.push(lvvo);
       }
 
       private function createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected():String {
@@ -170,13 +165,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function doesToggledLessonsHistoryContainAnySelectedLessonsThatMatchVO(passedLVVO:LessonVersionVO):Boolean {
          for each (var listLVVO:LessonVersionVO in _toggledLessonsHistoryList) {
             if (listLVVO.contentProviderId != passedLVVO.contentProviderId)
-                  continue;
+               continue;
             if (listLVVO.libraryId != passedLVVO.libraryId)
-                  continue;
+               continue;
             if (listLVVO.levelId != passedLVVO.levelId)
-                  continue;
+               continue;
             if (currentLessons.contains(listLVVO))
-                  return true;
+               return true;
          }
          return false;
       }
@@ -268,8 +263,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                var newSelectedLesson:LessonVersionVO = findFirstSelectedLessonThatMatchesVO(lvvo);
                if (newSelectedLesson) {
                   currentLessons.setCurrentLesson(findFirstSelectedLessonThatMatchesVO(lvvo));
-               }
-               else {
+               } else {
                   // This won't happen, and if it does it's logged in findFirstSelectedLessonThatMatchesVO()
                }
                break;

@@ -20,7 +20,7 @@ package com.langcollab.languagementor.controller {
 import com.brightworks.base.Callbacks;
 import com.brightworks.event.BwEvent;
 import com.brightworks.util.Log;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.controller.lessondownload.DownloadLessonProcess;
 import com.langcollab.languagementor.controller.lessondownload.DownloadLessonProcessInfo;
 import com.langcollab.languagementor.controller.lessondownload.DownloadLessonProcessTechReport;

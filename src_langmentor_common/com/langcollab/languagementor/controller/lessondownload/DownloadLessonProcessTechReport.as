@@ -22,7 +22,7 @@ import com.brightworks.techreport.ITechReport;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.audio.FileSetMP3SaverTechReport;
 import com.brightworks.util.download.FileDownloaderErrorReport;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.Command_DeleteLessonVersionTechReport;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;

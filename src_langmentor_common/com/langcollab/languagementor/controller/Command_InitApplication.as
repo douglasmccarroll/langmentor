@@ -24,7 +24,7 @@ import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_System;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.util.Utils_Database;
 import com.langcollab.languagementor.util.Utils_LangCollab;

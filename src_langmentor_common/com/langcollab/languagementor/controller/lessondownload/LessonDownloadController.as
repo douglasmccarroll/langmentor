@@ -32,7 +32,7 @@ import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.singleton.SingletonManager;
-import com.langcollab.languagementor.constant.Constant_AppConfiguration;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.Command_DownloadLessons;
 import com.langcollab.languagementor.controller.Command_DownloadLessonsTechReport;
