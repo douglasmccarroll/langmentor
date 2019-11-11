@@ -7,8 +7,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.42.05</versionNumber>
-   <versionLabel>1.42.05</versionLabel>
+   <versionNumber>1.42.06</versionNumber>
+   <versionLabel>1.42.06</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -61,6 +61,11 @@
             <key>UIStatusBarStyle</key>
             <string>UIStatusBarStyleLightContent</string>
             <key>NSAppTransportSecurity</key>
+            <key>UIDeviceFamily</key>
+            <array>
+              <string>1</string>
+              <string>2</string>
+            </array>
             <!-- For now, this allows us to continue to use http rather than https - get certs for the subdomains that we access? -->
             <dict>
               <key>NSAllowsArbitraryLoads</key>
