@@ -27,6 +27,7 @@ package com.langcollab.languagementor.controller.audio {
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
+import com.brightworks.util.Utils_DataConversionComparison;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
@@ -400,10 +401,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
    private function onElementComplete(event:Event_AudioProgress):void {
       Log.info(["AudioController.onElementComplete()", "Element:", event.target]);
-      // trace("onElementComplete(): " + event.levelId + " " + event.id);
-      stopLeafFinishCheckProcess();
       switch (event.levelId) {
          case AUDIO_SEQUENCE_LEVEL__LEAF:
+            stopLeafFinishCheckProcess(AudioSequenceLeaf(event.target));
             break;
          case AUDIO_SEQUENCE_LEVEL__CHUNK: {
             if (_isLoopingChunk) {
@@ -413,11 +413,13 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                _mostRecentAutoChunkFinishInitiatedIterateChunk = Utils_DateTime.getCurrentMS_BasedOnDate();
                _currentLessons.iterateChunk(1, false);
             }
+            stopLeafFinishCheckProcess();
             break;
          }
          case AUDIO_SEQUENCE_LEVEL__LESSON:
             // We don't do much here - the "chunk" case handles changing lessons
             // if the ending chunk is the last chunk.
+            stopLeafFinishCheckProcess();
             break;
          default:
             Log.error("AudioController.onElementComplete(): No match for event.levelId: " + event.levelId);
@@ -456,9 +458,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             _currentLeafType = String(event.id);
             _mostRecentLeafElementStartTime = new Date();
             dispatchEvent(new Event("mostRecentLeafElementStartTimeChange"));
-            if (!(Utils_System.isIOS() && Utils_System.isInDebugMode())) {         // This seems to be causing more problems than value in iOS debug mode
-               startLeafFinishCheckProcess(AudioSequenceLeaf(event.target));
-            }
+            startLeafFinishCheckProcess(AudioSequenceLeaf(event.target));
             break;
          case AUDIO_SEQUENCE_LEVEL__CHUNK:
             _chunksPlayedInCurrentLessonVersionAudioSequence++;
@@ -490,13 +490,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          return;
       }
       if (_currentLessonVersionAudioSequence.isPaused) {
-         // dmccarroll 20130826
-         // Initial testing of this 'check' code shows this condition occurring fairly frequently. This makes no sense, yet it's
-         // occurring nonetheless.
-         // dmccarroll 20170609
-         // This occurs when a) the app is interrupted, e.g. by a phone call, b) control returns to the app (at which point the
-         // audio doesn't play, c) the user goes to the phone's home screen, and d) the user returns to this app. But chances
-         // are good that I'll have fixed the bug in (b) by the time you read this, so this comment may no longer be true.
          Log.warn("AudioController.onTimer_LeafFinishChecker() called, but _currentLessonVersionAudioSequence.isPaused == true");
          stopLeafFinishCheckProcess();
          return;
@@ -522,7 +515,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          return;
       }
       //
-      // If you've hit the Log.warn() call below, start by reading the comments at the top of this method...
       // All of the above 'if' blocks check for conditions where no leaf should be playing, and all suggest that there's a problem with this 'check' code,
       // rather than the 'leaf fails to finish' bug.
       // Once we get to this point, it seems probable that the problem actually exists in the leaf, i.e. the leaf started and should have completed, but didn't.
@@ -778,13 +770,20 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
    }
 
    private function startLeafFinishCheckProcess(leaf:AudioSequenceLeaf):void {
+      var timerDuration:uint = leaf.duration + 2000;
+      var timeoutSeconds:Number = (Utils_DateTime.getCurrentMS_AppActive() + timerDuration) / 1000;
+      var timeoutSecondsString:String = Utils_DataConversionComparison.convertNumberToString(timeoutSeconds, 1);
+      Log.info(["AudioController.startLeafFinishCheckProcess()", "Element:", leaf, "Timeout Time: " + timeoutSecondsString]);
       _currentAudioSequenceLeaf = leaf;
-      _timer_LeafFinishChecker = new Timer(leaf.duration + 2000, 1);
+      _timer_LeafFinishChecker = new Timer(timerDuration, 1);
       _timer_LeafFinishChecker.addEventListener(TimerEvent.TIMER, onTimer_LeafFinishChecker);
       _timer_LeafFinishChecker.start();
    }
 
-   private function stopLeafFinishCheckProcess():void {
+   private function stopLeafFinishCheckProcess(leaf:AudioSequenceLeaf = null):void {
+      if (leaf) {
+         Log.info(["AudioController.stopLeafFinishCheckProcess()", "Element:", leaf]);
+      }
       _currentAudioSequenceLeaf = null;
       if (_timer_LeafFinishChecker) {
          _timer_LeafFinishChecker.stop();

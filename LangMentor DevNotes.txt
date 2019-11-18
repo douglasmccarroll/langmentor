@@ -10,7 +10,7 @@
 In general
 **********
 Search ProgNotes.txt for problems that aren't specific to LangMentor.
-We need to implement user-friendly error messages. The instructions in this section assume that you're in debug mode. They may also be useful when the time comes to implement user-friendly messages. They provide both use cases and at least some hints as to how to obtain the information that you'll need for user friendly messages.
+The instructions in this section assume that you're in debug mode. They may also be useful when the time comes to implement user-friendly messages. They provide both use cases and at least some hints as to how to obtain the information that you'll need for user friendly messages.
 
 Lessons not downloading
 ***********************
@@ -39,34 +39,6 @@ Our Events have a 'callbacks' prop that can be used to pass result and fault fun
 The Event/Command relationship described above is a bit rigid. In some cases we'd like to be able to pass in other types of callbacks, e.g. an update function that the Command can call repeatedly to update the client instance. In these cases (for now) we use the result callback.
 
 
-Cloud Storage - DreamObjects
-****************************
-Pay-as-you-go plan costs (2019.05):
-  Storage: $26/TB
-  Transfer-out: $52/TB
-Transfer-in and API calls are free
-Lesson Download Cost?:
-  1,000,000 Users
-  Each downloads 100 lessons once every 6 months - averaging 17 per month
-  Lessons average 1 MB in size
-  1,000,000 * 17 MB = 16 TB per month - at a cost of ~$800/month, $10K/year
-Lesson Storage Cost?:
-  1 MB - per year - $.000025 - i.e. essentially free  
-Lesson Creator Cost?:
-  WAV files for median lesson - ~10 MB
-  Assume an average of 3 versions per file
-  Conservatively, 50 MB per lesson
-  Storage cost: $.015/year
-  Transfer-out costs
-    Deploying lessons is virtually zero
-	Local backups?
-	  Assume each user will back a lesson up an average of 10 times
-	  I.e. .5 GB transfer-out - $.025 - over life of lesson
-
-  	
-	
-  
- 
 Commands & Controllers
 **********************
 
@@ -82,23 +54,6 @@ With one exception, we use this pattern in dispose() methods:
 In other words, subclasses and superclasses have their own private _isDisposed prop, and keep track, for themselves, of whether they are disposed or not.
 Exception: In classes that use the instance pool pattern, such as AudioSequenceElement subclasses, we have a public isDisposed prop in the root class, but it isn't checked in dispose() methods.
 The standard pattern places a premium on efficiency (i.e. avoiding running dispose() when it isn't needed). When we're using the instance pool pattern we put a premium on thoroughness, as dispose() is used to clean up instances that are being deactivated and saved.
-
-Domain Model Changes
-********************
-sqlite_create_schema.sql
-Recreate DB
-  build.bat recreates "template file" in \languagementor\src_common\db\
-Revise VO classes?
-New VO classes?
-  Primary storage list
-  _index_VOClass_by_primaryStorageListName
-  Indexes
-Find place(s) in code where VO is created
-If creating things that need to be cascade-deleted, this needs to be done 'manually' for SQLite
-  For example, see Data.deleteLessonVersion()
-Clean project (Flash Builder)
-  copies template file to projects /bin-debug/db/ folder
-Run / Clear app data
 
 ErrorReport Classes
 *******************
@@ -282,11 +237,6 @@ Process:
     
 
 
-White Labeling
-**************
-See 'LangCollab Checklists.txt' file
-
- 
 XML Files: language_mentor_info.xml
 ***********************************
  
