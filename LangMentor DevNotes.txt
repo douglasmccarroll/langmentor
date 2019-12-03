@@ -29,6 +29,14 @@ Are other lessons downloading from library?
                                     Reference
 ****************************************************************************************
 
+
+Audio Playback
+**************
+Key classes are AudioController, AudioSequenceBranch, AudioSequenceLeaf
+AudioController._currentLessonVersionAudioSequence
+AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence()
+
+
 Callbacks, result() and fault()
 *******************************
 
@@ -54,6 +62,7 @@ With one exception, we use this pattern in dispose() methods:
 In other words, subclasses and superclasses have their own private _isDisposed prop, and keep track, for themselves, of whether they are disposed or not.
 Exception: In classes that use the instance pool pattern, such as AudioSequenceElement subclasses, we have a public isDisposed prop in the root class, but it isn't checked in dispose() methods.
 The standard pattern places a premium on efficiency (i.e. avoiding running dispose() when it isn't needed). When we're using the instance pool pattern we put a premium on thoroughness, as dispose() is used to clean up instances that are being deactivated and saved.
+
 
 ErrorReport Classes
 *******************
@@ -87,6 +96,12 @@ Languages & Localization
 ************************
 We use ISO639-3 3-character language codes. 
 We can’t use locale resource files for all language-dependent strings, because Flex’s localization allows us to specify only one – ‘local’ – language. LangCollab routinely uses two languages – native and target – so we need a way to say, “get the foo string for currTargetLanguage”, etc. 
+
+
+Learning Modes
+**************
+
+See SequenceStrategy_Chunk and its subclasses and how they are used
 
 
 Lesson Download Overview

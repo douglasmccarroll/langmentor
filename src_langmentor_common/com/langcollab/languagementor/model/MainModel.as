@@ -55,7 +55,6 @@ import com.brightworks.util.singleton.SingletonManager;
 import com.brightworks.util.tree.Utils_Tree;
 import com.brightworks.vo.IVO;
 import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
-import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_DownloadedLessons_SingleOrDualLanguageOrBoth;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
