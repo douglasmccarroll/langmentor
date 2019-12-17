@@ -136,7 +136,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
    // ****************************************************
 
    private function createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected():String {
-      var repeatNativeModeString:String = model.getLearningModeDisplayNameFromLabelToken(Constant_LearningModeLabels.REPEAT_TARGET);
+      var repeatNativeModeString:String = model.getLearningModeDisplayNameFromLabelToken(Constant_LearningModeLabels.TARGET_PAUSE);
       return 'The selected learning mode is a dual-language mode. Single-language lessons will be played in ' + repeatNativeModeString + ' mode.';
       /*var isAllSelectedLessonsSingleMode:Boolean =
           (model.getLessonVersionCount_SingleLanguage() == currentLessons.length);

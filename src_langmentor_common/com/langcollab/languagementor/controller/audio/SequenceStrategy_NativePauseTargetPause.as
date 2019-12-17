@@ -17,30 +17,23 @@
     along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.controller.audio {
+
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_NativeToTargetTranslationWithPlayback extends SequenceStrategy_Chunk implements ISequenceStrategy {
-   public function SequenceStrategy_NativeToTargetTranslationWithPlayback():void {
+public class SequenceStrategy_NativePauseTargetPause extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_NativePauseTargetPause():void {
       orderSpecList_Default = new ArrayCollection();
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT);
    }
 
    public function clone():ISequenceStrategy {
-      var instance:SequenceStrategy_NativeToTargetTranslationWithPlayback = new SequenceStrategy_NativeToTargetTranslationWithPlayback();
+      var instance:SequenceStrategy_NativePauseTargetPause = new SequenceStrategy_NativePauseTargetPause();
       instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }

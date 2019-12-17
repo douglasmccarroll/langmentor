@@ -18,10 +18,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.constant {
 public class Constant_LearningModeLabels {
-   public static const NATIVE_TO_TARGET_LEARNING:String = "NativeToTargetLearning";
-   public static const REPEAT_TARGET:String = "RepeatTarget";
-   public static const NATIVE_TO_TARGET_TRANSLATION:String = "NativeToTargetTranslation";
-   public static const TARGET_TO_NATIVE_TRANSLATION:String = "TargetToNativeTranslation";
-   public static const LISTEN_TO_TARGET:String = "ListenToTarget";
+   public static const NATIVE_TARGET:String = "NativeTarget";
+   public static const NATIVE_TARGET_PAUSE:String = "NativeTargetPause";
+   public static const NATIVE_PAUSE_TARGET_PAUSE:String = "NativePauseTargetPause";
+   public static const TARGET:String = "Target";
+   public static const TARGET_NATIVE:String = "TargetNative";
+   public static const TARGET_PAUSE:String = "TargetPause";
+   public static const TARGET_PAUSE_NATIVE:String = "TargetPauseNative";
+   public static const TARGET_PAUSE_NATIVE_PAUSE:String = "TargetPauseNativePause";
 }
 }

@@ -21,15 +21,26 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_ListenToTarget extends SequenceStrategy_Chunk implements ISequenceStrategy {
-   public function SequenceStrategy_ListenToTarget():void {
+public class SequenceStrategy_NativePauseTargetPauseWithPlayback extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_NativePauseTargetPauseWithPlayback():void {
       orderSpecList_Default = new ArrayCollection();
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
    }
 
    public function clone():ISequenceStrategy {
-      var instance:SequenceStrategy_ListenToTarget = new SequenceStrategy_ListenToTarget();
+      var instance:SequenceStrategy_NativePauseTargetPauseWithPlayback = new SequenceStrategy_NativePauseTargetPauseWithPlayback();
       instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }

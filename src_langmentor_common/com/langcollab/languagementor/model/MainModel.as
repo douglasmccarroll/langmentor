@@ -340,6 +340,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return _currentTargetLanguageVO.hasRecommendedLibraries;
    }
 
+   public function doesLearningModeHaveRecordPlayback(id:int):Boolean {
+      return getLearningModeVOFromID(id).hasRecordPlayback;
+   }
+
    public function doesLessonVersionNativeLanguageExist_ForLessonVersion(vo:LessonVersionVO):Boolean {
       var lvnlvo:LessonVersionNativeLanguageVO = _index_LessonVersionNativeLanguageVOs_by_LessonVersionVO[vo];
       return (lvnlvo != null);

@@ -21,16 +21,15 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_Translate extends SequenceStrategy_Chunk implements ISequenceStrategy {
-   public function SequenceStrategy_Translate():void {
+public class SequenceStrategy_Target extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_Target():void {
       orderSpecList_Default = new ArrayCollection();
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
-      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
    }
 
    public function clone():ISequenceStrategy {
-      var instance:SequenceStrategy_Translate = new SequenceStrategy_Translate();
+      var instance:SequenceStrategy_Target = new SequenceStrategy_Target();
       instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }

@@ -69,7 +69,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__PREVIOUS_CHUNK:String = "<";
       private static const _BUTTON_LABEL__PREVIOUS_LESSON:String = "<<";
       private static const _BUTTON_LABEL__RECORD:String = "Record &\nPlayback";
-      private static const _BUTTON_LABEL__TRANSLATE:String = "Trans\nlate";
       private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 1200;
 
       private var _button_Credits:Button_Standard_Blue;
@@ -81,7 +80,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _button_PreviousChunk:Button_Standard_Blue;
       private var _button_PreviousLesson:Button_Standard_Blue;
       private var _button_Record:Button_Toggle_Standard_Blue;
-      private var _button_Translate:Button_Standard_Blue;
       [Bindable]
       private var _columnWidth:int;
       private var _currentLessonsLengthDirty:Boolean = false;
@@ -109,7 +107,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
       public function get buttonList():Array {
-         return [_button_Credits, _button_IKnowThis, _button_Loop, _button_NextChunk, _button_NextLesson, _button_PreviousChunk, _button_PreviousLesson, _button_Record, _button_Translate];
+         return [_button_Credits, _button_IKnowThis, _button_Loop, _button_NextChunk, _button_NextLesson, _button_PreviousChunk, _button_PreviousLesson, _button_Record];
       }
 
       public function get buttonList_ArrowButtons():Array {
@@ -117,7 +115,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       public function get buttonList_TextButtons():Array {
-         return [_button_Credits, _button_IKnowThis, _button_Loop, _button_Record, _button_Translate];
+         return [_button_Credits, _button_IKnowThis, _button_Loop, _button_Record];
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,8 +190,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          group_PlayPauseButton.addElement(_button_PlayPause);
          group_PreviousChunkButton.addElement(_button_PreviousChunk);
          group_PreviousLessonButton.addElement(_button_PreviousLesson);
-         group_RecordAndTranslateButtons.addElement(_button_Record);
-         group_RecordAndTranslateButtons.addElement(_button_Translate);
+         group_RecordButton.addElement(_button_Record);
          Log.debug("View_PlayLessons.createChildren(): finished");
       }
 
@@ -314,11 +311,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          onDo_PreviousLesson();
       }
 
-      private function onButtonClick_Translate(event:MouseEvent):void {
-         Log.info("View_PlayLessons.onButtonClick_Translate()");
-         onDo_Translate();
-      }
-
       private function onChunkTextTextFieldClick():void {
          var isNativeTextAvailable:Boolean = model.isAppDualLanguage();
          var isTargetPhoneticTextAvailable:Boolean;
@@ -376,7 +368,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
 
       private function onCurrentChunkVOChange(newValue:int):void {
-         setButtonEnabled_Translate();
          updateTextBoxesText();
 
          ///alpha review stuff
@@ -587,15 +578,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          showHideMicrophoneImage();
       }
 
-      private function onDo_Translate():void {
-         if (currentlyInUserActionRequiredWaitInterval())
-            return;
-         _mostRecentUserActionTime = Utils_DateTime.getCurrentMS_BasedOnDate();
-         if (!_button_Translate.enabled)
-            return;
-         audioController.onTranslate();
-      }
-
       private function onDoIKnowThisComplete(preCommandSelectedLessonCount:uint):void {
          // Show popup if lesson has been deselected
          if (currentLessons.length == preCommandSelectedLessonCount - 1) {
@@ -657,7 +639,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _button_PreviousChunk = new Button_Standard_Blue();
          _button_PreviousLesson = new Button_Standard_Blue();
          _button_Record = new Button_Toggle_Standard_Blue();
-         _button_Translate = new Button_Standard_Blue();
          _button_Credits.label = _BUTTON_LABEL__CREDITS;
          _button_IKnowThis.label = _BUTTON_LABEL__I_KNOW_THIS;
          _button_Loop.label = _BUTTON_LABEL__LOOP;
@@ -667,7 +648,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _button_PreviousChunk.label = _BUTTON_LABEL__PREVIOUS_CHUNK;
          _button_PreviousLesson.label = _BUTTON_LABEL__PREVIOUS_LESSON;
          _button_Record.label = _BUTTON_LABEL__RECORD;
-         _button_Translate.label = _BUTTON_LABEL__TRANSLATE;
          _button_Credits.addEventListener(MouseEvent.CLICK, onButtonClick_Credits);
          _button_IKnowThis.addEventListener(MouseEvent.CLICK, onButtonClick_IKnowThis);
          _button_Loop.addEventListener(MouseEvent.CLICK, onButtonClick_Loop);
@@ -677,7 +657,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _button_PreviousChunk.addEventListener(MouseEvent.CLICK, onButtonClick_PreviousChunk);
          _button_PreviousLesson.addEventListener(MouseEvent.CLICK, onButtonClick_PreviousLesson);
          _button_Record.addEventListener(MouseEvent.CLICK, onButtonClick_Record);
-         _button_Translate.addEventListener(MouseEvent.CLICK, onButtonClick_Translate);
          Log.debug("View_PlayLessons.onPreinitialize(): starting buttonList loop");
          for each (var b:UIComponent in buttonList) {
             if (!b)
@@ -698,7 +677,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _button_IKnowThis.setStyle("fontSize", standardFontSize);
          _button_Loop.setStyle("fontSize", standardFontSize);
          _button_Record.setStyle("fontSize", standardFontSize);
-         _button_Translate.setStyle("fontSize", standardFontSize);
          _button_PlayPause.percentHeight = 100;
          _button_PlayPause.percentWidth = 100;
          _button_PlayPause.setStyle("fontSize", Math.round(standardFontSize * 1.5));
@@ -709,30 +687,26 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var learningModeId:int = model.currentLearningModeId;
          var learningModeLabel:String = model.getLearningModeTokenFromID(learningModeId);
          switch (learningModeLabel) {
-            case Constant_LearningModeLabels.LISTEN_TO_TARGET: {
-               setButtonEnabled_Record(false);
-               setButtonVisible_Translate(true);
+            case Constant_LearningModeLabels.NATIVE_TARGET:
+            case Constant_LearningModeLabels.TARGET:
+            case Constant_LearningModeLabels.TARGET_NATIVE:
+            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE: {
+               _button_Record.enabled = false;
+               _button_Record.selected = false;
                break;
             }
-            case Constant_LearningModeLabels.NATIVE_TO_TARGET_LEARNING:
-            case Constant_LearningModeLabels.NATIVE_TO_TARGET_TRANSLATION:
-            case Constant_LearningModeLabels.REPEAT_TARGET: {
-               setButtonEnabled_Record(true);
-               setButtonVisible_Translate(false);
+            case Constant_LearningModeLabels.NATIVE_TARGET_PAUSE:
+            case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE:
+            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE_PAUSE:
+            case Constant_LearningModeLabels.TARGET_PAUSE: {
                _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
                _button_Record.selected = audioController.isRecordMode;
-               break;
-            }
-            case Constant_LearningModeLabels.TARGET_TO_NATIVE_TRANSLATION: {
-               setButtonEnabled_Record(false);
-               setButtonVisible_Translate(false);
                break;
             }
             default: {
                throw new Error("Screen_PlayLessons.onPreinitialize(): no match for case of '" + learningModeLabel + "'.");
             }
          }
-         setButtonEnabled_Translate();
          Log.debug("View_PlayLessons.onPreinitialize(): finished");
       }
 
@@ -783,29 +757,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentLessons.length == 0) {
             Utils_ANEs.showAlert_OkayButton(_ALERT_MESSAGE__ALL_LESSONS_LEARNED, onNoRemainingLessonsAlertCallback);
             return;
-         }
-      }
-
-      private function setButtonEnabled_Record(value:Boolean):void {
-         if (_button_Record) {
-            _button_Record.enabled = value;
-         }
-      }
-
-      private function setButtonEnabled_Translate():void {
-         if (!_button_Translate)
-            return;
-         if (model.getLearningModeTokenFromID(model.currentLearningModeId) == Constant_LearningModeLabels.LISTEN_TO_TARGET) {
-            _button_Translate.enabled = currentLessons.isCurrentLessonDualLanguage();
-         } else {
-            _button_Translate.enabled = false;
-         }
-      }
-
-      private function setButtonVisible_Translate(value:Boolean):void {
-         if (_button_Translate) {
-            _button_Translate.includeInLayout = value;
-            _button_Translate.visible = value;
          }
       }
 
@@ -961,7 +912,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   height = "100%"
                   width = "24%">
          </s:Group>
-         <s:Group id = "group_RecordAndTranslateButtons"
+         <s:Group id = "group_RecordButton"
                   height = "100%"
                   width = "28%">
          </s:Group>

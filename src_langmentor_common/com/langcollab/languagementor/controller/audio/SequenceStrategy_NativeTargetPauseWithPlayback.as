@@ -21,10 +21,12 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_RepeatTargetWithPlayback extends SequenceStrategy_Chunk implements ISequenceStrategy {
-   public function SequenceStrategy_RepeatTargetWithPlayback():void {
+public class SequenceStrategy_NativeTargetPauseWithPlayback extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_NativeTargetPauseWithPlayback():void {
       orderSpecList_Default = new ArrayCollection();
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE);
+      orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT);
@@ -34,7 +36,7 @@ public class SequenceStrategy_RepeatTargetWithPlayback extends SequenceStrategy_
    }
 
    public function clone():ISequenceStrategy {
-      var instance:SequenceStrategy_RepeatTargetWithPlayback = new SequenceStrategy_RepeatTargetWithPlayback();
+      var instance:SequenceStrategy_NativeTargetPauseWithPlayback = new SequenceStrategy_NativeTargetPauseWithPlayback();
       instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }

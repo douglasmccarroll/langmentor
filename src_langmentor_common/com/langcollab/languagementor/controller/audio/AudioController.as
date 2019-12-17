@@ -198,17 +198,6 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       }
    }
 
-   public function onTranslate():void {
-      Log.info(["AudioController.onTranslate()"]);
-      if (!_currentLessonVersionAudioSequence)
-         return;
-      if (_currentLessons.isCurrentLessonAlphaReviewVersion())
-         return;
-      stopLeafFinishCheckProcess();
-      var strat:SequenceStrategy_Translate = new SequenceStrategy_Translate();
-      setTempChangeChunkSequenceStrategyForNChunks(strat);
-   }
-
    public function pausePlayingAudioIfAny():void {
       Log.info(["AudioController.pausePlayingAudioIfAny()"]);
       AudioPlayer.getInstance().stop();
@@ -391,7 +380,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          return;
       if (newID == 0)
          return; // This happens if user selects "clear all data" option - app is about to close
-      if (_model.getLearningModeTokenFromID(newID) == Constant_LearningModeLabels.LISTEN_TO_TARGET)
+      if (!_model.doesLearningModeHaveRecordPlayback(newID))
          setIsRecordMode(false);
    }
 
@@ -594,6 +583,18 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS] = leaf;
+
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_1000_MS] = leaf;
+
+               leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_2000_MS);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
+               leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
+               leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
+               chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_2000_MS] = leaf;
 
                leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_3000_MS);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
@@ -798,14 +799,14 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          Log.warn("AudioController.switchToRecordModeStrategy(): _currentLessonVersionAudioSequence is null");
       if (_currentLessons.isCurrentLessonAlphaReviewVersion())
          return;
-      if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_NativeToTargetLearning) {
-         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_NativeToTargetLearningWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
+      if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_NativeTargetPause) {
+         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_NativeTargetPauseWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
       }
-      else if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_NativeToTargetTranslation) {
-         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_NativeToTargetTranslationWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
+      else if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_NativePauseTargetPause) {
+         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_NativePauseTargetPauseWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
       }
-      else if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_RepeatTarget) {
-         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_RepeatTargetWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
+      else if (_currentPrimaryChunkSequenceStrategy is SequenceStrategy_TargetPause) {
+         _currentLessonVersionAudioSequence.setSequenceStrategy(new SequenceStrategy_TargetPauseWithPlayback(), AUDIO_SEQUENCE_LEVEL__CHUNK);
       }
       else {
          Log.warn(["AudioController.switchToRecordModeStrategy(): _currentLessonVersionAudioSequence isn't playback-able:", _currentPrimaryChunkSequenceStrategy]);
@@ -824,29 +825,41 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       }
       else if ((_model.isCurrentLearningModeDualLanguage()) && (!_currentLessons.currentLessonVO.isDualLanguage)) {
          // We replace dual-language learning modes with 'repeat target'
-         chunkStrategy = new SequenceStrategy_RepeatTarget();
+         chunkStrategy = new SequenceStrategy_TargetPause();
       }
       else {
          var learningModeToken:String = _model.getLearningModeTokenFromID(_model.currentLearningModeId);
          switch (learningModeToken) {
-            case Constant_LearningModeLabels.LISTEN_TO_TARGET: {
-               chunkStrategy = new SequenceStrategy_ListenToTarget();
+            case Constant_LearningModeLabels.NATIVE_TARGET: {
+               chunkStrategy = new SequenceStrategy_NativeTarget();
                break;
             }
-            case Constant_LearningModeLabels.NATIVE_TO_TARGET_LEARNING: {
-               chunkStrategy = new SequenceStrategy_NativeToTargetLearning();
+            case Constant_LearningModeLabels.NATIVE_TARGET_PAUSE: {
+               chunkStrategy = new SequenceStrategy_NativeTargetPause();
                break;
             }
-            case Constant_LearningModeLabels.NATIVE_TO_TARGET_TRANSLATION: {
-               chunkStrategy = new SequenceStrategy_NativeToTargetTranslation();
+            case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE: {
+               chunkStrategy = new SequenceStrategy_NativePauseTargetPause();
                break;
             }
-            case Constant_LearningModeLabels.REPEAT_TARGET: {
-               chunkStrategy = new SequenceStrategy_RepeatTarget();
+            case Constant_LearningModeLabels.TARGET: {
+               chunkStrategy = new SequenceStrategy_Target();
                break;
             }
-            case Constant_LearningModeLabels.TARGET_TO_NATIVE_TRANSLATION: {
-               chunkStrategy = new SequenceStrategy_TargetToNativeTranslation();
+            case Constant_LearningModeLabels.TARGET_PAUSE: {
+               chunkStrategy = new SequenceStrategy_TargetPause();
+               break;
+            }
+            case Constant_LearningModeLabels.TARGET_NATIVE: {
+               chunkStrategy = new SequenceStrategy_TargetNative();
+               break;
+            }
+            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE: {
+               chunkStrategy = new SequenceStrategy_TargetPauseNative();
+               break;
+            }
+            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE_PAUSE: {
+               chunkStrategy = new SequenceStrategy_TargetPauseNativePause();
                break;
             }
             default: {

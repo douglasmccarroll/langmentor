@@ -38,6 +38,20 @@ public class LearningModeVO extends VO implements IVO {
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
+   private var _hasRecordPlayback:Boolean;
+
+   public function get hasRecordPlayback():Boolean {
+      return _hasRecordPlayback;
+   }
+
+   public function set hasRecordPlayback(value:Boolean):void {
+      setPropList.push("hasRecordPlayback");
+      if (_hasRecordPlayback != value) {
+         _hasRecordPlayback = value;
+         dispatchEvent(new Event("valueChange"));
+      }
+   }
+
    private var _id:int;
 
    public function get id():int {

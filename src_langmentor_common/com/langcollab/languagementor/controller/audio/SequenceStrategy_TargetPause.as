@@ -21,8 +21,8 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 
 import mx.collections.ArrayCollection;
 
-public class SequenceStrategy_RepeatTarget extends SequenceStrategy_Chunk implements ISequenceStrategy {
-   public function SequenceStrategy_RepeatTarget():void {
+public class SequenceStrategy_TargetPause extends SequenceStrategy_Chunk implements ISequenceStrategy {
+   public function SequenceStrategy_TargetPause():void {
       orderSpecList_Default = new ArrayCollection();
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_500_MS);
       orderSpecList_Default.addItem(Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET);
@@ -30,7 +30,7 @@ public class SequenceStrategy_RepeatTarget extends SequenceStrategy_Chunk implem
    }
 
    public function clone():ISequenceStrategy {
-      var instance:SequenceStrategy_RepeatTarget = new SequenceStrategy_RepeatTarget();
+      var instance:SequenceStrategy_TargetPause = new SequenceStrategy_TargetPause();
       instance.orderSpecList_Default = this.orderSpecList_Default;
       return instance;
    }
