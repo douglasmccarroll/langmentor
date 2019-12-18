@@ -128,12 +128,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      private function closeApp(event:Event = null):void {
-         if (!Utils_System.isRunningOnDesktop())
-            currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-         NativeApplication.nativeApplication.exit();
-      }
-
       private function createUserMessage():String {
          var result:String;
          if ((_userCommentTextArea.text) && (_userCommentTextArea.text.length > 0))
@@ -155,7 +149,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isInFatalErrorMode()) {
             if (!Utils_System.isRunningOnDesktop())
                currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
-            NativeApplication.nativeApplication.exit();
+            NativeApplication.nativeApplication.exit();  // This has no effect on iOS
          } else {
             if (success) {
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__COMPLETE;

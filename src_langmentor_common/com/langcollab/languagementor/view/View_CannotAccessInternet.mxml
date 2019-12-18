@@ -29,27 +29,36 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.event.BwEvent;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.constant.Constant_AppConfiguration;
+      import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       private var _isDisposed:Boolean = false;
 
       private function onCreationComplete():void {
-         textArea.text = "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " cannot access the Internet. Please ensure that you have an internet connection and try again.";
+         textArea.text = "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " cannot access the Internet.\n\nAn Internet connection is required for app setup.\n\nPlease ensure that you have an internet connection and try again.";
       }
 
-      private function onOkayButtonClick():void {
-         NativeApplication.nativeApplication.exit();
+      private function onTryAgainButtonClick():void {
+         NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.APP_RESTART_NEEDED));
       }
+      
       ]]>
     </fx:Script>
    <s:VGroup height = "100%"
              width = "100%">
+      <s:Spacer />
       <s:TextArea
             id = "textArea"
             height = "100%"
             width = "100%"
+            paddingTop="{Utils_Text.getStandardFontSize() * 2}"
+            paddingBottom="{Utils_Text.getStandardFontSize() * 2}"
+            paddingLeft="{Utils_Text.getStandardFontSize() * 2}"
+            paddingRight="{Utils_Text.getStandardFontSize() * 2}"
+            fontSize="{Math.round(Utils_Text.getStandardFontSize() * 1.5)}"
             borderVisible = "false"/>
       <s:BorderContainer id = "buttonContainer"
                          width = "100%"
@@ -59,9 +68,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                 paddingTop = "{Utils_Layout.getStandardPadding()}"
                                 paddingBottom = "{Utils_Layout.getStandardPadding() + 4}"/>
          </s:layout>
-         <button:NormalButton id = "okayButton"
-                              label = "OK"
-                              click = "onOkayButtonClick()"
+         <button:NormalButton id ="tryAgainButton"
+                              label = "Try Again"
+                              click = "onTryAgainButtonClick()"
                               width = "60%"/>
       </s:BorderContainer>
    </s:VGroup>

@@ -142,6 +142,13 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       }
    }
 
+   private function onAppRestartNeeded(event:BwEvent):void {
+      navigator.pushView(View_Intro_Welcome);
+      var cb:Callbacks = new Callbacks(onInitApplicationComplete, onInitApplicationFailure);
+      var c:Command_InitApplication = new Command_InitApplication(cb);
+      c.execute();
+   }
+
    private function onCreationComplete(event:FlexEvent):void {
       navigationContent = [];
       var leftArrowButton:Button_ActionBar_LeftArrow;
@@ -200,6 +207,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       }
       NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onActivateApp);
+      NativeApplication.nativeApplication.addEventListener(BwEvent.APP_RESTART_NEEDED, onAppRestartNeeded);
       NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivateApp);
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -253,7 +261,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    private function onNoInternetConnection(e:BwEvent):void {
       if ((!_appStatePersistenceManager.retrieveIsAppInstallDateSaved()) || (_model.getLessonVersionCount() == 0)) {
-
          navigator.pushView(View_CannotAccessInternet);
       }
       else {
