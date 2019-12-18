@@ -37,6 +37,7 @@ import com.brightworks.db.SQLiteQueryData_Delete;
 import com.brightworks.db.SQLiteQueryData_Insert;
 import com.brightworks.db.SQLiteQueryData_Select;
 import com.brightworks.db.SQLiteQueryData_Update;
+import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
@@ -102,6 +103,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    [Bindable]
    public var currentUserId:int = 1; ///
    public var downloadBandwidthRecorder:DownloadBandwidthRecorder;
+   public var internetConnectionActive:Boolean;
    public var isAppRunningInBackground:Boolean;
    public var isDataWipeActivityBlockActive:Boolean;
    public var isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed:Boolean
@@ -653,6 +655,9 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getLessonVersionCount():int {
+      if (!_list_LessonVersionVOs) {
+         return 0;
+      }
       return _list_LessonVersionVOs.length;
    }
 
@@ -1327,6 +1332,15 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+   private function doPostLoadConfigDataAppInit() {
+      initCache();
+      retrievePersistedAppStateData();
+      _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
+      initLessonsSelectionTreeSortOptions();
+      _isDBDataInitialized = true;
+      initTargetLanguageBasedDataIfReady();
+   }
+
    private function getDefaultLearningModeId():uint {
       return isAppDualLanguage() ?
             DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE :
@@ -1558,12 +1572,8 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       }
       else {
          // We now have our config data, and the DB version is okay, so we can continue on with stuff that would be in the init() method if we didn't need to confirm these details first...
-         initCache();
-         retrievePersistedAppStateData();
-         _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
-         initLessonsSelectionTreeSortOptions();
-         _isDBDataInitialized = true;
-         initTargetLanguageBasedDataIfReady();
+         internetConnectionActive = true;
+         doPostLoadConfigDataAppInit();
          updateLanguageVOsWithHasRecommendedLibrariesInfo();
          configFileInfo.doLowPriorityDataFetching();
       }
@@ -1571,8 +1581,15 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private function onLoadConfigDataFailure(techReport:ConfigFileInfoTechReport):void {
       //
-      //    Are you running on the desktop, without Tomcat running?  :)
+      //    We are probably either running on the desktop, without Tomcat running, or are running on a wifi-only device
+      //    with no wifi connection.
       //
+      if (_appStatePersistenceManager.retrieveIsAppInstallDateSaved()) {
+         // We have no internet connection, but the app has been initialized so there are probably lessons downloaded, and the user can use the app
+         // App_LanguageMentor_Base.onNoInternetConnection() will check to see if there are lessons, so we don't do that here.
+         doPostLoadConfigDataAppInit();
+      }
+      NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.NO_INTERNET_CONNECTION));
       Log.info(["MainModel.onLoadConfigDataFailure()", techReport]);
    }
 

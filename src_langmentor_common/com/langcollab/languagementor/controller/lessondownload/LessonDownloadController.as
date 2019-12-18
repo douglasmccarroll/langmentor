@@ -712,9 +712,17 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
 
    private function startUpdateAvailableLessonsProcess():void {
       Log.info("LessonDownloadController.startUpdateAvailableLessonsProcess()");
+      // dmccarroll 20191217
+      // We disable downloads if there was no internet connection at startup because,
+      // even if an internet connection occurs later on,
+      // we would then want our code to check mostRecentVersionRequiredDataSchemaVersion before downloading lessons
+      // (because if we don't, it's possible that new lessons will require an updated DB schema and chaos will then ensue),
+      // and such 'check' code would add complexity to our codebase, and complexity equals harm, and must always be justified,
+      // and in this case the complexity/harm would outweigh the benefit of permitting lesson downloads in this corner case.
+      if (!_model.internetConnectionActive) {
+         return;
+      }
       if (_isUpdateAvailableLessonDownloadsProcessActive || _isLessonDownloadProcessActive) {
-         // This can, at least theoretically, happen if a download takes a *really* long time, and the auto-download process 
-         // concludes that it's time to try again.
          return;
       }
       Utils_ANEs.showAlert_Toast("Searching For New Lessons", true);

@@ -340,14 +340,18 @@ CREATE TABLE LearningMode (
   id INTEGER NOT NULL UNIQUE,
   labelToken TEXT NOT NULL UNIQUE,
   locationInOrder INTEGER NOT NULL UNIQUE,
-  isDualLanguage BOOL
+  isDualLanguage BOOL,
+  hasRecordPlayback
 )  ;
 
-INSERT INTO LearningMode VALUES ('1','NativeToTargetLearning',    '1', '1');
-INSERT INTO LearningMode VALUES ('2','RepeatTarget',              '2', '0');
-INSERT INTO LearningMode VALUES ('3','NativeToTargetTranslation', '3', '1');
-INSERT INTO LearningMode VALUES ('4','TargetToNativeTranslation', '4', '1');
-INSERT INTO LearningMode VALUES ('5','ListenToTarget',            '5', '0');
+INSERT INTO LearningMode VALUES ('1', 'NativeTarget',           '1', '1', '0');
+INSERT INTO LearningMode VALUES ('2', 'NativeTargetPause',      '2', '1', '1');
+INSERT INTO LearningMode VALUES ('3', 'NativePauseTargetPause', '3', '1', '1');
+INSERT INTO LearningMode VALUES ('4', 'Target',                 '4', '0', '0');
+INSERT INTO LearningMode VALUES ('5', 'TargetPause',            '5', '0', '1');
+INSERT INTO LearningMode VALUES ('6', 'TargetNative',           '6', '1', '0');
+INSERT INTO LearningMode VALUES ('7', 'TargetPauseNative',      '7', '1', '0');
+INSERT INTO LearningMode VALUES ('8', 'TargetPauseNativePause', '8', '1', '0');
 
 CREATE TABLE Level (
   id INTEGER NOT NULL UNIQUE,

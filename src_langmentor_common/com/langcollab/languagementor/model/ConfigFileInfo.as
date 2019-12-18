@@ -469,7 +469,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
             techReport.miscInfoList.push("_rootConfigFileDownloader is null in onRootConfigFileDownloadFailure()");
          ConfigFileInfoTechReport(techReport).isRootConfigFileDownloadFailure = true;
          reportFault();
-         NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.NO_INTERNET_CONNECTION));
       }
    }
 

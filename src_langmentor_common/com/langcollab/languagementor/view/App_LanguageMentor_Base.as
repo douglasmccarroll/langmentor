@@ -252,8 +252,12 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    }
 
    private function onNoInternetConnection(e:BwEvent):void {
-      if (_model.getLessonVersionCount() == 0) {
+      if ((!_appStatePersistenceManager.retrieveIsAppInstallDateSaved()) || (_model.getLessonVersionCount() == 0)) {
+
          navigator.pushView(View_CannotAccessInternet);
+      }
+      else {
+         // The user can study lessons that have previously been downloaded.
       }
    }
 
