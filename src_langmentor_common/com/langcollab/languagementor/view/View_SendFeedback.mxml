@@ -21,8 +21,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                               xmlns:view = "com.langcollab.languagementor.view.*"
                               creationComplete = "onCreationComplete()"
                               initialize = "onInitialize()"
-                              softKeyboardActivating = "onSoftKeyboardActivating()"
-                              softKeyboardDeactivate = "onSoftKeyboardDeactivate()"
                               title = "Report Problem">
 
    <fx:Declarations>
@@ -191,19 +189,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             navigationContent = [];
       }
 
-      private function onSoftKeyboardActivating():void {
-         _headingWidget.visible = false;
-         _headingWidget.includeInLayout = false;
-         _messageTextWidget.visible = false;
-         _messageTextWidget.includeInLayout = false;
-      }
 
-      private function onSoftKeyboardDeactivate():void {
-         _headingWidget.visible = true;
-         _headingWidget.includeInLayout = true;
-         _messageTextWidget.visible = true;
-         _messageTextWidget.includeInLayout = true;
-      }
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

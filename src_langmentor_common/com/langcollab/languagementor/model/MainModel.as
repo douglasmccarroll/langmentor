@@ -104,7 +104,6 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public var currentUserId:int = 1; ///
    public var downloadBandwidthRecorder:DownloadBandwidthRecorder;
    public var internetConnectionActive:Boolean;
-   public var isAppRunningInBackground:Boolean;
    public var isDataWipeActivityBlockActive:Boolean;
    public var isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed:Boolean
    public var lessonsSelectionTreeSortOptions:Array;
@@ -1332,7 +1331,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   private function doPostLoadConfigDataAppInit() {
+   private function doPostLoadConfigDataAppInit():void {
       initCache();
       retrievePersistedAppStateData();
       _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);

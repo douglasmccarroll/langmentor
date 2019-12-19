@@ -19,11 +19,9 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
-import com.brightworks.constant.Constant_AudioModeConfig;
 import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.BwEvent;
 import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.audio.Utils_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
@@ -48,6 +46,8 @@ import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
 import flash.events.UncaughtErrorEvent;
+import flash.media.AudioPlaybackMode;
+import flash.media.SoundMixer;
 import flash.ui.Keyboard;
 import flash.utils.Timer;
 
@@ -138,7 +138,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onActivateApp()");
-         _model.isAppRunningInBackground = false;
+         SoundMixer.audioPlaybackMode = AudioPlaybackMode.MEDIA;
       }
    }
 
@@ -171,11 +171,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onDeactivateApp()");
-         _model.isAppRunningInBackground = true;
-         if (Constant_AudioModeConfig.AUDIO_MODE__CURRENT == Constant_AudioModeConfig.AUDIO_MODE__STANDARD) {
-            _currentLessons.pauseCurrentLessonVersionIfPlaying();
-         }
-
+         _currentLessons.pauseCurrentLessonVersionIfPlaying();
+         SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
       }
    }
 

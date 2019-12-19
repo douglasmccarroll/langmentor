@@ -30,7 +30,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.base.Callbacks;
-      import com.brightworks.constant.Constant_AudioModeConfig;
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
@@ -42,7 +41,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.button.Button_Standard_Purple;
       import com.langcollab.languagementor.component.button.Button_Toggle_Standard_Blue;
       import com.brightworks.constant.Constant_AppConfiguration;
-      import com.langcollab.languagementor.constant.Constant_DownloadedLessons_SingleOrDualLanguageOrBoth;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
@@ -55,7 +53,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       import mx.binding.utils.BindingUtils;
       import mx.binding.utils.ChangeWatcher;
-      import mx.core.FlexGlobals;
       import mx.core.UIComponent;
 
       private static const _ALERT_MESSAGE__ALL_LESSONS_LEARNED:String = "Congratulations - you've learned all chunks in all selected lessons. Would you like to select more lessons?";
@@ -748,9 +745,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onViewDeactivate():void {
-         if (Constant_AudioModeConfig.AUDIO_MODE__CURRENT == Constant_AudioModeConfig.AUDIO_MODE__STANDARD) {
-            currentLessons.pauseCurrentLessonVersionIfPlaying();
-         }
+         currentLessons.pauseCurrentLessonVersionIfPlaying();
       }
 
       private function processCurrentLessonsLengthChange():void {
