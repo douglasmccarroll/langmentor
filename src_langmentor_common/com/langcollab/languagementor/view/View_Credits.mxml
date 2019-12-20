@@ -41,7 +41,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import mx.core.FlexGlobals;
 
       private static const LIST_OPTION__LESSONS:String = "Lesson Credits";
-      private static const LIST_OPTION__ABOUT_THIS_APP:String = "About " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
+      private static const LIST_OPTION__TECHNOLOGY:String = "Technology";
 
       [Bindable]
       private var _creditsTypeListDataProvider:ArrayCollection;
@@ -82,8 +82,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _creditsTypeListDataProvider = new ArrayCollection();
          _creditsTypeListDataProvider.addItem({label: LIST_OPTION__LESSONS, value: LIST_OPTION__LESSONS});
          _creditsTypeListDataProvider.addItem({
-            label: LIST_OPTION__ABOUT_THIS_APP,
-            value: LIST_OPTION__ABOUT_THIS_APP
+            label: LIST_OPTION__TECHNOLOGY,
+            value: LIST_OPTION__TECHNOLOGY
          })
       }
 
@@ -99,8 +99,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_Credits_Lessons, null, navigator.context);
                break;
             }
-            case LIST_OPTION__ABOUT_THIS_APP: {
-               navigator.pushView(View_Credits_About_LangMentor, null, navigator.context);
+            case LIST_OPTION__TECHNOLOGY: {
+               navigator.pushView(View_Credits_Technology, null, navigator.context);
                break;
             }
             default: {

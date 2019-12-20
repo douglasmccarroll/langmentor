@@ -857,7 +857,7 @@ public class Command_DownloadLibraryInfo extends Command_Base__LangMentor {
       } else if (XMLList(_libraryXML.contentProviderId).length() > 1) {
          bError = true;
          techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__REPOS_XML__MULTIPLE_CONTENT_PROVIDER_ID_NODES);
-      } else if (_libraryXML.contentProviderId[0].toString().length < 7) {
+      } else if (_libraryXML.contentProviderId[0].toString().length < 5) {
          bError = true;
          techReport.problemDescriptionList.push(Command_DownloadLibraryInfoTechReport.PROB_DESC__REPOS_XML__CONTENTPROVIDERID_TOO_SHORT);
       }

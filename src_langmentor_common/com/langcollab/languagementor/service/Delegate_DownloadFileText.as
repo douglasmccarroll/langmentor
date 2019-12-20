@@ -24,6 +24,7 @@ import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPService;
 
 public class Delegate_DownloadFileText implements IManagedSingleton {
+
    private static var _instance:Delegate_DownloadFileText;
 
    public var httpService:HTTPService;

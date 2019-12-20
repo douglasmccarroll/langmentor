@@ -54,7 +54,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       public var startLessonDownloads:Boolean = false;
 
-      private var _downloadLessonsUpdateTimer:Timer;
       private var _isDisposed:Boolean;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -105,16 +104,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
          var message:String = "";
          message += "Downloaded Lessons: " + model.getLessonVersionCount() + "\n\n";
+         // Include previous download info, if any
          if (lessonDownloadController.previousLessonDownloadProcessResultsInfo) {
             message += updateUI_CreatePreviousLessonDownloadInfoString();
          }
          if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
             message += Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE;
+         } else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
+            message += updateUI_CreateCheckingForDownloadsString();
          } else if (lessonDownloadController.isLessonDownloadProcessActive) {
             message += updateUI_CreateLessonDownloadInProcessString();
          } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
-            // The "update info" process is finished, but no lesson downloads are in progress. While this is a perfectly normal state of affairs,
-            // it's possible that a problem occurred the last time the "update info" process ran.
+            // The "update available downloads" process is finished, but no lesson downloads are in progress.
+            // This probably indicates that there are simply no new lessons available for downloading.
+            // It's also possible that something is amiss, and needs to be explained to the user.
             var explanation:String;
             var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                   lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
@@ -147,7 +150,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             if (explanation) {
                message += explanation + "\n\n";
             } else {
-               var foo:int = 0; // for debugging
+               // This is generally fine, even desirable. Next line is only used if you've concluded that an explanation would be appropriate, and yet you see no explanation, and you want to set a breakpoint.
+               var foo:int = 0;
             }
          }
          if ((lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) &&
@@ -165,6 +169,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                   " lesson " + updateWasOrUpdatesWere + " postponed because the " + lessonIsOrLessonsAre + " currently selected.\n\n"
          }
          textDisplayLabel.text = message;
+      }
+
+      private function updateUI_CreateCheckingForDownloadsString():String {
+         return "Checking for available lessons...";
       }
 
       private function updateUI_CreateLessonDownloadInProcessString():String {

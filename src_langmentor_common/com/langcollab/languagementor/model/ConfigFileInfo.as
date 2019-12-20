@@ -1,10 +1,28 @@
+/*
+ *  Copyright 2019 Brightworks, Inc.
+ *
+ *  This file is part of Language Mentor.
+ *
+ *  Language Mentor is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Language Mentor is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package com.langcollab.languagementor.model {
 import com.brightworks.base.Callbacks;
-import com.brightworks.component.mobilealert.MobileAlert;
 import com.brightworks.constant.Constant_PlatformName;
 import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.ILoggingConfigProvider;
-import com.brightworks.techreport.TechReport;
+import com.brightworks.interfaces.IUserDataReportingConfigProvider;
 import com.brightworks.util.AppActiveElapsedTimeTimer;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
@@ -19,19 +37,15 @@ import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
-import com.langcollab.languagementor.view.View_DeviceDoesntSupportLangMentor;
-import com.langcollab.languagementor.vo.LanguageVO;
-
-import flash.desktop.NativeApplication;
 
 import flash.events.TimerEvent;
 import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
-import spark.components.ViewNavigatorApplication;
 
-public class ConfigFileInfo implements ILoggingConfigProvider {
+public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportingConfigProvider {
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_ALWAYS_NODES:String = "problemDescription_MultipleAlwaysNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_DEFAULT_NODES:String = "problemDescription_MultipleDefaultNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_ERROR_NODES:String = "problemDescription_MultipleErrorNodes";
@@ -84,6 +98,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
    private var _model:MainModel;
    private var _timeoutTimer:AppActiveElapsedTimeTimer;
    private var _timeoutTimerCompleteFunction:Function;
+   private var _userActivityReportingURL:String;
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
@@ -181,6 +196,14 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
          // This is happening when I attempt to force a link display by commenting out conditional code - I don't think that it happens in production
          return "";
       }
+   }
+
+   public function getUserActivityReportingURL():String {
+      if (!_userActivityReportingURL) {
+         // Config file info not yet fully populated
+         return Constant_AppConfiguration.DEFAULT_CONFIG_INFO__USER_ACTIVITY_REPORTING_URL;
+      }
+      return _userActivityReportingURL;
    }
 
    public function isLoggingEnabled(level:uint):Boolean {
@@ -402,6 +425,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       refreshMentorTypeDataFromXML();
       _isDataLoaded_MentorTypeFile = true;
       Log.setConfigProvider(this);
+      UserActivityReportingManager.setConfigProvider(this);
       reportResult();
    }
 
@@ -550,6 +574,13 @@ public class ConfigFileInfo implements ILoggingConfigProvider {
       _index_LogLevel_to_IsLoggingEnabled[Log.LOG_LEVEL__ALWAYS] = true;
       _index_LogLevel_to_IsLogToServerEnabled[Log.LOG_LEVEL__ALWAYS] = true;
       _index_LogLevel_to_LogURL[Log.LOG_LEVEL__ALWAYS] = defaultValue_LogURL;
+      var userActivityReportingConfigurationNode:XML = _fileXML_MentorType.userActivityReportingConfiguration[0];
+      if (userActivityReportingConfigurationNode) {
+         _userActivityReportingURL = userActivityReportingConfigurationNode.userActivityReportingURL[0].toString();
+      }
+      if (!_userActivityReportingURL) {
+         Log.warn("ConfigFileInfo.refreshMentorTypeDataFromXML(): Could not load _userActivityReportingURL");
+      }
    }
 
    private function reportFault():void {

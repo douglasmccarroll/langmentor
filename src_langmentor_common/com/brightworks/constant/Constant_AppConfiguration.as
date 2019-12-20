@@ -35,6 +35,7 @@ public class Constant_AppConfiguration {
    public static const DEFAULT_CONFIG_INFO__LOG_LEVEL__LOG_TO_SERVER:uint = Log.LOG_LEVEL__WARN;
    public static const DEFAULT_CONFIG_INFO__LOG_TO_SERVER_MAX_STRING_LENGTH:uint = 8000;
    public static const DEFAULT_CONFIG_INFO__LOG_URL:String = "https://31t88tqyx8.execute-api.us-east-1.amazonaws.com/prod/log-message";
+   public static const DEFAULT_CONFIG_INFO__USER_ACTIVITY_REPORTING_URL:String = "https://foo.com";
    public static const EXPLANATORY_AUDIO_FILE_BODY_STRING:String = "xply";
    public static const I_KNOW_THIS_REQUIRED_WAIT_INTERVAL:Number = 1000;
    public static const INSUFFICIENT_STORAGE_SPACE_MESSAGE:String = "We're sorry, this device has insufficient space available in its file system to store new lessons.";
