@@ -22,6 +22,9 @@ import com.brightworks.util.Log;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
+import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;
 import com.langcollab.languagementor.vo.ChunkVO;
 import com.langcollab.languagementor.vo.LessonVersionVO;
@@ -45,7 +48,7 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
 
    private var _isDisposed:Boolean = false;
    private var _isLessonVersionCurrentlyPlayingAndNotPaused:Boolean;
-   private var _oldLessonVersion:LessonVersionVO;
+   private var _lessonVersionContainingSuppressedChunk:LessonVersionVO;
 
    override public function dispose():void {
       Log.debug("Command_DoIKnowThis.dispose()");
@@ -55,15 +58,16 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
       _isDisposed = true;
       //_chunkLearningFeedbackVO = null;
       model = null;
-      _oldLessonVersion = null;
+      _lessonVersionContainingSuppressedChunk = null;
    }
 
    public function execute():void {
       Log.info("Command_DoIKnowThis.execute()");
       _isLessonVersionCurrentlyPlayingAndNotPaused = ((currentLessons.isLessonPlaying) && (!currentLessons.isLessonPaused));
       currentLessons.pauseCurrentLessonVersionIfPlaying();
-      _oldLessonVersion = currentLessons.currentLessonVO;
+      _lessonVersionContainingSuppressedChunk = currentLessons.currentLessonVO;
       var cvo:ChunkVO = currentLessons.getChunkVOByLessonVersionVOAndChunkLocationInOrder(currentLessons.currentLessonVO, currentLessons.currentChunkIndex + 1);
+      var suppressedChunkIndex:int = currentLessons.currentChunkIndex;
       cvo.suppressed = true;
       var updatedPropNames:Array = [];
       updatedPropNames.push("suppressed");
@@ -72,22 +76,28 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
       if (modelReport.isAnyProblems) {
          // The only time that I've seen this happen is, when testing the app, I've hit the I know this button repeatedly and
          // quickly, and Data has found that its _currentSQLiteOperation prop != null.
+         // This hasn't happened in a long time, probably because I've fixed the button or, actually, the code that it calls,
+         // so that it no longer sends out multiple events if hit repeatedly and quickly.
          Log.warn(["Command_DoIKnowThis.execute(): Problem updating DB", modelReport]);
          modelReport.dispose();
          resumeAudioIfAppropriate();
       }
       else {
          modelReport.dispose();
-         if (!currentLessons.doesLessonVersionContainAnyUnsuppressedChunks(_oldLessonVersion)) {
+         if (currentLessons.doesLessonVersionContainAnyUnsuppressedChunks(_lessonVersionContainingSuppressedChunk)) {
+            reportUserActivity(suppressedChunkIndex,false);
+         }
+         else {
             currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
             // 20130711 - We do this before currentLessons.ensureStateIntegrity() because this both a) removes
             //            lesson, and b) unsupresses all chunks whereas ensureStateIntegrity() just removes
             //            the lesson without unsuppressing chunks. Which is wrong. And should probably be
             //            fixed. At some point.  :)
             var c:Command_AddOrRemoveSelectedLessonVersion =
-                  new Command_AddOrRemoveSelectedLessonVersion(_oldLessonVersion);
+                  new Command_AddOrRemoveSelectedLessonVersion(_lessonVersionContainingSuppressedChunk);
             c.execute();
             reportLessonLearnedToAnalytics();
+            reportUserActivity(suppressedChunkIndex,true);
          }
          resumeAudioIfAppropriate();
          result(_preCommandSelectedLessonCount);
@@ -97,17 +107,30 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
    }
 
    private function reportLessonLearnedToAnalytics():void {
-      var lessonName:String = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_oldLessonVersion);
-      var lessonId:String = _oldLessonVersion.publishedLessonVersionId;
-      var lessonVersion:String = _oldLessonVersion.publishedLessonVersionVersion;
-      var providerId:String = _oldLessonVersion.contentProviderId;
+      var lessonName:String = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionContainingSuppressedChunk);
+      var lessonId:String = _lessonVersionContainingSuppressedChunk.publishedLessonVersionId;
+      var lessonVersion:String = _lessonVersionContainingSuppressedChunk.publishedLessonVersionVersion;
+      var providerId:String = _lessonVersionContainingSuppressedChunk.contentProviderId;
       Utils_GoogleAnalytics.trackLessonFinished(lessonName, lessonId, lessonVersion, providerId);
+   }
+
+   private function reportUserActivity(chunkIndex:int, lessonCompletelySuppressed:Boolean):void {
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.I_KNOW_THIS__SUPPRESS_CHUNK;
+      activity.chunkIndex_Previous = chunkIndex;
+      activity.iKnowThis_AllChunksInLessonSuppressed = lessonCompletelySuppressed
+      activity.learningModeDisplayName = model.getCurrentLearningModeDisplayName();
+      activity.lessonId = _lessonVersionContainingSuppressedChunk.publishedLessonVersionId;
+      activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionContainingSuppressedChunk);
+      activity.lessonProviderId = _lessonVersionContainingSuppressedChunk.contentProviderId;
+      activity.lessonVersion = _lessonVersionContainingSuppressedChunk.publishedLessonVersionVersion;
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function resumeAudioIfAppropriate():void {
       currentLessons.ensureStateIntegrity();
       audioController.decrementTempChunkSequenceStrategyAndClearIfAppropriate();
-      if (!currentLessons.currentLessonVO.equals(_oldLessonVersion))
+      if (!currentLessons.currentLessonVO.equals(_lessonVersionContainingSuppressedChunk))
          audioController.doPost_IKnowThis_ChangedLessonVersionStuff();
       if ((_isLessonVersionCurrentlyPlayingAndNotPaused) && (currentLessons.length > 0)) {
          currentLessons.playCurrentLessonVersionAndCurrentChunk();

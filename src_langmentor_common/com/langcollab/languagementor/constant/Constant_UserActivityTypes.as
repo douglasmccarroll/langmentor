@@ -22,11 +22,11 @@ package com.langcollab.languagementor.constant {
 public class Constant_UserActivityTypes {
 
    public static const AUTO_PLAY__ADVANCE_CHUNK:String = "AUTO_PLAY__ADVANCE_CHUNK";
-   public static const AUTO_PLAY__ADVANCE_LESSON:String = "AUTO_PLAY__ADVANCE_LESSON";
-   public static const DELETE_ALL_DATA:String = "DELETE_ALL_DATA";
+   public static const CREDITS_LESSON:String = "CREDITS_LESSON";
+   public static const CREDITS_TECHNOLOGY:String = "CREDITS_TECHNOLOGY";
+   public static const DELETE_ALL_DATA__FAILURE:String = "DELETE_ALL_DATA__FAILURE";
+   public static const DELETE_ALL_DATA__SUCCESS:String = "DELETE_ALL_DATA__SUCCESS";
    public static const I_KNOW_THIS__SUPPRESS_CHUNK:String = "I_KNOW_THIS__SUPPRESS_CHUNK";
-   public static const I_KNOW_THIS__ALL_CHUNKS_IN_LESSON_SUPPRESSED:String = "I_KNOW_THIS__ALL_CHUNKS_IN_LESSON_SUPPRESSED";
-   public static const LEARNING_MODES__CANCEL:String = "LEARNING_MODES__CANCEL";
    public static const LEARNING_MODES__SELECT_NEW:String = "LEARNING_MODES__SELECT_NEW";
    public static const LEARNING_MODES__VIEW_HELP:String = "LEARNING_MODES__VIEW_HELP";
    public static const PLAY_LESSONS__CREDITS:String = "PLAY_LESSONS__CREDITS";

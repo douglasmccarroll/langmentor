@@ -19,6 +19,9 @@
 package com.langcollab.languagementor.controller {
 
 import com.brightworks.util.Log;
+import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 
 public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor {
    private var _isDisposed:Boolean = false;
@@ -50,7 +53,25 @@ public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor 
       model.currentLearningModeId = _newLearningModeId;
       appStatePersistenceManager.persistSelectedLearningModeId(_newLearningModeId);
       audioController.onLearningModeIdChange();
+      reportUserActivity();
       dispose();
    }
+
+   // ****************************************************
+   //
+   //          Private Methods
+   //
+   // ****************************************************
+
+   private function reportUserActivity():void {
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.LEARNING_MODES__SELECT_NEW;
+      activity.learningModeDisplayName_New = model.getLearningModeDisplayNameFromId(_newLearningModeId);
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+   }
+
+
+
+
 }
 }

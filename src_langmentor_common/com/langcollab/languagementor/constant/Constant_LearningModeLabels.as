@@ -18,9 +18,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.constant {
 public class Constant_LearningModeLabels {
+   public static const NATIVE_PAUSE_TARGET_PAUSE:String = "NativePauseTargetPause";
    public static const NATIVE_TARGET:String = "NativeTarget";
    public static const NATIVE_TARGET_PAUSE:String = "NativeTargetPause";
-   public static const NATIVE_PAUSE_TARGET_PAUSE:String = "NativePauseTargetPause";
+   public static const NATIVE_TARGET_TARGET:String = "NativeTargetTarget";
    public static const TARGET:String = "Target";
    public static const TARGET_NATIVE:String = "TargetNative";
    public static const TARGET_PAUSE:String = "TargetPause";

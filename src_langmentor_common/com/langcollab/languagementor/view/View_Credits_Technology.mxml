@@ -20,6 +20,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 <view:View_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
                 xmlns:s = "library://ns.adobe.com/flex/spark"
                 xmlns:view = "com.langcollab.languagementor.view.*"
+                creationComplete="onCreationComplete()"
                 implements = "com.brightworks.interfaces.IDisposable"
                 title = "Technology">
 
@@ -29,6 +30,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
       import com.brightworks.constant.Constant_AppConfiguration;
+      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
@@ -63,6 +67,25 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                Log.error("View_Credits_About_LangMentor.doGoBack(): No case for: " + contextType);
          }
       }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function onCreationComplete():void {
+         reportUserActivity();
+      }
+
+      private function reportUserActivity():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.CREDITS_TECHNOLOGY;
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+
+
       ]]>
     </fx:Script>
    <s:Scroller horizontalScrollPolicy = "off"

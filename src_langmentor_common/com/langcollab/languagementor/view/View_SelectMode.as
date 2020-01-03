@@ -25,8 +25,12 @@ import com.langcollab.languagementor.component.learningmodelist.ItemRenderer_Lea
 import com.langcollab.languagementor.component.learningmodelist.LearningModeList;
 import com.langcollab.languagementor.component.learningmodelist.LearningModeListItem;
 import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
+import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
 import com.langcollab.languagementor.controller.Command_ChangeCurrentLearningMode;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.event.Event_LearningModeList;
+import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.view.supportClasses.ViewContext;
 import com.langcollab.languagementor.vo.LearningModeVO;
 
@@ -237,6 +241,14 @@ public class View_SelectMode extends View_Base implements IDisposable {
       _modeList.selectedIndex = _learningModeListIndexHistory[_learningModeListIndexHistory.length - 1]; // Prevents selected item from changing before transition to help screen
       var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SELECT_MODE_SCREEN_HELP);
       navigator.pushView(View_SelectModeHelp, event.learningModeId, ctxt, transition_SlideView_Right);
+      reportUserActivity_ViewHelp(event.learningModeId);
+   }
+
+   private function reportUserActivity_ViewHelp(learningModeId:int):void {
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.LEARNING_MODES__VIEW_HELP;
+      activity.learningModeDisplayName = MainModel.getInstance().getLearningModeDisplayNameFromId(learningModeId);
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function saveSelectedLearningMode():void {

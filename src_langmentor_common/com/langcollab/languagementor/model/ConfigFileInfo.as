@@ -20,6 +20,7 @@
 package com.langcollab.languagementor.model {
 import com.brightworks.base.Callbacks;
 import com.brightworks.constant.Constant_PlatformName;
+import com.brightworks.constant.Constant_Private;
 import com.brightworks.event.BwEvent;
 import com.brightworks.interfaces.ILoggingConfigProvider;
 import com.brightworks.interfaces.IUserDataReportingConfigProvider;
@@ -168,7 +169,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    public function getLogToServerURL(level:uint):String {
       if (!Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LogLevel_to_IsLogToServerEnabled, level)) {
          // Config file info not yet fully populated
-         return Constant_AppConfiguration.DEFAULT_CONFIG_INFO__LOG_URL;
+         return Constant_Private.DEFAULT_CONFIG_INFO__LOG_URL;
       }
       var result:String = _index_LogLevel_to_LogURL[level];
       return result;
@@ -201,7 +202,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    public function getUserActivityReportingURL():String {
       if (!_userActivityReportingURL) {
          // Config file info not yet fully populated
-         return Constant_AppConfiguration.DEFAULT_CONFIG_INFO__USER_ACTIVITY_REPORTING_URL;
+         return Constant_Private.DEFAULT_CONFIG_INFO__USER_ACTIVITY_REPORTING_URL;
       }
       return _userActivityReportingURL;
    }

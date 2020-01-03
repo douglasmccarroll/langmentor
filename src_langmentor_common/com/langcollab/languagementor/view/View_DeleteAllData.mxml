@@ -34,7 +34,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
       import com.langcollab.languagementor.controller.Command_InitApplication;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
       import com.langcollab.languagementor.util.Utils_LangCollab;
 
       private var _isDisposed:Boolean = false;
@@ -157,6 +160,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onViewActivate():void {
          textDisplayLabel.text = "Are you SURE? This will delete ALL lessons and settings and restore " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " to the state it was in when it was initially installed.";
+      }
+
+      private function reportUserActivity(deleteSuccessful:Boolean):void {
+         var activity:UserActivity = new UserActivity();
+         if (deleteSuccessful) {
+            activity.activityType = Constant_UserActivityTypes.DELETE_ALL_DATA__SUCCESS;
+         }
+         else {
+            activity.activityType = Constant_UserActivityTypes.DELETE_ALL_DATA__FAILURE;
+         }
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function stopTimer():void {

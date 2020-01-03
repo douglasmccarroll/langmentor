@@ -138,7 +138,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onActivateApp()");
-         SoundMixer.audioPlaybackMode = AudioPlaybackMode.MEDIA;
       }
    }
 
@@ -172,7 +171,6 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       } else {
          Log.info("App_LanguageMentor_Base.onDeactivateApp()");
          _currentLessons.pauseCurrentLessonVersionIfPlaying();
-         SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
       }
    }
 

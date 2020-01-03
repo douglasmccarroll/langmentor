@@ -50,7 +50,10 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.singleton.SingletonManager;
+import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
 import com.langcollab.languagementor.controller.audio.AudioController;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.event.Event_CurrentLessonsAudioTimer;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -124,6 +127,37 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          result.push(info.lessonVersionVO);
       }
       return result;
+   }
+
+   public function get currentLessonVersionLessonId():String {
+      if (!currentLessonVO) {
+         return null;
+      }
+      return currentLessonVO.publishedLessonVersionId;
+   }
+
+   public function get currentLessonVersionLessonName_NativeLanguage():String {
+      if (!currentLessonVO) {
+         return null;
+      }
+      if (!_model) {
+         return null;
+      }
+      return _model.getLessonVersionNativeLanguageNameFromLessonVersionVO(currentLessonVO);
+   }
+
+   public function get currentLessonVersionProviderId():String {
+      if (!currentLessonVO) {
+         return null;
+      }
+      return currentLessonVO.contentProviderId;
+   }
+
+   public function get currentLessonVersionVersion():String {
+      if (!currentLessonVO) {
+         return null;
+      }
+      return currentLessonVO.publishedLessonVersionVersion;
    }
 
    public function get currentLessonUnsuppressedChunks():Array {
@@ -673,23 +707,27 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       var newChunkIndex:int = -2;
       if (doesUnsuppressedChunkExistBeforeOrAfterChunk(currentLessonVO, currentChunkIndex, direction)) {
          // There's a chunk that we can move to within the current lesson version
+         if (!isUserInitiated) {   // We don't want to report 'auto-play' if this was initiated by the user clicking a button
+            reportUserActivity_AutoPlay_AdvanceChunk(currentChunkIndex);
+         }
          newChunkIndex = getIndexForNextUnsuppressedChunkAtOrBeforeOrAfterChunkIndex(currentLessonVO, currentChunkIndex + direction, direction);
          setCurrentLessonAndChunkIndexes(currentLessonIndex, newChunkIndex);
          Log.debug("CurrentLessons.iterateChunk(): new currentChunkIndex: " + currentChunkIndex);
       } else {
          // No unsuppressed chunk in 'direction' in current lesson version
+         var newLessonIndex:uint = getIndexForNextOrPreviousSelectedLessonVersion(currentLessonIndex, direction);
+         var newLessonVO:LessonVersionVO = getLessonByIndex(newLessonIndex);
          if (direction == -1) {
             // Move to last chunk in previous lesson
-            var newLessonIndex:uint = getIndexForNextOrPreviousSelectedLessonVersion(currentLessonIndex, -1);
-            var newLessonVO:LessonVersionVO = getLessonByIndex(newLessonIndex);
             newChunkIndex = getIndexForLastUnsuppressedChunkInLesson(newLessonVO);
             setCurrentLessonAndChunkIndexes(newLessonIndex, newChunkIndex);
             Log.debug("CurrentLessons.iterateChunk(): no unsuppressed chunk before curr chunk; new currentChunkIndex: " + currentChunkIndex);
          } else if (direction == 1) {
             // We want to move to the next lesson, if there is one. Otherwise
             // we'd like to restart the current lesson.
-            if (!isUserInitiated) {   // We don't want to report 'finished lesson' if the user is 'finishing' it by clicking the 'next chunk' button
-               reportLessonFinishedToAnalytics();
+            if (!isUserInitiated) {   // We don't want to report 'finished lesson' or 'auto play' if this was initiated by the user clicking a button
+               reportToAnalytics_LessonFinished();
+               reportUserActivity_AutoPlay_AdvanceChunk(currentChunkIndex, newLessonVO);
             }
             iterateLessonVersion(1, isUserInitiated);
             var calledIterateLessonVersion:Boolean = true;
@@ -1059,13 +1097,35 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _appStatePersistenceManager.persistSelectedLessonVersions(selectedLessonVersionVOsVector);
    }
 
-   private function reportLessonFinishedToAnalytics():void {
-      Log.info("CurrentLessons.reportLessonFinishedToAnalytics()");
-      var lessonName:String = _model.getLessonVersionNativeLanguageNameFromLessonVersionVO(currentLessonVO);
-      var lessonId:String = currentLessonVO.publishedLessonVersionId;
-      var lessonVersion:String = currentLessonVO.publishedLessonVersionVersion;
-      var providerId:String = currentLessonVO.contentProviderId;
-      Utils_GoogleAnalytics.trackLessonFinished(lessonName, lessonId, lessonVersion, providerId);
+   private function reportToAnalytics_LessonFinished():void {
+      Log.info("CurrentLessons.reportToAnalytics_LessonFinished()");
+      if ((!currentLessonVersionLessonId) || (!currentLessonVersionLessonName_NativeLanguage) || (!currentLessonVersionProviderId) || (!currentLessonVersionVersion)) {
+         return;
+      }
+      Utils_GoogleAnalytics.trackLessonFinished(currentLessonVersionLessonName_NativeLanguage, currentLessonVersionLessonId, currentLessonVersionVersion, currentLessonVersionProviderId);
+   }
+
+   private function reportUserActivity_AutoPlay_AdvanceChunk(advancedFromChunkIndex:int, newLessonVO:LessonVersionVO = null):void {
+      Log.info("CurrentLessons.reportUserActivity_AutoPlay_AdvanceLesson()");
+      if ((!currentLessonVersionLessonId) || (!currentLessonVersionLessonName_NativeLanguage) || (!currentLessonVersionProviderId) || (!currentLessonVersionVersion) || (!_model.getCurrentLearningModeDisplayName())) {
+         return;
+      }
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.AUTO_PLAY__ADVANCE_CHUNK;
+      activity.autoPlay_AutoAdvanceLesson = (newLessonVO is LessonVersionVO);
+      activity.chunkIndex_Previous = advancedFromChunkIndex;
+      activity.learningModeDisplayName = _model.getCurrentLearningModeDisplayName();
+      activity.lessonId = currentLessonVersionLessonId;
+      activity.lessonName_NativeLanguage = currentLessonVersionLessonName_NativeLanguage;
+      activity.lessonProviderId = currentLessonVersionProviderId;
+      activity.lessonVersion = currentLessonVersionVersion;
+      if (newLessonVO) {
+         activity.lessonId_New = newLessonVO.publishedLessonVersionId;
+         activity.lessonName_NativeLanguage_New = _model.getLessonVersionNativeLanguageNameFromLessonVersionVO(newLessonVO);
+         activity.lessonProviderId_New = newLessonVO.contentProviderId;
+         activity.lessonVersion_New = newLessonVO.publishedLessonVersionVersion;
+      }
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function sortArrayCollectionOfSortableLessonVersionInfoInstances(ac:ArrayCollection):void {

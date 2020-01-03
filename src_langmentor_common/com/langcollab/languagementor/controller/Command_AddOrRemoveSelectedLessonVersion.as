@@ -18,6 +18,9 @@
 */
 package com.langcollab.languagementor.controller {
 import com.brightworks.util.Log;
+import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.vo.ChunkVO;
 import com.langcollab.languagementor.vo.LessonVersionVO;
 
@@ -63,12 +66,14 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
          // We're removing
          Log.info("Command_AddOrRemoveSelectedLessonVersion.execute(): removing lessonVersionVO at index of: " + currentLessons.getLessonIndex(_lessonVersionVO));
          currentLessons.remove(_lessonVersionVO);
+         reportUserActivity_DeselectLesson();
       }
       else {
          // We're adding
          Log.info("Command_AddOrRemoveSelectedLessonVersion.execute(): adding lessonVersionVO");
          currentLessons.add(_lessonVersionVO);
          currentLessons.unsuppressAllChunksForVO(_lessonVersionVO);
+         reportUserActivity_SelectLesson();
       }
       var c:Command_Data_UpdateVosOfType = new Command_Data_UpdateVosOfType(ChunkVO);
       c.index_propNames_to_newValues["suppressed"] = false;
@@ -84,6 +89,27 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
       commandReport.dispose();
       dispose();
    }
+
+   private function reportUserActivity_DeselectLesson():void {
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.SELECT_LESSONS__DESELECT;
+      activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
+      activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
+      activity.lessonProviderId = _lessonVersionVO.contentProviderId;
+      activity.lessonVersion = _lessonVersionVO.publishedLessonVersionVersion;
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+   }
+
+   private function reportUserActivity_SelectLesson():void {
+      var activity:UserActivity = new UserActivity();
+      activity.activityType = Constant_UserActivityTypes.SELECT_LESSONS__SELECT;
+      activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
+      activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
+      activity.lessonProviderId = _lessonVersionVO.contentProviderId;
+      activity.lessonVersion = _lessonVersionVO.publishedLessonVersionVersion;
+      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+   }
+
 
 }
 }

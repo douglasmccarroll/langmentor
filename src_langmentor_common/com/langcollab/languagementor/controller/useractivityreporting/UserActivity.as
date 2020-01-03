@@ -33,15 +33,23 @@ public class UserActivity {
    //                        lessonId_New would be the current lesson, as the result of the user's click would be to go to the first chunk in that lesson.
 
    public var activityType:String;
+   public var autoPlay_AutoAdvanceLesson:Boolean;
    public var chunkIndex:int;
    public var chunkIndex_New:int;
    public var chunkIndex_Previous:int;
-   public var learningModeLabel:String;
-   public var learningModeLabel_New:String;
-   public var learningModeLabel_Previous:String;
+   public var iKnowThis_AllChunksInLessonSuppressed:Boolean;
+   public var learningModeDisplayName:String;
+   public var learningModeDisplayName_New:String;
+   public var learningModeDisplayName_Previous:String;
    public var lessonId:String;
    public var lessonId_New:String;
    public var lessonId_Previous:String;
+   public var lessonName_NativeLanguage:String;
+   public var lessonName_NativeLanguage_New:String;
+   public var lessonName_NativeLanguage_Previous:String;
+   public var lessonProviderId:String;
+   public var lessonProviderId_New:String;
+   public var lessonProviderId_Previous:String;
    public var lessonVersion:String;       // We get this from LessonVersionVO.publishedLessonVersionVersion
    public var lessonVersion_New:String;
    public var lessonVersion_Previous:String;

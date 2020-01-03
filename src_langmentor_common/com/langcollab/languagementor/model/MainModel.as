@@ -89,8 +89,8 @@ import mx.collections.ArrayCollection;
 import mx.rpc.events.FaultEvent;
 
 public class MainModel extends EventDispatcher implements IManagedSingleton {
-   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 3;
-   private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 2;
+   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 4;
+   private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 6;
 
    private static var _instance:MainModel;
 
@@ -445,6 +445,15 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return result;
    }
 
+   public function getCurrentLearningModeDisplayName():String {
+      var vo:LearningModeVO = getLearningModeVOFromID(currentLearningModeId);
+      if (!vo) {
+         return null;
+      }
+      var result:String = getLearningModeDisplayNameFromId(vo.id);
+      return result;
+   }
+
    public function getCurrentLearningModeVO():LearningModeVO {
       var result:LearningModeVO = getLearningModeVOFromID(currentLearningModeId);
       return result;
@@ -593,6 +602,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return result;
    }
 
+   public function getLearningModeDisplayNameFromId(id:int):String {
+      var token:String = getLearningModeTokenFromID(id);
+      return getLearningModeDisplayNameFromLabelToken(token);
+   }
+
    public function getLearningModeDisplayNameFromLabelToken(token:String):String {
       var result:String = getNativeLanguageResource("label_LearningMode_" + token);
       result = Utils_String.replaceAll(result, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
@@ -628,6 +642,9 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getLearningModeVOFromID(id:int):LearningModeVO {
+      if (!_index_LearningModeVOs_by_ID) {
+         return null;
+      }
       return _index_LearningModeVOs_by_ID[id];
    }
 

@@ -43,9 +43,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
+      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
       import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.ChunkVO;
@@ -393,6 +396,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          currentLessons.pauseCurrentLessonVersionIfPlaying();
          navigator.pushView(View_Credits_Lesson, vo, navigator.context);
+         reportUserActivity_Credits();
       }
 
       private function onDo_IKnowThis():void {
@@ -440,8 +444,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          microphoneImage.alpha = 0;
          if (_button_Loop.selected) {
             audioController.onStartLoopMode();
+            reportUserActivity_LoopOn();
          } else {
             audioController.onStopLoopMode();
+            reportUserActivity_LoopOff();
          }
       }
 
@@ -473,6 +479,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
          _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
+         reportUserActivity_NextChunk();
          callLater(onDo_NextChunk_Continued);
          ///alpha mode }
       }
@@ -493,6 +500,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.debug("View_PlayLessons.onDo_NextLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
+         reportUserActivity_NextLesson();
          callLater(onDo_NextLesson_Continued);
       }
 
@@ -513,8 +521,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             AudioPlayer.getInstance().stop();
             showHideMicrophoneImage();
             model.mostRecentDownloadProcessStartAllowedEventTime = new Date();
+            reportUserActivity_Pause();
          } else {
             _button_PlayPause.label = _BUTTON_LABEL__PAUSE;
+            reportUserActivity_Play()
          }
       }
 
@@ -534,6 +544,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
          _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
+         reportUserActivity_PreviousChunk();
          callLater(onDo_PreviousChunk_Continued);
          ///alpha mode }
       }
@@ -554,6 +565,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.debug("View_PlayLessons.onDo_PreviousLesson(): calling AudioPlayer.getInstance().stop()");
          AudioPlayer.getInstance().stop();
          microphoneImage.alpha = 0;
+         reportUserActivity_PreviousLesson();
          callLater(onDo_PreviousLesson_Continued);
       }
 
@@ -569,8 +581,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          if (_button_Record.selected) {
             audioController.onStartRecordMode();
+            reportUserActivity_RecordPlayback_On();
          } else {
             audioController.onStopRecordMode();
+            reportUserActivity_RecordPlayback_Off();
          }
          showHideMicrophoneImage();
       }
@@ -681,28 +695,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _button_Loop.selected = audioController.isLoopingChunk;
          isCustomGesturesEnabled = true;
          Utils_AIR.keepSystemAwake();
-         var learningModeId:int = model.currentLearningModeId;
-         var learningModeLabel:String = model.getLearningModeTokenFromID(learningModeId);
-         switch (learningModeLabel) {
-            case Constant_LearningModeLabels.NATIVE_TARGET:
-            case Constant_LearningModeLabels.TARGET:
-            case Constant_LearningModeLabels.TARGET_NATIVE:
-            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE: {
-               _button_Record.enabled = false;
-               _button_Record.selected = false;
-               break;
-            }
-            case Constant_LearningModeLabels.NATIVE_TARGET_PAUSE:
-            case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE:
-            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE_PAUSE:
-            case Constant_LearningModeLabels.TARGET_PAUSE: {
-               _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
-               _button_Record.selected = audioController.isRecordMode;
-               break;
-            }
-            default: {
-               throw new Error("Screen_PlayLessons.onPreinitialize(): no match for case of '" + learningModeLabel + "'.");
-            }
+         if (model.doesLearningModeHaveRecordPlayback(model.currentLearningModeId)) {
+            _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
+            _button_Record.selected = audioController.isRecordMode;
+         }
+         else {
+            _button_Record.enabled = false;
+            _button_Record.selected = false;
          }
          Log.debug("View_PlayLessons.onPreinitialize(): finished");
       }
@@ -753,6 +752,107 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Utils_ANEs.showAlert_OkayButton(_ALERT_MESSAGE__ALL_LESSONS_LEARNED, onNoRemainingLessonsAlertCallback);
             return;
          }
+      }
+
+      private function reportUserActivity_StandardInfo(activity:UserActivity):void {
+         if (currentLessons.currentChunkIndex) {
+            activity.chunkIndex = currentLessons.currentChunkIndex;
+         }
+         if (model.getCurrentLearningModeDisplayName()) {
+            activity.learningModeDisplayName = model.getCurrentLearningModeDisplayName();
+         }
+         if (currentLessons.currentLessonVersionLessonId) {
+            activity.lessonId = currentLessons.currentLessonVersionLessonId;
+         }
+         if (currentLessons.currentLessonVersionLessonId) {
+            activity.lessonId = currentLessons.currentLessonVersionLessonId;
+         }
+         if (currentLessons.currentLessonVersionLessonName_NativeLanguage) {
+            activity.lessonName_NativeLanguage = currentLessons.currentLessonVersionLessonName_NativeLanguage;
+         }
+         if (currentLessons.currentLessonVersionProviderId) {
+            activity.lessonProviderId = currentLessons.currentLessonVersionProviderId;
+         }
+         if (currentLessons.currentLessonVersionVersion) {
+            activity.lessonVersion = currentLessons.currentLessonVersionVersion;
+         }
+      }
+
+      private function reportUserActivity_Credits():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__CREDITS;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_LoopOff():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__LOOP_OFF;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_LoopOn():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__LOOP_ON;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_NextChunk():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__NEXT_CHUNK;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_NextLesson():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__NEXT_LESSON;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_Pause():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PAUSE;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_Play():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PLAY;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_PreviousChunk():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PREVIOUS_CHUNK;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_PreviousLesson():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PREVIOUS_LESSON;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_RecordPlayback_Off():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__RECORDPLAYBACK_OFF;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      }
+
+      private function reportUserActivity_RecordPlayback_On():void {
+         var activity:UserActivity = new UserActivity();
+         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__RECORDPLAYBACK_ON;
+         reportUserActivity_StandardInfo(activity);
+         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function setChangeLessonEnabled(value:Boolean):void {

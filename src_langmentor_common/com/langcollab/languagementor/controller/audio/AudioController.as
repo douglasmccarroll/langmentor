@@ -824,7 +824,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          chunkStrategy = new SequenceStrategy_AlphaReviewVersion();
       }
       else if ((_model.isCurrentLearningModeDualLanguage()) && (!_currentLessons.currentLessonVO.isDualLanguage)) {
-         // We replace dual-language learning modes with 'repeat target'
+         // We replace dual-language learning modes with 'repeat target' aka Target~Pause mode
          chunkStrategy = new SequenceStrategy_TargetPause();
       }
       else {
@@ -836,6 +836,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             }
             case Constant_LearningModeLabels.NATIVE_TARGET_PAUSE: {
                chunkStrategy = new SequenceStrategy_NativeTargetPause();
+               break;
+            }
+            case Constant_LearningModeLabels.NATIVE_TARGET_TARGET: {
+               chunkStrategy = new SequenceStrategy_NativeTargetTarget();
                break;
             }
             case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE: {

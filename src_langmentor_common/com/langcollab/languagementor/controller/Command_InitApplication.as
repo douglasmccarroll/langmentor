@@ -21,10 +21,8 @@ package com.langcollab.languagementor.controller {
 import com.brightworks.base.Callbacks;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
-import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_System;
-import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.util.Utils_Database;
 import com.langcollab.languagementor.util.Utils_LangCollab;
@@ -61,8 +59,8 @@ public class Command_InitApplication extends Command_Base__LangMentor {
 
    public function execute():void {
       Log.info("Command_InitApplication.execute()");
-      SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
       ToolTip.maxWidth = 150;
+      SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;       /////
       // Next lines are for cases where we're init'ing after data wipe
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
       if (!Utils_System.isRunningOnDesktop()) {
