@@ -161,8 +161,8 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       navigationContent.push(homeButton);
    }
 
-   private function onDeactivateApp(event:Event):void { 
-      // This happens when the device sends the app into the background - i.e. when 
+   private function onDeactivateApp(event:Event):void {
+      // This happens when the device sends the app into the background - i.e. when
       // the phone rings, when a clock alarm goes off, when the user presses the home button, etc...
       if (Utils_System.isRunningOnDesktop()) {
          // When running on desktop, a deactivate event indicates that the app's window has lost
@@ -207,6 +207,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
       NativeApplication.nativeApplication.addEventListener(BwEvent.NO_INTERNET_CONNECTION, onNoInternetConnection);
+      NativeApplication.nativeApplication.addEventListener(BwEvent.UPDATE_REQUIRED, onUpdateRequired);
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
       if (_model.isSetupProcessComplete()) {
          Log.info("App_LanguageMentor_Base.onInitialize() - setting navigator.firstView to View_Home");
@@ -266,6 +267,10 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
    private function onUncaughtError(event:UncaughtErrorEvent):void {
       event.preventDefault();
       Log.warn(["App_LanguageMentor_Base.onUncaughtError()", event]);
+   }
+
+   private function onUpdateRequired(e:BwEvent):void {
+      navigator.pushView(View_UpdateRequired);
    }
 
    private function onUpdateTitleTimer(event:TimerEvent):void {

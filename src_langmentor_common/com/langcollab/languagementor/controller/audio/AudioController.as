@@ -479,7 +479,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          return;
       }
       if (_currentLessonVersionAudioSequence.isPaused) {
-         Log.warn("AudioController.onTimer_LeafFinishChecker() called, but _currentLessonVersionAudioSequence.isPaused == true");
+         // dmccarroll 20200113 - This is happening when the app gets deactivated by a phone call or other interruption. I haven't been able to (easily) track
+         // down the cause, but this really isn't a problem, so I've changed it from Log.warn() to Log.info().
+         Log.info("AudioController.onTimer_LeafFinishChecker() called, but _currentLessonVersionAudioSequence.isPaused == true");
          stopLeafFinishCheckProcess();
          return;
       }

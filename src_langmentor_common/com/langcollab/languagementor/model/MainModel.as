@@ -1579,12 +1579,11 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    private function onLoadConfigDataComplete(techReport:ConfigFileInfoTechReport):void {
       Log.debug("MainModel.onLoadConfigDataComplete()");
       if (Utils_AIR.appVersionNumber < configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-         var message:String = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
-         Utils_ANEs.showAlert_OkayButton(message, onUpdateRequiredAlertClose);
          // We wipe data to ensure that when the new version is installed a new DB file is created, and the user starts from a clean slate.
          _appStatePersistenceManager.wipeData();
          Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
          Utils_File.deleteDirectory(Utils_LangCollab.sqLiteDatabaseFileDirectoryURL);
+         NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.UPDATE_REQUIRED));
       }
       else {
          // We now have our config data, and the DB version is okay, so we can continue on with stuff that would be in the init() method if we didn't need to confirm these details first...
@@ -1619,10 +1618,6 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       } else {
          Log.fatal(["MainModel.onLoadLearningModeDescriptionsFailure(): Error info type not handled", info]);
       }
-   }
-
-   private function onUpdateRequiredAlertClose():void {
-      NativeApplication.nativeApplication.exit();
    }
 
    private function reportAppStartupToAnalytics():void {

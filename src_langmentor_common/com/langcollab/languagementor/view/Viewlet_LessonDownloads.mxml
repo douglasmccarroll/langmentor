@@ -124,9 +124,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             if (updateInfoCommandReport) {
                if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
                   explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
-                  if (Utils_AIR.appVersionNumber < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-                     explanation += "\n\n" + Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
-                  }
                } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
                } else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
