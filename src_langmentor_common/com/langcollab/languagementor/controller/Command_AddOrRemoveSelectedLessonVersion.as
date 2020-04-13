@@ -18,7 +18,7 @@
 */
 package com.langcollab.languagementor.controller {
 import com.brightworks.util.Log;
-import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.vo.ChunkVO;
@@ -92,7 +92,7 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
 
    private function reportUserActivity_DeselectLesson():void {
       var activity:UserActivity = new UserActivity();
-      activity.activityType = Constant_UserActivityTypes.SELECT_LESSONS__DESELECT;
+      activity.actionType = Constant_UserActionTypes.SELECT_LESSONS__DESELECT;
       activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
       activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
       activity.lessonProviderId = _lessonVersionVO.contentProviderId;
@@ -102,7 +102,7 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
 
    private function reportUserActivity_SelectLesson():void {
       var activity:UserActivity = new UserActivity();
-      activity.activityType = Constant_UserActivityTypes.SELECT_LESSONS__SELECT;
+      activity.actionType = Constant_UserActionTypes.SELECT_LESSONS__SELECT;
       activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
       activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
       activity.lessonProviderId = _lessonVersionVO.contentProviderId;

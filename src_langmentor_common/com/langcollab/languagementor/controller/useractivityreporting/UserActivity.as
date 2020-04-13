@@ -32,7 +32,7 @@ public class UserActivity {
    //                        For example, if the user clicks the Previous Lesson button while in the middle of a lesson, both lessonId_Previous and
    //                        lessonId_New would be the current lesson, as the result of the user's click would be to go to the first chunk in that lesson.
 
-   public var activityType:String;
+   public var actionType:String;
    public var autoPlay_AutoAdvanceLesson:Boolean;
    public var chunkIndex:int;
    public var chunkIndex_New:int;

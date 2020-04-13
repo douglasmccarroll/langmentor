@@ -22,7 +22,7 @@ import com.brightworks.util.Log;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
-import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
 import com.langcollab.languagementor.model.MainModelDBOperationReport;
@@ -116,7 +116,7 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
 
    private function reportUserActivity(chunkIndex:int, lessonCompletelySuppressed:Boolean):void {
       var activity:UserActivity = new UserActivity();
-      activity.activityType = Constant_UserActivityTypes.I_KNOW_THIS__SUPPRESS_CHUNK;
+      activity.actionType = Constant_UserActionTypes.I_KNOW_THIS__SUPPRESS_CHUNK;
       activity.chunkIndex_Previous = chunkIndex;
       activity.iKnowThis_AllChunksInLessonSuppressed = lessonCompletelySuppressed
       activity.learningModeDisplayName = model.getCurrentLearningModeDisplayName();

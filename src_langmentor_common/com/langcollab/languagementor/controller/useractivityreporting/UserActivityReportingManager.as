@@ -64,88 +64,89 @@ public class UserActivityReportingManager implements IManagedSingleton{
       }
 
 
-      var o:Object = new Object();
+      var mainObject:Object = new Object();
+      var detailsObject:Object = new Object();
+      mainObject["details"] = detailsObject;
 
-
-
-      ///// Move this stuff into UserActivity?
-      o["userFirstName"] = "Beta";
-      o["userLastName"] = "User";
-      o["userOrganization"] = "Brightworks";
-      o["userDepartment"] = "The Language Collaborative";
-      o["userGroup"] = "German Studies";
-      o["userSubgroup"] = "Advanced German";
-      o["project"] = "User Activity Reporting - QA";
-
-      if (activity.activityType) {
-         o["activityType"] = activity.activityType;
+      if (activity.actionType) {
+         detailsObject["actionType"] = activity.actionType;
       }
+      else {
+         return;
+      }
+
+      ///// Move this? - where?
+      mainObject["userID"] = "Foo";
+
       if (activity.autoPlay_AutoAdvanceLesson) {
-         o["autoPlay_AutoAdvanceLesson"] = "true";
+         detailsObject["autoPlay_AutoAdvanceLesson"] = "true";
       }
       if (activity.chunkIndex) {
-         o["chunkIndex"] = activity.chunkIndex;
+         detailsObject["chunkIndex"] = activity.chunkIndex;
       }
       if (activity.chunkIndex_New) {
-         o["chunkIndex_New"] = activity.chunkIndex_New;
+         detailsObject["chunkIndex_New"] = activity.chunkIndex_New;
       }
       if (activity.chunkIndex_Previous) {
-         o["chunkIndex_Previous"] = activity.chunkIndex_Previous;
+         detailsObject["chunkIndex_Previous"] = activity.chunkIndex_Previous;
       }
       if (activity.iKnowThis_AllChunksInLessonSuppressed) {
-         o["iKnowThis_AllChunksInLessonSuppressed"] = "true";
+         detailsObject["iKnowThis_AllChunksInLessonSuppressed"] = "true";
       }
       if (activity.learningModeDisplayName) {
-         o["learningModeDisplayName"] = activity.learningModeDisplayName;
+         detailsObject["learningModeDisplayName"] = activity.learningModeDisplayName;
       }
       if (activity.learningModeDisplayName_New) {
-         o["learningModeDisplayName_New"] = activity.learningModeDisplayName_New;
+         detailsObject["learningModeDisplayName_New"] = activity.learningModeDisplayName_New;
       }
       if (activity.learningModeDisplayName_Previous) {
-         o["learningModeDisplayName_Previous"] = activity.learningModeDisplayName_Previous;
+         detailsObject["learningModeDisplayName_Previous"] = activity.learningModeDisplayName_Previous;
       }
       if (activity.lessonId) {
-         o["lessonId"] = activity.lessonId;
+         detailsObject["lessonId"] = activity.lessonId;
       }
       if (activity.lessonId_New) {
-         o["lessonId_New"] = activity.lessonId_New;
+         detailsObject["lessonId_New"] = activity.lessonId_New;
       }
       if (activity.lessonId_Previous) {
-         o["lessonId_Previous"] = activity.lessonId_Previous;
+         detailsObject["lessonId_Previous"] = activity.lessonId_Previous;
       }
       if (activity.lessonName_NativeLanguage) {
-         o["lessonName_NativeLanguage"] = activity.lessonName_NativeLanguage;
+         detailsObject["lessonName_NativeLanguage"] = activity.lessonName_NativeLanguage;
       }
       if (activity.lessonName_NativeLanguage_New) {
-         o["lessonName_NativeLanguage_New"] = activity.lessonName_NativeLanguage_New;
+         detailsObject["lessonName_NativeLanguage_New"] = activity.lessonName_NativeLanguage_New;
       }
       if (activity.lessonName_NativeLanguage_Previous) {
-         o["lessonName_NativeLanguage_Previous"] = activity.lessonName_NativeLanguage_Previous;
+         detailsObject["lessonName_NativeLanguage_Previous"] = activity.lessonName_NativeLanguage_Previous;
       }
       if (activity.lessonProviderId) {
-         o["lessonProviderId"] = activity.lessonProviderId;
+         detailsObject["lessonProviderId"] = activity.lessonProviderId;
       }
       if (activity.lessonProviderId_New) {
-         o["lessonProviderId_New"] = activity.lessonProviderId_New;
+         detailsObject["lessonProviderId_New"] = activity.lessonProviderId_New;
       }
       if (activity.lessonProviderId_Previous) {
-         o["lessonProviderId_Previous"] = activity.lessonProviderId_Previous;
+         detailsObject["lessonProviderId_Previous"] = activity.lessonProviderId_Previous;
       }
       if (activity.lessonVersion) {
-         o["lessonVersion"] = activity.lessonVersion;
+         detailsObject["lessonVersion"] = activity.lessonVersion;
       }
       if (activity.lessonVersion_New) {
-         o["lessonVersion_New"] = activity.lessonVersion_New;
+         detailsObject["lessonVersion_New"] = activity.lessonVersion_New;
       }
       if (activity.lessonVersion_Previous) {
-         o["lessonVersion_Previous"] = activity.lessonVersion_Previous;
+         detailsObject["lessonVersion_Previous"] = activity.lessonVersion_Previous;
       }
-      var jsonText:String = JSON.stringify(o);
+      var jsonText:String = JSON.stringify(mainObject);
+
+
+      trace(jsonText); /////
 
       /*
       trace("-");
       trace("-");
-      for (var s:String in o) {  /////
+      for (var s:String in o) {
          trace(s + ": " + o[s] );
       }
       trace("-");

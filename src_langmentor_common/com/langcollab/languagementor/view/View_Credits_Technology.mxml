@@ -30,7 +30,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
       import com.brightworks.constant.Constant_AppConfiguration;
-      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+      import com.langcollab.languagementor.constant.Constant_UserActionTypes;
       import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
       import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
       import com.langcollab.languagementor.util.Resources_Image;
@@ -80,12 +80,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function reportUserActivity():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.CREDITS_TECHNOLOGY;
+         activity.actionType = Constant_UserActionTypes.CREDITS_TECHNOLOGY;
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
-
-
-
       ]]>
     </fx:Script>
    <s:Scroller horizontalScrollPolicy = "off"

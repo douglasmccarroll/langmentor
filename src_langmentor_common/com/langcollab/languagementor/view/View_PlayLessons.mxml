@@ -43,7 +43,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
       import com.langcollab.languagementor.constant.Constant_TextDisplayModes;
-      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+      import com.langcollab.languagementor.constant.Constant_UserActionTypes;
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
@@ -698,8 +698,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (model.doesLearningModeHaveRecordPlayback(model.currentLearningModeId)) {
             _button_Record.enabled = AudioRecorder.getInstance().isMicrophoneAvailable();
             _button_Record.selected = audioController.isRecordMode;
-         }
-         else {
+         } else {
             _button_Record.enabled = false;
             _button_Record.selected = false;
          }
@@ -780,77 +779,77 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function reportUserActivity_Credits():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__CREDITS;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__CREDITS;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_LoopOff():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__LOOP_OFF;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__LOOP_OFF;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_LoopOn():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__LOOP_ON;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__LOOP_ON;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_NextChunk():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__NEXT_CHUNK;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__NEXT_CHUNK;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_NextLesson():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__NEXT_LESSON;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__NEXT_LESSON;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_Pause():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PAUSE;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PAUSE;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_Play():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PLAY;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PLAY;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_PreviousChunk():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PREVIOUS_CHUNK;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PREVIOUS_CHUNK;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_PreviousLesson():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__PREVIOUS_LESSON;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PREVIOUS_LESSON;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_RecordPlayback_Off():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__RECORDPLAYBACK_OFF;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__RECORDPLAYBACK_OFF;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_RecordPlayback_On():void {
          var activity:UserActivity = new UserActivity();
-         activity.activityType = Constant_UserActivityTypes.PLAY_LESSONS__RECORDPLAYBACK_ON;
+         activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__RECORDPLAYBACK_ON;
          reportUserActivity_StandardInfo(activity);
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }

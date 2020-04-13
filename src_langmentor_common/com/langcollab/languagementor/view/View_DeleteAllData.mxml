@@ -34,7 +34,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
-      import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+      import com.langcollab.languagementor.constant.Constant_UserActionTypes;
       import com.langcollab.languagementor.controller.Command_InitApplication;
       import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
       import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
@@ -63,12 +63,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_DeleteAllData.doGoBack()");
          if (_isDeleteProcessSuccessful) {
             goToSetupWelcomeScreen();
-         }
-         else {
+         } else {
             if (_isDeleteProcessStarted) {
                // do nothing
-            }
-            else {
+            } else {
                navigator.popView(transition_SlideView_Right);
             }
          }
@@ -78,12 +76,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          Log.info("View_DeleteAllData.doGoHome()");
          if (_isDeleteProcessSuccessful) {
             goToSetupWelcomeScreen();
-         }
-         else {
+         } else {
             if (_isDeleteProcessStarted) {
                // do nothing
-            }
-            else {
+            } else {
                super.doGoHome();
             }
          }
@@ -127,8 +123,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             var cb:Callbacks = new Callbacks(onInitApplicationComplete, onInitApplicationFailure);
             var c:Command_InitApplication = new Command_InitApplication(cb);
             c.execute();
-         }
-         else {
+         } else {
             textDisplayLabel.text = "Unable to completely delete data. We suggest that you uninstall and reinstall Language Mentor.";
          }
       }
@@ -165,10 +160,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function reportUserActivity(deleteSuccessful:Boolean):void {
          var activity:UserActivity = new UserActivity();
          if (deleteSuccessful) {
-            activity.activityType = Constant_UserActivityTypes.DELETE_ALL_DATA__SUCCESS;
-         }
-         else {
-            activity.activityType = Constant_UserActivityTypes.DELETE_ALL_DATA__FAILURE;
+            activity.actionType = Constant_UserActionTypes.DELETE_ALL_DATA__SUCCESS;
+         } else {
+            activity.actionType = Constant_UserActionTypes.DELETE_ALL_DATA__FAILURE;
          }
          UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }

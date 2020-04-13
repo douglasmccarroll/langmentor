@@ -6,8 +6,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.43.01</versionNumber>
-   <versionLabel>1.43.01</versionLabel>
+   <versionNumber>1.44.02</versionNumber>
+   <versionLabel>1.44.02</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -42,9 +42,9 @@
                 <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
                 <uses-permission android:name="android.permission.WAKE_LOCK"/>
                 <uses-permission android:name="android.permission.CAMERA"/>
-                <uses-feature android:name="android.hardware.camera" android:required="false"/> 
-                <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/> 
-                <uses-feature android:name="android.hardware.camera.flash" android:required="false"/> 
+                <uses-feature android:name="android.hardware.camera" android:required="false"/>
+                <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+                <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
                 <uses-permission android:name="android.permission.RECORD_AUDIO"/>
                 <!--The ACCESS_NETWORK_STATE and ACCESS_WIFI_STATE permissions should be toggled
                     together in order to use AIR's NetworkInfo APIs-->

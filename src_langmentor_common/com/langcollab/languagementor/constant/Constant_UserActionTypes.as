@@ -19,7 +19,7 @@
  */
 package com.langcollab.languagementor.constant {
 
-public class Constant_UserActivityTypes {
+public class Constant_UserActionTypes {
 
    public static const AUTO_PLAY__ADVANCE_CHUNK:String = "AUTO_PLAY__ADVANCE_CHUNK";
    public static const CREDITS_LESSON:String = "CREDITS_LESSON";

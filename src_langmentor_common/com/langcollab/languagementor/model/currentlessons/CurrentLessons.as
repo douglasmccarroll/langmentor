@@ -50,7 +50,7 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.singleton.SingletonManager;
-import com.langcollab.languagementor.constant.Constant_UserActivityTypes;
+import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
 import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
@@ -236,11 +236,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          // In abstract terms, this is probably a reasonable thing to do as a general strategy.
          // Is it useful in practical terms? It doesn't look as though it is.
          // This method is called in two places:
-         //   1. Command_AddOrRemoveSelectedLessonVersion.execute() - which is only called from the Select Lessons screen  
+         //   1. Command_AddOrRemoveSelectedLessonVersion.execute() - which is only called from the Select Lessons screen
          //      In this case, what we do here gets overridden - when the user leaves this screen the current lesson is usually set again
          //   2. CurrentLessons.addAll() - I'm guessing that this is only called when we start the app and are initializing with persisted data.
          //      We also initialize 'current selected lesson' (though I can't (quickly) find the code that does this.
-         //      So what we do here also gets overridden in that case. 
+         //      So what we do here also gets overridden in that case.
          setCurrentLessonAndChunkIndexes(currentLessonIndex + 1, currentChunkIndex);  /// See comment above - we should probably drop this - but we need a fair amount of testing before we release such a change
       }
       if (!suppressPersistingData)
@@ -1111,7 +1111,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          return;
       }
       var activity:UserActivity = new UserActivity();
-      activity.activityType = Constant_UserActivityTypes.AUTO_PLAY__ADVANCE_CHUNK;
+      activity.actionType = Constant_UserActionTypes.AUTO_PLAY__ADVANCE_CHUNK;
       activity.autoPlay_AutoAdvanceLesson = (newLessonVO is LessonVersionVO);
       activity.chunkIndex_Previous = advancedFromChunkIndex;
       activity.learningModeDisplayName = _model.getCurrentLearningModeDisplayName();
