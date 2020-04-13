@@ -9,7 +9,7 @@ CREATE TABLE User (
 )  ;
 
 -- For now, Libraries are only persisted when entered by the user.
--- Recommended libraries are specified in 'langcollab' info file(s) 
+-- Recommended libraries are specified in 'langcollab' info file(s)
 -- and are downloaded at each app startup.
 -- Note that 'libraryId' is different from Library.id
 -- libraryId and libraryName are obtained from the library XML file and are
@@ -44,7 +44,7 @@ INSERT INTO LanguageDisplayName VALUES ('2','2','3','Spanish','Spanish');
 -- English
 INSERT INTO Language VALUES ('3','eng','0');
 INSERT INTO LanguageDisplayName VALUES ('3','3','3','English','English');
--- Note: I'm using the term "Hindi" and the code "hin" here, but things aren't really this 
+-- Note: I'm using the term "Hindi" and the code "hin" here, but things aren't really this
 -- simple. See Wikipedia's Hindi-Urdu entry
 -- Hindi
 INSERT INTO Language VALUES ('4','hin','0');
@@ -344,15 +344,17 @@ CREATE TABLE LearningMode (
   hasRecordPlayback BOOL
 )  ;
 
-INSERT INTO LearningMode VALUES ('1', 'NativeTarget',           '1', '1', '0');
-INSERT INTO LearningMode VALUES ('2', 'NativeTargetPause',      '2', '1', '1');
-INSERT INTO LearningMode VALUES ('3', 'NativeTargetTarget',     '3', '1', '0');
-INSERT INTO LearningMode VALUES ('4', 'NativePauseTargetPause', '4', '1', '1');
-INSERT INTO LearningMode VALUES ('5', 'Target',                 '5', '0', '0');
-INSERT INTO LearningMode VALUES ('6', 'TargetPause',            '6', '0', '1');
-INSERT INTO LearningMode VALUES ('7', 'TargetNative',           '7', '1', '0');
-INSERT INTO LearningMode VALUES ('8', 'TargetPauseNative',      '8', '1', '0');
-INSERT INTO LearningMode VALUES ('9', 'TargetPauseNativePause', '9', '1', '0');
+INSERT INTO LearningMode VALUES ( '1', 'NativeTarget',              '1',  '1', '0');
+INSERT INTO LearningMode VALUES ( '2', 'NativeTargetPause',         '2',  '1', '1');
+INSERT INTO LearningMode VALUES ( '3', 'NativeTargetTarget',        '3',  '1', '0');
+INSERT INTO LearningMode VALUES ( '4', 'NativeTargetTargetNative',  '4',  '1', '0');
+INSERT INTO LearningMode VALUES ( '5', 'NativePauseTargetPause',    '5',  '1', '1');
+INSERT INTO LearningMode VALUES ( '6', 'Target',                    '6',  '0', '0');
+INSERT INTO LearningMode VALUES ( '7', 'TargetPause',               '7',  '0', '1');
+INSERT INTO LearningMode VALUES ( '8', 'TargetNative',              '8',  '1', '0');
+INSERT INTO LearningMode VALUES ( '9', 'TargetPauseNative',         '9',  '1', '0');
+INSERT INTO LearningMode VALUES ('10', 'TargetPauseNativePause',    '10', '1', '0');
+INSERT INTO LearningMode VALUES ('11', 'TargetPauseNativeTarget',   '11', '1', '0');
 
 CREATE TABLE Level (
   id INTEGER NOT NULL UNIQUE,
@@ -451,29 +453,3 @@ CREATE TABLE ChunkFile (
   duration INTEGER NOT NULL,
   fileNameBody TEXT NOT NULL
 ) ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

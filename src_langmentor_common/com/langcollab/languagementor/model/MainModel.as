@@ -89,8 +89,8 @@ import mx.collections.ArrayCollection;
 import mx.rpc.events.FaultEvent;
 
 public class MainModel extends EventDispatcher implements IManagedSingleton {
-   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 4;
-   private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 6;
+   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 5;
+   private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 7;
 
    private static var _instance:MainModel;
 

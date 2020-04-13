@@ -558,19 +558,19 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                      Log.error("AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence(): Chunk has no native text in alpha review mode");
                      duration = 10000;
                   }
-      
+
                   leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE, duration);
                   leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                   leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                   leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                   chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_NATIVE] = leaf;
-      
+
                   leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET, duration);
                   leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                   leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                   leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                   chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__TEXTONLY_TARGET] = leaf;
-      
+
                   chunkIndex++;
                   continue;
                }
@@ -625,7 +625,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                   leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                   chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_NATIVE] = leaf;
                }
-      
+
                var targetLanguageFileDuration:Number = index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO];
                audioVolumeAdjustmentFactor = _currentLessons.currentLessonVO.targetLanguageAudioVolumeAdjustmentFactor;
                url =
@@ -645,41 +645,41 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_TARGET] = leaf;
-      
+
                var pauseForRepetitionDuration:Number = (index_TargetLanguageFileDuration_by_ChunkVO_ForCurrentLessonVersion[chunkVO] * 2) + 1200;
-      
+
                leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT, pauseForRepetitionDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_ATTEMPT] = leaf;
-      
+
                leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT, pauseForRepetitionDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_REPEAT] = leaf;
-      
+
                // On at least some devices, we need to keep recording longer than the desired recording time in
                // order to actually record for the desired recording time. See AudioRecorder.stopRecording() code.
                var recordingStopDelayDuration:uint = 1000; /// base this on platform & model? this value works for iOS G4 & G5
-      
+
                var durationIncludingAllDelays:int = pauseForRepetitionDuration + AudioRecorder.RECORDING_START_DELAY_DURATION + recordingStopDelayDuration;
-      
+
                leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT, durationIncludingAllDelays, recordingStopDelayDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_ATTEMPT] = leaf;
-      
+
                leaf = AudioSequenceLeaf_Recorder.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT, durationIncludingAllDelays, recordingStopDelayDuration);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__RECORD_REPEAT] = leaf;
-      
+
                var durationOfRecording:Number = durationIncludingAllDelays - AudioRecorder.START_DELAY__INITIAL;
-      
+
                leaf = AudioSequenceLeaf_Playback.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PLAYBACK, durationOfRecording);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
@@ -720,7 +720,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                leaf.addEventListener(Event_AudioProgress.IOERROR_REPORT, onIOErrorReport);
                chunkElement.elements[Constant_LangMentor_Misc.LEAF_TYPE__AUDIO_EXPLANATORY] = leaf;
                break;
-            }   
+            }
             default:
                Log.fatal("AudioController.playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence() - no case for chunkType: " + chunkVO.chunkType);
          }
@@ -832,6 +832,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       else {
          var learningModeToken:String = _model.getLearningModeTokenFromID(_model.currentLearningModeId);
          switch (learningModeToken) {
+            case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE: {
+               chunkStrategy = new SequenceStrategy_NativePauseTargetPause();
+               break;
+            }
             case Constant_LearningModeLabels.NATIVE_TARGET: {
                chunkStrategy = new SequenceStrategy_NativeTarget();
                break;
@@ -844,8 +848,8 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
                chunkStrategy = new SequenceStrategy_NativeTargetTarget();
                break;
             }
-            case Constant_LearningModeLabels.NATIVE_PAUSE_TARGET_PAUSE: {
-               chunkStrategy = new SequenceStrategy_NativePauseTargetPause();
+            case Constant_LearningModeLabels.NATIVE_TARGET_TARGET_NATIVE: {
+               chunkStrategy = new SequenceStrategy_NativeTargetTargetNative();
                break;
             }
             case Constant_LearningModeLabels.TARGET: {
@@ -866,6 +870,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             }
             case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE_PAUSE: {
                chunkStrategy = new SequenceStrategy_TargetPauseNativePause();
+               break;
+            }
+            case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE_TARGET: {
+               chunkStrategy = new SequenceStrategy_TargetPauseNativeTarget();
                break;
             }
             default: {

@@ -46,7 +46,7 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
    private var _singleOrDualLanguageIndicator:Bitmap;
    private var _unscaledHeight:int = 0;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters / Setters
    //
@@ -58,11 +58,11 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
       return _value;
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function ItemRenderer_LearningModeList() {
       super();
@@ -70,11 +70,11 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
       addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Protected Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    override protected function createChildren():void {
       setBackground();
@@ -116,9 +116,9 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
       }
       var consumedWidth:uint = 0;
       _unscaledHeight = unscaledHeight;
-      var buttonSize:Number = Utils_Text.getStandardFontSize() * 4;
       var vertPadding:int = Math.round(unscaledHeight / 7);
       var horzPadding:int = Math.round(unscaledHeight / 10);
+      var buttonSize:Number = unscaledHeight - (2 * vertPadding);
       _helpButton.x = horzPadding * 2;
       _helpButton.y = (unscaledHeight - buttonSize) / 2;
       _helpButton.height = _helpButton.width = buttonSize;
@@ -142,11 +142,11 @@ public class ItemRenderer_LearningModeList extends ItemRenderer_Mobile_Base {
       setBackground();
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Private Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function addHelpButton():void {
       _helpButton = new LearningModeListHelpButton();

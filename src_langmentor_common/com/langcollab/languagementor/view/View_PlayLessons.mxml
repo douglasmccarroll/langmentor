@@ -69,7 +69,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_LABEL__PREVIOUS_CHUNK:String = "<";
       private static const _BUTTON_LABEL__PREVIOUS_LESSON:String = "<<";
       private static const _BUTTON_LABEL__RECORD:String = "Record &\nPlayback";
-      private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 1200;
+      private static const _CHUNK_START_I_KNOW_THIS_ABORT_TIME:Number = 1500;
 
       private var _button_Credits:Button_Standard_Blue;
       private var _button_IKnowThis:Button_Standard_Purple;

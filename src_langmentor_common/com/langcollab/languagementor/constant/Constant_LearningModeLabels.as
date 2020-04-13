@@ -22,10 +22,12 @@ public class Constant_LearningModeLabels {
    public static const NATIVE_TARGET:String = "NativeTarget";
    public static const NATIVE_TARGET_PAUSE:String = "NativeTargetPause";
    public static const NATIVE_TARGET_TARGET:String = "NativeTargetTarget";
+   public static const NATIVE_TARGET_TARGET_NATIVE:String = "NativeTargetTargetNative";
    public static const TARGET:String = "Target";
    public static const TARGET_NATIVE:String = "TargetNative";
    public static const TARGET_PAUSE:String = "TargetPause";
    public static const TARGET_PAUSE_NATIVE:String = "TargetPauseNative";
    public static const TARGET_PAUSE_NATIVE_PAUSE:String = "TargetPauseNativePause";
+   public static const TARGET_PAUSE_NATIVE_TARGET:String = "TargetPauseNativeTarget";
 }
 }

@@ -128,6 +128,10 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
    }
 
    private function resumeAudioIfAppropriate():void {
+      if (!currentLessons.currentLessonVO) {
+         // This happens when we suppress the last unsuppressed chunk in the last selected lesson - haven't researched how/why - in this case we clearly don't want to resume audio
+         return;
+      }
       currentLessons.ensureStateIntegrity();
       audioController.decrementTempChunkSequenceStrategyAndClearIfAppropriate();
       if (!currentLessons.currentLessonVO.equals(_lessonVersionContainingSuppressedChunk))
