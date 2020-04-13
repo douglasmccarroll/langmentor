@@ -52,8 +52,8 @@ import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.singleton.SingletonManager;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.audio.AudioController;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
 import com.langcollab.languagementor.event.Event_CurrentLessonsAudioTimer;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -1110,7 +1110,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       if ((!currentLessonVersionLessonId) || (!currentLessonVersionLessonName_NativeLanguage) || (!currentLessonVersionProviderId) || (!currentLessonVersionVersion) || (!_model.getCurrentLearningModeDisplayName())) {
          return;
       }
-      var activity:UserActivity = new UserActivity();
+      var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.AUTO_PLAY__ADVANCE_CHUNK;
       activity.autoPlay_AutoAdvanceLesson = (newLessonVO is LessonVersionVO);
       activity.chunkIndex_Previous = advancedFromChunkIndex;
@@ -1125,7 +1125,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          activity.lessonProviderId_New = newLessonVO.contentProviderId;
          activity.lessonVersion_New = newLessonVO.publishedLessonVersionVersion;
       }
-      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function sortArrayCollectionOfSortableLessonVersionInfoInstances(ac:ArrayCollection):void {

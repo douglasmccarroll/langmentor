@@ -20,7 +20,7 @@
 
 package com.langcollab.languagementor.controller.useractivityreporting {
 
-public class UserActivity {
+public class UserAction {
 
    // See Constant_UserActivityTypes - Many of the properties in this object are used by some types and not used by others.
    //

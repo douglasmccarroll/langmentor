@@ -29,8 +29,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_HTML;
       import com.langcollab.languagementor.constant.Constant_UserActionTypes;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
       import com.langcollab.languagementor.vo.LessonVersionVO;
 
@@ -124,13 +124,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function reportUserActivity(vo:LessonVersionVO):void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.CREDITS_LESSON;
          activity.lessonId = vo.publishedLessonVersionId;
          activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(vo);
          activity.lessonProviderId = vo.contentProviderId;
          activity.lessonVersion = vo.publishedLessonVersionVersion;
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
       ]]>
     </fx:Script>

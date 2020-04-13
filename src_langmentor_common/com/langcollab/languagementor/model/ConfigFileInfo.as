@@ -38,7 +38,7 @@ import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 
 import flash.events.TimerEvent;
@@ -351,7 +351,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
          var retrievalDate:Date = _appStatePersistenceManager.retrieveMostRecent_NewsUpdateDate_DateRetrieved();
          daysElapsedSinceRetrieval = Utils_DateTime.computeDaysBeforePresent(retrievalDate);
       }
-      if ((!isNewsUpdateDateEverRetrievedAndPersisted) || (daysElapsedSinceRetrieval > 1)) { 
+      if ((!isNewsUpdateDateEverRetrievedAndPersisted) || (daysElapsedSinceRetrieval > 1)) {
          _fileDownloader_MentorNewsUpdateInfo = new FileDownloader();
          _fileDownloader_MentorNewsUpdateInfo.downloadFolderURL = _model.getURL_MainConfigFolder();
          _fileDownloader_MentorNewsUpdateInfo.downloadFileName = Constant_LangMentor_Misc.FILEPATHINFO__MENTOR_NEWS_UPDATE_DATE_FILE_NAME_ROOT + _model.getNativeLanguageIso639_3Code();
@@ -426,7 +426,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
       refreshMentorTypeDataFromXML();
       _isDataLoaded_MentorTypeFile = true;
       Log.setConfigProvider(this);
-      UserActivityReportingManager.setConfigProvider(this);
+      UserActionReportingManager.setConfigProvider(this);
       reportResult();
    }
 

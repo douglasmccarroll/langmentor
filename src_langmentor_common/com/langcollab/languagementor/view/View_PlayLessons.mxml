@@ -47,8 +47,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
+      import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
       import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.ChunkVO;
@@ -753,7 +753,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          }
       }
 
-      private function reportUserActivity_StandardInfo(activity:UserActivity):void {
+      private function reportUserActivity_StandardInfo(activity:UserAction):void {
          if (currentLessons.currentChunkIndex) {
             activity.chunkIndex = currentLessons.currentChunkIndex;
          }
@@ -778,80 +778,80 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function reportUserActivity_Credits():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__CREDITS;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_LoopOff():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__LOOP_OFF;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_LoopOn():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__LOOP_ON;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_NextChunk():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__NEXT_CHUNK;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_NextLesson():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__NEXT_LESSON;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_Pause():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PAUSE;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_Play():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PLAY;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_PreviousChunk():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PREVIOUS_CHUNK;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_PreviousLesson():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__PREVIOUS_LESSON;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_RecordPlayback_Off():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__RECORDPLAYBACK_OFF;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function reportUserActivity_RecordPlayback_On():void {
-         var activity:UserActivity = new UserActivity();
+         var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.PLAY_LESSONS__RECORDPLAYBACK_ON;
          reportUserActivity_StandardInfo(activity);
-         UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 
       private function setChangeLessonEnabled(value:Boolean):void {

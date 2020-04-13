@@ -20,8 +20,8 @@ package com.langcollab.languagementor.controller {
 
 import com.brightworks.util.Log;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
 
 public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor {
    private var _isDisposed:Boolean = false;
@@ -64,10 +64,10 @@ public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor 
    // ****************************************************
 
    private function reportUserActivity():void {
-      var activity:UserActivity = new UserActivity();
+      var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.LEARNING_MODES__SELECT_NEW;
       activity.learningModeDisplayName_New = model.getLearningModeDisplayNameFromId(_newLearningModeId);
-      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
 

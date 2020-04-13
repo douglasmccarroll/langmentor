@@ -27,8 +27,8 @@ import com.langcollab.languagementor.component.learningmodelist.LearningModeList
 import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.Command_ChangeCurrentLearningMode;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivity;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActivityReportingManager;
+import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
+import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
 import com.langcollab.languagementor.event.Event_LearningModeList;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.view.supportClasses.ViewContext;
@@ -245,10 +245,10 @@ public class View_SelectMode extends View_Base implements IDisposable {
    }
 
    private function reportUserActivity_ViewHelp(learningModeId:int):void {
-      var activity:UserActivity = new UserActivity();
+      var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.LEARNING_MODES__VIEW_HELP;
       activity.learningModeDisplayName = MainModel.getInstance().getLearningModeDisplayNameFromId(learningModeId);
-      UserActivityReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+      UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function saveSelectedLearningMode():void {

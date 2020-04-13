@@ -20,13 +20,13 @@
 
 package com.langcollab.languagementor.controller.useractivityreporting {
 
-public class UserActivityReportingTarget {
+public class UserActionReportingTarget {
 
    public var postUrl:String;
    public var targetDisplayName:String;
    public var targetIdString:String;
 
-   public function UserActivityReportingTarget() {
+   public function UserActionReportingTarget() {
    }
 }
 }

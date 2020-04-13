@@ -28,17 +28,17 @@ import com.brightworks.util.Utils_System;
 import com.brightworks.util.singleton.SingletonManager;
 import com.langcollab.languagementor.model.MainModel;
 
-public class UserActivityReportingManager implements IManagedSingleton{
+public class UserActionReportingManager implements IManagedSingleton{
 
    private static var _configProvider:IUserDataReportingConfigProvider;
-   private static var _instance:UserActivityReportingManager;
+   private static var _instance:UserActionReportingManager;
    private static var _model:MainModel;
 
-   public function UserActivityReportingManager(manager:SingletonManager) {
+   public function UserActionReportingManager(manager:SingletonManager) {
       _instance = this;
    }
 
-   public static function getInstance():UserActivityReportingManager {
+   public static function getInstance():UserActionReportingManager {
       if (!(_instance))
          throw new Error("Singleton not initialized");
       return _instance;
@@ -48,7 +48,7 @@ public class UserActivityReportingManager implements IManagedSingleton{
       _model = MainModel.getInstance();
    }
 
-   public static function reportActivityIfUserHasActivatedReporting(activity:UserActivity):void {
+   public static function reportActivityIfUserHasActivatedReporting(activity:UserAction):void {
       /////  Need "if activated" code instead of "if beta"
       if (!Utils_System.isAlphaOrBetaVersion()) {
          return;
