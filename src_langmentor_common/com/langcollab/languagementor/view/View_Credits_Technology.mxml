@@ -31,8 +31,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_Text;
       import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_UserActionTypes;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
+      import com.langcollab.languagementor.controller.useractionreporting.UserAction;
+      import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
 

@@ -38,7 +38,7 @@ import com.brightworks.util.download.FileDownloaderErrorReport;
 import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
+import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 
 import flash.events.TimerEvent;

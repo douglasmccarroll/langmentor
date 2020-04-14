@@ -47,8 +47,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.controller.Command_DoIKnowThis;
       import com.brightworks.util.audio.AudioPlayer;
       import com.langcollab.languagementor.controller.audio.AudioRecorder;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
-      import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
+      import com.langcollab.languagementor.controller.useractionreporting.UserAction;
+      import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
       import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
       import com.langcollab.languagementor.util.Resources_Image;
       import com.langcollab.languagementor.vo.ChunkVO;

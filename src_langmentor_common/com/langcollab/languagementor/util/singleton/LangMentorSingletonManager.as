@@ -7,7 +7,7 @@ import com.langcollab.languagementor.controller.audio.AudioController;
 import com.brightworks.util.audio.AudioPlayer;
 import com.langcollab.languagementor.controller.audio.AudioRecorder;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
+import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 import com.langcollab.languagementor.model.currentlessons.CurrentLessons;

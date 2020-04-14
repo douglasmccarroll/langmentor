@@ -27,8 +27,8 @@ import com.langcollab.languagementor.component.learningmodelist.LearningModeList
 import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.Command_ChangeCurrentLearningMode;
-import com.langcollab.languagementor.controller.useractivityreporting.UserAction;
-import com.langcollab.languagementor.controller.useractivityreporting.UserActionReportingManager;
+import com.langcollab.languagementor.controller.useractionreporting.UserAction;
+import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
 import com.langcollab.languagementor.event.Event_LearningModeList;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.view.supportClasses.ViewContext;
