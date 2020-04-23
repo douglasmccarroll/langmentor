@@ -78,7 +78,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onDeselectButtonClick_Continued():void {
-         currentLessons.removeAll(true, true);
+         currentLessons.removeAll();
          cancelButton.visible = false;
          cancelButton.includeInLayout = false;
          deselectButton.visible = false;

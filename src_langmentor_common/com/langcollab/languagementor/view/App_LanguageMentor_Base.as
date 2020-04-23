@@ -138,6 +138,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onActivateApp()");
+         _currentLessons.pauseCurrentLessonVersionIfPlaying();   // It doesn't seem as if this is getting called in onDeactivateApp() on iOS when app play in interrupted by a phone call, etc - I'm hoping that it will get called here ...
       }
    }
 

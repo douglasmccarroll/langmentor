@@ -79,17 +79,17 @@ public class UserActionReportingManager implements IManagedSingleton{
 
       ///// Dummy User code
       var userIdList:Array = [
-         "8bb99dc4-9d5c-479a-8a48-37ec0970dd45",
-         "f06e87be-6f74-415a-9da2-3e548d072c9e",
-         "93b2d3ae-c0b6-4656-a1ad-b58b7a68b655",
-         "85157e7a-a5d3-4cb1-a2f2-154a052e1a1a",
-         "1ded99c2-a4cd-493b-abaf-bab85ca9bf5b",
-         "dc87f045-cb34-49c9-9328-49ab71ec4577",
-         "8d0392ae-de84-4bdf-a43a-91af022b6b45",
-         "77cdff6d-918c-42ad-9fd6-4894b6f81ff8",
-         "979f70af-3a23-478a-bf82-1d7e56136666",
-         "558aa00e-49bd-4bbc-8b1d-77357b876f7f",
-         "4d1f5192-1fdd-4be7-b7fa-a3ac12c2a8cb"
+         "fa88801a-e52b-4ec3-b24a-e8fb3f9af880",
+         "19d6319f-4745-4176-8bb4-0cfb1c0ff395",
+         "c4c4ace4-17c6-4945-bf5e-cabd9b9a9d9b",
+         "48b96be4-8569-48e9-9e80-70ff00aa2935",
+         "39ae3ee8-728a-4d10-834e-576f4c59caa6",
+         "bc0c3054-1434-405a-b841-e10c3c0513d3",
+         "21941f50-d51b-4abf-9832-a2f089c12cd8",
+         "4a4e0099-1f0f-4184-9f09-1ba2b32fdcb8",
+         "cbb626ea-988e-47de-892c-ac530f7cf4ae",
+         "9f9cd96d-3279-4927-9d83-b0b529cf919d",
+         "c1127160-21d8-4841-bd37-3c1e487dabff"
       ]
       var d:Date = new Date();
       var m:Number = d.time;
