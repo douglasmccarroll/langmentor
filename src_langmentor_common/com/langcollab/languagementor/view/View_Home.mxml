@@ -165,9 +165,17 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             var message:String = Utils_LangCollab.getMessage_NoLessonsDownloaded();
             Utils_ANEs.showAlert_OkayButton(message);
             return;
-         } else if (currentLessons.length == 0) {
-            // No selected lessons
-            Utils_ANEs.showAlert_OkayButton("No lessons are currently selected."); /// Localize
+         }
+         if ((currentLessons.length == 0) && (model.currentLearningModeId == 0)) {
+            Utils_ANEs.showAlert_OkayButton("First, please select one or more lessons and select a learning mode."); /// Localize
+            return;
+         }
+         if (currentLessons.length == 0) {
+            Utils_ANEs.showAlert_OkayButton("Please select one or more lessons."); /// Localize
+            return;
+         }
+         if (model.currentLearningModeId == 0) {
+            Utils_ANEs.showAlert_OkayButton("Please select a learning mode."); /// Localize
             return;
          }
          var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__HOME_SCREEN_BUTTON);

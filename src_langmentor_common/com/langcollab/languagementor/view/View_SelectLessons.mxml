@@ -71,7 +71,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override public function doGoBack():void {
          Log.info("View_SelectLessons.doGoBack()");
          if (_lessonSelectorList.isListAtTopLevel()) {
-            if (model.getCurrentLearningModeVO().isDualLanguage) {
+            if ((model) && (model.getCurrentLearningModeVO()) && (model.getCurrentLearningModeVO().isDualLanguage)) {
                if ((currentLessons.getSelectedSingleLanguageLessonVersionCount() > 0) && !model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed) {
                   var message:String =
                         createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
@@ -90,7 +90,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override public function doGoHome():void {
          Log.info("View_SelectLessons.doGoHome()");
-         if (model.getCurrentLearningModeVO().isDualLanguage) {
+         if ((model) && (model.getCurrentLearningModeVO()) && (model.getCurrentLearningModeVO().isDualLanguage)) {
             if ((currentLessons.getSelectedSingleLanguageLessonVersionCount() > 0) && !model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed) {
                var message:String =
                      createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();

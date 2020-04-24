@@ -40,9 +40,7 @@ import flash.utils.Dictionary;
 import mx.binding.utils.ChangeWatcher;
 import mx.collections.ArrayCollection;
 import mx.core.ClassFactory;
-import mx.core.FlexGlobals;
 
-import spark.components.List;
 import spark.events.IndexChangeEvent;
 
 public class View_SelectMode extends View_Base implements IDisposable {
@@ -50,8 +48,8 @@ public class View_SelectMode extends View_Base implements IDisposable {
    private var _isDisposed:Boolean = false;
    private var _isListComponentInstantiated:Boolean = false;
    [Bindable]
-   private var _learningModeListIndexHistory:Array = []; // There may be a simpler way to do things - this was created before "leave screen when mode selected" was implemented
-   private var _modeList:List;
+   private var _learningModeListIndexHistory:Array = [];
+   private var _modeList:LearningModeList;
    private var _modeListDataProvider:ArrayCollection;
    private var _watcher_IsModelDataInitialized:ChangeWatcher;
 
@@ -98,12 +96,10 @@ public class View_SelectMode extends View_Base implements IDisposable {
                   createMessage_DualLanguageModeSelectedWhileSingleLanguageLessonsSelected();
             Utils_ANEs.showAlert_OkayButton(message, onDualLanguageModeSelectedWhileSingleLanguageLessonsSelectedMessageClose);
             model.isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed = true;
-         }
-         else {
+         } else {
             doGoBack_Continued();
          }
-      }
-      else {
+      } else {
          doGoBack_Continued();
       }
    }
@@ -204,6 +200,17 @@ public class View_SelectMode extends View_Base implements IDisposable {
       _modeList.selectedIndex = listIndexForCurrentLearningModeId;
       _learningModeListIndexHistory.push(listIndexForCurrentLearningModeId);
       _isListComponentInstantiated = true;
+      if (model.currentLearningModeId == 0) {
+         Utils_ANEs.showAlert_OkayButton(
+               "Each learning mode presents audio in a specific sequence. For example, the " +
+               model.getLearningModeDisplayNameFromLabelToken("NativeTargetTarget") +
+               " mode plays " +
+               model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage() +
+               " audio, then plays " +
+               model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() +
+               " audio twice, for each chunk. This is a good mode for familiarizing yourself with new content.\n\nWe suggest that you experiment with various modes, and learn what works best for you."
+         ); /// Localize
+      }
    }
 
    private function onDualLanguageModeSelectedWhileSingleLanguageLessonsSelectedMessageClose():void {

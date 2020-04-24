@@ -89,8 +89,6 @@ import mx.collections.ArrayCollection;
 import mx.rpc.events.FaultEvent;
 
 public class MainModel extends EventDispatcher implements IManagedSingleton {
-   private static const DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE:int = 5;
-   private static const DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE:int = 7;
 
    private static var _instance:MainModel;
 
@@ -1357,12 +1355,6 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       initTargetLanguageBasedDataIfReady();
    }
 
-   private function getDefaultLearningModeId():uint {
-      return isAppDualLanguage() ?
-            DEFAULT_LEARNING_MODE_ID__DUAL_LANGUAGE :
-            DEFAULT_LEARNING_MODE_ID__SINGLE_LANGUAGE;
-   }
-
    private function getLessonVersionNativeLanguageVOFromLessonVersionVOFromDB(vo:LessonVersionVO):LessonVersionNativeLanguageVO {
       var queryVO:LessonVersionNativeLanguageVO = new LessonVersionNativeLanguageVO();
       queryVO.contentProviderId = vo.contentProviderId;
@@ -1633,7 +1625,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       if (_appStatePersistenceManager.retrieveIsSelectedLearningModeIdSaved())
          currentLearningModeId = _appStatePersistenceManager.retrieveSelectedLearningModeId();
       else
-         currentLearningModeId = getDefaultLearningModeId();
+         currentLearningModeId = 0;
    }
 
    private function updateLanguageVOsWithHasRecommendedLibrariesInfo():void {
