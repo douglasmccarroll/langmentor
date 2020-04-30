@@ -43,13 +43,16 @@ import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.Event_Audio;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
+import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.singleton.SingletonManager;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.controller.useractionreporting.UserAction;
@@ -62,7 +65,9 @@ import com.langcollab.languagementor.vo.LessonVersionVO;
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.events.TimerEvent;
 import flash.utils.Dictionary;
+import flash.utils.Timer;
 
 import mx.collections.ArrayCollection;
 
@@ -81,6 +86,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
    private var _index_ChunkListsSortedByLocationInOrder_by_LessonVersionVO:Dictionary = new Dictionary();
    private var _index_LessonVersionVOs_by_ChunkVO:Dictionary = new Dictionary();
    private var _model:MainModel;
+   private var _sleepTimer:Timer;
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
@@ -194,6 +200,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
 
    public function get isLessonPlaying():Boolean {
       return _isLessonPlaying;
+   }
+
+   [Bindable("sleepTimerActiveChange")]
+   public function get isSleepTimerActive():Boolean {
+      return (_sleepTimer != null);
    }
 
    [Bindable("lengthChange")]
@@ -790,10 +801,15 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
    }
 
-   public function playCurrentLessonVersionAndCurrentChunk():void {
+   public function playCurrentLessonVersionAndCurrentChunk(checkSilenceSwitch:Boolean = false):void {
       Log.debug("CurrentLessons.playCurrentLessonVersionAndCurrentChunk()");
       if (!currentLessonVO) {
          Log.warn("CurrentLessons.playCurrentLessonVersionAndCurrentChunk(): currentLessons.currentLesson is null.");
+         return;
+      }
+      Utils_ANEs.activateSilenceSwitchMonitor(onSilenceSwitchActivatedCallback);   // We do this here because it wasn't working to do it in initSingleton()
+      if (checkSilenceSwitch && Utils_ANEs.isSilenceSwitchMuted()) {
+         displaySilenceSwitchWarningAlert();
          return;
       }
       _isLessonPaused = false;
@@ -909,6 +925,19 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
    }
 
+   public function setSleepTimer(minutes:int):void {
+      if (_sleepTimer) {
+         _sleepTimer.stop();
+         _sleepTimer.removeEventListener(TimerEvent.TIMER, onSleepTimer);
+         _sleepTimer = null;
+      }
+      var milliseconds:int = minutes * 60000;
+      _sleepTimer = new Timer(milliseconds);
+      _sleepTimer.addEventListener(TimerEvent.TIMER, onSleepTimer);
+      _sleepTimer.start();
+      dispatchEvent(new Event("sleepTimerActiveChange"));
+   }
+
    public function stopPlayingCurrentLessonVersionIfPlaying():void {
       Log.debug(["CurrentLessons.stopPlayingCurrentLessonVersionIfPlaying()"]);
       _audioTimer.cancelAllAudioPlayPermissionRequests();
@@ -931,7 +960,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          AudioPlayer.getInstance().stop();
          pauseCurrentLessonVersionIfPlaying();
       } else {
-         playCurrentLessonVersionAndCurrentChunk();
+         playCurrentLessonVersionAndCurrentChunk(true);
       }
    }
 
@@ -952,6 +981,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       var sortString:String = _model.getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(vo);
       var info:SortableLessonVersionInfo = new SortableLessonVersionInfo(vo, sortString);
       return info;
+   }
+
+   private function displaySilenceSwitchWarningAlert():void {
+      var alertText:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + "won't play audio through the speaker when the mute switch is turned on.\n\nHeadphones, however, will work.";
+      Utils_ANEs.showAlert_OkayButton(alertText, onSilenceSwitchWarningAlertCallback);
    }
 
    private function doesUnsuppressedChunkExistAtOrAfterChunk(lvvo:LessonVersionVO, chunkIndex:int):Boolean {
@@ -1079,8 +1113,34 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _audioController.playCurrentLessonVersionAndCurrentChunk();
    }
 
+   private function onSilenceSwitchActivatedCallback(muted:Boolean):void {
+      if (muted && (isLessonPlaying) && (!_isLessonPaused)) {
+         displaySilenceSwitchWarningAlert();
+      }
+   }
+
+   private function onSilenceSwitchWarningAlertCallback():void {
+      playCurrentLessonVersionAndCurrentChunk(false);
+   }
+
+   private function onSleepTimer(event:TimerEvent):void {
+      if (_sleepTimer) {
+         _sleepTimer.stop();
+         _sleepTimer.removeEventListener(TimerEvent.TIMER, onSleepTimer);
+         _sleepTimer = null;
+      }
+      if (isLessonPlaying) {
+         stopPlayingCurrentLessonVersionIfPlaying();
+         dispatchEvent(new Event("sleepTimerActiveChange"));
+         var activity:UserAction = new UserAction();
+         Utils_Audio_Files.playGongSound();
+      }
+      activity.actionType = Constant_UserActionTypes.SLEEP_TIMER__FINISH;
+      UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
+   }
+
    private function onUserStartedAudio(e:Event_Audio):void {
-      playCurrentLessonVersionAndCurrentChunk();
+      playCurrentLessonVersionAndCurrentChunk(true);
    }
 
    private function onUserStoppedAudio(e:Event_Audio):void {

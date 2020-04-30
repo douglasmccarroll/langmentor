@@ -42,7 +42,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _LIST_OPTION__MANAGE_DOWNLOADS:String = "Manage Downloads";
       private static const _LIST_OPTION__MANAGE_LESSONS:String = "Manage Lessons";
       private static const _LIST_OPTION__MANAGE_LIBRARIES:String = "Manage Libraries";
-      private static const _LIST_OPTION__PLAY:String = "Play";
+      private static const _LIST_OPTION__SLEEP_TIMER:String = "Sleep Timer";
 
       private var _isDisposed:Boolean = false;
       private var _listDataProvider:ArrayCollection;
@@ -118,6 +118,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_ManageLibraries, null, null, transition_SlideView_Left);
                break;
             }
+            case _LIST_OPTION__SLEEP_TIMER: {
+               navigator.pushView(View_SleepTimer, null, null, transition_SlideView_Left);
+               break;
+            }
             default: {
                Log.fatal("View.onListChange(): No case for " + list.selectedItem);
             }
@@ -136,12 +140,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _listDataProvider.addItem(_LIST_OPTION__MANAGE_LIBRARIES);
          }
          _listDataProvider.addItem(_LIST_OPTION__LESSON_LEVELS);
+         _listDataProvider.addItem(_LIST_OPTION__SLEEP_TIMER);
          list.dataProvider = _listDataProvider;
       }
       ]]>
     </fx:Script>
 
-   <list:NormalList id = "list"
+   <list:DisplayAllItemsList id = "list"
                     change = "onListChange()"
                     itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
                     height = "100%"

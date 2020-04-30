@@ -19,7 +19,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.constant {
 
 public class Constant_MentorTypeSpecific {
-   public static const ANE_KEY__DISTRIQT:String = "ccaaa2975c98efeb8db2be4af07c82be3807ad88RRTkQPVPkXOwDeAVW2AMgjEdl+s/bEyVZ7W8dyK06lhj0t6sy8hBT74K0AEKAioRtWMV9qoh9wd2x6Szp5UBlI4zIA0FReaNoi7yfYTRSJ/4fPJdI86QDvdiiVtlF+dkjwNwMt7uV9+vDkXRwpmWzCDwJvM2+4Rhk1r+vkR1kUwam283ovakaigLLM7gNfN+6QJzjLhLJW5f51xktWCjS3ZvrSoUeX+kLg/GpveNjLdhKMJnQzMMrdD6zoozXVqSDeC+86WeNI3E8xJqngAyCFieCcYFt6FlAo131AL8szyytBYU55RP6Q4nrIeJIk1IoshzVOtr+DW6SnaFy4Iu0A==";
+   public static const ANE_KEY__DISTRIQT:String = "ccaaa2975c98efeb8db2be4af07c82be3807ad88fFazDXN3VVOBL7E+PnzI1AxIJXCVbeqHeKSjj2pbapwI3Mc/eTMS5zOpXfZbDgWT3eehNdwSXmqllhWHxrxJbrbSnlJDDb1HhUG8MwW+ypUx48CYWADn8KX9bpcQ/O7MlOFKncFU4gkxWjnw+61YCGLEvRpJ4fuUGIB3xjqNKEvB2azR8/qSNKER91+TeBKbqEiQ3Y1YyIiUclp5jAbxyu3HcGnjFTk/7/tw8I6acKFM+hi078YT8ewchXQrtdHexRq5knF+eoE5kW7cSqMKEEvhegaaOpuDczU/uvhDkJrf4MltqzNS2plfnp2AINnJN9UQj4n4it/qXnQTwVYYBg==";
    public static const APP_NAME__FULL:String = "German Language Mentor";
    public static const APP_NAME__SHORT:String = "Language Mentor";
    public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.42;

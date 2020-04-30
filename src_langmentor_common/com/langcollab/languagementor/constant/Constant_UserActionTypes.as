@@ -42,6 +42,8 @@ public class Constant_UserActionTypes {
    public static const PLAY_LESSONS__RECORDPLAYBACK_OFF:String = "PLAY_LESSONS__RECORDPLAYBACK_OFF";
    public static const SELECT_LESSONS__SELECT:String = "SELECT_LESSONS__SELECT";
    public static const SELECT_LESSONS__DESELECT:String = "SELECT_LESSONS__DESELECT";
+   public static const SLEEP_TIMER__FINISH:String = "SLEEP_TIMER__FINISH";
+   public static const SLEEP_TIMER__START:String = "SLEEP_TIMER__START";
 
 }
 }

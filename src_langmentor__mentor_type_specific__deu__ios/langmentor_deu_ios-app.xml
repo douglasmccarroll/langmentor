@@ -84,10 +84,6 @@
             <array>
                <string>audio</string>
             </array>
-            <key>UIRequiredDeviceCapabilities</key>
-            <array>
-               <string>arm64</string>
-            </array>
             <key>UIDeviceFamily</key>
             <array>
               <string>1</string>
@@ -104,6 +100,7 @@
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.MediaPlayer</extensionID>
-	  <extensionID>com.distriqt.Scanner</extensionID>
+      <extensionID>com.distriqt.Scanner</extensionID>
+      <extensionID>com.distriqt.Volume</extensionID>
    </extensions>
 </application>

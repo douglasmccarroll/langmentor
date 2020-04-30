@@ -99,6 +99,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _watcher_IsRecordMode:ChangeWatcher;
       private var _watcher_MostRecentDownloadLessonProcessStatus:ChangeWatcher;
       private var _watcher_SelectedLessonVersionsDataLength:ChangeWatcher;
+      private var _watcher_SleepTimer:ChangeWatcher;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -627,7 +628,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _watcher_IsCurrentlyRecording = BindingUtils.bindSetter(onRecordingChange, AudioRecorder.getInstance(), "isCurrentlyRecording");
          _watcher_IsRecordMode = BindingUtils.bindSetter(onRecordingChange, audioController, "isRecordMode");
          _watcher_SelectedLessonVersionsDataLength = BindingUtils.bindSetter(onCurrentLessonsLengthChange, currentLessons, "length");
+         _watcher_SleepTimer = BindingUtils.bindSetter(onIsSleepTimerActiveChange, currentLessons, "isSleepTimerActive");
          Log.debug("View_PlayLessons.onInitialize(): finished");
+      }
+
+      private function onIsSleepTimerActiveChange(newValue:Boolean):void {
+         if (!newValue) {
+            updateUI();
+         }
       }
 
       private function onLeafStart(newValue:Date):void {
@@ -731,15 +739,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
 
       private function onViewActivate():void {
-         Log.debug("View_PlayLessons.onViewActivate()");
-         if ((!currentLessons.isLessonPlaying) || currentLessons.isLessonPaused) {
-            _button_PlayPause.label = _BUTTON_LABEL__PLAY;
-         } else {
-            _button_PlayPause.label = _BUTTON_LABEL__PAUSE;
-         }
-         showHideMicrophoneImage();
-         updateTextBoxesText();
-         Log.debug("View_PlayLessons.onViewActivate(): finished");
+         updateUI();
       }
 
       private function onViewDeactivate():void {
@@ -983,6 +983,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          chunkStatusText += " / ";
          chunkStatusText += currentLessons.currentLessonUnsuppressedChunks.length;
          textField_ChunkStatus.text = chunkStatusText;
+      }
+
+      private function updateUI():void {
+         Log.debug("View_PlayLessons.updateUI()");
+         if ((!currentLessons.isLessonPlaying) || currentLessons.isLessonPaused) {
+            _button_PlayPause.label = _BUTTON_LABEL__PLAY;
+         } else {
+            _button_PlayPause.label = _BUTTON_LABEL__PAUSE;
+         }
+         showHideMicrophoneImage();
+         updateTextBoxesText();
+         Log.debug("View_PlayLessons.updateUI(): finished");
       }
       ]]>
     </fx:Script>
