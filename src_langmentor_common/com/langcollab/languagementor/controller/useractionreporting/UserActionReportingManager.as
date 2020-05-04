@@ -174,7 +174,7 @@ public class UserActionReportingManager implements IManagedSingleton{
       var jsonText:String = JSON.stringify(mainObject);
 
 
-      trace(jsonText); /////
+      // trace(jsonText); ////
 
       /*
       trace("-");

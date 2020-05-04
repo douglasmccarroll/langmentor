@@ -7,8 +7,8 @@
 
    <name>German LangMentor</name>
 
-   <versionNumber>1.42.06</versionNumber>
-   <versionLabel>1.42.06</versionLabel>
+   <versionNumber>1.44.05</versionNumber>
+   <versionLabel>1.44.05</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -37,9 +37,6 @@
             <manifest android:installLocation="preferExternal">
                 <application android:hardwareAccelerated="true">
 
-                    <!-- For Distriqt MediaPlayer extension -->
-                    <service android:name="com.distriqt.extension.mediaplayer.audio.AudioPlayerService" android:enabled="true" android:exported="true"></service>
-
                     <!-- For MyFlashLabs extensions -->
                     <activity>
                         <intent-filter>
@@ -57,7 +54,7 @@
                     <!-- For distriqt Scanner extension -->
                     <activity android:name="com.distriqt.extension.scanner.zbar.ZBarScannerActivity" />
                     <activity android:name="com.distriqt.extension.scanner.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-		              
+
                 </application>
 
                 <supports-screens
@@ -104,7 +101,7 @@
       <extensionID>com.distriqt.Bolts</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
-      <extensionID>com.distriqt.MediaPlayer</extensionID>
-	  <extensionID>com.distriqt.Scanner</extensionID>
+      <extensionID>com.distriqt.Scanner</extensionID>
+      <extensionID>com.distriqt.Volume</extensionID>
    </extensions>
 </application>

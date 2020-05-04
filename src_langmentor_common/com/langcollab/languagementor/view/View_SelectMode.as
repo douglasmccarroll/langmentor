@@ -208,7 +208,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
                model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage() +
                " audio, then plays " +
                model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() +
-               " audio twice, for each chunk. This is a good mode for familiarizing yourself with new content.\n\nWe suggest that you experiment with various modes, and learn what works best for you."
+               " audio twice, for each chunk. This, BTW, is a good mode for familiarizing yourself with new content.\n\nWe suggest that you experiment with various modes, and learn what works best for you."
          ); /// Localize
       }
    }

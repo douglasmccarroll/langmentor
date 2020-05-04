@@ -31,6 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_System;
       import com.brightworks.util.Utils_Text;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.constant.Constant_UserActionTypes;
@@ -57,6 +58,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //          Private Methods
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function getSleepTimerNumeralFontsize():int {
+         var result:int = Math.round(Utils_Text.getStandardFontSize() * 1.7);
+         if (Utils_System.isIPad) {
+            result = Math.round(result * .55);
+         }
+         return result;
+      }
 
       private function onStartTimerButtonClick():void {
          Log.info("View_DeleteAllData.onOkayButtonClick()");
@@ -96,7 +105,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             width="80%">
          <s:SpinnerList id="minutesSpinner"
                         width="100%"
-                        fontSize="{Math.round(Utils_Text.getStandardFontSize() * 1.7)}"
+                        fontSize="{getSleepTimerNumeralFontsize()}"
                         textAlign="center">
             <s:dataProvider>
                <s:NumericDataProvider

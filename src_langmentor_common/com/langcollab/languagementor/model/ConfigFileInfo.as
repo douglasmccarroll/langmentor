@@ -150,8 +150,6 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    // dmccarroll 2012
    // "High priority data" includes the mentor type file data
    // "Low priority data" includes news updates etc.
-   // High priority data is fetched each time loadData() is called (currently every time the app is started) and is stored in this class's properties.
-   // Low priority data is typically fetched on a less frequent schedule, and is stored using _appStatePersistenceManager.
    // This class does callbacks to report results when the high-priority stuff is done, then proceeds to do low priority stuff, with no callbacks/reporting.
    public function doLowPriorityDataFetching():void {
       fetchLowPriorityDataIfAppropriate_MostRecentNewsUpdateDate();
@@ -228,7 +226,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    public function isMostRecentNewsUpdateAvailableForDisplay():Boolean {
       if (!(_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateRetrieved_Saved()))
          return false; // We don't have a retrieved news update
-      if (_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateViewed_Saved()) {
+      /*if (_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdate_DateViewed_Saved()) {
          // We've viewed an update
          if (Utils_DateTime.compare(
                _appStatePersistenceManager.retrieveMostRecent_NewsUpdate_DateRetrieved(),
@@ -236,9 +234,9 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
             // And the viewing was later than the update date
             return false;
          }
-      }
-      if (Utils_DateTime.computeDaysBeforePresent(_appStatePersistenceManager.retrieveMostRecent_NewsUpdate_DateRetrieved()) > 20)
-         return false; // More than 20 days have passed since the update - it's no longer "news"
+      }*/
+      if (Utils_DateTime.computeDaysBeforePresent(_appStatePersistenceManager.retrieveMostRecent_NewsUpdate_DateRetrieved()) > 7)
+         return false; // More than 7 days have passed since the update - it's no longer "news"
       if (!_appStatePersistenceManager.retrieveIs_MostRecent_NewsUpdateDate_Saved())
          return false; // Something is wrong. This is sad.
       if (!getMostRecentNewsUpdateFormatVersionNode())
