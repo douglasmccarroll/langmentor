@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/32.0">
+<application xmlns = "http://ns.adobe.com/air/application/33.1">
 
    <id>com.brightworks.LangMentor.deu</id>
 
@@ -7,8 +7,8 @@
 
    <name>German LangMentor</name>
 
-   <versionNumber>1.44.05</versionNumber>
-   <versionLabel>1.44.05</versionLabel>
+   <versionNumber>1.44.062</versionNumber>
+   <versionLabel>1.44.062</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -34,22 +34,8 @@
       <colorDepth>16bit</colorDepth>
       <manifestAdditions>
          <![CDATA[
-            <manifest android:installLocation="preferExternal">
+            <manifest android:installLocation="auto">
                 <application android:hardwareAccelerated="true">
-
-                    <!-- For MyFlashLabs extensions -->
-                    <activity>
-                        <intent-filter>
-                            <action android:name="android.intent.action.MAIN" />
-                            <category android:name="android.intent.category.LAUNCHER" />
-                        </intent-filter>
-                        <intent-filter>
-                            <action android:name="android.intent.action.VIEW" />
-                            <category android:name="android.intent.category.BROWSABLE" />
-                            <category android:name="android.intent.category.DEFAULT" />
-                            <data android:scheme="com.brightworks.LangMentor.standard" />
-                        </intent-filter>
-                    </activity>
 
                     <!-- For distriqt Scanner extension -->
                     <activity android:name="com.distriqt.extension.scanner.zbar.ZBarScannerActivity" />
@@ -83,22 +69,21 @@
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
                 <uses-feature android:name="android.hardware.wifi" android:required="false"/>
                 <uses-permission android:name="android.permission.VIBRATE"/>
-                <uses-sdk android:targetSdkVersion="28"/>
-                <uses-sdk android:minSdkVersion="26"/>
+                <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28"/>
             </manifest>
         ]]>
       </manifestAdditions>
    </android>
    <extensions>
-      <extensionID>com.distriqt.androidsupport.AppCompatV7</extensionID>
-      <extensionID>com.distriqt.androidsupport.CardViewV7</extensionID>
-      <extensionID>com.distriqt.androidsupport.CustomTabs</extensionID>
-      <extensionID>com.distriqt.androidsupport.Design</extensionID>
-      <extensionID>com.distriqt.androidsupport.InstallReferrer</extensionID>
-      <extensionID>com.distriqt.androidsupport.RecyclerViewV7</extensionID>
-      <extensionID>com.distriqt.androidsupport.V4</extensionID>
+      <extensionID>androidx.appcompat</extensionID>
+      <extensionID>androidx.browser</extensionID>
+      <extensionID>androidx.cardview</extensionID>
+      <extensionID>androidx.core</extensionID>
+      <extensionID>androidx.recyclerview</extensionID>
+      <extensionID>androidx.vectordrawable</extensionID>
+      <extensionID>com.android.installreferrer</extensionID>
+      <extensionID>com.google.android.material</extensionID>
       <extensionID>com.distriqt.ApplicationRater</extensionID>
-      <extensionID>com.distriqt.Bolts</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.Scanner</extensionID>

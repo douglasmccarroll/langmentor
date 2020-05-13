@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/32.0">
+<application xmlns = "http://ns.adobe.com/air/application/33.1">
 
    <id>com.brightworks.LangMentor.deu</id>
 
@@ -7,8 +7,8 @@
 
    <name>German LangMentor</name>
 
-   <versionNumber>1.44.05</versionNumber>
-   <versionLabel>1.44.05</versionLabel>
+   <versionNumber>1.44.060</versionNumber>
+   <versionLabel>1.44.060</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -80,10 +80,6 @@
               <key>NSAllowsArbitraryLoads</key>
               <true/>
             </dict>
-            <key>UIBackgroundModes</key>
-            <array>
-               <string>audio</string>
-            </array>
             <key>UIDeviceFamily</key>
             <array>
               <string>1</string>
@@ -99,7 +95,6 @@
       <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
-      <extensionID>com.distriqt.MediaPlayer</extensionID>
       <extensionID>com.distriqt.Scanner</extensionID>
       <extensionID>com.distriqt.Volume</extensionID>
    </extensions>

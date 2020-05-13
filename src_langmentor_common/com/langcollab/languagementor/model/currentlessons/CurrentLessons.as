@@ -984,7 +984,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
    }
 
    private function displaySilenceSwitchWarningAlert():void {
-      var alertText:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + "won't play audio through the speaker when the mute switch is turned on.\n\nHeadphones, however, will work.";
+      var alertText:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " won't play audio through the speaker when the mute switch is turned on.\n\nHeadphones, however, will work.";
       Utils_ANEs.showAlert_OkayButton(alertText, onSilenceSwitchWarningAlertCallback);
    }
 
