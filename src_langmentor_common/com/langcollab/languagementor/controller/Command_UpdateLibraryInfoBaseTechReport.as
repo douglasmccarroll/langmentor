@@ -40,6 +40,7 @@ public class Command_UpdateLibraryInfoBaseTechReport extends TechReport implemen
    public var isProcessTimedOut:Boolean;
    public var isZeroLibrariesAddedByUserAndOrRecommendedLibraries:Boolean;
    public var list_LibraryURLs_UnfinishedLibraryInfoDownloadsAtTimeout:Array;
+   public var list_RecommendedLibraryNames:Array;
    public var list_TechReports_AllLibraryInfoDownloads:Array = [];
    public var list_TechReports_ProblematicLibraryInfoDownloads:Array = [];
    public var problemDescriptionList:Vector.<String> = new Vector.<String>();

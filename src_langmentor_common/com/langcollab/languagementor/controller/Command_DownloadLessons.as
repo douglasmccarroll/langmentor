@@ -81,7 +81,7 @@ public class Command_DownloadLessons extends Command_Base__LangMentor {
    }
 
    public function execute():void {
-      Log.info("Command_DownloadLessons.execute() - create/start dnld process mgr");
+      Log.info("Command_DownloadLessons.execute() - create/start download process manager");
       if (_isDisposed)
          return;
       techReport = new Command_DownloadLessonsTechReport();

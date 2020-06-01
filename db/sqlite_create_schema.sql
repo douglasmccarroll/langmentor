@@ -35,6 +35,9 @@ CREATE TABLE LanguageDisplayName (
   displayNameAlphabetizable TEXT NOT NULL
 )  ;
 
+-- This didn't noticably improve performance (on Android, where Sqlite performance is very slow)
+-- CREATE INDEX LanguageDisplayName_languageId_displayLanguageId on LanguageDisplayName (languageId, displayLanguageId);
+
 -- Mandarin Chinese
 INSERT INTO Language VALUES ('1','cmn','0');
 INSERT INTO LanguageDisplayName VALUES ('1','1','3','Mandarin Chinese','Chinese, Mandarin');
@@ -350,11 +353,12 @@ INSERT INTO LearningMode VALUES ( '3', 'NativeTargetTarget',        '3',  '1', '
 INSERT INTO LearningMode VALUES ( '4', 'NativeTargetTargetNative',  '4',  '1', '0');
 INSERT INTO LearningMode VALUES ( '5', 'NativePauseTargetPause',    '5',  '1', '1');
 INSERT INTO LearningMode VALUES ( '6', 'Target',                    '6',  '0', '0');
-INSERT INTO LearningMode VALUES ( '7', 'TargetPause',               '7',  '0', '1');
-INSERT INTO LearningMode VALUES ( '8', 'TargetNative',              '8',  '1', '0');
-INSERT INTO LearningMode VALUES ( '9', 'TargetPauseNative',         '9',  '1', '0');
-INSERT INTO LearningMode VALUES ('10', 'TargetPauseNativePause',    '10', '1', '0');
-INSERT INTO LearningMode VALUES ('11', 'TargetPauseNativeTarget',   '11', '1', '0');
+INSERT INTO LearningMode VALUES ( '7', 'TargetNative',              '7',  '1', '0');
+INSERT INTO LearningMode VALUES ( '8', 'TargetNativeTarget',        '8',  '1', '0');
+INSERT INTO LearningMode VALUES ( '9', 'TargetPause',               '9',  '0', '1');
+INSERT INTO LearningMode VALUES ('10', 'TargetPauseNative',         '10', '1', '0');
+INSERT INTO LearningMode VALUES ('11', 'TargetPauseNativePause',    '11', '1', '0');
+INSERT INTO LearningMode VALUES ('12', 'TargetPauseNativeTarget',   '12', '1', '0');
 
 CREATE TABLE Level (
   id INTEGER NOT NULL UNIQUE,

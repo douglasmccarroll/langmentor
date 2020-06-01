@@ -7,8 +7,8 @@
 
    <name>German LangMentor</name>
 
-   <versionNumber>1.44.060</versionNumber>
-   <versionLabel>1.44.060</versionLabel>
+   <versionNumber>1.44.081</versionNumber>
+   <versionLabel>1.44.081</versionLabel>
 
 
    <!-- Settings for the application's initial window. Required. -->
@@ -62,6 +62,11 @@
 
             <key>MinimumOSVersion</key>
             <string>9.0</string>
+            <key>NSAppTransportSecurity</key> <!-- For now, this allows us to continue to use http rather than https - get certs for the subdomains that we access? -->
+            <dict>
+              <key>NSAllowsArbitraryLoads</key>
+              <true/>
+            </dict>
             <key>NSBluetoothPeripheralUsageDescription</key>
             <string>Language Mentor uses Bluetooth devices so that you can listen to language lessons using a Bluetooth earpiece.</string>
             <key>NSCalendarsUsageDescription</key>
@@ -72,19 +77,15 @@
             <string>Language Mentor does not access any contacts. If you see this message please press Don't Allow.</string>
             <key>NSMicrophoneUsageDescription</key>
        		<string>Language Mentor uses the microphone to record your voice, so that you can listen and check your pronunciation.</string>
-            <key>UIStatusBarStyle</key>
-            <string>UIStatusBarStyleLightContent</string>
-            <key>NSAppTransportSecurity</key>
-            <!-- For now, this allows us to continue to use http rather than https - get certs for the subdomains that we access? -->
-            <dict>
-              <key>NSAllowsArbitraryLoads</key>
-              <true/>
-            </dict>
             <key>UIDeviceFamily</key>
             <array>
               <string>1</string>
               <string>2</string>
             </array>
+            <key>UILaunchStoryboardName</key>
+            <string>LaunchScreen</string>
+            <key>UIStatusBarStyle</key>
+            <string>UIStatusBarStyleLightContent</string>
 
           ]]>
       </InfoAdditions>
@@ -92,6 +93,7 @@
    </iPhone>
 
    <extensions>
+      <extensionID>com.distriqt.Application</extensionID>
       <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>

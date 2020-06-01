@@ -17,14 +17,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
-                   xmlns:s = "library://ns.adobe.com/flex/spark"
-                   xmlns:checkbox = "com.brightworks.component.checkbox.*"
-                   xmlns:uiwidget = "com.langcollab.languagementor.component.uiwidget.*"
-                   xmlns:view = "com.langcollab.languagementor.view.*"
-                   creationComplete = "onCreationComplete()"
-                   implements = "com.brightworks.interfaces.IDisposable"
-                   initialize = "onInitialize()">
+<view:Viewlet_Base xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   xmlns:checkbox="com.brightworks.component.checkbox.*"
+                   xmlns:uiwidget="com.langcollab.languagementor.component.uiwidget.*"
+                   xmlns:view="com.langcollab.languagementor.view.*"
+                   creationComplete="onCreationComplete()"
+                   implements="com.brightworks.interfaces.IDisposable"
+                   initialize="onInitialize()">
 
    <fx:Metadata>
       [Event(name="complete", type="flash.events.Event")]
@@ -45,6 +45,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       public var displayContents:Boolean = false;
 
       private var _isDisposed:Boolean;
+      [Bindable]
+      private var _useRecommendedLibraries:Boolean;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -75,6 +77,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          Log.debug("Viewlet_AutomaticDownloads.onCreationComplete()");
+         _useRecommendedLibraries = model.useRecommendedLibraries;
          lessonDownloadController.addEventListener(BwEvent.NEW_INFO, onLessonDownloadsNewInfo);
          if (!(lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive || lessonDownloadController.isLessonDownloadProcessActive)) {
             lessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess();
@@ -89,73 +92,46 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          updateUI();
       }
 
+      private function onUseRecommendedLibrariesCheckboxChange(event:Event):void {
+         _useRecommendedLibraries = model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected;
+      }
+
       private function updateUI():void {
-         if (lessonDownloadController.isGetRecommendedLibrariesInfoProcessActive) {
+         if (lessonDownloadController.recommendedLibraryNameList.length == 0) {
             resultsDisplayViewlet.text = "Searching for recommended libraries......";
          } else {
-            var foundLibraryCount:Number = 0;
-            var isInternetConnectionProblem:Boolean = false;
-            if ((lessonDownloadController) &&
-                  (lessonDownloadController.lessonDownloadInfo_Libraries) &&
-                  (lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) &&
-                  (Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) > 0)) {
-               foundLibraryCount =
-                     Utils_ArrayVectorEtc.getDictionaryLength(lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library);
-            } else if (!model.configFileInfo.isDataLoaded_MentorTypeFile) {
-               isInternetConnectionProblem = true;
+            var recommendedLibraryCount:int = 0;
+            var text:String = "";
+            for each (var libraryName:String in lessonDownloadController.recommendedLibraryNameList) {
+               recommendedLibraryCount++;
+               text += INDENT + recommendedLibraryCount + ": " + libraryName + "\n";
             }
-            if (foundLibraryCount > 0) {
-               var text:String = "";
-               if (displayRecommendedLibrariesHeading)
-                  text += "Recommended Libraries:\n";
-               var recommendedLibraryCount:uint = 0;
-               for each (var libraryInfo:LessonDownloadInfo_Library in lessonDownloadController.lessonDownloadInfo_Libraries.index_libraryFolderURL_to_lessonDownloadInfo_library) {
-                  if (!isLibraryUserEntered(libraryInfo)) {
-                     recommendedLibraryCount++;
-                     text += INDENT + recommendedLibraryCount + ": " + libraryInfo.libraryName + "\n";
-                  }
-               }
-               resultsDisplayViewlet.text = text;
-            } else {
-               if (isInternetConnectionProblem) {
-                  resultsDisplayViewlet.text = "Oops! - Language Mentor is unable to access the Internet or cannot find any recommended libraries.";
-               } else {
-                  // If you're trying to figure out why you're hitting this message when you think that you have recommended libraries which should have
-                  // been found, first check the following:
-                  //    - Does a language-specific file exist for the language(s) that your user is using/studying? (e.g. cmn_eng.xml)
-                  //    - For the library(s) listed in that file, check the library location (libraryURL) and confirm the following:
-                  //      - A language_mentor_library.xml file is in place
-                  //      - It's contents are correct
-                  //      - While you're here, you might as well also confirm that lesson files and lesson_list are, at least present
-                  //    - If everything is working in desktop mode, but no on a device, ensure that you've FTPed all of these files to the server 
-                  resultsDisplayViewlet.text = "We're sorry, Language Mentor doesn't currently recommend any specific libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " lessons. If you'd like to submit a library for consideration, please contact us at LanguageCollaborative.com.";
-               }
-            }
+            resultsDisplayViewlet.text = text;
          }
          invalidateDisplayList();
       }
       ]]>
     </fx:Script>
 
-   <s:VGroup horizontalAlign = "left"
-             height = "100%"
-             width = "100%">
-      <s:VGroup visible = "true"
-                includeInLayout = "true"
-                width = "100%">
-         <checkbox:NormalCheckBox id = "useRecommendedLibrariesCheckbox"
-                                  label = "Use Recommended Libraries"
-                                  change = "model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected"
-                                  selected = "{model.useRecommendedLibraries}"/>
+   <s:VGroup horizontalAlign="left"
+             height="100%"
+             width="100%">
+      <s:VGroup visible="true"
+                includeInLayout="true"
+                width="100%">
+         <checkbox:NormalCheckBox id="useRecommendedLibrariesCheckbox"
+                                  label="Use Recommended Libraries"
+                                  change="onUseRecommendedLibrariesCheckboxChange(event)"
+                                  selected="{_useRecommendedLibraries}"/>
          <s:Spacer/>
-         <uiwidget:UIWidget_Viewlet__Text id = "explanationDisplayViewlet"/>
+         <uiwidget:UIWidget_Viewlet__Text id="explanationDisplayViewlet"/>
          <s:Spacer/>
          <s:Spacer/>
-         <uiwidget:UIWidget_Viewlet__Text id = "resultsDisplayViewlet"
-                                          text = "Searching for recommended libraries..."
-                                          fontFamily = "_sans"
-                                          height = "50%"
-                                          width = "100%"/>
+         <uiwidget:UIWidget_Viewlet__Text id="resultsDisplayViewlet"
+                                          text="Searching for recommended libraries..."
+                                          fontFamily="_sans"
+                                          height="50%"
+                                          width="100%"/>
       </s:VGroup>
    </s:VGroup>
 </view:Viewlet_Base>

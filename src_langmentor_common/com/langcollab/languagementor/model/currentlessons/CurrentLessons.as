@@ -809,7 +809,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
       Utils_ANEs.activateSilenceSwitchMonitor(onSilenceSwitchActivatedCallback);   // We do this here because it wasn't working to do it in initSingleton()
       if (checkSilenceSwitch && Utils_ANEs.isSilenceSwitchMuted()) {
-         displaySilenceSwitchWarningAlert();
+         displaySilenceSwitchWarningAlert("This alert triggered in playCurrentLessonVersionAndCurrentChunk()");
          return;
       }
       _isLessonPaused = false;
@@ -983,8 +983,11 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       return info;
    }
 
-   private function displaySilenceSwitchWarningAlert():void {
+   private function displaySilenceSwitchWarningAlert(debugInfo:String):void {
       var alertText:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " won't play audio through the speaker when the mute switch is turned on.\n\nHeadphones, however, will work.";
+      if (Utils_System.isAlphaOrBetaVersion()) {
+         alertText += " - " + debugInfo;
+      }
       Utils_ANEs.showAlert_OkayButton(alertText, onSilenceSwitchWarningAlertCallback);
    }
 
@@ -1115,7 +1118,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
 
    private function onSilenceSwitchActivatedCallback(muted:Boolean):void {
       if (muted && (isLessonPlaying) && (!_isLessonPaused)) {
-         displaySilenceSwitchWarningAlert();
+         displaySilenceSwitchWarningAlert("This alert triggered in onSilenceSwitchActivatedCallback()");
       }
    }
 

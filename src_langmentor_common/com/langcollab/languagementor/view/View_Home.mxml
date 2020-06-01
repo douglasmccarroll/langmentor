@@ -116,7 +116,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function doPostInitStuff():void {
-         if ((!_isCreationCompleteCalled) || (!model.isDataInitialized)) {
+         if ((!_isCreationCompleteCalled) || (!model.isDBDataAndTargetLanguageInitialized)) {
             Log.debug("View_Home.doPostInitStuff(): Not ready yet");
             return;
          }
@@ -274,7 +274,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onPreinitialize():void {
          Log.debug("View_Home.onPreinitialize()");
-         _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDataInitialized", onModelDataInitialized);
+         _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDBDataAndTargetLanguageInitialized", onModelDataInitialized);
       }
 
       private function onSelectModeAlertCallback():void {

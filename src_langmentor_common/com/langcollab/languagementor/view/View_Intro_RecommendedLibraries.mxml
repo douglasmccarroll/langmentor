@@ -76,6 +76,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onCreationComplete():void {
          var textWidget:IUIWidget_Text
+         if (!model.isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage) {
+            Log.fatal("View_Intro_RecommendedLibraries.onCreationComplete(): model.isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage is false, so we shouldn't be here");
+            return;
+         }
          if (!model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
             Log.fatal("View_Intro_RecommendedLibraries.onCreationComplete(): Target language has no recommended libs, so we shouldn't be here");
             return;

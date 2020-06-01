@@ -120,7 +120,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
    // _unzippedAudioFileDataList:
    //     - props  = file IDs
    //     - values = MP3FileInfo instances
-   //     - created after zip file is unzipped - MP3FileInfo.fileName, .fileFolder and 
+   //     - created after zip file is unzipped - MP3FileInfo.fileName, .fileFolder and
    //       .mp3FormattedByteData are set at this point
    //     - used in 'save files' process - data isn't changed, just saved to hard disk
    //     - used in 'extract data' process - MP3FileInfo.milliseconds
@@ -467,7 +467,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       result = result.concat(getChunkAndChunkFileVOs(chunkInfoDict));
       return result;
    }
-   
+
    private function getChunkAndChunkFileVOs(chunkInfoDict:Dictionary):Array {
       var result:Array = [];
       var chunkInfo:Object;
@@ -842,7 +842,7 @@ public class DownloadLessonProcess extends EventDispatcher implements IPercentCo
       if (_model.isDataWipeActivityBlockActive)
          return;
       Log.debug("DownloadLessonProcess.startProcess_SaveDataToDB_Continued() - " + downloadLessonProcessInfo.publishedLessonVersionId);
-      if (!_model.isDataInitialized) {
+      if (!_model.isDBDataAndTargetLanguageInitialized) {
          // dmccarroll 20120704
          // This can happen if the user does a 'delete all data' operation while this download is in progress.
          Log.debug("DownloadLessonProcess.startProcess_SaveDataToDB_Continued() - model's data isn't initialized.");

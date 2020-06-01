@@ -102,6 +102,9 @@ public class HomeScreenRealEstateManager {
    }
 
    private function populateScreenAreaGroup_BottomLeft(group:Group, clickFunction:Function):void {
+
+      return; /////
+
       if ((_appStatePersistenceManager.retrieveIsNaggingDisabledSaved()) && (_appStatePersistenceManager.retrieveNaggingDisabled()))
          return;
       if (!_appStatePersistenceManager.retrieveIsHomeScreenDisplayCountSaved())

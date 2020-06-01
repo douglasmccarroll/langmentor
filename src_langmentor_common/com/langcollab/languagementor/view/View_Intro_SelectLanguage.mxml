@@ -18,8 +18,10 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <view:View_Intro_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                      xmlns:s = "library://ns.adobe.com/flex/spark"
                       xmlns:view = "com.langcollab.languagementor.view.*"
                       creationComplete = "onCreationComplete()"
+                      preinitialize = "onPreinitialize()"
                       title = "Intro &amp; Setup: Select Language">
 
    <fx:Declarations>
@@ -36,6 +38,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
       import com.langcollab.languagementor.vo.LanguageVO;
 
+      import mx.binding.utils.ChangeWatcher;
+
       import mx.collections.ArrayCollection;
       import mx.collections.Sort;
       import mx.collections.SortField;
@@ -45,9 +49,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import spark.components.List;
 
       private var _displayOnlyLanguagesWithRecommendedLibrariesCheckbox:NormalCheckBox;
+      private var _isCreationCompleteCalled:Boolean = false;
       private var _isDisposed:Boolean = false;
+      private var _isPostInitStuffDone:Boolean;
       private var _languageList:List;
       private var _languageListDataProvider:ArrayCollection = new ArrayCollection();
+      private var _watcher_IsModelDataInitialized:ChangeWatcher;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //
@@ -61,6 +68,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          _isDisposed = true;
          _languageList.removeEventListener(Event.CHANGE, onListChange);
+         if (_watcher_IsModelDataInitialized) {
+            _watcher_IsModelDataInitialized.unwatch();
+            _watcher_IsModelDataInitialized = null;
+         }
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,7 +93,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       override protected function onViewActivate():void {
          super.onViewActivate();
          nextButton.enabled = false;
-         populateLanguageListDataProvider();
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +101,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      private function onCreationComplete():void {
+      private function doPostInitStuff():void {
+         if ((!_isCreationCompleteCalled) || (!model.isDBDataInitialized)) {
+            Log.debug("View_Intro_SelectLanguage.doPostInitStuff(): Not ready yet");
+            return;
+         }
+         Log.debug("View_Intro_SelectLanguage.doPostInitStuff(): Doing init stuff");
          var textWidget:IUIWidget_Text;
          var borderContainer:BorderContainer;
          textWidget = new UIWidget_Viewlet__Heading();
@@ -118,9 +133,19 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _languageList.dataProvider = _languageListDataProvider;
          _languageList.addEventListener(Event.CHANGE, onListChange);
          _languageList.itemRenderer = new ClassFactory(ItemRenderer_LanguageSelectionList);
-
          borderContainer.addElement(_languageList);
          viewletGroup.addElement(borderContainer);
+         if (_watcher_IsModelDataInitialized) {
+            _watcher_IsModelDataInitialized.unwatch();
+            _watcher_IsModelDataInitialized = null;
+         }
+         _isPostInitStuffDone = true;
+         populateLanguageListDataProvider();
+      }
+
+      private function onCreationComplete():void {
+         _isCreationCompleteCalled = true;
+         doPostInitStuff();
       }
 
       private function onDisplayOnlyLanguagesWithRecommendedLibrariesCheckboxChange(e:Event):void {
@@ -132,24 +157,42 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          nextButton.enabled = (_languageList.selectedItem);
       }
 
+      private function onModelDataInitialized(event:Event):void {
+         Log.debug("View_Intro_SelectLanguage.onModelDataInitialized()");
+         if (_watcher_IsModelDataInitialized) {
+            _watcher_IsModelDataInitialized.unwatch();
+            _watcher_IsModelDataInitialized = null;
+         }
+         doPostInitStuff();
+      }
+
+      private function onPreinitialize():void {
+         Log.debug("View_Intro_SelectLanguage.onPreinitialize()");
+         _watcher_IsModelDataInitialized = ChangeWatcher.watch(model, "isDBDataInitialized", onModelDataInitialized);
+      }
+
       private function populateLanguageListDataProvider():void {
          _languageListDataProvider.removeAll();
          var sort:Sort = new Sort();
          sort.fields = [new SortField("label")];
          _languageListDataProvider.sort = sort;
          _languageListDataProvider.refresh();
-         var languageIdList:Array = model.getLanguageIdList();
-         for each (var id:int in languageIdList) {
+         var languageVOList:Array = model.getLanguageVOs();
+         for each (var vo:LanguageVO in languageVOList) {
             if (_displayOnlyLanguagesWithRecommendedLibrariesCheckbox.selected) {
-               var vo:LanguageVO = model.getLanguageVOFromID(id);
                if (!vo.hasRecommendedLibraries)
-                     continue;
+                  continue;
             }
-            var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(id);
-            var item:Object = {label: displayName, value: id};
+            var displayName:String = model.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(vo.id);
+            var item:Object = {label: displayName, value: vo.id};
             _languageListDataProvider.addItem(item);
          }
+         if (_languageListDataProvider.length == 0) {
+            callLater(populateLanguageListDataProvider);
+         }
+
       }
       ]]>
    </fx:Script>
+
 </view:View_Intro_Base>

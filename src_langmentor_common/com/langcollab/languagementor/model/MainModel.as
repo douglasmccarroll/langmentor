@@ -42,11 +42,11 @@ import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ArrayVectorEtc;
+import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_File;
 import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.Utils_URL;
@@ -103,6 +103,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public var downloadBandwidthRecorder:DownloadBandwidthRecorder;
    public var internetConnectionActive:Boolean;
    public var isDataWipeActivityBlockActive:Boolean;
+   public var isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage:Boolean = false;
    public var isSingleLanguageLessonsSelectedInDualLanguageModeAlertDisplayed:Boolean
    public var lessonsSelectionTreeSortOptions:Array;
    [Bindable]
@@ -114,6 +115,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private var _appStatePersistenceManager:AppStatePersistenceManager;
    private var _currentLessons:CurrentLessons;
+   private var _currentNativeLanguageId:int = -1;
    private var _currentNativeLanguageResourceXML:XML;
    private var _currentNativeLanguageVO:LanguageVO;
    private var _currentTargetLanguageId:int = -1;
@@ -125,7 +127,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    private var _isTargetLanguageInitialized:Boolean;
 
    // Cached Data - We cache these in order to decrease the number of calls to the DB
+   private var _index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId:Dictionary = new Dictionary();
+   private var _index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId:Dictionary = new Dictionary();
    private var _index_LanguageIDs_by_Iso639_3Code:Dictionary = new Dictionary();
+   private var _index_LanguageVOs_by_LanguageId:Dictionary = new Dictionary();
    private var _index_LearningModeVOs_by_ID:Dictionary = new Dictionary();
    private var _index_LessonVersionNativeLanguageVOs_by_LessonVersionVO:Dictionary = new Dictionary();
    private var _index_LessonVersionTargetLanguageVOs_by_LessonVersionVO:Dictionary = new Dictionary();
@@ -204,9 +209,14 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       _appStatePersistenceManager.persistHasUserSelectedDownloadBetaLessonsOption(value);
    }
 
-   [Bindable(event="isDataInitializedChange")]
-   public function get isDataInitialized():Boolean {
+   [Bindable(event="isDBDataAndTargetLanguageInitializedChange")]
+   public function get isDBDataAndTargetLanguageInitialized():Boolean {
       return (_isDBDataInitialized && _isTargetLanguageInitialized);
+   }
+
+   [Bindable(event="isDBDataInitializedChange")]
+   public function get isDBDataInitialized():Boolean {
+      return _isDBDataInitialized;
    }
 
    private var _learningModeDescriptionsHTML:Dictionary;
@@ -339,6 +349,22 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return _currentTargetLanguageVO.hasRecommendedLibraries;
    }
 
+   private function doesLanguageHaveRecommendedLibrariesBasedOnRootConfigFile(passedISO639_3Code:String):Boolean {
+      if (!isRecommendedLibraryInfoFromRootConfigFileAvailable()) {
+         Log.error("MainModel.doesLanguageHaveRecommendedLibrariesBasedOnRootConfigFile() - isRecommendedLibraryInfoFromRootConfigFileAvailable() returns false - should have been checked before calling this merthod");
+      }
+      var result:Boolean = false;
+      for (var i:int = 0; i < configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children().length(); i++) {
+         var targetLanguageNode:XML = configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children()[i];
+         var iso639_3Code:String = targetLanguageNode.name();
+         if (iso639_3Code == passedISO639_3Code) {
+            result = true;
+            break;
+         }
+      }
+      return result;
+   }
+
    public function doesLearningModeHaveRecordPlayback(id:int):Boolean {
       return getLearningModeVOFromID(id).hasRecordPlayback;
    }
@@ -458,9 +484,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage():String {
-      return getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(_currentNativeLanguageVO.id, _currentNativeLanguageVO.id);
-      /// Previously, we got this from resource XML - should we return to something like this?
-      // return getLanguageNameTranslation(_currentNativeLanguageResourceXML, _currentNativeLanguageVO.iso639_3Code);
+      return getLanguageDisplayName_InCurrentNativeLanguage(_currentNativeLanguageId);
    }
 
    public function getCurrentNativeLanguageISO639_3Code():String {
@@ -470,9 +494,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    public function getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage():String {
-      return getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(_currentTargetLanguageVO.id, _currentNativeLanguageVO.id);
-      /// Previously, we got this from resource XML - should we return to something like this?
-      //return getLanguageNameTranslation(_currentTargetLanguageResourceXML, _currentNativeLanguageVO.iso639_3Code);
+      return getLanguageDisplayName_InCurrentNativeLanguage(_currentTargetLanguageId);
    }
 
    public function getCurrentTargetLanguageISO639_3Code():String {
@@ -510,36 +532,45 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return _instance;
    }
 
-   public function getLanguageDisplayName_AlphabetizableFromLanguageIdAndDisplayLanguageId(languageId:int, displayLanguageId:int):String {
-      var ldnvo:LanguageDisplayNameVO = getLanguageDisplayNameVOFromLanguageIdAndDisplayLanguageId(languageId, displayLanguageId);
-      if (!ldnvo)
-         return null;
-      return ldnvo.displayNameAlphabetizable;
-   }
-
    public function getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage(languageId:int):String {
-      return getLanguageDisplayName_AlphabetizableFromLanguageIdAndDisplayLanguageId(languageId, _currentNativeLanguageVO.id);
-   }
-
-   public function getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(languageId:int, displayLanguageId:int):String {
-      var ldnvo:LanguageDisplayNameVO = getLanguageDisplayNameVOFromLanguageIdAndDisplayLanguageId(languageId, displayLanguageId);
-      if (!ldnvo)
+      if (_index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId) {
+         if (Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId, languageId)) {
+            return _index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId[languageId];
+         }
+         else {
+            Log.warn("MainModel.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage - _index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId has no property for languageId of: " + languageId);
+            return null;
+         }
+      }
+      else {
+         Log.warn("MainModel.getLanguageDisplayName_Alphabetizable_InCurrentNativeLanguage - _index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId is null");
          return null;
-      return ldnvo.displayName;
+      }
    }
 
    public function getLanguageDisplayName_InCurrentNativeLanguage(languageId:int):String {
-      return getLanguageDisplayName_FromLanguageIdAndDisplayLanguageId(languageId, _currentNativeLanguageVO.id);
+      if (_index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId) {
+         if (Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId, languageId)) {
+            return _index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId[languageId];
+         }
+         else {
+            Log.warn("MainModel.getLanguageDisplayName_InCurrentNativeLanguage - _index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId has no property for languageId of: " + languageId);
+            return null;
+         }
+      }
+      else {
+         Log.warn("MainModel.getLanguageDisplayName_InCurrentNativeLanguage - _index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId is null");
+         return null;
+      }
    }
 
-   public function getLanguageDisplayNameVOFromLanguageIdAndDisplayLanguageId(languageId:int, displayLanguageId:int):LanguageDisplayNameVO {
+   public function getLanguageDisplayNameVOs():Array {
       var queryVO:LanguageDisplayNameVO = new LanguageDisplayNameVO();
-      queryVO.languageId = languageId;
-      queryVO.displayLanguageId = displayLanguageId;
-      var report:MainModelDBOperationReport = selectData("getLanguageDisplayNameVOFromLanguageIdAndDisplayLanguageId", queryVO, null, 1, 1);
+      var report:MainModelDBOperationReport = selectData("getLanguageDisplayNameVOList", queryVO);
       if (report.isAnyProblems)
-         Log.fatal(["MainModel.getLanguageDisplayNameVOFromLanguageIdAndDisplayLanguageId(): selectData() reports problem", report]);
-      var result:LanguageDisplayNameVO = LanguageDisplayNameVO(report.resultData[0]);
+         Log.fatal(["MainModel.getLanguageDisplayNameVOList(): selectData() reports problem", report]);
+      var result:Array = [];
+      Utils_ArrayVectorEtc.copyArrayItemsToArray(report.resultData, result);
       report.dispose();
       return result;
    }
@@ -558,15 +589,20 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return result;
    }
 
-   public function getLanguageVOFromID(id:int):LanguageVO {
-      var queryVO:LanguageVO = new LanguageVO();
-      queryVO.id = id;
-      var report:MainModelDBOperationReport = selectData("getLanguageVOFromID", queryVO, null, 1, 1);
-      if (report.isAnyProblems)
-         Log.fatal(["MainModel.getLanguageVOFromID(): selectData() reports problem", report]);
-      var result:LanguageVO = LanguageVO(report.resultData[0]);
-      report.dispose();
-      return result;
+   public function getLanguageVOFromID(languageId:int):LanguageVO {
+      if (_index_LanguageVOs_by_LanguageId) {
+         if (Utils_ArrayVectorEtc.doesDictionaryContainKey(_index_LanguageVOs_by_LanguageId, languageId)) {
+            return _index_LanguageVOs_by_LanguageId[languageId];
+         }
+         else {
+            Log.warn("MainModel.getLanguageVOFromID - _index_LanguageVOs_by_LanguageId has no property for languageId of: " + languageId);
+            return null;
+         }
+      }
+      else {
+         Log.warn("MainModel.getLanguageVOFromID - _index_LanguageVOs_by_LanguageId is null");
+         return null;
+      }
    }
 
    public function getLanguageVOFromIso639_3Code(code:String):LanguageVO {
@@ -1106,6 +1142,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (report.resultData.length == 1);
    }
 
+   private function isRecommendedLibraryInfoFromRootConfigFileAvailable():Boolean {
+      return (configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable is XML);
+   }
+
    public function isReleaseTypeAStandardReleaseTypeLabelToken(releaseType:String):Boolean {
       var vo:ReleaseTypeVO = _index_ReleaseTypeVOs_by_ReleaseTypeToken[releaseType];
       return (vo != null);
@@ -1247,7 +1287,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    public function updateCurrentTargetLanguageVO_hasRecommendedLibraries(b:Boolean):void {
       if (!_currentTargetLanguageVO) {
-         Log.error("MainModel.updateCurrentTargetLanguageVO_hasRecommendedLibraries() - _currentTargetLanguageVO is null")
+         Log.error("MainModel.updateCurrentTargetLanguageVO_hasRecommendedLibraries() - _currentTargetLanguageVO is null - calling code should check for this condition")
          return;
       }
       _currentTargetLanguageVO.hasRecommendedLibraries = b;
@@ -1350,8 +1390,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       initCache();
       retrievePersistedAppStateData();
       _currentNativeLanguageVO = getLanguageVOFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE);
+      _currentNativeLanguageId = _currentNativeLanguageVO.id;
       initLessonsSelectionTreeSortOptions();
       _isDBDataInitialized = true;
+      dispatchEvent(new Event("isDBDataInitializedChange"));
       initTargetLanguageBasedDataIfReady();
    }
 
@@ -1428,7 +1470,16 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       // Language
       voList = getLanguageVOs();
       for each (var languageVO:LanguageVO in voList) {
+         _index_LanguageVOs_by_LanguageId[languageVO.id] = languageVO;
          _index_LanguageIDs_by_Iso639_3Code[languageVO.iso639_3Code] = languageVO.id;
+      }
+      var currentNativeLanguageId:int = _index_LanguageIDs_by_Iso639_3Code[Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__NATIVE__ISO639_3_CODE];
+      voList = getLanguageDisplayNameVOs();
+      for each (var languageDisplayNameVO:LanguageDisplayNameVO in voList) {
+         if (languageDisplayNameVO.displayLanguageId == currentNativeLanguageId) {
+            _index_LanguageDisplayNames_ForCurrentNativeLanguage_by_LanguageId[languageDisplayNameVO.languageId] = languageDisplayNameVO.displayName;
+            _index_LanguageDisplayNames_Alphabetizable_ForCurrentNativeLanguage_by_LanguageId[languageDisplayNameVO.languageId] = languageDisplayNameVO.displayNameAlphabetizable;
+         }
       }
       // LearningMode
       voList = getLearningModeVOList();
@@ -1524,13 +1575,17 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       if (!_isDBDataInitialized)
          return;
       _currentTargetLanguageVO = getLanguageVOFromID(_currentTargetLanguageId);
+      if (isRecommendedLibraryInfoFromRootConfigFileAvailable()) {
+         _currentTargetLanguageVO.hasRecommendedLibraries = doesLanguageHaveRecommendedLibrariesBasedOnRootConfigFile(_currentTargetLanguageVO.iso639_3Code);
+         isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
+      }
       loadLanguageResourceXML();
       _isTargetLanguageInitialized = true;
       setInitialLearningMode(); // We do this here, rather than in retrievePersistedAppStateData(), because the user may have chosen a target language that is the same as the native language, thus the app is in "single-language mode", which affects which default mode we use
       var cb:Callbacks = new Callbacks(onLoadLearningModeDescriptionsComplete, onLoadLearningModeDescriptionsFailure);
       var c:Command_LoadLearningModeDescriptions = new Command_LoadLearningModeDescriptions(cb);
       c.execute();
-      dispatchEvent(new Event("isDataInitializedChange")); // We do this here because this is the point at which data is truly initialized, i.e. we have both DB data and _currentTargetLanguageVO
+      dispatchEvent(new Event("isDBDataAndTargetLanguageInitializedChange"));
       reportAppStartupToAnalytics();
    }
 
@@ -1581,7 +1636,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
          // We now have our config data, and the DB version is okay, so we can continue on with stuff that would be in the init() method if we didn't need to confirm these details first...
          internetConnectionActive = true;
          doPostLoadConfigDataAppInit();
-         updateLanguageVOsWithHasRecommendedLibrariesInfo();
+         updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile();
          configFileInfo.doLowPriorityDataFetching();
       }
    }
@@ -1628,17 +1683,31 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
          currentLearningModeId = 0;
    }
 
-   private function updateLanguageVOsWithHasRecommendedLibrariesInfo():void {
+   private function updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile():void {
       /// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
       /// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
+      var matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage:Boolean = false;
       for (var i:int = 0; i < configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children().length(); i++) {
          var targetLanguageNode:XML = configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable.children()[i];
          var iso639_3Code:String = targetLanguageNode.name();
          var vo:LanguageVO = getLanguageVOFromIso639_3Code(iso639_3Code);
          vo.hasRecommendedLibraries = true;
-         updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfo", vo, ["hasRecommendedLibraries"]);
+         updateVO_NoKeyPropChangesAllowed("ConfigFileInfo.updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile", vo, ["hasRecommendedLibraries"]);
          if (getCurrentTargetLanguageISO639_3Code() == iso639_3Code) {   // This also evaluates to false if the currentTargetLanguage hasn't been set yet - which occurs in some scenarios - but this isn't a problem because the value has also been set in the DB (above)
-            updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
+            matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage = true;
+         }
+      }
+      if (matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage) {
+         updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
+         isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
+      }
+      else {
+         if (_currentTargetLanguageVO) {
+            updateCurrentTargetLanguageVO_hasRecommendedLibraries(false);    // This was almost surely already false - this code is here more to communicate intent to humans (that's you :) than to actually do anything
+            isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
+         }
+         else {
+            // We haven't really determined anything at this point
          }
       }
    }

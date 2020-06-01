@@ -49,6 +49,11 @@ public class UserActionReportingManager implements IManagedSingleton{
    }
 
    public static function reportActivityIfUserHasActivatedReporting(activity:UserAction):void {
+
+
+      return; /////
+
+
       /////  Need "if activated" code instead of "if beta"
       if (!Utils_System.isAlphaOrBetaVersion()) {
          return;

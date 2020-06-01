@@ -14,6 +14,7 @@
    <label_LearningMode_NativeTargetTargetNative>%native_language_name% ~ %target_language_name% ~ %target_language_name% ~ %native_language_name%</label_LearningMode_NativeTargetTargetNative>
    <label_LearningMode_Target>%target_language_name%</label_LearningMode_Target>
    <label_LearningMode_TargetNative>%target_language_name% ~ %native_language_name%</label_LearningMode_TargetNative>
+   <label_LearningMode_TargetNativeTarget>%target_language_name% ~ %native_language_name% ~ %target_language_name%</label_LearningMode_TargetNativeTarget>
    <label_LearningMode_TargetPause>%target_language_name% ~ Pause</label_LearningMode_TargetPause>
    <label_LearningMode_TargetPauseNative>%target_language_name% ~ Pause ~ %native_language_name%</label_LearningMode_TargetPauseNative>
    <label_LearningMode_TargetPauseNativePause>%target_language_name% ~ Pause ~ %native_language_name% ~ Pause</label_LearningMode_TargetPauseNativePause>

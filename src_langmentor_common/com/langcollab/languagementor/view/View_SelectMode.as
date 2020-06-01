@@ -63,7 +63,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
       super();
       title = "Select Mode";
       _watcher_IsModelDataInitialized =
-            ChangeWatcher.watch(model, "isDataInitialized", onModelDataInitialized);
+            ChangeWatcher.watch(model, "isDBDataAndTargetLanguageInitialized", onModelDataInitialized);
    }
 
    override public function dispose():void {
@@ -116,7 +116,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
 
    override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
       super.updateDisplayList(unscaledWidth, unscaledHeight);
-      if ((model) && (model.isDataInitialized)) {
+      if ((model) && (model.isDBDataAndTargetLanguageInitialized)) {
          // We make sure that we only do this once. The act of creation
          // invalidates the display list, so we'll get an endless loop if we don't.
          if ((navigator.actionBar) &&

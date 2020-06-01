@@ -17,13 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.brightworks.constant {
-import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.util.Log;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
 public class Constant_AppConfiguration {
 
-   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.PRODUCTION;      /////
+   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.BETA;      /////
 
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__DESKTOP:Number = 100;

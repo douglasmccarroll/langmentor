@@ -33,12 +33,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.util.Utils_Text;
       import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_String;
       import com.langcollab.languagementor.component.button.Button_ActionBar_LeftArrow;
+      import com.langcollab.languagementor.view.supportClasses.ViewContext;
 
       private static const _TITLE:String = "Diagnostics";
 
@@ -112,7 +114,15 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function initData():void {
          _dataString_Summary = Log.createLogInfoSummaryString();
          _dataString_Previous = Log.getLogInfoForInAppViewing();
-         Log.enableInAppTracing(onNewLogData);
+         switch (contextType) {
+            case ViewContext.CONTEXT_TYPE__DIAGNOSTICS_DISPLAY:
+               break;
+            case ViewContext.CONTEXT_TYPE__SEND_FEEDBACK:
+               Log.enableInAppTracing(onNewLogData);
+               break;
+            default:
+               Log.error("View_Diagnostics.initData(): No case for " + contextType);
+         }
          displayData();
       }
 
@@ -221,7 +231,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                <s:TextArea id = "dataTextArea"
                            editable = "false"
                            selectable = "false"
-                           fontSize = "20"
+                           fontSize = "{Utils_Text.getStandardFontSize()}"
                            borderVisible = "false"
                            skinClass = "spark.skins.mobile.TextAreaSkin"/>
             </s:Group>

@@ -196,7 +196,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
-         displayNaggingOptOut();
+         ///// displayNaggingOptOut();
       }
 
       /*private function onFacebookShareResult():void {

@@ -69,12 +69,12 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
    public var isAutoInitiatedDownloadProcessActive:Boolean;
    public var isUserInitiatedDownloadProcessActive:Boolean;
    public var lessonDownloadInfo_Libraries:LessonDownloadInfo_Libraries;
+   public var recommendedLibraryNameList:Array = [];
    public var successfulDownloadInfoList_NewDownloads:Array = [];
    public var successfulDownloadInfoList_Updates:Array = [];
 
    private var _appStatePersistenceManager:AppStatePersistenceManager;
    private var _autoDownloadTimer:Timer;
-   private var _callback_CurrentView:Function;
    private var _currentCommand_DownloadLessons:Command_DownloadLessons;
    private var _currentCommand_GetRecommendedLibariesInfo:Command_GetRecommendedLibariesInfo;
    private var _currentCommand_UpdateAvailableLessonDownloadsInfo:Command_UpdateAvailableLessonDownloadsInfo;
@@ -239,7 +239,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       if (matchingVOs.length == 0)
          return false;
       if (matchingVOs.length > 1) {
-         // We have a problem. This should never happen. Command_DownloadLessons should be ensuring that previous versions are 
+         // We have a problem. This should never happen. Command_DownloadLessons should be ensuring that previous versions are
          // completely deleted before saving new versions.
          Log.error("LessonDownloadController.isLessonDownloaded(): Multiple lessons downloaded with matching contentProviderId (" + contentProviderId + ") and publishedLessonId (" + lessonId + ")");
       }
@@ -373,7 +373,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       }
       _isGetRecommendedLibrariesInfoProcessActive = true;
       lessonDownloadInfo_Libraries = new LessonDownloadInfo_Libraries();
-      var cb:Callbacks = new Callbacks(onGetRecommendedLibrariesInfoResult);
+      var cb:Callbacks = new Callbacks(onGetRecommendedLibrariesInfoResult, null, onGetRecommendedLibrariesInfoUpdate);
       _currentCommand_GetRecommendedLibariesInfo = new Command_GetRecommendedLibariesInfo(cb);
       _currentCommand_GetRecommendedLibariesInfo.execute();
    }
@@ -471,7 +471,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
 
    private function isMatchingDownloadLessonProcessInfoInSuccessfulDownloadList(info:DownloadLessonProcessInfo, successList:Array):Boolean {
       // Note that this method has a fairly loose definition of 'matching'. We don't check the content provider. It's possible that two content providers will have
-      // lessons with identical names in libraries with identical names. But this method is used as we're assembling data that will be used by View_NewDownloads, 
+      // lessons with identical names in libraries with identical names. But this method is used as we're assembling data that will be used by View_NewDownloads,
       // which also doesn't pay attention to content providers. Unless or until we refine that screen it's not useful to make this more complex.
       for each (var infoInList:DownloadLessonProcessInfo in successList) {
          if ((infoInList.nativeLanguageLessonName == info.nativeLanguageLessonName) &&
@@ -508,7 +508,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
 
    private function onAutoDownloadTimer(event:TimerEvent):void {
       Log.debug("LessonDownloadController.onAutoDownloadTimer()");
-      if (!_model.isDataInitialized)
+      if (!_model.isDBDataAndTargetLanguageInitialized)
          return;
       _autoDownloadTimer.delay = _AUTO_DOWNLOAD_TIME_INTERVAL_MS__ONGOING;
       var isTimeToDoNewDownload:Boolean = true;
@@ -533,6 +533,15 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       _currentCommand_GetRecommendedLibariesInfo.dispose();
       _currentCommand_GetRecommendedLibariesInfo = null;
       reportGetRecommendedLibrariesResults(returnedTechReport);
+      dispatchEvent(new BwEvent(BwEvent.NEW_INFO));
+   }
+
+   private function onGetRecommendedLibrariesInfoUpdate(returnedTechReport:Command_GetRecommendedLibariesInfoTechReport):void {
+      Log.info("LessonDownloadController.onGetRecommendedLibrariesInfoUpdate()");
+      if (returnedTechReport.list_RecommendedLibraryNames is Array) {
+         recommendedLibraryNameList = returnedTechReport.list_RecommendedLibraryNames;
+         _model
+      }
       dispatchEvent(new BwEvent(BwEvent.NEW_INFO));
    }
 

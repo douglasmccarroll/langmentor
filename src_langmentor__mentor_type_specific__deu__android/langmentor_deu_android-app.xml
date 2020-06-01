@@ -10,12 +10,10 @@
    <versionNumber>1.44.062</versionNumber>
    <versionLabel>1.44.062</versionLabel>
 
-
-   <!-- Settings for the application's initial window. Required. -->
    <initialWindow>
-      <!-- The main SWF or HTML file of the application. Required. -->
-      <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
-      <content>langmentor_android.swf</content>
+      <!-- The main SWF or HTML file of the application. -->
+      <!-- Note: Flash Builder and IntelliJ set this automatically -->
+      <content>foo.swf</content>
 
       <aspectRatio>portrait</aspectRatio>
       <fullScreen>false</fullScreen>
@@ -76,13 +74,8 @@
    </android>
    <extensions>
       <extensionID>androidx.appcompat</extensionID>
-      <extensionID>androidx.browser</extensionID>
-      <extensionID>androidx.cardview</extensionID>
       <extensionID>androidx.core</extensionID>
-      <extensionID>androidx.recyclerview</extensionID>
       <extensionID>androidx.vectordrawable</extensionID>
-      <extensionID>com.android.installreferrer</extensionID>
-      <extensionID>com.google.android.material</extensionID>
       <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>

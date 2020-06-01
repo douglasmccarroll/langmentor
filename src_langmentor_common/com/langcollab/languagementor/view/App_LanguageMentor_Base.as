@@ -46,13 +46,12 @@ import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.events.TimerEvent;
 import flash.events.UncaughtErrorEvent;
-import flash.media.AudioPlaybackMode;
-import flash.media.SoundMixer;
 import flash.ui.Keyboard;
 import flash.utils.Timer;
 
 import mx.core.FlexGlobals;
 import mx.events.FlexEvent;
+import mx.styles.CSSStyleDeclaration;
 
 import spark.components.Button;
 import spark.components.View;
@@ -75,12 +74,12 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
 
    public function App_LanguageMentor_Base() {
       super();
-      NativeApplication.nativeApplication.executeInBackground = true;
       Utils_System.appReleaseType = Constant_AppConfiguration.APP_RELEASE_TYPE;
-      Log.init(Utils_AIR.appName, onFatalLog, null, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
+      Log.init(Utils_AIR.appName, onFatalLog, null, onDisplayDiagnosticsScreen, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
       frameRate = 6;
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
+      addEventListener(FlexEvent.PREINITIALIZE, onPreinitialize);
       Utils_ANEs.initialize();
       Utils_GoogleAnalytics.setIsAlphaOrBetaRelease(Constant_AppConfiguration.APP_RELEASE_TYPE != Constant_ReleaseType.PRODUCTION);
       _singletonManager = new LangMentorSingletonManager();
@@ -175,6 +174,11 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       }
    }
 
+   private function onDisplayDiagnosticsScreen():void {
+      var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__DIAGNOSTICS_DISPLAY);
+      navigator.pushView(View_Diagnostics, null, ctxt);
+   }
+
    private function onExiting(event:Event):void {
       // On desktop, this occurs when I close the program
    }
@@ -209,7 +213,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
       NativeApplication.nativeApplication.addEventListener(BwEvent.NO_INTERNET_CONNECTION, onNoInternetConnection);
       NativeApplication.nativeApplication.addEventListener(BwEvent.UPDATE_REQUIRED, onUpdateRequired);
-      systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
+      systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtLoaderError);
       if (_model.isSetupProcessComplete()) {
          Log.info("App_LanguageMentor_Base.onInitialize() - setting navigator.firstView to View_Home");
          _model.initTargetLanguage(_appStatePersistenceManager.retrieveTargetLanguageId());
@@ -265,9 +269,32 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       }
    }
 
-   private function onUncaughtError(event:UncaughtErrorEvent):void {
+   private function onPreinitialize(event:FlexEvent):void {
+      if (!Utils_ANEs.isApplicationANESupported())
+         return;
+      if (Utils_System.isIOS()) {
+         var applicationCSS:CSSStyleDeclaration = styleManager.getStyleDeclaration('spark.components.Application');
+         applicationCSS.setStyle("osStatusBarHeight", Utils_ANEs.getStatusBarHeight());
+      }
+   }
+
+   private function onUncaughtLoaderError(event:UncaughtErrorEvent):void {
+      // https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/UncaughtErrorEvent.html
+      // A few excerpts:
+      // An UncaughtErrorEvent object is dispatched by an instance of the UncaughtErrorEvents class when an uncaught error occurs. An uncaught error happens when an error
+      // is thrown outside of any try..catch blocks or when an ErrorEvent object is dispatched with no registered listeners.
+      // The UncaughtErrorEvents object that dispatches the event is associated with either a LoaderInfo object or a Loader object. Use the following properties to access
+      // an UncaughtErrorEvents instance:
+      //    LoaderInfo.uncaughtErrorEvents: to detect uncaught errors in code defined in the same SWF.
+      //    Loader.uncaughtErrorEvents: to detect uncaught errors in code defined in the SWF loaded by a Loader object.
+      //
+      // This method is set up in onInitialize() ... "systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtLoaderError);"
+      //
+      // Notes:
+      //    20200511 - 1009 error - "null has no properties" - occurred during or right after file download
+      //
       event.preventDefault();
-      Log.warn(["App_LanguageMentor_Base.onUncaughtError()", event]);
+      Log.warn(["App_LanguageMentor_Base.onUncaughtLoaderError()", event]);
    }
 
    private function onUpdateRequired(e:BwEvent):void {

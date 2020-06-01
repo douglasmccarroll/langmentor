@@ -32,13 +32,13 @@ public class LanguageVO extends VO implements IVO {
 
    public var iso639_3Code:String;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   private var _hasRecommendedLibraries:Boolean;
+   private var _hasRecommendedLibraries:Boolean;   // Note that this is set based on the info in the root config file. If this file hasn't been downloaded yet, this can give a false negative.
 
    public function get hasRecommendedLibraries():Boolean {
       return _hasRecommendedLibraries;
@@ -66,11 +66,11 @@ public class LanguageVO extends VO implements IVO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LanguageVO() {
       super();

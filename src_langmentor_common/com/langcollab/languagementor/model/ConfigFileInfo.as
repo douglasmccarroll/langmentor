@@ -454,7 +454,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
          if (e is TypeError) {
             // I don't know why but we're getting this error when we have no internet connection
             // So we treat this in the same way we treat other download failures
-            Log.error("ConfigFileInfo.onRootConfigFileDownloadComplete() - error when we attempt to convert file data to XML: " + e.message);
+            Log.error("ConfigFileInfo.onRootConfigFileDownloadComplete() - error when we attempt to convert file data to XML: " + e.message + " - This may be a download failure rather than a conversion error...");
             var report:FileDownloaderErrorReport = new FileDownloaderErrorReport();
             report.ioErrorEventText = "Download failure caught in onRootConfigFileDownloadComplete()";
             var event:BwEvent = new BwEvent(BwEvent.FAILURE, report);

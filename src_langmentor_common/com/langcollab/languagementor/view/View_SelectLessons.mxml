@@ -179,7 +179,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function doGoBack_LeaveSelectLessons():void {
          setCurrentLessonVersion();
          navigator.popView(transition_SlideView_Right);
-         Utils_ANEs.showRatingsPromptIfAppropriate();
+         ////Utils_ANEs.showRatingsPromptIfAppropriate();
       }
 
       private function doGoHome_Continued():void {
@@ -195,7 +195,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                Log.error("View_SelectLessons.doGoHome_Continued(): No case for: " + contextType);
                navigator.pushView(View_Home, null, null, transition_SlideView_Left);
          }
-         Utils_ANEs.showRatingsPromptIfAppropriate();
+         ////Utils_ANEs.showRatingsPromptIfAppropriate();
       }
 
       private function findFirstSelectedLessonThatMatchesVO(passedLVVO:LessonVersionVO):LessonVersionVO {

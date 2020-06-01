@@ -107,7 +107,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             }
          }
          else {
-            var introText:String = (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) ? "You've chosen not to use the libraries that we recommend for learning " : "We're currently unable to suggest libraries for learning ";
+            var introText:String = "You've chosen not to use the libraries that we recommend for learning ";
             textWidget = new UIWidget_Viewlet__Text();
             textWidget.text = introText + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", so you'll need to specify what library or libraries you'd like to study.";
             viewletGroup.addElement(textWidget);

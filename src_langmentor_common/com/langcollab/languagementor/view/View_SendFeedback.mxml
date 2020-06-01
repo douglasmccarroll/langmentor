@@ -90,7 +90,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       override protected function onBaseDoubleClick(event:MouseEvent):void {
-         navigator.pushView(View_Diagnostics, null, null, transition_SlideView_Left);
+         var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SEND_FEEDBACK);
+         navigator.pushView(View_Diagnostics, null, ctxt, transition_SlideView_Left);
       }
 
       override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {

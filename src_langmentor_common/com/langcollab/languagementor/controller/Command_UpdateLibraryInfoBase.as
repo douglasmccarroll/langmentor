@@ -179,8 +179,9 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
       modelReport.dispose();
    }
 
-   private function addNonDuplicateLibraryURLsFromLanguageSpecificInfoFileLibraryNodesToArray(libraryNodeList:XMLList, passedArray:Array):void {
+   private function addNonDuplicateLibraryInfoFromLanguageSpecificInfoFileLibraryNodesToArrays(libraryNodeList:XMLList, libraryUrlList:Array, recommendedLibraryNameList:Array):void {
       var libraryNode:XML;
+      var libraryName:String;
       var libraryUrl:String;
       for each (libraryNode in libraryNodeList) {
          if (libraryNode.libraryURL.length() != 1) {
@@ -188,6 +189,7 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
             continue;
          }
          libraryUrl = libraryNode.libraryURL[0].toString();
+         libraryName = libraryNode.libraryName[0].toString();
          if (!Utils_URL.isUrlProperlyFormed(libraryUrl)) {
             techReport.problemDescriptionList.push(Command_UpdateLibraryInfoBase.PROB_DESC__LANG_SPECIFIC_INFO_FILE__LIBRARY_URL_NODE_CONTAINS_MALFORMED_URL + ": " + libraryNode.libraryURL[0].toString());
             continue;
@@ -196,8 +198,10 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
             libraryUrl = Utils_URL.convertUrlToDesktopServerUrl(libraryUrl);
          }
          libraryUrl = Utils_String.ensureStringEndsWith(libraryUrl, "/");
-         if (passedArray.indexOf(libraryUrl) == -1)
-            passedArray.push(libraryUrl);
+         if (libraryUrlList.indexOf(libraryUrl) == -1) {
+            recommendedLibraryNameList.push(libraryName);
+            libraryUrlList.push(libraryUrl);
+         }
       }
    }
 
@@ -270,7 +274,7 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
       if (_isDisposed)
          return;
       Log.debug("Command_UpdateLibraryInfoBase.onLoadConfigInfoComplete()");
-      startLanguageSpecificInfoFileDownloads();
+         startLanguageSpecificInfoFileDownloads();
    }
 
    private function onLoadConfigInfoFailure(report:ConfigFileInfoTechReport):void {
@@ -304,6 +308,7 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
          techReport.index_languageSpecificFileName_to_fileDownloaderErrorReport = fileSetDownloaderErrorReport.index_fileId_to_fileDownloaderErrorReport;
       }
       var libraryUrlList:Array = [];
+      var recommendedLibraryNameList:Array = [];
       if (includeRecommendedLibraries) {
          var fileData:ByteArray;
          var libraryNodeList:XMLList;
@@ -312,7 +317,7 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
             fileData = singleLanguageFileInfo.fileData;
             if ((fileData) && (validateAndPopulateLanguageSpecificInfoFileXML_Single(fileData))) {
                libraryNodeList = _languageSpecificInfoFileXML_SingleLanguage.singleLanguageLessonInfo[0].libraries[0].library;
-               addNonDuplicateLibraryURLsFromLanguageSpecificInfoFileLibraryNodesToArray(libraryNodeList, libraryUrlList);
+               addNonDuplicateLibraryInfoFromLanguageSpecificInfoFileLibraryNodesToArrays(libraryNodeList, libraryUrlList, recommendedLibraryNameList);
             }
             else {
                techReport.isLanguageSpecificInfoFileXMLParsingFailure_SingleLanguage = true;
@@ -326,9 +331,9 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
             fileData = dualLanguageFileInfo.fileData;
             if ((fileData) && (validateAndPopulateLanguageSpecificInfoFileXML_Dual(fileData))) {
                libraryNodeList = _languageSpecificInfoFileXML_DualLanguage.singleLanguageLessonInfo[0].libraries[0].library;
-               addNonDuplicateLibraryURLsFromLanguageSpecificInfoFileLibraryNodesToArray(libraryNodeList, libraryUrlList);
+               addNonDuplicateLibraryInfoFromLanguageSpecificInfoFileLibraryNodesToArrays(libraryNodeList, libraryUrlList, recommendedLibraryNameList);
                libraryNodeList = _languageSpecificInfoFileXML_DualLanguage.dualLanguageLessonInfo[0].libraries[0].library;
-               addNonDuplicateLibraryURLsFromLanguageSpecificInfoFileLibraryNodesToArray(libraryNodeList, libraryUrlList);
+               addNonDuplicateLibraryInfoFromLanguageSpecificInfoFileLibraryNodesToArrays(libraryNodeList, libraryUrlList, recommendedLibraryNameList);
             }
             else {
                techReport.isLanguageSpecificInfoFileXMLParsingFailure_DualLanguage = true;
@@ -336,6 +341,12 @@ public class Command_UpdateLibraryInfoBase extends Command_Base__LangMentor {
          }
          else {
             techReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage = true;
+         }
+         if (recommendedLibraryNameList.length > 0) {
+            techReport.list_RecommendedLibraryNames = recommendedLibraryNameList;
+         }
+         if (callbacks.update is Function) {
+            update(techReport);
          }
          filesInfo.dispose();
       }

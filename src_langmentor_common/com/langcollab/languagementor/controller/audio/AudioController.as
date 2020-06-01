@@ -376,7 +376,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
    private function onCurrentLearningModeIDChange(newID:int):void {
       Log.info(["AudioController.onCurrentLearningModeIDChange()", newID]);
-      if (!_model.isDataInitialized)
+      if (!_model.isDBDataAndTargetLanguageInitialized)
          return;
       if (newID == 0)
          return; // This happens if user selects "clear all data" option - app is about to close
@@ -862,6 +862,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
             }
             case Constant_LearningModeLabels.TARGET_NATIVE: {
                chunkStrategy = new SequenceStrategy_TargetNative();
+               break;
+            }
+            case Constant_LearningModeLabels.TARGET_NATIVE_TARGET: {
+               chunkStrategy = new SequenceStrategy_TargetNativeTarget();
                break;
             }
             case Constant_LearningModeLabels.TARGET_PAUSE_NATIVE: {
