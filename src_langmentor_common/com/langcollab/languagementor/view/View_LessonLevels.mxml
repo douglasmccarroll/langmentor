@@ -36,12 +36,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_ArrayVectorEtc;
       import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_Timer;
       import com.langcollab.languagementor.controller.Command_AddOrRemoveSelectedLessonVersion;
       import com.langcollab.languagementor.view.supportClasses.ViewContext;
       import com.langcollab.languagementor.vo.LessonVersionVO;
       import com.langcollab.languagementor.vo.LevelVO;
 
-      private var _deselectedLessonCount:uint;
       private var _isDisposed:Boolean = false;
       private var _levelsSelectedAtStartup:Array = [];
 
@@ -126,33 +126,39 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          }
          if (isSelectedLevelsChanged()) {
-            model.selectedLessonDownloadLevels_PrimaryLevels = viewlet.selectedLevels;
-            // Deselect any currently selected lessons that have a level other than the new selected levels
-            _deselectedLessonCount = 0;
-            for each (var selectedLessonVersionVO:LessonVersionVO in currentLessons.currentLessons) {
-               if (!model.isLessonLevelSelectedForDownloading(selectedLessonVersionVO.levelId)) {
-                  var c:Command_AddOrRemoveSelectedLessonVersion =
-                        new Command_AddOrRemoveSelectedLessonVersion(selectedLessonVersionVO);
-                  c.execute();
-                  _deselectedLessonCount++;
-               }
-            }
-            lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
-            if (_deselectedLessonCount > 0) {
-               var lessonOrLessonsString:String = (_deselectedLessonCount == 1) ? " lesson has been " : " lessons have been ";
-               var lessonLevelOrLevelsString:String = (_deselectedLessonCount == 1) ? " its level doesn't " : " their levels don't ";
-               var selectedLevelOrLevelsString:String = (viewlet.selectedLevels.length == 1) ? "level" : "levels";
-               var message:String = _deselectedLessonCount + lessonOrLessonsString + "deselected because" + lessonLevelOrLevelsString + "match the " + selectedLevelOrLevelsString + " that you have selected.";
-               Utils_ANEs.showAlert_OkayButton(message, onLevelsDeselectedAlertClose);
-            }
-            else {
-               dispose();
-               super.doGoBack();
-            }
-
+            startBusyIndicator();
+            Utils_Timer.callLater(onSubmitButtonClick_Continued, 200);
          }
          else {
             // No changes made, but we simply allow the user to do this
+            dispose();
+            super.doGoBack();
+         }
+      }
+
+      private function onSubmitButtonClick_Continued():void {
+         Log.info("View_LessonLevels.onSubmitButtonClick_Continued()");
+         model.selectedLessonDownloadLevels_PrimaryLevels = viewlet.selectedLevels;
+         // Deselect any currently selected lessons that have a level other than the new selected levels
+         var deselectedLessonCount:int = 0;
+         for each (var selectedLessonVersionVO:LessonVersionVO in currentLessons.currentLessons) {
+            if (!model.isLessonLevelSelectedForDownloading(selectedLessonVersionVO.levelId)) {
+               var c:Command_AddOrRemoveSelectedLessonVersion =
+                     new Command_AddOrRemoveSelectedLessonVersion(selectedLessonVersionVO);
+               c.execute();
+               deselectedLessonCount++;
+            }
+         }
+         lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
+         if (deselectedLessonCount > 0) {
+            stopBusyIndicator();
+            var lessonOrLessonsString:String = (deselectedLessonCount == 1) ? " lesson has been " : " lessons have been ";
+            var lessonLevelOrLevelsString:String = (deselectedLessonCount == 1) ? " its level doesn't " : " their levels don't ";
+            var selectedLevelOrLevelsString:String = (viewlet.selectedLevels.length == 1) ? "level" : "levels";
+            var message:String = deselectedLessonCount + lessonOrLessonsString + "deselected because" + lessonLevelOrLevelsString + "match the " + selectedLevelOrLevelsString + " that you have selected.";
+            Utils_ANEs.showAlert_OkayButton(message, onLevelsDeselectedAlertClose);
+         }
+         else {
             dispose();
             super.doGoBack();
          }

@@ -35,6 +35,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.event.BwEvent;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_ArrayVectorEtc;
+      import com.brightworks.util.Utils_Timer;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.model.LessonDownloadInfo_Library;
 
@@ -93,13 +94,21 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onUseRecommendedLibrariesCheckboxChange(event:Event):void {
+         startBusyIndicator();
+         Utils_Timer.callLater(onUseRecommendedLibrariesCheckboxChange_Continued, 200);
+      }
+
+      private function onUseRecommendedLibrariesCheckboxChange_Continued():void {
          _useRecommendedLibraries = model.useRecommendedLibraries = useRecommendedLibrariesCheckbox.selected;
+         stopBusyIndicator();
       }
 
       private function updateUI():void {
          if (lessonDownloadController.recommendedLibraryNameList.length == 0) {
             resultsDisplayViewlet.text = "Searching for recommended libraries......";
+            startBusyIndicator();
          } else {
+            stopBusyIndicator();
             var recommendedLibraryCount:int = 0;
             var text:String = "";
             for each (var libraryName:String in lessonDownloadController.recommendedLibraryNameList) {

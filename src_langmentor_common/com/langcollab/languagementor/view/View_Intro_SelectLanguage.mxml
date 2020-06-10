@@ -33,6 +33,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.list.NormalList;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Text;
+      import com.brightworks.util.Utils_Timer;
       import com.langcollab.languagementor.component.itemrenderer.ItemRenderer_LanguageSelectionList;
       import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
@@ -86,6 +87,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             Log.warn("View_Intro_SelectLanguage.onContinueButtonClick(): no selectedItem");
             return;
          }
+         startBusyIndicator();
+         Utils_Timer.callLater(onNextButtonClick_Continued, 200, [event]);
+      }
+
+      protected function onNextButtonClick_Continued(event:MouseEvent):void {
+         Log.info("View_Intro_SelectLanguage.onContinueButtonClick_Continued()");
          model.initTargetLanguage(_languageList.selectedItem["value"], true);
          super.onNextButtonClick(event);
       }
@@ -140,7 +147,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _watcher_IsModelDataInitialized = null;
          }
          _isPostInitStuffDone = true;
-         populateLanguageListDataProvider();
+         startBusyIndicator();
+         Utils_Timer.callLater(populateLanguageListDataProvider, 200);
       }
 
       private function onCreationComplete():void {
@@ -149,8 +157,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onDisplayOnlyLanguagesWithRecommendedLibrariesCheckboxChange(e:Event):void {
-         populateLanguageListDataProvider();
          nextButton.enabled = false;
+         startBusyIndicator();
+         Utils_Timer.callLater(populateLanguageListDataProvider, 200);
       }
 
       private function onListChange(e:Event):void {
@@ -190,7 +199,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (_languageListDataProvider.length == 0) {
             callLater(populateLanguageListDataProvider);
          }
-
+         else {
+            stopBusyIndicator();
+         }
       }
       ]]>
    </fx:Script>

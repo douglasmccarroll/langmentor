@@ -39,7 +39,7 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
    private var _unscaledHeight:int = 0;
    private var _unscaledWidth:int = 0;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters / Setters
    //
@@ -51,11 +51,11 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
       return _value;
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function ItemRenderer_LessonVersionList() {
       super();
@@ -63,11 +63,11 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
       addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Protected Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    override protected function createChildren():void {
       _contentTextField = Utils_Text.createSimpleTextField(Math.round(Utils_Text.getStandardFontSize() * 1.15));
@@ -84,8 +84,9 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
    }
 
    override protected function setValues():void {
-      if (data.hasOwnProperty("value"))
+      if (data.hasOwnProperty("value")) {
          _value = data.value;
+      }
       _contentTextField.htmlText = data.label;
    }
 
@@ -99,8 +100,7 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
       if ((data.hasOwnProperty("data")) && (data.data) && (data.data.hasOwnProperty("lessonVersionVO"))) {
          var lvvo:LessonVersionVO = LessonVersionVO(data.data.lessonVersionVO);
          var singleOrDualLanguageIndicatorClass:Class;
-         // todo
-         //lvvo.isDualLanguage ?
+         ////lvvo.isDualLanguage ?
          //getStyle("singleorduallanguageindicatordual") :
          //getStyle("singleorduallanguageindicatorsingle");
          if (singleOrDualLanguageIndicatorClass) {
@@ -126,11 +126,11 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
       drawBackground();
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Private Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function drawBackground():void {
       if (_unscaledHeight == 0)

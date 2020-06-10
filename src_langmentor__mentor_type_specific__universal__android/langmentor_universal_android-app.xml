@@ -7,8 +7,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.44.081</versionNumber>
-   <versionLabel>1.44.081</versionLabel>
+   <versionNumber>1.44.092</versionNumber>
+   <versionLabel>1.44.092</versionLabel>
 
    <initialWindow>
       <!-- The main SWF or HTML file of the application. -->
@@ -69,7 +69,7 @@
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
                 <uses-feature android:name="android.hardware.wifi" android:required="false"/>
                 <uses-permission android:name="android.permission.VIBRATE"/>
-                <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="29"/>
+                <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="29"/>
             </manifest>
         ]]>
       </manifestAdditions>

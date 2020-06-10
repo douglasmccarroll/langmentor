@@ -1,5 +1,5 @@
 <?xml version = "1.0" encoding = "utf-8" standalone = "no"?>
-<application xmlns = "http://ns.adobe.com/air/application/33.1">
+<application xmlns = "http://ns.adobe.com/air/application/32.0">
 
    <id>com.brightworks.LangMentor.deu</id>
 
@@ -7,8 +7,8 @@
 
    <name>German LangMentor</name>
 
-   <versionNumber>1.44.062</versionNumber>
-   <versionLabel>1.44.062</versionLabel>
+   <versionNumber>1.44.091</versionNumber>
+   <versionLabel>1.44.091</versionLabel>
 
    <initialWindow>
       <!-- The main SWF or HTML file of the application. -->
@@ -39,6 +39,8 @@
                     <activity android:name="com.distriqt.extension.scanner.zbar.ZBarScannerActivity" />
                     <activity android:name="com.distriqt.extension.scanner.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+                    <!-- Prevents letterboxing on some phones -->
+                    <meta-data android:name="android.max_aspect" android:value="3" />
                 </application>
 
                 <supports-screens
@@ -67,7 +69,7 @@
                 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
                 <uses-feature android:name="android.hardware.wifi" android:required="false"/>
                 <uses-permission android:name="android.permission.VIBRATE"/>
-                <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28"/>
+                <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="29"/>
             </manifest>
         ]]>
       </manifestAdditions>
@@ -76,6 +78,7 @@
       <extensionID>androidx.appcompat</extensionID>
       <extensionID>androidx.core</extensionID>
       <extensionID>androidx.vectordrawable</extensionID>
+      <extensionID>com.distriqt.Application</extensionID>
       <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>

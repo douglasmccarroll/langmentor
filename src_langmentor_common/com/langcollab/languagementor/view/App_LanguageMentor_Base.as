@@ -76,7 +76,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       super();
       Utils_System.appReleaseType = Constant_AppConfiguration.APP_RELEASE_TYPE;
       Log.init(Utils_AIR.appName, onFatalLog, null, onDisplayDiagnosticsScreen, Utils_LangCollab.appendLogInfoToLogSummaryString, true);
-      frameRate = 6;
+      frameRate = 10;
       addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
       addEventListener(FlexEvent.INITIALIZE, onInitialize);
       addEventListener(FlexEvent.PREINITIALIZE, onPreinitialize);

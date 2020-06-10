@@ -40,7 +40,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _BUTTON_WIDTH_PERCENT__DUAL_BUTTON:uint = 40;
       private static const _BUTTON_WIDTH_PERCENT__SINGLE_BUTTON:uint = 60;
 
-      protected var isDisplayCancelButton:Boolean = false;
+      public var isDisplayCancelButton:Boolean = false;
+
       protected var isDisplayNextButton:Boolean = true;
       protected var viewletGroup_Scrollable:Boolean = true;
       protected var viewletGroup_UsePadding:Boolean = true;

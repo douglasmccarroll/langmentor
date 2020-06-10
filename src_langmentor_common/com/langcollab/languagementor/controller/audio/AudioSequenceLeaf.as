@@ -33,7 +33,6 @@ public class AudioSequenceLeaf extends AudioSequenceElement implements IDisposab
 
    public function AudioSequenceLeaf() {
       super();
-      Log.debug("AudioSequenceLeaf constructor");
       isLeaf = true;
       levelId = AudioController.AUDIO_SEQUENCE_LEVEL__LEAF;
    }

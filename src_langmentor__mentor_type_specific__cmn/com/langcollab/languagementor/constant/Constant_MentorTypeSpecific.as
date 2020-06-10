@@ -22,7 +22,7 @@ public class Constant_MentorTypeSpecific {
    public static const ANE_KEY__DISTRIQT:String = "a018f0c32d78284cfb49e26713f11716b548d309QWxmnokEQKt2Lv9yzx6CpIucNpgQJO8XzPHKayMjD8Vyir0PaZAOIaKMSR5qshEEnNNrX34YMKVW8auO7wiI6uZjMScBkHi71M/eseCF7bCpzUOQPacFPh2SF7ae44tC/1ocBSV6qT1kSCgyJGwoGdYXHIF4bHEIluM7tpVh0VvB/Zx68ujKI19suZByXR7vWIyuOiMVPA2OH5uqboLU7airedcvOgpIaEHDqR/vEWWDATQvVPnI5QoUsD9e21tcJeWQxTDgZaKtcEHPgFibzOfeWeaFF8zULSr3mLdEINFpAWBFV3wkd1qVwflCp4MvPGCNM0fGRXDbOluUUDg3ZQ==";
    public static const APP_NAME__FULL:String = "Chinese Language Mentor";
    public static const APP_NAME__SHORT:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.42;
+   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.44;
    public static const APPLE_APP_ID:String = "1454541751";
    public static const CREATIVE_SYNTAX__DISPLAY_EXPLANATION:Boolean = true;
    public static const FORUMS__EXPLANATORY_TEXT__1:String = "The Language Collaborative's forums are the best place to get answers to your questions about Language Mentor, to report problems, and to suggest new features.";

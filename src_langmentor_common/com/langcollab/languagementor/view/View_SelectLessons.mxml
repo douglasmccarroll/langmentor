@@ -28,6 +28,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_ANEs;
       import com.brightworks.util.Utils_ANEs;
+      import com.brightworks.util.Utils_Timer;
       import com.langcollab.languagementor.component.lessonversionlist.LessonVersionList;
       import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LearningModeLabels;
@@ -232,8 +233,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onLessonSelectionListToggleLessonSelected(event:Event_LessonVersionList):void {
-         // Allow list to update before starting process
-         callLater(onLessonSelectionListToggleLessonSelected_Continued, [event]);
+         startBusyIndicator();
+         Utils_Timer.callLater(onLessonSelectionListToggleLessonSelected_Continued, 200, [event]);
       }
 
       private function onLessonSelectionListToggleLessonSelected_Continued(event:Event_LessonVersionList):void {
@@ -241,6 +242,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addLessonToToggledLessonsHistoryList(event.lessonVersionVO);
          var c:Command_AddOrRemoveSelectedLessonVersion = new Command_AddOrRemoveSelectedLessonVersion(event.lessonVersionVO);
          c.execute();
+         stopBusyIndicator();
       }
 
       private function onViewActivate():void {

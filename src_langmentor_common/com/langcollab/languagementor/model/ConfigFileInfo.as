@@ -192,7 +192,8 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
          return formatVersionNode.linkText[0].toString();
       }
       else {
-         // This is happening when I attempt to force a link display by commenting out conditional code - I don't think that it happens in production
+         // This is happening when I attempt to force a link display by commenting out conditional code - I don't
+         // think that it happens in production
          return "";
       }
    }

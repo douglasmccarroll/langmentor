@@ -30,6 +30,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.brightworks.component.mobilealert.MobileDialog;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_Layout;
+      import com.brightworks.util.Utils_Timer;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
 
       import mx.controls.Spacer;
@@ -65,6 +66,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             MobileDialog.open("Please select at least one level.");
             return;
          }
+         startBusyIndicator();
+         Utils_Timer.callLater(onNextButtonClick_Continued, 200, [event]);
+      }
+
+      protected function onNextButtonClick_Continued(event:MouseEvent):void {
+         Log.info("View_Intro_LessonLevels.onNextButtonClick_Continued()");
          model.selectedLessonDownloadLevels_PrimaryLevels = _lessonLevelsViewlet.selectedLevels;
          super.onNextButtonClick(event);
       }

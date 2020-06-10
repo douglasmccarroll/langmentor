@@ -17,14 +17,13 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.langcollab.languagementor.view {
-import com.brightworks.component.mobilealert.MobileAlert;
+import com.brightworks.event.BwEvent;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.gestures.GestureTranslator;
 import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.audio.AudioController;
-import com.brightworks.util.audio.AudioPlayer;
 import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.MainModel;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
@@ -38,9 +37,12 @@ import flash.events.TransformGestureEvent;
 
 import mx.events.ResizeEvent;
 
+import spark.components.BusyIndicator;
+
 import spark.components.View;
 import spark.components.ViewMenuItem;
 import spark.events.ViewNavigatorEvent;
+import spark.skins.mobile.BusyIndicatorSkin;
 import spark.transitions.CrossFadeViewTransition;
 import spark.transitions.SlideViewTransition;
 import spark.transitions.ViewTransitionDirection;
@@ -64,6 +66,7 @@ public class View_Base extends View {
    protected var transition_SlideView_Right:SlideViewTransition;
    protected var transition_SlideView_Up:SlideViewTransition;
 
+   private var _busyIndicator:BusyIndicator;
    private var _gestureTranslator:GestureTranslator;
    private var _isDisposed:Boolean = false;
 
@@ -136,6 +139,11 @@ public class View_Base extends View {
       for each (var vmi:ViewMenuItem in viewMenuItems) {
          vmi.removeEventListener(MouseEvent.CLICK, onViewMenuItemClick);
       }
+      if (_busyIndicator) {
+         _busyIndicator.visible = false;
+         removeElement(_busyIndicator);
+         _busyIndicator = null;
+      }
    }
 
    // This needs to be public because the app does this:
@@ -150,6 +158,27 @@ public class View_Base extends View {
       navigator.pushView(View_Home, null, null, transition_SlideView_Left);
    }
 
+   public function startBusyIndicator():void {
+      if (!_busyIndicator) {
+         _busyIndicator = new BusyIndicator();
+         _busyIndicator.visible = false;
+         _busyIndicator.horizontalCenter = 0;
+         _busyIndicator.verticalCenter = 0;
+         _busyIndicator.alpha = .5;
+         _busyIndicator.setStyle("skinClass", BusyIndicatorSkin);
+         addElement(_busyIndicator);
+      }
+      _busyIndicator.height = width / 6;
+      _busyIndicator.width = width / 6;
+      _busyIndicator.visible = true;
+   }
+
+   public function stopBusyIndicator():void {
+      if (_busyIndicator) {
+         _busyIndicator.visible = false;
+      }
+   }
+
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Protected Methods
@@ -157,7 +186,8 @@ public class View_Base extends View {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    protected function createViewMenu():void {
-      viewMenuItems = new Vector.<ViewMenuItem>();
+      //// 20200602 dmccarroll - looks like I wrote this code long ago - and haven't used it in a long time, if ever
+      /*viewMenuItems = new Vector.<ViewMenuItem>();
       var vmi:ViewMenuItem;
       vmi = new ViewMenuItem();
       vmi.label = VIEW_MENU_ITEM_LABEL__CREDITS;
@@ -170,7 +200,7 @@ public class View_Base extends View {
       vmi = new ViewMenuItem();
       vmi.label = VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK;
       vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
-      viewMenuItems.push(vmi);
+      viewMenuItems.push(vmi);*/
 
    }
 
@@ -188,11 +218,12 @@ public class View_Base extends View {
    protected function onBaseDoubleClick(event:MouseEvent):void {
       if (this is View_Intro_Base)
          return;
-      if (!Utils_System.isAlphaVersion() && (!(this is View_SendFeedback)))
+      if (!Utils_System.isAlphaOrBetaVersion())
          return;
-      var logDataString:String = Log.createLogInfoSummaryString() + "\n\n" + Log.getLogInfoForClipboard();
+      //var logDataString:String = Log.createLogInfoSummaryString() + "\n\n" + Log.getLogInfoForClipboard();
       Log.copyRecentInfoToClipboard();
       Utils_ANEs.showAlert_Toast("Log data copied to clipboard");
+      Log.displayDiagnosticsScreen();
    }
 
    protected function onCustomGesture_Arrow_Down():void {
@@ -284,7 +315,8 @@ public class View_Base extends View {
    }
 
    protected function onViewMenuItemClick(event:MouseEvent):void {
-      switch (event.currentTarget.label) {
+      //// 20200602 dmccarroll - looks like I wrote this code long ago - and haven't used it in a long time, if ever
+      /*switch (event.currentTarget.label) {
          case VIEW_MENU_ITEM_LABEL__CREDITS: {
             navigator.pushView(View_Credits, null, null, transition_CrossFade);
             break;
@@ -301,7 +333,7 @@ public class View_Base extends View {
          default: {
             Log.warn("View_Base.onMenuViewItemClick(): No case for '" + event.currentTarget.label + "'");
          }
-      }
+      }*/
    }
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

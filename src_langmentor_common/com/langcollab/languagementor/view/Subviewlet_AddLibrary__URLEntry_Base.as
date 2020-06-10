@@ -5,8 +5,6 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.controller.Command_AddLibrary;
 import com.langcollab.languagementor.controller.Command_AddLibraryErrorReport;
 
-import spark.components.BusyIndicator;
-
 public class Subviewlet_AddLibrary__URLEntry_Base extends Subviewlet_AddLibrary__Base {
    public static const SUCCESS_REPORT__LIBRARY_ADDED:String = "Success! Library has been added.";
 
@@ -16,7 +14,6 @@ public class Subviewlet_AddLibrary__URLEntry_Base extends Subviewlet_AddLibrary_
 
    public var libraryAddedCallback:Function;
 
-   private var _busyIndicator:BusyIndicator;
    private var _isDisposed:Boolean = false;
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,23 +81,6 @@ public class Subviewlet_AddLibrary__URLEntry_Base extends Subviewlet_AddLibrary_
       var cb:Callbacks = new Callbacks(onAddURLComplete, onAddURLFailure);
       var c:Command_AddLibrary = new Command_AddLibrary(libraryUrl, cb);
       c.execute();
-   }
-
-   protected function startBusyIndicator():void {
-      if (_busyIndicator)
-         return;
-      _busyIndicator = new BusyIndicator();
-      _busyIndicator.x = (width - _busyIndicator.width) / 2;
-      _busyIndicator.y = (height - _busyIndicator.width) / 2;
-      addElement(_busyIndicator);
-   }
-
-   protected function stopBusyIndicator():void {
-      if (_busyIndicator) {
-         _busyIndicator.visible = false;
-         removeElement(_busyIndicator);
-         _busyIndicator = null;
-      }
    }
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,7 +2,6 @@ package com.langcollab.languagementor.view {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_System;
-import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 
@@ -80,18 +79,18 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
       }
       else if (this is View_Intro_AddLibraries_Decide)
          Log.error("View_Intro_Base.onNextButtonClick(): View_Intro_AddLibraries_Decide should handle this, and not call super.onNextButtonClick()");
-      else if (this is View_Intro_AddLibraries_Warning)
+      else if (this is View_Intro_AddLibraries_Warning) {
          navigator.pushView(View_Intro_AddLibraries_Agreement);
-      else if (this is View_Intro_AddLibraries_Agreement)
+      }
+      else if (this is View_Intro_AddLibraries_Agreement) {
          navigator.pushView(View_Intro_AddLibraries);
+      }
       else if (this is View_Intro_AddLibraries) {
          View_Intro_Base.isUserCompletedAddLibraryProcess = true;
          navigator.pushView(View_Intro_AddLibraries_Decide);
-      } else if (this is View_Intro_LessonLevels)
+      } else if (this is View_Intro_LessonLevels) {
          navigator.pushView(View_Intro_SetupComplete);
-      // No longer used:
-            // View_Intro_AutoDownloads
-            // View_Intro_LibraryPreferencesSaved
+      }
       else if (this is View_Intro_SetupComplete) {
          saveSettings();
          doIntroDone();

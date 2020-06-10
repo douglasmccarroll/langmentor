@@ -115,6 +115,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             }
             else {
                messageText = _MESSAGE__ONCLICK__SENDING_REPORT;
+               startBusyIndicator();
             }
             _messageTextWidget.text = messageText;
             Log.userInitiatedLogToServer(createUserMessage(), logErrorCallback);
@@ -156,6 +157,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                _messageTextWidget.text = _MESSAGE__LOG_RESULT__FAILURE
             }
          }
+         stopBusyIndicator();
       }
 
       private function onCreationComplete():void {

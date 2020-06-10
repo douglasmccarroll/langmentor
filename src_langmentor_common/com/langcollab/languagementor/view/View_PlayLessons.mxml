@@ -31,6 +31,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
         <![CDATA[
       import com.brightworks.base.Callbacks;
       import com.brightworks.util.Utils_ANEs;
+      import com.brightworks.util.Utils_Timer;
       import com.brightworks.util.audio.Utils_Audio_Files;
       import com.brightworks.util.Log;
       import com.brightworks.util.Utils_AIR;
@@ -428,7 +429,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             _mostRecentUserInitiatedChunkNavigationTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             _mostRecentUserInitiatedIKnowThisTime = Utils_DateTime.getCurrentMS_BasedOnDate();
             ///alpha mode _isMostRecentUserActionAnAlphaReviewDisplayDefaultTextKludge = false;
-            callLater(onDo_IKnowThis_DispatchCommand);
+            startBusyIndicator();
+            Utils_Timer.callLater(onDo_IKnowThis_DispatchCommand, 200);
          }
       }
 
@@ -592,6 +594,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       private function onDoIKnowThisComplete(preCommandSelectedLessonCount:uint):void {
          // Show popup if lesson has been deselected
+         stopBusyIndicator();
          if (currentLessons.length == preCommandSelectedLessonCount - 1) {
             Utils_ANEs.showAlert_Toast("Lesson Finished");
          }

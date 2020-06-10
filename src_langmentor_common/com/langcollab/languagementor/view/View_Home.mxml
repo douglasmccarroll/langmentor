@@ -108,29 +108,23 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      private function activateBusyIndicator():void {
-         Log.debug("View_Home.activateBusyIndicator()");
-         busyIndicator.visible = true;
-         busyIndicator.x = (this.width - busyIndicator.width) / 2;
-         busyIndicator.y = (this.height - busyIndicator.width) / 2;
-      }
-
       private function doPostInitStuff():void {
          if ((!_isCreationCompleteCalled) || (!model.isDBDataAndTargetLanguageInitialized)) {
             Log.debug("View_Home.doPostInitStuff(): Not ready yet");
             return;
          }
-         Log.debug("View_Home.doPostInitStuff(): Doing init stuff");
+         Log.debug("View_Home.doPostInitStuff(): Everything is ready - doing post-init stuff");
          _realEstateManager = new HomeScreenRealEstateManager();
          if (_watcher_IsModelDataInitialized) {
             _watcher_IsModelDataInitialized.unwatch();
             _watcher_IsModelDataInitialized = null;
          }
-         busyIndicator.visible = false;
-         if (appStatePersistenceManager.retrieveIsHomeScreenDisplayCountSaved())
+         if (appStatePersistenceManager.retrieveIsHomeScreenDisplayCountSaved()) {
             appStatePersistenceManager.persistHomeScreenDisplayCount(appStatePersistenceManager.retrieveHomeScreenDisplayCount() + 1);
-         else
+         }
+         else {
             appStatePersistenceManager.persistHomeScreenDisplayCount(1);
+         }
          _isPostInitStuffDone = true;
          callLater(doPostPostInitStuff);
       }
@@ -145,6 +139,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _realEstateManager.populateScreenAreaGroup(group_BottomLeft, HomeScreenRealEstateManager.SCREEN_AREA_LABEL__BOTTOM_LEFT, onButtonClick_Share);
          if (audioController)
             audioController.pausePlayingAudioIfAny();  // This is here because, on one occasion, I somehow managed to go from the Play Lessons screen to this screen without the audio stopping - so this is here to make doubly sure that audio stops when we leave that screen
+         stopBusyIndicator();
       }
 
       private function isCurrScreenDisplayFirstForApp():Boolean {
@@ -256,7 +251,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          _isCreationCompleteCalled = true;
          doPostInitStuff();
          if (!_isPostInitStuffDone)
-            activateBusyIndicator();
+            startBusyIndicator();
       }
 
       private function onInitialize():void {
@@ -284,9 +279,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       ]]>
     </fx:Script>
 
-   <s:BusyIndicator id = "busyIndicator"
-                    visible = "false"
-                    symbolColor = "0xCCCCCC"/>
    <s:VGroup id = "mainGroup"
              width = "97%"
              height = "97%"

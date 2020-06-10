@@ -28,6 +28,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
    <fx:Script>
         <![CDATA[
       import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_Timer;
 
       private var _initialRecommendedLibrariesValue:Boolean;
       private var _isDisposed:Boolean = false;
@@ -61,8 +62,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override protected function onPrimaryBottomButtonClick(event:MouseEvent):void {
          Log.info("View_RecommendedLibraries.onPrimaryBottomButtonClick()");
-         if (_initialRecommendedLibrariesValue != model.useRecommendedLibraries)
-            lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate()
+         if (_initialRecommendedLibrariesValue != model.useRecommendedLibraries) {
+            startBusyIndicator();
+            Utils_Timer.callLater(onPrimaryBottomButtonClick_Continued, 200);
+         }
+         else {
+            doGoBack();
+         }
+      }
+
+      protected function onPrimaryBottomButtonClick_Continued():void {
+         Log.info("View_RecommendedLibraries.onPrimaryBottomButtonClick_Continued()");
+         lessonDownloadController.abortAnyCurrentLessonDownloadProcessesAndRestartIfAppropriate();
          doGoBack();
       }
 

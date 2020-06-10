@@ -39,7 +39,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import mx.controls.Spacer;
 
       private var _isDisposed:Boolean = false;
-      private var _useRecommendedLibrariesCheckbox:NormalCheckBox;
       private var _recommendedLibrariesViewlet:Viewlet_RecommendedLibraries;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,8 +62,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       override protected function onNextButtonClick(event:MouseEvent):void {
          Log.info("View_Intro_RecommendedLibraries.onNextButtonClick()");
-         if (_useRecommendedLibrariesCheckbox)
-            model.useRecommendedLibraries = _useRecommendedLibrariesCheckbox.selected;
          super.onNextButtonClick(event);
       }
 

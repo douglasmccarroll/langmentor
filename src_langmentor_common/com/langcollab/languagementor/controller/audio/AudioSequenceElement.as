@@ -55,14 +55,14 @@ public class AudioSequenceElement extends EventDispatcher implements IDisposable
 
    public function pause(levelIdForLevelToRestartFromBeginning:String):void {
       Log.debug(["AudioSequenceElement.pause()"]);
-      //if (!isPlaying) 
+      //if (!isPlaying)
       //	Log.fatal(["AudioSequenceElement.pause(): called when not playing. this:", this]);
       isPaused = true;
    }
 
    public function resume(levelIdForLevelToRestartFromBeginning:String):void {
       Log.debug(["AudioSequenceElement.resume()"]);
-      //if (!isPlaying) 
+      //if (!isPlaying)
       //	Log.fatal(["AudioSequenceElement.resume(): called when not playing. this:", this]);
       if (!isPaused)
          Log.fatal(["AudioSequenceElement.resume(): called when not paused. this:", this]);
@@ -74,7 +74,7 @@ public class AudioSequenceElement extends EventDispatcher implements IDisposable
    }
 
    public function stop():void {
-      //if (!isPlaying) 
+      //if (!isPlaying)
       //	Log.fatal(["AudioSequenceElement.stop(): called when not playing. this:", this]);
       isPaused = false;
       //isPlaying = false;
@@ -91,7 +91,7 @@ public class AudioSequenceElement extends EventDispatcher implements IDisposable
       // ELEMENT_COMPLETE_REPORT is typically handled by the client that created the entire audio sequence tree.
       // COMPLETE is typically handled (only) by parent elements.
       // Be aware - if you do stuff in the client in response to ELEMENT_COMPLETE_REPORT - that stuff
-      // that happens on COMPLETE - cleanup, auto-advance - hasn't happened yet. For example, if the client is calling a 
+      // that happens on COMPLETE - cleanup, auto-advance - hasn't happened yet. For example, if the client is calling a
       // branch's moveToElement() method, and that branch also has autoAdvance == true, you may have a problem.  :)
       dispatchEvent(new Event_AudioProgress(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, id, levelId));
       dispatchEvent(new Event(Event.COMPLETE));

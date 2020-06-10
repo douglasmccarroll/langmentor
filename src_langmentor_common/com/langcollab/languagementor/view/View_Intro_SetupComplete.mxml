@@ -285,20 +285,28 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          nextButton.enabled = false;
          if (isAnyLibrariesAvailableForDownloading()) {
             if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
+               stopBusyIndicator();
                displayContent_InsufficientLessonStorageSpaceAvailable();
             } else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
+               startBusyIndicator();
                displayContent_Downloading_UpdatingAvailableLessonInfo();
             } else if (model.getLessonVersionCount() > 0) {
+               stopBusyIndicator();
                displayContent_Downloading_FirstLessonFinished();
             } else if (lessonDownloadController.isLessonDownloadProcessActive) {
+               startBusyIndicator();
                displayContent_Downloading_FirstLessonInProgress();
             } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
                // The "update info" process is finished, but no lesson downloads are in progress or complete.
                // It's possible that a problem occurred the last time the "update info" process ran.
-               if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0)
+               if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0) {
+                  stopBusyIndicator();
                   displayContent_NoLibrariesAvailableForDownload();
-               else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0)
+               }
+               else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0) {
+                  stopBusyIndicator();
                   displayContent_LibrariesAvailableButNoLessonsEligibleForDownload();
+               }
                else {
                   var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                         lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
@@ -306,19 +314,23 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
                         // This could occur if the user just wiped all data with Delete All Data
                         // Though they probably would have already been informed that they need to upgrade
+                        stopBusyIndicator();
                         displayContent_Downloading_Failure();
                      } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
                            (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
                                  updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage)) {
+                        stopBusyIndicator();
                         displayContent_Downloading_Failure();
                      }
                   }
                   updateInfoCommandReport.dispose();
                }
             } else {
+               stopBusyIndicator();
                displayContent_Downloading_Failure();
             }
          } else {
+            stopBusyIndicator();
             displayContent_NoLibrariesAvailableForDownload();
          }
       }

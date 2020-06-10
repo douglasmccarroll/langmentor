@@ -253,7 +253,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
    }
 
    public function setTempChangeChunkSequenceStrategyForNChunks(chunkStrategy:ISequenceStrategy):void {
-      // dmcarroll 20130605
+      // dmccarroll 20130605
       // Currently only called by onTranslate() so it's always 1 chunk
       // If/when we start passing in 'n' again, search for comments with
       // 'setTempChangeChunkSequenceStrategyForNChunks' in them - some of our code may need to change
@@ -549,7 +549,7 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          _currentLessonVersionAudioSequence.elements[chunkIndex] = chunkElement;
          switch (chunkVO.chunkType) {
             case ChunkVO.CHUNK_TYPE__DEFAULT: {
-               // What's the default chunk type? See comments at ChunkVO.CHUNK_TYPE__DEFAULT
+               /*  ///alpha
                if (_currentLessons.isCurrentLessonAlphaReviewVersion()) {
                   if (chunkVO.textNativeLanguage) {
                      duration = (chunkVO.textNativeLanguage.length * 100) + 3000;
@@ -573,7 +573,10 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
 
                   chunkIndex++;
                   continue;
-               }
+               }*/
+
+               // What's the default chunk type? See comments at ChunkVO.CHUNK_TYPE__DEFAULT
+
                leaf = AudioSequenceLeaf_Silence.acquireReusable(Constant_LangMentor_Misc.LEAF_TYPE__PAUSE_200_MS);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, onElementComplete);
                leaf.addEventListener(Event_AudioProgress.ELEMENT_START_REPORT, onElementStart);
