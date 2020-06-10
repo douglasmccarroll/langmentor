@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Brightworks, Inc.
+    Copyright 2020 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -30,7 +30,7 @@ public class ChunkVO extends LessonVersionReferencingVO implements IVO {
 
    public static const CHUNK_TYPE__DEFAULT:String = "Default";  // What's the default chunk type? It's contents vary, depending on whether we're in alpha mode, whether the lesson is single or dual-language, etc. But, essentially, it's a chunk that contains language content, and is used for drilling the user.
    public static const CHUNK_TYPE__EXPLANATORY:String = "Explanatory";
-   
+
    private static var _associatedTableName:String;
    private static var _propInfoList:Dictionary;
 
@@ -44,11 +44,11 @@ public class ChunkVO extends LessonVersionReferencingVO implements IVO {
 
    private var _uploaded:Boolean;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _locationInOrder:int;
 
@@ -90,11 +90,11 @@ public class ChunkVO extends LessonVersionReferencingVO implements IVO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function ChunkVO() {
       super();

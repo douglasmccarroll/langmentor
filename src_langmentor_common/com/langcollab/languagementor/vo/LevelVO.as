@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Brightworks, Inc.
+    Copyright 2020 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -32,11 +32,11 @@ public class LevelVO extends VO implements IVO {
 
    public var labelToken:String; // e.g. "Beginner"
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _id:int;
 
@@ -66,11 +66,11 @@ public class LevelVO extends VO implements IVO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LevelVO() {
       super();

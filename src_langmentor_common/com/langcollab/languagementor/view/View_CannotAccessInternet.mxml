@@ -1,6 +1,6 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <!--
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -44,7 +44,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function onTryAgainButtonClick():void {
          NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.APP_RESTART_NEEDED));
       }
-      
+
       ]]>
     </fx:Script>
    <s:VGroup height = "100%"

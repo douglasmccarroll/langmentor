@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -51,11 +51,11 @@ public class CurrentLessonsAudioTimer extends EventDispatcher {
 
    private var _timer_audioDelay:Timer;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function CurrentLessonsAudioTimer() {
    }
@@ -69,11 +69,11 @@ public class CurrentLessonsAudioTimer extends EventDispatcher {
       startOrRestartAudioDelayTimer();
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Private Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private function onTimer_AudioDelay(event:TimerEvent):void {
       if (_timer_audioDelay)

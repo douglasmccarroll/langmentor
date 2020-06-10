@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018 Brightworks, Inc.
+ *  Copyright 2020 Brightworks, Inc.
  *
  *  This file is part of Language Mentor.
  *
@@ -25,7 +25,7 @@ import mx.core.ScrollPolicy;
 import mx.events.FlexEvent;
 
 public class UIWidget_Viewlet__Heading extends UIWidget_TextArea_NonEditable implements IUIWidget_Text {
-   
+
    private static const _HEADING_MULTIPLIER:Number = 2;
 
    private var _isDisposed:Boolean;

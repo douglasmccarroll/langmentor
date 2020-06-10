@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Brightworks, Inc.
+    Copyright 2020 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -27,11 +27,11 @@ import flash.utils.Dictionary;
 [RemoteClass(alias="com.langcollab.languagementor.db.LibraryVO")]
 
 public class LibraryVO extends VO implements IVO {
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _enabled:Boolean;
 
@@ -52,11 +52,11 @@ public class LibraryVO extends VO implements IVO {
    private static var _associatedTableName:String;
    private static var _propInfoList:Dictionary;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LibraryVO() {
       super();

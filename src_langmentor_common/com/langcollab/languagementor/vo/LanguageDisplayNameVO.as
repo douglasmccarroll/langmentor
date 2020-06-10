@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Brightworks, Inc.
+    Copyright 2020 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -32,11 +32,11 @@ public class LanguageDisplayNameVO extends LanguageReferencingVO implements IVO 
    public var displayName:String;
    public var displayNameAlphabetizable:String;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _displayLanguageId:int;
 
@@ -66,11 +66,11 @@ public class LanguageDisplayNameVO extends LanguageReferencingVO implements IVO 
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LanguageDisplayNameVO() {
       super();

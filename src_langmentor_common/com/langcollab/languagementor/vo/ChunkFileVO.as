@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -31,11 +31,11 @@ public class ChunkFileVO extends ChunkReferencingVO implements IVO {
 
    public var fileNameBody:String;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _duration:int;
 
@@ -55,7 +55,7 @@ public class ChunkFileVO extends ChunkReferencingVO implements IVO {
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function ChunkFileVO() {
       super();

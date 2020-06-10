@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -55,7 +55,7 @@ public class LessonVersionList extends Group implements IDisposable {
    private var _treeData:ArrayCollection;
    private var _treeList:TreeList;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters / Setter
    //
@@ -67,7 +67,7 @@ public class LessonVersionList extends Group implements IDisposable {
       return _currentLevelDisplayName;
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
@@ -113,7 +113,7 @@ public class LessonVersionList extends Group implements IDisposable {
       return (_currentParentTreeItem == null);
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Private Methods
    //
@@ -158,7 +158,7 @@ public class LessonVersionList extends Group implements IDisposable {
       var e:Event_LessonVersionList = new Event_LessonVersionList(Event_LessonVersionList.LEVEL_CHANGE);
       // dmccarroll 20121123
       // The next line is kludgy - every item in dataProvider has the same levelDisplayName - in other words the children are holding info
-      // that should be carried by their parent. But their parent is an ArrayCollection and I suspect that if I try to subclass 
+      // that should be carried by their parent. But their parent is an ArrayCollection and I suspect that if I try to subclass
       // ArrayCollection and add a levelDisplayName prop I'll run into problems - and I'm not sure that design purity justifies the
       // additional complexity that I'd have to introduce to correct this in another way.
       _currentLevelDisplayName = TreeItem(dataProvider[0]).levelDisplayName;

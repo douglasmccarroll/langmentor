@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 Brightworks, Inc.
+    Copyright 2020 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -28,7 +28,7 @@ import flash.utils.Dictionary;
 [RemoteClass(alias="com.langcollab.languagementor.db.LessonVersionVO")]
 
 public class LessonVersionVO extends VO implements IVO {
-   
+
    private static var _associatedTableName:String;
    private static var _propInfoList:Dictionary;
 
@@ -39,11 +39,11 @@ public class LessonVersionVO extends VO implements IVO {
    public var publishedLessonVersionVersion:String;
    public var releaseType:String;
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _assetsFileSize:int;
 
@@ -171,11 +171,11 @@ public class LessonVersionVO extends VO implements IVO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LessonVersionVO() {
       super();

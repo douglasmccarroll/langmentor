@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -23,11 +23,11 @@ import com.langcollab.languagementor.event.Event_LearningModeList;
 [Event(name="event_LearningModeList_DisplayLearningModeHelp", type="com.langcollab.languagementor.event.Event_LearningModeList")]
 
 public class LearningModeList extends DisplayAllItemsList {
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LearningModeList() {
       super();
