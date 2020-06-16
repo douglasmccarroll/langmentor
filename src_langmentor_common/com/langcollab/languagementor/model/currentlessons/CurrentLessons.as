@@ -774,22 +774,24 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          var newCurrentLessonIndex:int = getIndexForNextOrPreviousSelectedLessonVersionWithUnsuppressedChunks(direction);
          var newCurrentChunkIndex:int = getIndexForEarliestUnsuppressedChunkInLessonWithIndexOf(newCurrentLessonIndex);
          setCurrentLessonAndChunkIndexes(newCurrentLessonIndex, newCurrentChunkIndex);
-      } else {
+      }
+      else {
          setCurrentLessonAndChunkIndexes(currentLessonIndex, getIndexForEarliestUnsuppressedChunkInCurrentLesson());
       }
-      if (isCurrentLessonAlphaReviewVersion()) {
+      /*if (isCurrentLessonAlphaReviewVersion()) {      ////alpha
          _isLessonPlaying = false;
          _isLessonPaused = false;
-      } else {
-         if ((_isLessonPlaying) && (!_isLessonPaused)) {
-            if (isUserInitiated) {
-               _audioTimer.requestAudioPlayPermission();
-            } else {
-               Log.debug("CurrentLessons.iterateLessonVersion(): Not user initiated, calling AudioController.playCurrentLessonVersionAndCurrentChunk()");
-               _audioController.playCurrentLessonVersionAndCurrentChunk();
-            }
+      }*/
+      ////else {
+      if ((_isLessonPlaying) && (!_isLessonPaused)) {
+         if (isUserInitiated) {
+            _audioTimer.requestAudioPlayPermission();
+         } else {
+            Log.debug("CurrentLessons.iterateLessonVersion(): Not user initiated, calling AudioController.playCurrentLessonVersionAndCurrentChunk()");
+            _audioController.playCurrentLessonVersionAndCurrentChunk();
          }
       }
+      ////}
    }
 
    public function pauseCurrentLessonVersionIfPlaying():void {

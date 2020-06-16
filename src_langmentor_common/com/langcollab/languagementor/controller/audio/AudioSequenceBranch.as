@@ -207,7 +207,7 @@ public class AudioSequenceBranch extends AudioSequenceElement {
       }
    }
 
-   // This method should start playing the first element, whether or not 
+   // This method should start playing the first element, whether or not
    // we have a 'current element'
    override public function startFromBeginning():void {
       Log.debug(["AudioSequenceBranch.startFromBeginning()"]);

@@ -943,7 +943,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                var lengthProportion:Number = charCountBelowWhichWeIncreaseFontSize / displayText.length;
                var shortTextAdjustmentFactor:Number = (((lengthProportion - 1) * .17) + 1);
                shortTextAdjustmentFactor = Math.min(shortTextAdjustmentFactor, 1.5);
-               //trace("##### " + shortTextAdjustmentFactor);
                fontSize = Math.round(fontSize * shortTextAdjustmentFactor);
             }
          }

@@ -226,8 +226,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
          isSameLesson = (currPlayingLessonVO.equals(_currentLessons.currentLessonVO));
       }
       var sequenceCreationStepNeeded:Boolean = false;
-      if ((!(_currentLessonVersionAudioSequence)) || (!isSameLesson))
+      if ((!(_currentLessonVersionAudioSequence)) || (!isSameLesson)) {
          sequenceCreationStepNeeded = true;
+      }
       if (sequenceCreationStepNeeded) {
          Log.info("AudioController.playCurrentLessonVersionAndCurrentChunk(): sequenceCreationStepNeeded == true, setting timer to call playCurrentLessonVersionAndCurrentChunk_CreateCurrentLessonVersionAudioSequence()");
          cleanupCurrentLessonVersion();
@@ -293,7 +294,9 @@ public class AudioController extends EventDispatcher implements IManagedSingleto
       stopLeafFinishCheckProcess();
       if (_currentLessonVersionAudioSequence) {
          _currentLessonVersionAudioSequence.stop();
-         _currentLessonVersionAudioSequence.dispose();
+         if (!Utils_System.isAndroid()) { //// This takes a long time on Android - about 2s per chunk on a Moto g7 (circa 2018) in debug mode - each lesson played consumes ~2.5 MB RAM
+             _currentLessonVersionAudioSequence.dispose();
+         }
          _currentLessonVersionAudioSequence = null;
       }
       clearTempChunkSequenceStrategy();

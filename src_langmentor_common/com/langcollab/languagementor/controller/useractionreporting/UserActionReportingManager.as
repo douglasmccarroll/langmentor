@@ -124,13 +124,6 @@ public class UserActionReportingManager implements IManagedSingleton{
       if (activity.iKnowThis_AllChunksInLessonSuppressed) {
          detailsObject["iKnowThis_AllChunksInLessonSuppressed"] = "true";
       }
-
-      /////
-      if ((activity.actionType == "AUTO_PLAY__ADVANCE_CHUNK") && (!activity.chunkIndex_Previous)) {
-         var foo:int = 0;
-      }
-
-
       if (activity.learningModeDisplayName) {
          detailsObject["learningModeDisplayName"] = activity.learningModeDisplayName;
       }
@@ -179,7 +172,7 @@ public class UserActionReportingManager implements IManagedSingleton{
       var jsonText:String = JSON.stringify(mainObject);
 
 
-      // trace(jsonText); ////
+      // trace(jsonText);
 
       /*
       trace("-");
