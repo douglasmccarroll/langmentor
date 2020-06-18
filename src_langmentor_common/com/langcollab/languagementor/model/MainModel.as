@@ -643,8 +643,58 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    public function getLearningModeDisplayNameFromLabelToken(token:String):String {
       var result:String = getNativeLanguageResource("label_LearningMode_" + token);
-      result = Utils_String.replaceAll(result, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage());
-      result = Utils_String.replaceAll(result, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage());
+      var nativeLangName:String = getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
+      var targetLangName:String = getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+      // We shorten some language names ...
+      // Kludge alert - perhaps these shorter names should be in the DB ... but they are needed for only a few languages ... so I'm cheating  :)
+      switch (nativeLangName) {
+         case "Mandarin Chinese":
+            nativeLangName = "Chinese";
+            break;
+         case "Taiwanese Hokkien":
+            nativeLangName = "Hokkien";
+            break;
+         case "Tagalog (Filipino)":
+            nativeLangName = "Tagalog";
+            break;
+         case "Central Khmer":
+            nativeLangName = "Khmer";
+            break;
+         case "Southern Sotho":
+            nativeLangName = "Sotho";
+            break;
+         case "Indian Punjabi":
+            nativeLangName = "Punjabi";
+            break;
+         case "Haitian Creole":
+            nativeLangName = "Creole";
+            break;
+      }
+      switch (targetLangName) {
+         case "Mandarin Chinese":
+            targetLangName = "Chinese";
+            break;
+         case "Taiwanese Hokkien":
+            targetLangName = "Hokkien";
+            break;
+         case "Tagalog (Filipino)":
+            targetLangName = "Tagalog";
+            break;
+         case "Central Khmer":
+            targetLangName = "Khmer";
+            break;
+         case "Southern Sotho":
+            targetLangName = "Sotho";
+            break;
+         case "Indian Punjabi":
+            targetLangName = "Punjabi";
+            break;
+         case "Haitian Creole":
+            targetLangName = "Creole";
+            break;
+      }
+      result = Utils_String.replaceAll(result, Constant_LangMentor_Misc.TOKEN_NATIVE_LANGUAGE_NAME, nativeLangName);
+      result = Utils_String.replaceAll(result, Constant_LangMentor_Misc.TOKEN_TARGET_LANGUAGE_NAME, targetLangName);
       return result;
    }
 

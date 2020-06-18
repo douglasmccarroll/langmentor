@@ -7,15 +7,12 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.44.081</versionNumber>
-   <versionLabel>1.44.081</versionLabel>
+   <versionNumber>1.50.011</versionNumber>
+   <versionLabel>1.50.011</versionLabel>
 
-
-   <!-- Settings for the application's initial window. Required. -->
    <initialWindow>
-      <!-- The main SWF or HTML file of the application. Required. -->
-      <!-- Note: In Flash Builder, the SWF reference is set automatically. -->
-      <content>langmentor_ios.swf</content>
+      <!-- In Flash Builder & IntelliJ, this is set automatically. -->
+      <content>foo.swf</content>
 
       <aspectRatio>portrait</aspectRatio>
       <fullScreen>false</fullScreen>
