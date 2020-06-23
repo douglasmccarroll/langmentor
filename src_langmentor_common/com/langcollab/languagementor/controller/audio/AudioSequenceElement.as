@@ -93,6 +93,9 @@ public class AudioSequenceElement extends EventDispatcher implements IDisposable
       // Be aware - if you do stuff in the client in response to ELEMENT_COMPLETE_REPORT - that stuff
       // that happens on COMPLETE - cleanup, auto-advance - hasn't happened yet. For example, if the client is calling a
       // branch's moveToElement() method, and that branch also has autoAdvance == true, you may have a problem.  :)
+      if (isDisposed) {
+         return;
+      }
       dispatchEvent(new Event_AudioProgress(Event_AudioProgress.ELEMENT_COMPLETE_REPORT, id, levelId));
       dispatchEvent(new Event(Event.COMPLETE));
    }
