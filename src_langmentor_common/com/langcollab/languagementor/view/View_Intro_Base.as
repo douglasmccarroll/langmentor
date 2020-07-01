@@ -67,7 +67,13 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
          }
       }
       else if (this is View_Intro_SelectLanguage) {
-         navigator.pushView(View_Intro_RecommendedLibraries);
+         if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
+            navigator.pushView(View_Intro_RecommendedLibraries);
+         }
+         else {
+            model.useRecommendedLibraries = false;
+            navigator.pushView(View_Intro_AddLibraries_Decide);
+         }
       }
       else if (this is View_Intro_RecommendedLibraries) {
          if (model.useRecommendedLibraries) {

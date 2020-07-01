@@ -1,0 +1,127 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!--
+Copyright 2020 Brightworks, Inc.
+
+This file is part of Language Mentor.
+
+Language Mentor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Language Mentor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<view:Viewlet_Base xmlns:fx = "http://ns.adobe.com/mxml/2009"
+                   xmlns:view = "com.langcollab.languagementor.view.*"
+                   creationComplete = "onCreationComplete()">
+
+   <fx:Declarations>
+   </fx:Declarations>
+
+   <fx:Script>
+        <![CDATA[
+      import com.brightworks.util.Log;
+      import com.brightworks.util.Utils_System;
+      import com.langcollab.languagementor.component.uiwidget.IUIWidget_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Text;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
+      import com.langcollab.languagementor.constant.Constant_MentorTypes;
+      import com.langcollab.languagementor.model.MainModel;
+
+      import mx.controls.Spacer;
+
+      private var _isDisposed:Boolean;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Public Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      override public function dispose():void {
+         super.dispose();
+         if (_isDisposed)
+            return;
+         _isDisposed = true;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //
+      //          Private Methods
+      //
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      private function onCreationComplete():void {
+         var textWidget:IUIWidget_Text
+         textWidget = new UIWidget_Viewlet__Heading();
+         textWidget.text = "How to Change the Language of Displayed Text";
+         addElement(textWidget);
+         addElement(new Spacer());
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Text();
+         textWidget.text = "To change the language of the text displayed in the Play Lessons screen, simply tap on the text.";
+         addElement(textWidget);
+         addElement(new Spacer());
+         addElement(new Spacer());
+         textWidget = new UIWidget_Viewlet__Text();
+         textWidget.text = "A dialog will appear which will allow you to change the language. You'll be offered these options:";
+         addElement(textWidget);
+         var nativeName:String = model.getLessonContentLanguageDisplayName_Native();
+         var targetName:String = model.getLessonContentLanguageDisplayName_Target();
+         var targetPhoneticName:String = model.getLessonContentLanguageDisplayName_TargetPhonetic();
+         if (targetPhoneticName) {
+            textWidget = new UIWidget_Viewlet__Bullet_Text();
+            textWidget.text = targetPhoneticName;
+            addElement(textWidget);
+         }
+         if (targetName) {
+            textWidget = new UIWidget_Viewlet__Bullet_Text();
+            textWidget.text = targetName;
+            addElement(textWidget);
+         }
+         if (nativeName) {
+            textWidget = new UIWidget_Viewlet__Bullet_Text();
+            textWidget.text = nativeName;
+            addElement(textWidget);
+         }
+         if (!nativeName) {
+            // We're in a single-language lesson. Given that we shouldn't be here unless there are at least two language options, this suggests a single language lesson that has both target-language
+            // text and phonetic-target-language text.
+            // In any case, in this situation we don't want to display the next bit of text.
+            return;
+         }
+         addElement(new Spacer());
+         addElement(new Spacer());
+         addElement(new Spacer());
+         var targetOptionsString:String;
+         if ((targetName) && (targetPhoneticName)) {
+            targetOptionsString = targetName + " or " + targetPhoneticName;
+         }
+         else if (targetName) {
+            targetOptionsString = targetName;
+         }
+         else if (targetPhoneticName) {
+            // At present (2020.07) this should never happen. But perhaps someday in the future we will have lessons that contain, for example, pinyin, but not hanzi... ?
+            targetOptionsString = targetPhoneticName;
+         }
+         if (!targetOptionsString) {
+            Log.error("Viewlet_ChangineDisplayedLanguage.onCreationComplete() - targetOptionsString is null");
+            return;
+         }
+         var text:String = "Note: If you select " + targetOptionsString + " some titles and/or explanatory text may still display in " + nativeName + ".";
+         textWidget = new UIWidget_Viewlet__Text();
+         textWidget.text = text;
+         addElement(textWidget);
+      }
+      ]]>
+    </fx:Script>
+
+</view:Viewlet_Base>

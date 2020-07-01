@@ -31,6 +31,7 @@ import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
 import com.langcollab.languagementor.component.button.Button_ActionBar_LeftArrow;
 import com.brightworks.constant.Constant_AppConfiguration;
+import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.controller.Command_InitApplication;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.model.MainModel;
@@ -211,6 +212,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
       NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivateApp);
       NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
       NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+      NativeApplication.nativeApplication.addEventListener(BwEvent.NEW_LESSON_DOWNLOADS, onNewLessonDownloads);
       NativeApplication.nativeApplication.addEventListener(BwEvent.NO_INTERNET_CONNECTION, onNoInternetConnection);
       NativeApplication.nativeApplication.addEventListener(BwEvent.UPDATE_REQUIRED, onUpdateRequired);
       systemManager.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtLoaderError);
@@ -257,6 +259,25 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
                navigator.pushView(View_Credits_Lesson, _currentLessons.currentLessonVO);
             break;
          }
+      }
+   }
+
+   private function onNewLessonDownloads(e:BwEvent):void {
+      if ((!(e.infoArray is Array)) || (e.infoArray.length != 1) || (!(e.infoArray[0] is int))) {
+         Log.warn(["App_LanguageMentor_Base.onNewLessonDownloads() - Event's infoArray is not valid", e]);
+         return;
+      }
+      var downloadCount:int = int(e.infoArray[0]);
+      var alertText:String = "Starting " + downloadCount + " Lesson Download";
+      if (downloadCount > 1)
+         alertText += "s";
+      alertText += ".";
+      if ((navigator.activeView is View_PlayLessons) || (navigator.activeView is View_Intro_SetupComplete)) {
+         Utils_ANEs.showAlert_Toast(alertText);
+      }
+      else {
+         alertText += " This may take a few minutes. You can continue to use " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " while downloads are in progress.";
+         Utils_ANEs.showAlert_OkayButton(alertText);
       }
    }
 

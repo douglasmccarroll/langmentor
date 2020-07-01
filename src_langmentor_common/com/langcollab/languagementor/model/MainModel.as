@@ -620,7 +620,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var queryVO:LanguageVO = new LanguageVO();
       var report:MainModelDBOperationReport = selectData("getLanguageVOs", queryVO);
       if (report.isAnyProblems)
-         Log.fatal(["MainModel.getLanguageVOs(): selectData() reports problem", report]);
+         Log.fatal(["MainModel.getLanguageVOs(): selectData() reports problem", "MainModelDBOperationReport:", report]);
       var result:Array = report.resultData.slice();
       report.dispose();
       return result;
@@ -752,6 +752,51 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       var result:Array = report.resultData.slice();
       report.dispose();
       return result;
+   }
+
+   public function getLessonContentLanguageDisplayName_Native():String {
+      // This method is just a wrapper method for getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage()
+      // I'm including it here as "documentation", i.e. to make it clear that while the two other methods that start with "getLessonContentLanguageDisplayName_" actually
+      // have to do some thinking, in this case we can simply use getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage().
+      if (!isAppDualLanguage()) {
+         return null;
+      }
+      return getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
+
+   }
+
+   public function getLessonContentLanguageDisplayName_Target():String {
+      var result:String = getTargetLanguageResource(["languageSpecificDisplayStrings", getNativeLanguageIso639_3Code(), "displayModeName_targetLanguage"]);
+      if (!result) {
+         // If we haven't specified a display name in the language resource XML file for the target language, we simply use the target language's name.
+         // When would want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call target language text "Hanzi".
+         result = getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+      }
+      return result;
+   }
+
+   public function getLessonContentLanguageDisplayName_TargetPhonetic():String {
+      if (!isTargetPhoneticTextAvailable()) {
+         return null;
+      }
+      var result:String = getTargetLanguageResource(["languageSpecificDisplayStrings", getNativeLanguageIso639_3Code(), "displayModeName_targetLanguagePhonetic"]);
+      if (!result) {
+         // If we haven't specified a display name for phonetic text in the target language's language resource XML file, we simply use "Phonetic" plus the target language's name, e.g. "Phonetic Klingon"
+         // When would we want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call phonetic target language text "Pinyin".
+         result = "Phonetic " + getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+      }
+      return result;
+   }
+
+   public function getLessonContentTextDisplayModeCount():int {
+      var availableTextModeCount:uint = 1; // We start with 1 because target language text is always available
+      if (isAppDualLanguage()) {
+         // Lesson includes native language text
+         availableTextModeCount++;
+      }
+      if (isTargetPhoneticTextAvailable())
+         availableTextModeCount++;
+      return availableTextModeCount;
    }
 
    public function getLessonVersionCount():int {
@@ -1208,6 +1253,15 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    public function isTargetLanguageSelected():Boolean {
       return (_currentTargetLanguageVO != null);
+   }
+
+   public function isTargetPhoneticTextAvailable():Boolean {
+      var result:Boolean = false;
+      var hasPhoneticTextValueFromLanguageResourceFile_IfSpecified:String = getTargetLanguageResource(["hasPhoneticText"]);
+      if (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified) {
+         result = (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified == "true");
+      }
+      return result;
    }
 
    public function isTextDisplayTypeExists(typeName:String):Boolean {

@@ -36,6 +36,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       //private static const _LIST_OPTION__:String = "";
       private static const _LIST_OPTION__ABOUT:String = "About " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
       private static const _LIST_OPTION__LEARNING_MODES:String = "Learning Modes";
+      private static const _LIST_OPTION__CHANGING_DISPLAYED_LANGUAGE:String = "Changing Displayed Language";
       private static const _LIST_OPTION__OPEN_PLATFORM:String = "Open Platform";
       private static const _LIST_OPTION__PLAYING_LESSONS:String = "Playing Lessons";
       private static const _LIST_OPTION__PRIVACY_POLICY:String = "Privacy Policy";
@@ -79,6 +80,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                navigator.pushView(View_Help_About, null, ctxt, transition_SlideView_Left);
                break;
             }
+            case _LIST_OPTION__CHANGING_DISPLAYED_LANGUAGE: {
+               navigator.pushView(View_Help_ChangingDisplayedLanguage, null, ctxt, transition_SlideView_Left);
+               break;
+            }
             case _LIST_OPTION__LEARNING_MODES: {
                navigator.pushView(View_Help_LearningModes, null, ctxt, transition_SlideView_Left);
                break;
@@ -115,17 +120,20 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (!Constant_MentorTypeSpecific.MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR) {
             _listDataProvider.addItem(_LIST_OPTION__OPEN_PLATFORM);
          }
+         if (model.getLessonContentTextDisplayModeCount() >= 2) {
+            _listDataProvider.addItem(_LIST_OPTION__CHANGING_DISPLAYED_LANGUAGE);
+         }
+         _listDataProvider.addItem(_LIST_OPTION__LEARNING_MODES);
+         _listDataProvider.addItem(_LIST_OPTION__PLAYING_LESSONS);
          _listDataProvider.addItem(_LIST_OPTION__PRIVACY_POLICY);
          _listDataProvider.addItem(_LIST_OPTION__SELECTING_LESSONS);
-         _listDataProvider.addItem(_LIST_OPTION__PLAYING_LESSONS);
-         _listDataProvider.addItem(_LIST_OPTION__LEARNING_MODES);
          _listDataProvider.addItem(_LIST_OPTION__ABOUT);
          list.dataProvider = _listDataProvider;
       }
       ]]>
     </fx:Script>
 
-   <list:NormalList id = "list"
+   <list:DisplayAllItemsList id = "list"
                     change = "onListChange()"
                     itemRenderer = "com.brightworks.component.itemrenderer.BwLabelItemRenderer"
                     height = "100%"

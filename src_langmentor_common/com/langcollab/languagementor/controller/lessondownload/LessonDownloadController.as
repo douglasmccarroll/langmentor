@@ -50,6 +50,8 @@ import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
 import com.langcollab.languagementor.util.Utils_LangCollab;
 import com.langcollab.languagementor.vo.LessonVersionVO;
 
+import flash.desktop.NativeApplication;
+
 import flash.events.EventDispatcher;
 import flash.events.TimerEvent;
 import flash.filesystem.File;
@@ -708,10 +710,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
          }
       }
       if (_downloadLessonProcessesInfo.length > 0) {
-         var alertText:String = "Starting " + _downloadLessonProcessesInfo.length + " Lesson Download";
-         if (_downloadLessonProcessesInfo.length > 1)
-            alertText += "s";
-         Utils_ANEs.showAlert_Toast(alertText);
+         NativeApplication.nativeApplication.dispatchEvent(new BwEvent(BwEvent.NEW_LESSON_DOWNLOADS, null, _downloadLessonProcessesInfo.length));
          var cb:Callbacks = new Callbacks(onDownloadLessonsUpdate);
          _currentCommand_DownloadLessons = new Command_DownloadLessons(_downloadLessonProcessesInfo, cb);
          _currentCommand_DownloadLessons.execute();

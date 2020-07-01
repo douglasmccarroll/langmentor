@@ -314,49 +314,27 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onChunkTextTextFieldClick():void {
-         var isNativeTextAvailable:Boolean = model.isAppDualLanguage();
-         var isTargetPhoneticTextAvailable:Boolean;
-         var hasPhoneticTextValueFromLanguageResourceFile_IfSpecified:String = model.getTargetLanguageResource(["hasPhoneticText"]);
-         if (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified) {
-            isTargetPhoneticTextAvailable = (hasPhoneticTextValueFromLanguageResourceFile_IfSpecified == "true");
-         }
-         var availableTextModeCount:uint = 1; // We start with 1 because target language text is always available
-         if (isNativeTextAvailable)
-            availableTextModeCount++;
-         if (isTargetPhoneticTextAvailable)
-            availableTextModeCount++;
-         if (availableTextModeCount == 1) {
+         if (model.getLessonContentTextDisplayModeCount() == 1) {
             // We do nothing - there is no other text mode for the user to switch to
             return;
          }
          _index_dialogOptionIndexes_to_textDisplayMode = new Dictionary();
          var dialogOptionList:Array = [];
          var currentIndex:uint = 0;
-         if (isTargetPhoneticTextAvailable) {
-            var textDisplayModeDisplayName_TargetLanguagePhonetic:String = model.getTargetLanguageResource(["languageSpecificDisplayStrings", model.getNativeLanguageIso639_3Code(), "displayModeName_targetLanguagePhonetic"]);
-            if (!textDisplayModeDisplayName_TargetLanguagePhonetic) {
-               // If we haven't specified a display name for phonetic texxt in the target language's language resource XML file, we simply use "Phonetic" plus the target language's name, e.g. "Phonetic Klingon"
-               // When would we want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call phonetic target language text "Pinyin".
-               textDisplayModeDisplayName_TargetLanguagePhonetic = "Phonetic " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
-            }
+         if (model.isTargetPhoneticTextAvailable()) {
             _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT_PHONETIC;
-            dialogOptionList.push(textDisplayModeDisplayName_TargetLanguagePhonetic)
+            dialogOptionList.push(model.getLessonContentLanguageDisplayName_TargetPhonetic());
             currentIndex++;
          }
-         var textDisplayModeDisplayName_TargetLanguage:String = model.getTargetLanguageResource(["languageSpecificDisplayStrings", model.getNativeLanguageIso639_3Code(), "displayModeName_targetLanguage"]);
-         if (!textDisplayModeDisplayName_TargetLanguage) {
-            // If we haven't specified a display name in the language resource XML file for the target language, we simply use the target language's name.
-            // When would want to specify a display name and not use the default? Well, for example, in Mandarin Chinese we call target language text "Hanzi".
-            textDisplayModeDisplayName_TargetLanguage = model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
-         }
          _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__TARGET_TEXT;
-         dialogOptionList.push(textDisplayModeDisplayName_TargetLanguage);
+         dialogOptionList.push(model.getLessonContentLanguageDisplayName_Target());
          currentIndex++;
-         if (isNativeTextAvailable) {
-            var textDisplayModeDisplayName_NativeLanguage:String = model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage();
+         if (model.isAppDualLanguage()) {
+            // Lesson includes native text
             _index_dialogOptionIndexes_to_textDisplayMode[currentIndex] = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NATIVE_TEXT;
-            dialogOptionList.push(textDisplayModeDisplayName_NativeLanguage);
+            dialogOptionList.push(model.getLessonContentLanguageDisplayName_Native());
          }
+
          _savedTextDisplayMode = _currentTextDisplayMode;
          _currentTextDisplayMode = Constant_TextDisplayModes.TEXT_DISPLAY_MODE__NONE;
          updateChunkTextTextBoxText();
