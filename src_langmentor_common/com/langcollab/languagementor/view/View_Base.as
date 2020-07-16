@@ -108,7 +108,6 @@ public class View_Base extends View {
       transition_SlideView_Up = new SlideViewTransition();
       transition_SlideView_Up.direction = ViewTransitionDirection.UP;
       transition_SlideView_Up.duration = Constant_LangMentor_Misc.EFFECT__SLIDE_TRANSITION_DURATION;
-      addEventListener(MouseEvent.DOUBLE_CLICK, onBaseDoubleClick);
       addEventListener(MouseEvent.MOUSE_DOWN, onBaseMouseDown);
       addEventListener(MouseEvent.MOUSE_MOVE, onBaseMouseMove);
       addEventListener(MouseEvent.MOUSE_UP, onBaseMouseUp);
@@ -129,7 +128,7 @@ public class View_Base extends View {
       if (_isDisposed)
          return;
       _isDisposed = true;
-      removeEventListener(MouseEvent.DOUBLE_CLICK, onBaseDoubleClick);
+      removeEventListener(MouseEvent.DOUBLE_CLICK, onActionBarDoubleClick);
       removeEventListener(MouseEvent.MOUSE_DOWN, onBaseMouseDown);
       removeEventListener(MouseEvent.MOUSE_MOVE, onBaseMouseMove);
       removeEventListener(MouseEvent.MOUSE_UP, onBaseMouseUp);
@@ -207,15 +206,10 @@ public class View_Base extends View {
    override protected function createChildren():void {
       super.createChildren();
       navigator.actionBar.setStyle("color", 0xFFFFFF);
+      navigator.actionBar.addEventListener(MouseEvent.DOUBLE_CLICK, onActionBarDoubleClick);
    }
 
-   protected function onAddedToStage(event:Event = null):void {
-      removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-      stage.autoOrients = false;
-      stage.setOrientation(StageOrientation.DEFAULT);
-   }
-
-   protected function onBaseDoubleClick(event:MouseEvent):void {
+   protected function onActionBarDoubleClick(event:MouseEvent):void {
       if (this is View_Intro_Base)
          return;
       if (!Utils_System.isAlphaOrBetaVersion())
@@ -224,6 +218,12 @@ public class View_Base extends View {
       Log.copyRecentInfoToClipboard();
       Utils_ANEs.showAlert_Toast("Log data copied to clipboard");
       Log.displayDiagnosticsScreen();
+   }
+
+   protected function onAddedToStage(event:Event = null):void {
+      removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+      stage.autoOrients = false;
+      stage.setOrientation(StageOrientation.DEFAULT);
    }
 
    protected function onCustomGesture_Arrow_Down():void {

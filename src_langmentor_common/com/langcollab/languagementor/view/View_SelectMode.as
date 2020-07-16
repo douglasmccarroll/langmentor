@@ -254,6 +254,9 @@ public class View_SelectMode extends View_Base implements IDisposable {
    private function reportUserActivity_ViewHelp(learningModeId:int):void {
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.LEARNING_MODES__VIEW_HELP;
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
+      activity.chunkIndex_Previous = -1;
       activity.learningModeDisplayName = MainModel.getInstance().getLearningModeDisplayNameFromId(learningModeId);
       UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }

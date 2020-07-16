@@ -126,6 +126,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private function reportUserActivity(vo:LessonVersionVO):void {
          var activity:UserAction = new UserAction();
          activity.actionType = Constant_UserActionTypes.CREDITS_LESSON;
+         activity.chunkIndex = -1;
+         activity.chunkIndex_New = -1;
+         activity.chunkIndex_Previous = -1;
          activity.lessonId = vo.publishedLessonVersionId;
          activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(vo);
          activity.lessonProviderId = vo.contentProviderId;

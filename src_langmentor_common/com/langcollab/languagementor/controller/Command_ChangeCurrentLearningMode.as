@@ -66,6 +66,9 @@ public class Command_ChangeCurrentLearningMode extends Command_Base__LangMentor 
    private function reportUserActivity():void {
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.LEARNING_MODES__SELECT_NEW;
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
+      activity.chunkIndex_Previous = -1;
       activity.learningModeDisplayName_New = model.getLearningModeDisplayNameFromId(_newLearningModeId);
       UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }

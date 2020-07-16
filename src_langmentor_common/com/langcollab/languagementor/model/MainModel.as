@@ -619,8 +619,10 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    public function getLanguageVOs():Array {
       var queryVO:LanguageVO = new LanguageVO();
       var report:MainModelDBOperationReport = selectData("getLanguageVOs", queryVO);
-      if (report.isAnyProblems)
+      if (report.isAnyProblems) {
          Log.fatal(["MainModel.getLanguageVOs(): selectData() reports problem", "MainModelDBOperationReport:", report]);
+         return [];
+      }
       var result:Array = report.resultData.slice();
       report.dispose();
       return result;

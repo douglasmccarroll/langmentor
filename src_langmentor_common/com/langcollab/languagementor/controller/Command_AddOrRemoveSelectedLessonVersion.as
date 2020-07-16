@@ -93,6 +93,9 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
    private function reportUserActivity_DeselectLesson():void {
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.SELECT_LESSONS__DESELECT;
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
+      activity.chunkIndex_Previous = -1;
       activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
       activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
       activity.lessonProviderId = _lessonVersionVO.contentProviderId;
@@ -103,6 +106,9 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
    private function reportUserActivity_SelectLesson():void {
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.SELECT_LESSONS__SELECT;
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
+      activity.chunkIndex_Previous = -1;
       activity.lessonId = _lessonVersionVO.publishedLessonVersionId;
       activity.lessonName_NativeLanguage = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionVO);
       activity.lessonProviderId = _lessonVersionVO.contentProviderId;

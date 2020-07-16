@@ -89,7 +89,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          stage.autoOrients = true;
       }
 
-      override protected function onBaseDoubleClick(event:MouseEvent):void {
+      override protected function onActionBarDoubleClick(event:MouseEvent):void {
          var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__SEND_FEEDBACK);
          navigator.pushView(View_Diagnostics, null, ctxt, transition_SlideView_Left);
       }
@@ -105,15 +105,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             if (isInFatalErrorMode()) {
                if (Utils_System.isAndroid()) {
                   messageText = _MESSAGE__ONCLICK__CLOSING_APP_ANDROID;
-               }
-               else if (Utils_System.isIOS()) {
+               } else if (Utils_System.isIOS()) {
                   messageText = _MESSAGE__ONCLICK__CLOSING_APP_IOS;
-               }
-               else {
+               } else {
                   messageText = _MESSAGE__ONCLICK__CLOSING_APP_UNKNOWN_PLATFORM;
                }
-            }
-            else {
+            } else {
                messageText = _MESSAGE__ONCLICK__SENDING_REPORT;
                startBusyIndicator();
             }
@@ -191,8 +188,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (isInFatalErrorMode())
             navigationContent = [];
       }
-
-
       ]]>
     </fx:Script>
 </view:View_Base_BottomButtons>

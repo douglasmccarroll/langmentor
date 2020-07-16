@@ -738,11 +738,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (currentLessons.currentChunkIndex) {
             activity.chunkIndex = currentLessons.currentChunkIndex;
          }
+         activity.chunkIndex_New = -1;
+         activity.chunkIndex_Previous = -1;
          if (model.getCurrentLearningModeDisplayName()) {
             activity.learningModeDisplayName = model.getCurrentLearningModeDisplayName();
-         }
-         if (currentLessons.currentLessonVersionLessonId) {
-            activity.lessonId = currentLessons.currentLessonVersionLessonId;
          }
          if (currentLessons.currentLessonVersionLessonId) {
             activity.lessonId = currentLessons.currentLessonVersionLessonId;

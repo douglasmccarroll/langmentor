@@ -26,7 +26,7 @@ public class UserAction {
    //
    // "New" and "Previous" - In some cases we only need to report a "thing", i.e. a chunk, a lesson, etc.
    //                        For example, when the user suppresses a chunk, we only need to know which chunk.
-   //                        In other cases we want to know the previous thing and the new thing.
+   //                        In other cases we want to know a previous thing and a new thing.
    //                        For example, when the app auto-advances from one lesson to another.
    //                        Note that "previous" and "new" as used here shouldn't be confused with the Play Lessons screen's Previous & Next buttons.
    //                        For example, if the user clicks the Previous Lesson button while in the middle of a lesson, both lessonId_Previous and

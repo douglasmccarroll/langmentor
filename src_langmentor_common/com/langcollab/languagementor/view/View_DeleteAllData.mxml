@@ -164,6 +164,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          } else {
             activity.actionType = Constant_UserActionTypes.DELETE_ALL_DATA__FAILURE;
          }
+         activity.chunkIndex = -1;
+         activity.chunkIndex_New = -1;
+         activity.chunkIndex_Previous = -1;
          UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
       }
 

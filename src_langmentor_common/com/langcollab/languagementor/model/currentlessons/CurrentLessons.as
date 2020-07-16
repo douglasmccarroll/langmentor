@@ -101,7 +101,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       return _currentChunkVO_OnlySetViaSetCurrentLessonAndChunkIndexes;
    }
 
-   private var _currentChunkIndex_OnlySetViaSetCurrentLessonAndChunkIndexes:int = 0;
+   private var _currentChunkIndex_OnlySetViaSetCurrentLessonAndChunkIndexes:int = -1;
 
    public function get currentChunkIndex():int {
       return _currentChunkIndex_OnlySetViaSetCurrentLessonAndChunkIndexes;
@@ -1138,10 +1138,13 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          stopPlayingCurrentLessonVersionIfPlaying();
          dispatchEvent(new Event("sleepTimerActiveChange"));
          var activity:UserAction = new UserAction();
+         activity.actionType = Constant_UserActionTypes.SLEEP_TIMER__FINISH;
+         activity.chunkIndex = -1;
+         activity.chunkIndex_New = -1;
+         activity.chunkIndex_Previous = -1;
+         UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
          Utils_Audio_Files.playGongSound();
       }
-      activity.actionType = Constant_UserActionTypes.SLEEP_TIMER__FINISH;
-      UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
    }
 
    private function onUserStartedAudio(e:Event_Audio):void {
@@ -1178,6 +1181,8 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.AUTO_PLAY__ADVANCE_CHUNK;
       activity.autoPlay_AutoAdvanceLesson = (newLessonVO is LessonVersionVO);
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
       activity.chunkIndex_Previous = advancedFromChunkIndex;
       activity.learningModeDisplayName = _model.getCurrentLearningModeDisplayName();
       activity.lessonId = currentLessonVersionLessonId;

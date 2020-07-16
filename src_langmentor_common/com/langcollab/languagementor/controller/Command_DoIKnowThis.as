@@ -117,6 +117,8 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
    private function reportUserActivity(chunkIndex:int, lessonCompletelySuppressed:Boolean):void {
       var activity:UserAction = new UserAction();
       activity.actionType = Constant_UserActionTypes.I_KNOW_THIS__SUPPRESS_CHUNK;
+      activity.chunkIndex = -1;
+      activity.chunkIndex_New = -1;
       activity.chunkIndex_Previous = chunkIndex;
       activity.iKnowThis_AllChunksInLessonSuppressed = lessonCompletelySuppressed
       activity.learningModeDisplayName = model.getCurrentLearningModeDisplayName();

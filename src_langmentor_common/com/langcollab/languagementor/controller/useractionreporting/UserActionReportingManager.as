@@ -26,6 +26,7 @@ import com.brightworks.interfaces.IUserDataReportingConfigProvider;
 import com.brightworks.util.Utils_AWS;
 import com.brightworks.util.Utils_System;
 import com.brightworks.util.singleton.SingletonManager;
+import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.model.MainModel;
 
 public class UserActionReportingManager implements IManagedSingleton{
@@ -49,9 +50,6 @@ public class UserActionReportingManager implements IManagedSingleton{
    }
 
    public static function reportActivityIfUserHasActivatedReporting(activity:UserAction):void {
-
-
-      return; /////
 
 
       /////  Need "if activated" code instead of "if beta"
@@ -112,13 +110,13 @@ public class UserActionReportingManager implements IManagedSingleton{
       if (activity.autoPlay_AutoAdvanceLesson) {
          detailsObject["autoPlay_AutoAdvanceLesson"] = "true";
       }
-      if (activity.chunkIndex) {
+      if (activity.chunkIndex >= 0) {
          detailsObject["chunkIndex"] = activity.chunkIndex;
       }
-      if (activity.chunkIndex_New) {
+      if (activity.chunkIndex_New >= 0) {
          detailsObject["chunkIndex_New"] = activity.chunkIndex_New;
       }
-      if (activity.chunkIndex_Previous) {
+      if (activity.chunkIndex_Previous >= 0) {
          detailsObject["chunkIndex_Previous"] = activity.chunkIndex_Previous;
       }
       if (activity.iKnowThis_AllChunksInLessonSuppressed) {
