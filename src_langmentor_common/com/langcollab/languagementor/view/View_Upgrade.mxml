@@ -73,11 +73,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          } else if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersion) {
             messageText = "Congratulations! You're running the most recent version of " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ".";
          } else {
-            if (Utils_AIR.appVersionNumber >= model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE;
-            } else {
-               messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
-            }
+            messageText = Constant_LangMentor_Misc.MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE;
          }
          _messageTextWidget = new UIWidget_Viewlet__Text();
          _messageTextWidget.text = messageText;

@@ -58,7 +58,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_LOG_URL_NODES:String = "problemDescription_MultipleLogURLNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_LOGGING_CONFIGURATION_NODES:String = "problemDescription_MultipleLoggingConfigurationNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_MOST_RECENT_VERSION_NODES:String = "problemDescription_MultipleMostRecentVersionNodes";
-   public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODES:String = "problemDescription_MultipleMostRecentVersionRequiredDataSchemaVersionNodes";
+   public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_REQUIRED_MINIMUM_VERSION_NODES:String = "problemDescription_MultipleRequiredMinimumVersionNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_REQUIRED_VERSION_LIBRARY_ACCESS_NODES:String = "problemDescription_MultipleRequiredVersion_LibraryAccessNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_WARN_NODES:String = "problemDescription_MultipleWarnNodes";
    public static const PROB_DESC__MENTOR_TYPE_FILE__NO_DEFAULT_NODE:String = "problemDescription_NoDefaultNode";
@@ -68,14 +68,14 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
    public static const PROB_DESC__MENTOR_TYPE_FILE__NO_LOG_URL_NODE:String = "problemDescription_NoLogURLNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__NO_LOGGING_CONFIGURATION_NODE:String = "problemDescription_NoLoggingConfigurationNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__NO_MOST_RECENT_VERSION_NODE:String = "problemDescription_NoMostRecentVersionNode";
-   public static const PROB_DESC__MENTOR_TYPE_FILE__NO_MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODE:String = "problemDescription_NoMostRecentVersionRequiredDataSchemaVersionNode";
+   public static const PROB_DESC__MENTOR_TYPE_FILE__NO_REQUIRED_MINIMUM_VERSION_NODE:String = "problemDescription_NoRequiredMinimumVersionNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__NO_REQUIRED_VERSION_LIBRARY_ACCESS_NODE:String = "problemDescription_NoRequiredVersion_LibraryAccessNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_PROBABILITY_NODE:String = "problemDescription_TypeError_LogProbabilityNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_TO_SERVER_MAX_STRING_LENGTH_NODE:String = "problemDescription_TypeError_LogToServerMaxStringLengthNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_TO_SERVER_PROBABILITY_NODE:String = "problemDescription_TypeError_LogToServerProbabilityNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__LOG_URL_NODE__URL_MALFORMED:String = "problemDescription_TypeError_LogURLNode_URLMalformed";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_NODE:String = "problemDescription_TypeError_MostRecentVersionNode";
-   public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODE:String = "problemDescription_TypeError_MostRecentVersionRequiredDataSchemaVersionNode";
+   public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__REQUIRED_MINIMUM_VERSION_NODE:String = "problemDescription_TypeError_RequiredMinimumVersionNode";
    public static const PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__REQUIRED_VERSION_LIBRARY_ACCESS_NODE:String = "problemDescription_TypeError_RequiredVersion_LibraryAccessNode";
 
    private static const _TIMER_TIMEOUT_MS:int = 30000;
@@ -125,10 +125,10 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
       return _mostRecentVersion;
    }
 
-   private var _mostRecentVersionRequiredDataSchemaVersion:Number;
+   private var _requiredMinimumVersion:Number;
 
-   public function get mostRecentVersionRequiredDataSchemaVersion():Number {
-      return _mostRecentVersionRequiredDataSchemaVersion;
+   public function get requiredMinimumVersion():Number {
+      return _requiredMinimumVersion;
    }
 
    private var _techReport:ConfigFileInfoTechReport;
@@ -504,7 +504,7 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
 
    private function refreshMentorTypeDataFromXML():void {
       _mostRecentVersion = Utils_XML.readNumberNode(_fileXML_MentorType.mostRecentVersion[0]);
-      _mostRecentVersionRequiredDataSchemaVersion = Utils_XML.readNumberNode(_fileXML_MentorType.mostRecentVersionRequiredDataSchemaVersion[0]);
+      _requiredMinimumVersion = Utils_XML.readNumberNode(_fileXML_MentorType.requiredMinimumVersion[0]);
       _index_LogLevel_to_IsLoggingEnabled = new Dictionary();
       _index_LogLevel_to_IsLogToServerEnabled = new Dictionary();
       _index_LogLevel_to_LogToServerMaxStringLength = new Dictionary();
@@ -648,17 +648,17 @@ public class ConfigFileInfo implements ILoggingConfigProvider, IUserDataReportin
          bError = true;
          techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_NODE);
       }
-      if (XMLList(_fileXML_MentorType.mostRecentVersionRequiredDataSchemaVersion).length() < 1) {
+      if (XMLList(_fileXML_MentorType.requiredMinimumVersion).length() < 1) {
          bError = true;
-         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__NO_MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODE);
+         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__NO_REQUIRED_MINIMUM_VERSION_NODE);
       }
-      else if (XMLList(_fileXML_MentorType.mostRecentVersionRequiredDataSchemaVersion).length() > 1) {
+      else if (XMLList(_fileXML_MentorType.requiredMinimumVersion).length() > 1) {
          bError = true;
-         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODES);
+         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__MULTIPLE_REQUIRED_MINIMUM_VERSION_NODES);
       }
-      else if (!Utils_XML.doesNodeEvaluateToNumber(_fileXML_MentorType.mostRecentVersionRequiredDataSchemaVersion[0])) {
+      else if (!Utils_XML.doesNodeEvaluateToNumber(_fileXML_MentorType.requiredMinimumVersion[0])) {
          bError = true;
-         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__MOST_RECENT_VERSION_REQUIRED_DATA_SCHEMA_VERSION_NODE);
+         techReport.problemDescriptionList.push(PROB_DESC__MENTOR_TYPE_FILE__TYPE_ERROR__REQUIRED_MINIMUM_VERSION_NODE);
       }
       if (XMLList(_fileXML_MentorType.requiredVersion_LibraryAccess).length() < 1) {
          bError = true;

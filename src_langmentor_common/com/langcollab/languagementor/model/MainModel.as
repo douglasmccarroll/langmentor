@@ -1731,7 +1731,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
 
    private function onLoadConfigDataComplete(techReport:ConfigFileInfoTechReport):void {
       Log.debug("MainModel.onLoadConfigDataComplete()");
-      if (Utils_AIR.appVersionNumber < configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
+      if (Utils_AIR.appVersionNumber < configFileInfo.requiredMinimumVersion) {
          // We wipe data to ensure that when the new version is installed a new DB file is created, and the user starts from a clean slate.
          _appStatePersistenceManager.wipeData();
          Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);

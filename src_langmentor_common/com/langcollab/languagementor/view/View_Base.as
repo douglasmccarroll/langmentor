@@ -40,7 +40,6 @@ import mx.events.ResizeEvent;
 import spark.components.BusyIndicator;
 
 import spark.components.View;
-import spark.components.ViewMenuItem;
 import spark.events.ViewNavigatorEvent;
 import spark.skins.mobile.BusyIndicatorSkin;
 import spark.transitions.CrossFadeViewTransition;
@@ -48,10 +47,6 @@ import spark.transitions.SlideViewTransition;
 import spark.transitions.ViewTransitionDirection;
 
 public class View_Base extends View {
-   private static const VIEW_MENU_ITEM_LABEL__CREDITS:String = "Credits";
-   private static const VIEW_MENU_ITEM_LABEL__HELP:String = "Help";
-   private static const VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK:String = "Send Feedback";
-
    public var transition_CrossFade:CrossFadeViewTransition;
 
    protected var appStatePersistenceManager:AppStatePersistenceManager = AppStatePersistenceManager.getInstance();
@@ -121,7 +116,6 @@ public class View_Base extends View {
       else {
          addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
       }
-      createViewMenu();
    }
 
    public function dispose():void {
@@ -135,9 +129,6 @@ public class View_Base extends View {
       removeEventListener(ResizeEvent.RESIZE, onBaseResize);
       removeEventListener(TransformGestureEvent.GESTURE_SWIPE, onBaseGestureSwipe);
       removeEventListener(ViewNavigatorEvent.REMOVING, onRemoving);
-      for each (var vmi:ViewMenuItem in viewMenuItems) {
-         vmi.removeEventListener(MouseEvent.CLICK, onViewMenuItemClick);
-      }
       if (_busyIndicator) {
          _busyIndicator.visible = false;
          removeElement(_busyIndicator);
@@ -183,25 +174,6 @@ public class View_Base extends View {
    //          Protected Methods
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-   protected function createViewMenu():void {
-      //// 20200602 dmccarroll - looks like I wrote this code long ago - and haven't used it in a long time, if ever
-      /*viewMenuItems = new Vector.<ViewMenuItem>();
-      var vmi:ViewMenuItem;
-      vmi = new ViewMenuItem();
-      vmi.label = VIEW_MENU_ITEM_LABEL__CREDITS;
-      vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
-      viewMenuItems.push(vmi);
-      vmi = new ViewMenuItem();
-      vmi.label = VIEW_MENU_ITEM_LABEL__HELP;
-      vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
-      viewMenuItems.push(vmi);
-      vmi = new ViewMenuItem();
-      vmi.label = VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK;
-      vmi.addEventListener(MouseEvent.CLICK, onViewMenuItemClick);
-      viewMenuItems.push(vmi);*/
-
-   }
 
    override protected function createChildren():void {
       super.createChildren();
@@ -312,28 +284,6 @@ public class View_Base extends View {
 
    protected function onResize(message:String = null):void {
       // Abstract method - override if desired
-   }
-
-   protected function onViewMenuItemClick(event:MouseEvent):void {
-      //// 20200602 dmccarroll - looks like I wrote this code long ago - and haven't used it in a long time, if ever
-      /*switch (event.currentTarget.label) {
-         case VIEW_MENU_ITEM_LABEL__CREDITS: {
-            navigator.pushView(View_Credits, null, null, transition_CrossFade);
-            break;
-         }
-         case VIEW_MENU_ITEM_LABEL__HELP: {
-            var ctxt:ViewContext = new ViewContext(ViewContext.CONTEXT_TYPE__FATAL_ERROR);
-            navigator.pushView(View_Help, null, null, transition_CrossFade);
-            break;
-         }
-         case VIEW_MENU_ITEM_LABEL__SEND_FEEDBACK: {
-            navigator.pushView(View_SendFeedback, null, null, transition_CrossFade);
-            break;
-         }
-         default: {
-            Log.warn("View_Base.onMenuViewItemClick(): No case for '" + event.currentTarget.label + "'");
-         }
-      }*/
    }
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -111,16 +111,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          if (!lessonDownloadController.isSufficientLessonStorageSpaceAvailable()) {
             stopBusyIndicator();
             message += Constant_AppConfiguration.INSUFFICIENT_STORAGE_SPACE_MESSAGE;
-         }
-         else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
+         } else if (lessonDownloadController.isUpdateAvailableLessonDownloadsProcessActive) {
             startBusyIndicator();
             message += _MESSAGE__CHECKING_FOR_DOWNLOADS;
-         }
-         else if (lessonDownloadController.isLessonDownloadProcessActive) {
+         } else if (lessonDownloadController.isLessonDownloadProcessActive) {
             stopBusyIndicator();
             message += updateUI_CreateLessonDownloadInProcessString();
-         }
-         else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
+         } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo) {
             // The "update available downloads" process is finished, but no lesson downloads are in progress.
             // This probably indicates that there are simply no new lessons available for downloading.
             // It's also possible that something is amiss, and needs to be explained to the user.
@@ -128,15 +125,18 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                   lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
             if (updateInfoCommandReport) {
-               if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
+               if (updateInfoCommandReport.isAppVersionLowerThanRequiredMinimumVersion) {
+                  // dmccarroll 20200723
+                  // isAppVersionLowerThanRequiredMinimumVersion is deprecated - I don't believe that we'll ever start downloading lessons if this
+                  // is true - we catch this "appVersion < requiredMinimumVersion" case when we download config info, and send the user to the
+                  // View_UpdateRequired screen.
+                  Log.warn("Viewlet_LessonDownloads.updateUI() - deprecated isAppVersionLowerThanRequiredMinimumVersion is true - this should never happen");
                   stopBusyIndicator();
-                  explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
-               }
-               else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
+                  explanation = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED__APP_VERSION_LOWER_THAN_MINIMUM_REQUIRED_VERSION;
+               } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure) {
                   stopBusyIndicator();
                   explanation = _MESSAGE__NO_INTERNET_CONNECTION;
-               }
-               else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
+               } else if (updateInfoCommandReport.isZeroLibrariesAddedByUserAndOrRecommendedLibraries) {
                   if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
                      stopBusyIndicator();
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES;
@@ -144,8 +144,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                      stopBusyIndicator();
                      explanation = _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER;
                   }
-               }
-               else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
+               } else if (updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_SingleLanguage &&
                      updateInfoCommandReport.isLanguageSpecificInfoFileDownloadFailure_DualLanguage) {
                   stopBusyIndicator();
                   explanation = _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS;
@@ -156,16 +155,14 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0) {
                   stopBusyIndicator();
                   explanation = _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS;
-               }
-               else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0) {
+               } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0) {
                   stopBusyIndicator();
                   explanation = _MESSAGE__NO_NEW_LESSONS_FOUND;
                }
             }
             if (explanation) {
                message += explanation + "\n\n";
-            }
-            else {
+            } else {
                // This is generally fine, even desirable. Next line is only used if you've concluded that an explanation would be appropriate, and
                // yet you see no explanation, and you want to set a breakpoint.
                var foo:int = 0;

@@ -302,18 +302,24 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.checkedLibraryCount == 0) {
                   stopBusyIndicator();
                   displayContent_NoLibrariesAvailableForDownload();
-               }
-               else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0) {
+               } else if (lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.availableUndownloadedLessonsCount == 0) {
                   stopBusyIndicator();
                   displayContent_LibrariesAvailableButNoLessonsEligibleForDownload();
-               }
-               else {
-                  var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
+               } else {
+                  stopBusyIndicator();
+                  displayContent_Downloading_Failure();
+                  // dmccarroll 20200723
+                  // All of the commented-out if statements below result in the above two lines of code, so I'm replacing them with these two lines.
+                  // There may be some worthwhile logic in these if statement, but it would take a fair amount of time to determine what my intent
+                  // was when I wrote them, so I'm not going to do that now.
+                  // isAppVersionLowerThanRequiredMinimumVersion is deprecated - I don't believe that we'll ever start downloading lessons if this
+                  // is true - we catch this "appVersion < requiredMinimumVersion" case when we download config info, and send the user to the
+                  // View_UpdateRequired screen.
+                  /*var updateInfoCommandReport:Command_UpdateAvailableLessonDownloadsInfoTechReport =
                         lessonDownloadController.previousUpdateAvailableLessonDownloadsProcessResultsInfo.command_UpdateAvailableLessonDownloadsInfoTechReport;
                   if (updateInfoCommandReport) {
-                     if (updateInfoCommandReport.isAppVersionLowerThanRequiredDataSchemaVersion) {
+                     if (updateInfoCommandReport.isAppVersionLowerThanRequiredMinimumVersion) {
                         // This could occur if the user just wiped all data with Delete All Data
-                        // Though they probably would have already been informed that they need to upgrade
                         stopBusyIndicator();
                         displayContent_Downloading_Failure();
                      } else if (updateInfoCommandReport.isLoadConfigFileInfoFailure ||
@@ -322,8 +328,12 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                         stopBusyIndicator();
                         displayContent_Downloading_Failure();
                      }
+                     updateInfoCommandReport.dispose();
                   }
-                  updateInfoCommandReport.dispose();
+                  else {
+                     stopBusyIndicator();
+                     displayContent_Downloading_Failure();
+                  }*/
                }
             } else {
                stopBusyIndicator();

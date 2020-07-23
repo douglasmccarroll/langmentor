@@ -80,13 +80,15 @@ public class Command_InitApplication extends Command_Base__LangMentor {
          model.init();
       }
       else if ((!(appStatePersistenceManager.retrieveIsDataSchemaAppVersionSaved())) ||
-            (appStatePersistenceManager.retrieveDataSchemaAppVersion() < Constant_MentorTypeSpecific.APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA)) {
-         // Our data schema's app version is lower than our current minimum supported data schema app version.
+            (appStatePersistenceManager.retrieveDataSchemaAppVersion() < Constant_MentorTypeSpecific.MINIMUM_SUPPORTED_DATA_SCHEMA_APP_VERSION)) {
+         // Our data schema's version is lower than our current minimum supported data schema version.
          // In this situation we delete all data.
-         // Messages in the app that encourage users to upgrade to a new version warn them if this will happen.
-         // It's possible that users may upgrade without getting such a message, in which case they will not have been warned. ///
-         // In the future we should update the data schema in most or all of these cases, but at this
+         // This will only happen if/when a user upgrades to a new version. Hopefully it won't be too irritating or disconcerting.
+         // In the future we should find ways to support previous data schemas, if possible, but at this
          // point we don't have enough resources to do this.
+         //// The message in the Upgrade screen that encourages users to upgrade to a new version doesn't warn them if their data will get wiped here.
+         //// To accomplish this we'd need to add a "mostRecentVersionMinimumSupportedDataSchema" value to mentor type files, and it would need
+         //// to be set to the same value as MINIMUM_SUPPORTED_DATA_SCHEMA_APP_VERSION.
          Utils_LangCollab.wipeData(model, appStatePersistenceManager, lessonDownloadController, audioController);
          model.init();
       }

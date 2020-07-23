@@ -19,10 +19,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.constant {
 
 public class Constant_MentorTypeSpecific {
-   public static const ANE_KEY__DISTRIQT:String = "ccaaa2975c98efeb8db2be4af07c82be3807ad88fFazDXN3VVOBL7E+PnzI1AxIJXCVbeqHeKSjj2pbapwI3Mc/eTMS5zOpXfZbDgWT3eehNdwSXmqllhWHxrxJbrbSnlJDDb1HhUG8MwW+ypUx48CYWADn8KX9bpcQ/O7MlOFKncFU4gkxWjnw+61YCGLEvRpJ4fuUGIB3xjqNKEvB2azR8/qSNKER91+TeBKbqEiQ3Y1YyIiUclp5jAbxyu3HcGnjFTk/7/tw8I6acKFM+hi078YT8ewchXQrtdHexRq5knF+eoE5kW7cSqMKEEvhegaaOpuDczU/uvhDkJrf4MltqzNS2plfnp2AINnJN9UQj4n4it/qXnQTwVYYBg==";
    public static const APP_NAME__FULL:String = "German Language Mentor";
    public static const APP_NAME__SHORT:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.44;
    public static const APPLE_APP_ID:String = "1454578599";
    public static const CREATIVE_SYNTAX__DISPLAY_EXPLANATION:Boolean = false;
    public static const FORUMS__EXPLANATORY_TEXT__1:String = "The Language Collaborative's forums are the best place to get answers to your questions about Language Mentor, to report problems, and to suggest new features.";
@@ -32,6 +30,7 @@ public class Constant_MentorTypeSpecific {
    public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "deu";
    public static const MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__ENG__DEU;
    public static const MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR:Boolean = false;
+   public static const MINIMUM_SUPPORTED_DATA_SCHEMA_APP_VERSION:Number = 1.50;
    public static const ROOT_INFO_FOLDER_URL:String = "http://lessons.languagecollaborative.com/";
    public static const SHARE_SCREEN__A_GOOD_REASON_FOR_SHARING:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an open platform supported by its users and developers. Please help us spread the word!";
 

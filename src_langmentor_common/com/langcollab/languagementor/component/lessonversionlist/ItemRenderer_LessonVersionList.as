@@ -100,9 +100,6 @@ public class ItemRenderer_LessonVersionList extends ItemRenderer_Mobile_Base {
       if ((data.hasOwnProperty("data")) && (data.data) && (data.data.hasOwnProperty("lessonVersionVO"))) {
          var lvvo:LessonVersionVO = LessonVersionVO(data.data.lessonVersionVO);
          var singleOrDualLanguageIndicatorClass:Class;
-         ////lvvo.isDualLanguage ?
-         //getStyle("singleorduallanguageindicatordual") :
-         //getStyle("singleorduallanguageindicatorsingle");
          if (singleOrDualLanguageIndicatorClass) {
             _singleOrDualLanguageIndicator = new singleOrDualLanguageIndicatorClass();
             _singleOrDualLanguageIndicator.smoothing = true;

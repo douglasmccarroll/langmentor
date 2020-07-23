@@ -778,11 +778,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       else {
          setCurrentLessonAndChunkIndexes(currentLessonIndex, getIndexForEarliestUnsuppressedChunkInCurrentLesson());
       }
-      /*if (isCurrentLessonAlphaReviewVersion()) {      ////alpha
-         _isLessonPlaying = false;
-         _isLessonPaused = false;
-      }*/
-      ////else {
       if ((_isLessonPlaying) && (!_isLessonPaused)) {
          if (isUserInitiated) {
             _audioTimer.requestAudioPlayPermission();
@@ -791,7 +786,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
             _audioController.playCurrentLessonVersionAndCurrentChunk();
          }
       }
-      ////}
    }
 
    public function pauseCurrentLessonVersionIfPlaying():void {

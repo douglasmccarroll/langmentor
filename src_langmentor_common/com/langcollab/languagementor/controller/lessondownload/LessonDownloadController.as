@@ -723,7 +723,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       // dmccarroll 20191217
       // We disable downloads if there was no internet connection at startup because,
       // even if an internet connection occurs later on,
-      // we would then want our code to check mostRecentVersionRequiredDataSchemaVersion before downloading lessons
+      // we would then want our code to check requiredMinimumVersion before downloading lessons
       // (because if we don't, it's possible that new lessons will require an updated DB schema and chaos will then ensue),
       // and such 'check' code would add complexity to our codebase, and complexity equals harm, and must always be justified,
       // and in this case the complexity/harm would outweigh the benefit of permitting lesson downloads in this corner case.

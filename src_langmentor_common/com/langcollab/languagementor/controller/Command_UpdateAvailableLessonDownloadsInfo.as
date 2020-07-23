@@ -71,11 +71,15 @@ public class Command_UpdateAvailableLessonDownloadsInfo extends Command_UpdateLi
          return;
       Log.debug("Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads() - not disposed yet");
       var appVersion:Number = Utils_AIR.appVersionNumber;
-      if (appVersion < model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion) {
-         Log.info("Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads(): appVersion < mostRecentVersionRequiredDataSchemaVersion");
-         Log.info("     mostRecentVersionRequiredDataSchemaVersion: " + model.configFileInfo.mostRecentVersionRequiredDataSchemaVersion);
-         Log.info("     appVersion: " + appVersion);
-         Command_UpdateAvailableLessonDownloadsInfoTechReport(techReport).isAppVersionLowerThanRequiredDataSchemaVersion = true;
+      if (appVersion < model.configFileInfo.requiredMinimumVersion) {
+         // dmccarroll 20200723 - isAppVersionLowerThanRequiredMinimumVersion deprecated - should never be true
+         var warningText:String = "";
+         warningText += "Command_UpdateAvailableLessonDownloadsInfo.startLanguageSpecificInfoFileDownloads(): appVersion < requiredMinimumVersion\n";
+         warningText += "This should never happen - should have been caught when we downloaded config info, i.e. in MainModel.onLoadConfigDataComplete()\n"
+         warningText += "     requiredMinimumVersion: " + model.configFileInfo.requiredMinimumVersion;
+         warningText += "     appVersion: " + appVersion;
+         Log.warn(warningText);
+         Command_UpdateAvailableLessonDownloadsInfoTechReport(techReport).isAppVersionLowerThanRequiredMinimumVersion = true;
          reportResultsAndDispose();
          return;
       }

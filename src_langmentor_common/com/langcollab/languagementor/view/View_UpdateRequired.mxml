@@ -38,9 +38,8 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _isDisposed:Boolean = false;
 
       private function onCreationComplete():void {
-         textArea.text = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED_DUE_TO_NEW_DATA_FORMAT;
+         textArea.text = Constant_LangMentor_Misc.MESSAGE__UPGRADE__UPDATE_REQUIRED__APP_VERSION_LOWER_THAN_MINIMUM_REQUIRED_VERSION;
       }
-
       ]]>
     </fx:Script>
    <s:VGroup height = "100%"
