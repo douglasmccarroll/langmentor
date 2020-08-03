@@ -32,6 +32,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bold_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Bullet_Text;
       import com.langcollab.languagementor.component.uiwidget.UIWidget_Viewlet__Heading;
+      import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
       import mx.controls.Spacer;
 
@@ -104,7 +105,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addElement(new Spacer());
          addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bold_Text();
-         textWidget.text = "Please report libraries that contain offensive or illegal content at LanguageCollaborative.com/violations";
+         textWidget.text = "Please report libraries that contain offensive or illegal content at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL;
          addElement(textWidget);
       }
       ]]>

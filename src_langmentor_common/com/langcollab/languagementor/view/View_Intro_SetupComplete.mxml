@@ -123,6 +123,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          textWidget.text = "On the Home screen, press the Select Lessons button and select lessons";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();
+         textWidget.text = "On the Home screen, press the Select Mode button and select a learning mode";
+         viewletGroup.addElement(textWidget);
+         textWidget = new UIWidget_Viewlet__Bullet_Text();
          textWidget.text = "On the Home screen, press the Play Lessons button";
          viewletGroup.addElement(textWidget);
          textWidget = new UIWidget_Viewlet__Bullet_Text();

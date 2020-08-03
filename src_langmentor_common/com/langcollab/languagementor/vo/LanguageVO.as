@@ -38,7 +38,7 @@ public class LanguageVO extends VO implements IVO {
    //
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   private var _hasRecommendedLibraries:Boolean;   // Note that this is set based on the info in the root config file. If this file hasn't been downloaded yet, this can give a false negative.
+   private var _hasRecommendedLibraries:Boolean;   // Note that this is set based on the info in the root config file. If this file hasn't been downloaded yet, this can give a false negative. However, this file gets downloaded very early in the app init process, before the mentor_type file is downloaded, so this isn't something that we need to worry about a great deal.
 
    public function get hasRecommendedLibraries():Boolean {
       return _hasRecommendedLibraries;

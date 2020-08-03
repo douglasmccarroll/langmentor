@@ -21,7 +21,7 @@ package com.langcollab.languagementor.constant {
 public class Constant_MentorTypeSpecific {
    public static const APP_NAME__FULL:String = "German Language Mentor";
    public static const APP_NAME__SHORT:String = "Language Mentor";
-   public static const APPLE_APP_ID:String = "1454578599";
+   public static const APP_OWNER_WEBSITE_URL:String = "LanguageCollaborative.com";
    public static const CREATIVE_SYNTAX__DISPLAY_EXPLANATION:Boolean = false;
    public static const FORUMS__EXPLANATORY_TEXT__1:String = "The Language Collaborative's forums are the best place to get answers to your questions about Language Mentor, to report problems, and to suggest new features.";
    public static const FORUMS__EXPLANATORY_TEXT__2:String = "We invite you to join us at LanguageCollaborative.com";
@@ -33,6 +33,5 @@ public class Constant_MentorTypeSpecific {
    public static const MINIMUM_SUPPORTED_DATA_SCHEMA_APP_VERSION:Number = 1.50;
    public static const ROOT_INFO_FOLDER_URL:String = "http://lessons.languagecollaborative.com/";
    public static const SHARE_SCREEN__A_GOOD_REASON_FOR_SHARING:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an open platform supported by its users and developers. Please help us spread the word!";
-
 }
 }

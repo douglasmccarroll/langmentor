@@ -135,7 +135,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          viewletGroup.addElement(new Spacer());
          viewletGroup.addElement(new Spacer());
          textWidget = new UIWidget_Viewlet__Bold_Text();
-         textWidget.text = "If you’re interested in creating lesson libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", please visit us at LanguageCollaborative.com";
+         textWidget.text = "If you’re interested in creating lesson libraries for " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + ", please visit us at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL + ".";
          viewletGroup.addElement(textWidget);
       }
       ]]>

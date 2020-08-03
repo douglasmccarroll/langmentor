@@ -86,13 +86,13 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          addElement(textWidget);
          if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             textWidget = new UIWidget_Viewlet__Bullet_Text();
-            textWidget.text = "If you'd like information about how to create lessons, please visit us at LanguageCollaborative.com";
+            textWidget.text = "If you'd like information about how to create lessons, please visit us at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL;
             addElement(textWidget);
          }
          else {
             addElement(new Spacer());
             textWidget = new UIWidget_Viewlet__Text();
-            textWidget.text = "If you're interested in creating lessons for Language Mentor, we invite you to visit us at our website LanguageCollaborative.com.";
+            textWidget.text = "If you're interested in creating lessons for Language Mentor, we invite you to visit us at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL + ".";
             addElement(textWidget);
          }
       }

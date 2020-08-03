@@ -61,6 +61,7 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 import com.langcollab.languagementor.controller.Command_LoadLearningModeDescriptions;
+import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 import com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo;
 import com.langcollab.languagementor.model.currentlessons.CurrentLessons;

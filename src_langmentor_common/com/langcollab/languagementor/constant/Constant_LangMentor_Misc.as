@@ -76,10 +76,10 @@ public class Constant_LangMentor_Misc {
    public static const LEAF_TYPE__TEXTONLY_TARGET:String = "LEAF_TYPE__TEXTONLY_TARGET";
 
    // Messages
-   public static const MESSAGE__CONTACT_US:String = "contact us via the forums at LanguageCollaborative.com";
-   public static const MESSAGE__REPORT_PROBLEM:String = "Please report this problem on the forums at LanguageCollaborative.com";
+   public static const MESSAGE__CONTACT_US:String = "contact us via the forums at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL;
+   public static const MESSAGE__REPORT_PROBLEM:String = "Please report this problem on the forums at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL;
    public static const MESSAGE__UPGRADE__NEWER_VERSION_OF_APP_AVAILABLE:String = "A newer version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available.\n\nYou can use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
-   public static const MESSAGE__UPGRADE__UPDATE_REQUIRED__APP_VERSION_LOWER_THAN_MINIMUM_REQUIRED_VERSION:String = "Please Upgrade\n\nA new version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available, and an upgrade is necessary in order to continue using the app.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.\n\nNote: You'll need to re-download lessons, etc. We apologize for this inconvenience.";
+   public static const MESSAGE__UPGRADE__UPDATE_REQUIRED__APP_VERSION_LOWER_THAN_MINIMUM_REQUIRED_VERSION:String = "Please Upgrade\n\nA new version of " + Constant_MentorTypeSpecific.APP_NAME__FULL + " is available, and an upgrade is necessary in order to continue using the app.\n\nPlease use your device's " + Utils_System.getAppStoreName() + " to upgrade Language Mentor.";
 
    // Language Tokens
    public static const TOKEN_FONT_SIZE_HEADING:String = "%heading_font_size%";

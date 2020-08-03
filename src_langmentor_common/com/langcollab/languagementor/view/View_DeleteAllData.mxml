@@ -139,7 +139,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          // Currently not called - command calls Log.fatal() directly.
          Log.info("View_DeleteAllData.onInitApplicationFailure()");
          textDisplayLabel.setStyle("fontSize", Math.round(Utils_Text.getStandardFontSize() * 1.6));
-         textDisplayLabel.text = "Unable to complete process. Please try restarting your phone. If you continue to encounter problems please contact us via the forums at LanguageCollaborative.com.";
+         textDisplayLabel.text = "Unable to complete process. Please try restarting your phone. If you continue to encounter problems please contact us via the forums at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL + ".";
       }
 
 

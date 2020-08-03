@@ -363,8 +363,8 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       }
    }
 
-   public function startUserInitiatedGetRecommendedLibrariesInfoProcess():void {
-      Log.info("LessonDownloadController.startUserInitiatedGetRecommendedLibrariesInfoProcess()");
+   public function startGetRecommendedLibrariesInfoProcess():void {
+      Log.info("LessonDownloadController.startGetRecommendedLibrariesInfoProcess()");
       if (_isGetRecommendedLibrariesInfoProcessActive) {
          // This can, at least theoretically, happen if the process is slow, and the user is quick
          return;
@@ -414,6 +414,7 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       stopAutoDownloadTimer();
       stopActiveLessonDownloadProcesses();
       _mostRecentDownloadLessonsTime = null;
+      recommendedLibraryNameList = [];
       if (_previousLessonDownloadProcessResultsInfo) {
          _previousLessonDownloadProcessResultsInfo.dispose();
          _previousLessonDownloadProcessResultsInfo = null;
@@ -542,7 +543,6 @@ public class LessonDownloadController extends EventDispatcher implements IDispos
       Log.info("LessonDownloadController.onGetRecommendedLibrariesInfoUpdate()");
       if (returnedTechReport.list_RecommendedLibraryNames is Array) {
          recommendedLibraryNameList = returnedTechReport.list_RecommendedLibraryNames;
-         _model
       }
       dispatchEvent(new BwEvent(BwEvent.NEW_INFO));
    }

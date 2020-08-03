@@ -1,5 +1,5 @@
 /*
-Copyright 2018 Brightworks, Inc.
+Copyright 2020 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -19,11 +19,9 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 package com.langcollab.languagementor.constant {
 
 public class Constant_MentorTypeSpecific {
-   public static const ANE_KEY__DISTRIQT:String = "a018f0c32d78284cfb49e26713f11716b548d309QWxmnokEQKt2Lv9yzx6CpIucNpgQJO8XzPHKayMjD8Vyir0PaZAOIaKMSR5qshEEnNNrX34YMKVW8auO7wiI6uZjMScBkHi71M/eseCF7bCpzUOQPacFPh2SF7ae44tC/1ocBSV6qT1kSCgyJGwoGdYXHIF4bHEIluM7tpVh0VvB/Zx68ujKI19suZByXR7vWIyuOiMVPA2OH5uqboLU7airedcvOgpIaEHDqR/vEWWDATQvVPnI5QoUsD9e21tcJeWQxTDgZaKtcEHPgFibzOfeWeaFF8zULSr3mLdEINFpAWBFV3wkd1qVwflCp4MvPGCNM0fGRXDbOluUUDg3ZQ==";
    public static const APP_NAME__FULL:String = "Chinese Language Mentor";
    public static const APP_NAME__SHORT:String = "Language Mentor";
-   public static const APP_VERSION__MINIMUM__SUPPORTED_DATA_SCHEMA:Number = 1.44;
-   public static const APPLE_APP_ID:String = "1454541751";
+   public static const APP_OWNER_WEBSITE_URL:String = "LanguageCollaborative.com";
    public static const CREATIVE_SYNTAX__DISPLAY_EXPLANATION:Boolean = true;
    public static const FORUMS__EXPLANATORY_TEXT__1:String = "The Language Collaborative's forums are the best place to get answers to your questions about Language Mentor, to report problems, and to suggest new features.";
    public static const FORUMS__EXPLANATORY_TEXT__2:String = "Please join us at LanguageCollaborative.com";
@@ -32,8 +30,8 @@ public class Constant_MentorTypeSpecific {
    public static const LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE:String = "cmn";
    public static const MENTOR_TYPE__CODE:String = Constant_MentorTypes.MENTOR_TYPE_CODE__ENG__CMN;
    public static const MENTOR_TYPE__IS_WHITE_LABEL__IE_NOT_LANGMENTOR:Boolean = false;
+   public static const MINIMUM_SUPPORTED_DATA_SCHEMA_APP_VERSION:Number = 1.50;
    public static const ROOT_INFO_FOLDER_URL:String = "http://lessons.languagecollaborative.com/";
    public static const SHARE_SCREEN__A_GOOD_REASON_FOR_SHARING:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " is an open platform supported by its users and developers. Please help us spread the word!";
-
 }
 }
