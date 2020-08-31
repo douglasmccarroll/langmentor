@@ -48,6 +48,7 @@ import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_System;
+import com.brightworks.util.Utils_Timer;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
@@ -666,6 +667,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STARTED_AUDIO, onUserStartedAudio);
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STOPPED_AUDIO, onUserStoppedAudio);
       Utils_ANEs_Audio.setAppPauseFunction(pauseCurrentLessonVersionIfPlaying);
+      Utils_Timer.callLater(Utils_ANEs.activateSilenceSwitchMonitor, 100, [onSilenceSwitchActivatedCallback]);
    }
 
    public function isAllSelectedLessonVersionsDualLanguage():Boolean {
@@ -803,7 +805,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          Log.warn("CurrentLessons.playCurrentLessonVersionAndCurrentChunk(): currentLessons.currentLesson is null.");
          return;
       }
-      Utils_ANEs.activateSilenceSwitchMonitor(onSilenceSwitchActivatedCallback);   // We do this here because it wasn't working to do it in initSingleton()
       if (checkSilenceSwitch && Utils_ANEs.isSilenceSwitchMuted()) {
          displaySilenceSwitchWarningAlert("This alert triggered in playCurrentLessonVersionAndCurrentChunk()");
          return;

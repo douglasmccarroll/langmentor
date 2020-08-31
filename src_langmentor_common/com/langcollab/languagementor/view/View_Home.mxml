@@ -162,7 +162,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             return;
          }
          if ((currentLessons.length == 0) && (model.currentLearningModeId == 0)) {
-            Utils_ANEs.showAlert_OkayButton("First, please select one or more lessons and select a learning mode."); /// Localize
+            Utils_ANEs.showAlert_OkayButton("Please select one or more lessons and select a learning mode."); /// Localize
             return;
          }
          if (currentLessons.length == 0) {

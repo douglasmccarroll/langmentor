@@ -52,8 +52,7 @@ public class Command_AddOrRemoveSelectedLessonVersion extends Command_Base__Lang
    public function execute():void {
       Log.debug("Command_AddOrRemoveSelectedLessonVersion.execute()");
       if (currentLessons.isLessonPlaying) {
-         Log.fatal("Command_AddOrRemoveSelectedLessonVersion.execute(): currentLessons.isLessonPlaying = true");
-         return;
+         Log.warn("Command_AddOrRemoveSelectedLessonVersion.execute(): currentLessons.isLessonPlaying = true");
       }
       currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       // Next line needed because we may have downloaded a new version of the lesson while the user is in Select Lessons, in which case

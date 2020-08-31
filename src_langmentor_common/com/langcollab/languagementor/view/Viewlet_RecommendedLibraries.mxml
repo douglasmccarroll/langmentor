@@ -87,17 +87,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onInitialize():void {
-         if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
-            explanationDisplayViewlet.text = "If you select this option, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will use the libraries listed below.";
-         } else {
-            var displayText:String = "";
-            displayText += "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " does not currently recommend any libraries for ";
-            displayText += model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
-            displayText += ". If you'd like to suggest a library, or are interested in creating a library for " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
-            displayText += ", please contact us at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL + ".";
-            explanationDisplayViewlet.text = displayText;
-            useRecommendedLibrariesCheckbox.enabled = false;
-         }
+         updateUI();
       }
 
       private function onLessonDownloadsNewInfo(event:BwEvent):void {
@@ -115,20 +105,32 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function updateUI():void {
-         if (!model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
-            resultsDisplayViewlet.text = "";
-         } else if (lessonDownloadController.recommendedLibraryNameList.length == 0) {
-            resultsDisplayViewlet.text = "Searching for recommended libraries...";
-            startBusyIndicator();
-         } else {
-            stopBusyIndicator();
-            var recommendedLibraryCount:int = 0;
-            var text:String = "";
-            for each (var libraryName:String in lessonDownloadController.recommendedLibraryNameList) {
-               recommendedLibraryCount++;
-               text += INDENT + recommendedLibraryCount + ": " + libraryName + "\n";
+         if (model.doesCurrentTargetLanguageHaveRecommendedLibraries()) {
+            explanationText.text = "If this option is selected, " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " will use the libraries listed below.";
+            if (lessonDownloadController.recommendedLibraryNameList.length == 0) {
+               resultsText.text = "Searching for recommended libraries...";
+               startBusyIndicator();
+            } else {
+               stopBusyIndicator();
+               var recommendedLibraryCount:int = 0;
+               var text:String = "";
+               for each (var libraryName:String in lessonDownloadController.recommendedLibraryNameList) {
+                  recommendedLibraryCount++;
+                  text += INDENT + recommendedLibraryCount + ": " + libraryName + "\n";
+               }
+               resultsText.text = text;
             }
-            resultsDisplayViewlet.text = text;
+         } else {
+            var displayText:String = "";
+            displayText += "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " does not currently recommend any libraries for ";
+            displayText += model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage();
+            displayText += ". If you'd like to suggest a library, or are interested in creating a library for " + Constant_MentorTypeSpecific.APP_NAME__SHORT;
+            displayText += ", please contact us at " + Constant_MentorTypeSpecific.APP_OWNER_WEBSITE_URL + ".";
+            explanationText.text = displayText;
+            useRecommendedLibrariesCheckbox.enabled = false;
+            useRecommendedLibrariesCheckbox.visible = false;
+            useRecommendedLibrariesCheckbox.includeInLayout = false;
+            resultsText.text = "";
          }
          invalidateDisplayList();
       }
@@ -146,10 +148,10 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
                                   change="onUseRecommendedLibrariesCheckboxChange(event)"
                                   selected="{_useRecommendedLibraries}"/>
          <s:Spacer/>
-         <uiwidget:UIWidget_Viewlet__Text id="explanationDisplayViewlet"/>
+         <uiwidget:UIWidget_Viewlet__Text id="explanationText"/>
          <s:Spacer/>
          <s:Spacer/>
-         <uiwidget:UIWidget_Viewlet__Text id="resultsDisplayViewlet"
+         <uiwidget:UIWidget_Viewlet__Text id="resultsText"
                                           text=""
                                           fontFamily="_sans"
                                           height="50%"

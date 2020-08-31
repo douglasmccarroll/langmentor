@@ -127,9 +127,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             textWidget.text = "You may notice that some lessons use " + '"creative"' + " grammar when translating chunks, using syntax similar to the " + model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() + " content that they are translating. This is done in order to help you absorb meaning and syntax.";
             viewletGroup.addElement(textWidget);
          }
-         textWidget = new UIWidget_Viewlet__Bullet_Text();
-         textWidget.text = "You should also experiment with Language Mentor's learning modes (in the Select Modes screen), as they determine the manner in which content is presented to you in this screen.";
-         viewletGroup.addElement(textWidget);
 
       }
       ]]>
