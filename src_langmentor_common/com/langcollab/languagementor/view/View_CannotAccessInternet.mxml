@@ -38,7 +38,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private var _isDisposed:Boolean = false;
 
       private function onCreationComplete():void {
-         textArea.text = "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " cannot access the Internet.\n\nAn Internet connection is required for app setup.\n\nPlease ensure that you have an internet connection and try again.";
+         textArea.text = "We're sorry, but " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " cannot access the Internet.\n\nAn Internet connection is required to set up " + Constant_MentorTypeSpecific.APP_NAME__SHORT + ".\n\nPlease ensure that you have an internet connection and try again.";
       }
 
       private function onTryAgainButtonClick():void {
