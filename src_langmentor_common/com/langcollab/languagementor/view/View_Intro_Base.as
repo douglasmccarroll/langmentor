@@ -1,6 +1,7 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
+import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
@@ -59,7 +60,11 @@ public class View_Intro_Base extends View_CancelAndOrNext_Base {
             // View_Intro_Safety
             // View_Intro_Agreement
       else if (this is View_Intro_OpenPlatform) {
-         if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
+         if (!model.isRecommendedLibraryInfoFromRootConfigFileAvailable()) {
+            Log.debug("View_Intro_Base.onNextButtonClick() - user is trying to leave 'open platform' intro screen, but root config file not downloaded yet - so we just show 'no internet access' alert");
+            Utils_ANEs.showAlert_OkayButton(Constant_MentorTypeSpecific.APP_NAME__SHORT + " is having trouble accessing the Internet. If you continue to see this message, please check your device's Internet access.");
+         }
+         else if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE == Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
             navigator.pushView(View_Intro_SelectLanguage);
          }
          else {

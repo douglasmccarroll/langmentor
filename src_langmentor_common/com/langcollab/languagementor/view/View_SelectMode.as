@@ -150,7 +150,7 @@ public class View_SelectMode extends View_Base implements IDisposable {
       var result:String =
           "The " +
           _modeList.selectedItem.label +
-          " learning mode provides " +
+          " provides " +
           nativeLanguageString +
           " translations for lesson content, but " +
           currentLessons.getSelectedSingleLanguageLessonVersionCount() +

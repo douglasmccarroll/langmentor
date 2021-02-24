@@ -25,12 +25,11 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
    <fx:Script>
         <![CDATA[
+      import com.brightworks.constant.Constant_AppConfiguration;
       import com.brightworks.event.BwEvent;
       import com.brightworks.util.Log;
-      import com.brightworks.util.Utils_AIR;
       import com.brightworks.util.Utils_Layout;
       import com.brightworks.util.Utils_Text;
-      import com.brightworks.constant.Constant_AppConfiguration;
       import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
       import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
       import com.langcollab.languagementor.controller.Command_UpdateAvailableLessonDownloadsInfoTechReport;
@@ -45,7 +44,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       private static const _MESSAGE__ZERO_LIBRARIES_SELECTED_BY_USER_AND_OR_RECOMMENDED_LIBRARIES:String =
             "No lesson libraries have been selected. In order to access lessons, please go to More > Manage Libraries and add one or more libraries, and/or select Use Recommended Libraries.";
       private static const _MESSAGE__NO_INTERNET_CONNECTION:String =
-            "Hmmm... " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " is having trouble accessing the Internet... If you continue to see this message, please check your device's Internet access.";
+            "Hmmm... " + Constant_MentorTypeSpecific.APP_NAME__SHORT + " is having trouble accessing the Internet. If you continue to see this message, please check your device's Internet access.";
       private static const _MESSAGE__NO_NEW_LESSONS_FOUND:String =
             "No new lessons found.";
       private static const _MESSAGE__UNABLE_TO_DOWNLOAD_LESSONS:String =

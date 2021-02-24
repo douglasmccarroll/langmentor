@@ -7,8 +7,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.52.16</versionNumber>
-   <versionLabel>1.52.16</versionLabel>
+   <versionNumber>1.53.12</versionNumber>
+   <versionLabel>1.53.12</versionLabel>
 
    <initialWindow>
       <!-- In Flash Builder & IntelliJ, this is set automatically. -->
@@ -69,7 +69,7 @@
             <key>NSCalendarsUsageDescription</key>
             <string>Language Mentor does not access any calendars. If you see this message please select Don't Allow.</string>
             <key>NSCameraUsageDescription</key>
-            <string>Camera is used by Language Mentor's QR code scanner, which you'll use if you if you wish to add new language lesson library URLs to the app.</string>
+            <string>The camera is used to scan QR codes if you add new lesson libraries to the app.</string>
             <key>NSContactsUsageDescription</key>
             <string>Language Mentor does not access any contacts. If you see this message please press Don't Allow.</string>
             <key>NSMicrophoneUsageDescription</key>

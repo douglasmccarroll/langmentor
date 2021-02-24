@@ -19,18 +19,18 @@
 package com.langcollab.languagementor.view {
 import com.brightworks.base.Callbacks;
 import com.brightworks.component.mobilealert.MobileDialog;
+import com.brightworks.constant.Constant_AppConfiguration;
 import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.BwEvent;
-import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ANEs;
+import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_String;
 import com.brightworks.util.Utils_System;
+import com.brightworks.util.audio.Utils_Audio_Files;
 import com.langcollab.languagementor.component.button.Button_ActionBar_Home;
 import com.langcollab.languagementor.component.button.Button_ActionBar_LeftArrow;
-import com.brightworks.constant.Constant_AppConfiguration;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.controller.Command_InitApplication;
 import com.langcollab.languagementor.controller.audio.AudioController;
@@ -138,7 +138,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onActivateApp()");
-         _currentLessons.pauseCurrentLessonVersionIfPlaying();   // It doesn't seem as if this is getting called in onDeactivateApp() on iOS when app play in interrupted by a phone call, etc - I'm hoping that it will get called here ...
+         _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       }
    }
 
@@ -171,7 +171,7 @@ public class App_LanguageMentor_Base extends ViewNavigatorApplication {
          return;
       } else {
          Log.info("App_LanguageMentor_Base.onDeactivateApp()");
-         _currentLessons.pauseCurrentLessonVersionIfPlaying();
+         _currentLessons.stopPlayingCurrentLessonVersionIfPlaying();
       }
    }
 

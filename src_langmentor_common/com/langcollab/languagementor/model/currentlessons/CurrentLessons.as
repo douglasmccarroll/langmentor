@@ -43,17 +43,14 @@ import com.brightworks.constant.Constant_ReleaseType;
 import com.brightworks.event.Event_Audio;
 import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
-import com.brightworks.util.Utils_ANEs;
 import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_GoogleAnalytics;
 import com.brightworks.util.Utils_System;
-import com.brightworks.util.Utils_Timer;
 import com.brightworks.util.audio.AudioPlayer;
 import com.brightworks.util.audio.Utils_ANEs_Audio;
 import com.brightworks.util.audio.Utils_Audio_Files;
 import com.brightworks.util.singleton.SingletonManager;
-import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.audio.AudioController;
 import com.langcollab.languagementor.controller.useractionreporting.UserAction;
@@ -76,11 +73,14 @@ import spark.collections.Sort;
 import spark.collections.SortField;
 
 public class CurrentLessons extends EventDispatcher implements IManagedSingleton {
+   private static const _AUTOPLAYED_CHUNKS_BATCH_COUNT:int = 20;
+
    private static var _instance:CurrentLessons;
 
    private var _appStatePersistenceManager:AppStatePersistenceManager;
    private var _audioTimer:CurrentLessonsAudioTimer = new CurrentLessonsAudioTimer();
    private var _audioController:AudioController;
+   private var _autoplayedChunksCounter:int = 0;
    private var _audioPlayer:AudioPlayer;
    private var _currentLessons:ArrayCollection;
    private var _index_ChunkFileLists_by_LessonVersionVO:Dictionary = new Dictionary();
@@ -667,7 +667,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STARTED_AUDIO, onUserStartedAudio);
       _audioPlayer.addEventListener(Event_Audio.AUDIO__USER_STOPPED_AUDIO, onUserStoppedAudio);
       Utils_ANEs_Audio.setAppPauseFunction(pauseCurrentLessonVersionIfPlaying);
-      Utils_Timer.callLater(Utils_ANEs.activateSilenceSwitchMonitor, 100, [onSilenceSwitchActivatedCallback]);
    }
 
    public function isAllSelectedLessonVersionsDualLanguage():Boolean {
@@ -712,6 +711,13 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
 
    public function iterateChunk(direction:int, isUserInitiated:Boolean):void {
       Log.info("CurrentLessons.iterateChunk(): lesson ID: " + currentLessonVO.publishedLessonVersionId + "; currentChunkIndex: " + currentChunkIndex + "; direction: " + direction);
+      if (!isUserInitiated) {
+         _autoplayedChunksCounter ++;
+         if (_autoplayedChunksCounter >= _AUTOPLAYED_CHUNKS_BATCH_COUNT) {
+            _autoplayedChunksCounter = 0;
+            reportToAnalytics_AutoplayedChunks();
+         }
+      }
       if (!isAnySelectedLessonVersionsHaveUnsuppressedChunks()) {
          Log.error("CurrentLessons.iterateChunk(): isAnySelectedLessonVersionsHaveUnsuppressedChunks() returns false");
          return;
@@ -739,7 +745,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
             // We want to move to the next lesson, if there is one. Otherwise
             // we'd like to restart the current lesson.
             if (!isUserInitiated) {   // We don't want to report 'finished lesson' or 'auto play' if this was initiated by the user clicking a button
-               reportToAnalytics_LessonFinished();
                reportUserActivity_AutoPlay_AdvanceChunk(currentChunkIndex, newLessonVO);
             }
             iterateLessonVersion(1, isUserInitiated);
@@ -799,14 +804,10 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       }
    }
 
-   public function playCurrentLessonVersionAndCurrentChunk(checkSilenceSwitch:Boolean = false):void {
+   public function playCurrentLessonVersionAndCurrentChunk():void {
       Log.debug("CurrentLessons.playCurrentLessonVersionAndCurrentChunk()");
       if (!currentLessonVO) {
          Log.warn("CurrentLessons.playCurrentLessonVersionAndCurrentChunk(): currentLessons.currentLesson is null.");
-         return;
-      }
-      if (checkSilenceSwitch && Utils_ANEs.isSilenceSwitchMuted()) {
-         displaySilenceSwitchWarningAlert("This alert triggered in playCurrentLessonVersionAndCurrentChunk()");
          return;
       }
       _isLessonPaused = false;
@@ -957,7 +958,7 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          AudioPlayer.getInstance().stop();
          pauseCurrentLessonVersionIfPlaying();
       } else {
-         playCurrentLessonVersionAndCurrentChunk(true);
+         playCurrentLessonVersionAndCurrentChunk();
       }
    }
 
@@ -978,14 +979,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       var sortString:String = _model.getLessonVersionNativeLanguageSortableNameFromLessonVersionVO(vo);
       var info:SortableLessonVersionInfo = new SortableLessonVersionInfo(vo, sortString);
       return info;
-   }
-
-   private function displaySilenceSwitchWarningAlert(debugInfo:String):void {
-      var alertText:String = Constant_MentorTypeSpecific.APP_NAME__SHORT + " won't play audio through the speaker when the mute switch is turned on (i.e. when you are in silent mode).\n\nHeadphones, however, will work.";
-      if (Utils_System.isAlphaOrBetaVersion()) {
-         alertText += " - " + debugInfo;
-      }
-      Utils_ANEs.showAlert_OkayButton(alertText, onSilenceSwitchWarningAlertCallback);
    }
 
    private function doesUnsuppressedChunkExistAtOrAfterChunk(lvvo:LessonVersionVO, chunkIndex:int):Boolean {
@@ -1113,16 +1106,6 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _audioController.playCurrentLessonVersionAndCurrentChunk();
    }
 
-   private function onSilenceSwitchActivatedCallback(muted:Boolean):void {
-      if (muted && (isLessonPlaying) && (!_isLessonPaused)) {
-         displaySilenceSwitchWarningAlert("This alert triggered in onSilenceSwitchActivatedCallback()");
-      }
-   }
-
-   private function onSilenceSwitchWarningAlertCallback():void {
-      playCurrentLessonVersionAndCurrentChunk(false);
-   }
-
    private function onSleepTimer(event:TimerEvent):void {
       if (_sleepTimer) {
          _sleepTimer.stop();
@@ -1138,12 +1121,14 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
          activity.chunkIndex_New = -1;
          activity.chunkIndex_Previous = -1;
          UserActionReportingManager.reportActivityIfUserHasActivatedReporting(activity);
-         Utils_Audio_Files.playGongSound();
+         if (!isLessonPaused) {
+             Utils_Audio_Files.playGongSound();
+         }
       }
    }
 
    private function onUserStartedAudio(e:Event_Audio):void {
-      playCurrentLessonVersionAndCurrentChunk(true);
+      playCurrentLessonVersionAndCurrentChunk();
    }
 
    private function onUserStoppedAudio(e:Event_Audio):void {
@@ -1160,12 +1145,12 @@ public class CurrentLessons extends EventDispatcher implements IManagedSingleton
       _appStatePersistenceManager.persistSelectedLessonVersions(selectedLessonVersionVOsVector);
    }
 
-   private function reportToAnalytics_LessonFinished():void {
-      Log.info("CurrentLessons.reportToAnalytics_LessonFinished()");
+   private function reportToAnalytics_AutoplayedChunks():void {
+      Log.info("CurrentLessons.reportToAnalytics_AutoplayedChunks()");
       if ((!currentLessonVersionLessonId) || (!currentLessonVersionLessonName_NativeLanguage) || (!currentLessonVersionProviderId) || (!currentLessonVersionVersion)) {
          return;
       }
-      Utils_GoogleAnalytics.trackLessonFinished(currentLessonVersionLessonName_NativeLanguage, currentLessonVersionLessonId, currentLessonVersionVersion, currentLessonVersionProviderId);
+      Utils_GoogleAnalytics.trackAutoplayedChunks(_AUTOPLAYED_CHUNKS_BATCH_COUNT);
    }
 
    private function reportUserActivity_AutoPlay_AdvanceChunk(advancedFromChunkIndex:int, newLessonVO:LessonVersionVO = null):void {

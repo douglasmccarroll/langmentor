@@ -19,9 +19,6 @@
 package com.langcollab.languagementor.controller {
 import com.brightworks.base.Callbacks;
 import com.brightworks.util.Log;
-import com.brightworks.util.Utils_GoogleAnalytics;
-import com.brightworks.util.Utils_ANEs;
-import com.brightworks.util.Utils_System;
 import com.langcollab.languagementor.constant.Constant_UserActionTypes;
 import com.langcollab.languagementor.controller.useractionreporting.UserAction;
 import com.langcollab.languagementor.controller.useractionreporting.UserActionReportingManager;
@@ -96,7 +93,6 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
             var c:Command_AddOrRemoveSelectedLessonVersion =
                   new Command_AddOrRemoveSelectedLessonVersion(_lessonVersionContainingSuppressedChunk);
             c.execute();
-            reportLessonLearnedToAnalytics();
             reportUserActivity(suppressedChunkIndex,true);
          }
          resumeAudioIfAppropriate();
@@ -104,14 +100,6 @@ public class Command_DoIKnowThis extends Command_Base__LangMentor {
          dispose();
       }
       dispose();
-   }
-
-   private function reportLessonLearnedToAnalytics():void {
-      var lessonName:String = model.getLessonVersionNativeLanguageNameFromLessonVersionVO(_lessonVersionContainingSuppressedChunk);
-      var lessonId:String = _lessonVersionContainingSuppressedChunk.publishedLessonVersionId;
-      var lessonVersion:String = _lessonVersionContainingSuppressedChunk.publishedLessonVersionVersion;
-      var providerId:String = _lessonVersionContainingSuppressedChunk.contentProviderId;
-      Utils_GoogleAnalytics.trackLessonFinished(lessonName, lessonId, lessonVersion, providerId);
    }
 
    private function reportUserActivity(chunkIndex:int, lessonCompletelySuppressed:Boolean):void {

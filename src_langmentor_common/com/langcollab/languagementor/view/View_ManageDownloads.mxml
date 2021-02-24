@@ -34,7 +34,6 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 
       import mx.collections.ArrayCollection;
 
-      //private static const _LIST_OPTION__:String = "";
       private static const _LIST_OPTION__AUTOMATIC_DOWNLOADS:String = "Automatic Downloads";
       private static const _LIST_OPTION__DOWNLOAD_BETA_LESSONS:String = "Download Beta Lessons";
       private static const _LIST_OPTION__LESSON_DOWNLOADS_INFO:String = "Lesson Download Info";

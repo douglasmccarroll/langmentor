@@ -28,8 +28,6 @@ import com.langcollab.languagementor.util.Utils_Database;
 import com.langcollab.languagementor.util.Utils_LangCollab;
 
 import flash.filesystem.File;
-import flash.media.AudioPlaybackMode;
-import flash.media.SoundMixer;
 
 import mx.controls.ToolTip;
 
@@ -60,7 +58,6 @@ public class Command_InitApplication extends Command_Base__LangMentor {
    public function execute():void {
       Log.info("Command_InitApplication.execute()");
       ToolTip.maxWidth = 150;
-      SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;       ////
       // Next lines are for cases where we're init'ing after data wipe
       appStatePersistenceManager.isDataWipeActivityBlockActive = false;
       if (!Utils_System.isRunningOnDesktop()) {

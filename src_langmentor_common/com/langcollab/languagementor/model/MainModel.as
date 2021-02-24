@@ -42,7 +42,6 @@ import com.brightworks.interfaces.IManagedSingleton;
 import com.brightworks.util.Log;
 import com.brightworks.util.Utils_AIR;
 import com.brightworks.util.Utils_ArrayVectorEtc;
-import com.brightworks.util.Utils_ArrayVectorEtc;
 import com.brightworks.util.Utils_DateTime;
 import com.brightworks.util.Utils_Dispose;
 import com.brightworks.util.Utils_File;
@@ -61,7 +60,6 @@ import com.langcollab.languagementor.constant.Constant_LangMentor_Misc;
 import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 import com.langcollab.languagementor.constant.Constant_MentorTypes;
 import com.langcollab.languagementor.controller.Command_LoadLearningModeDescriptions;
-import com.langcollab.languagementor.controller.lessondownload.LessonDownloadController;
 import com.langcollab.languagementor.model.appstatepersistence.AppStatePersistenceManager;
 import com.langcollab.languagementor.model.appstatepersistence.LessonVersionInfo;
 import com.langcollab.languagementor.model.currentlessons.CurrentLessons;
@@ -80,7 +78,6 @@ import com.langcollab.languagementor.vo.ReleaseTypeVO;
 import com.langcollab.languagementor.vo.TextDisplayTypeVO;
 
 import flash.desktop.NativeApplication;
-
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.filesystem.File;
@@ -1240,7 +1237,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
       return (report.resultData.length == 1);
    }
 
-   private function isRecommendedLibraryInfoFromRootConfigFileAvailable():Boolean {
+   public function isRecommendedLibraryInfoFromRootConfigFileAvailable():Boolean {
       return (configFileInfo.targetLanguagesForWhichRecommendedLibrariesAreAvailable is XML);
    }
 
@@ -1672,19 +1669,28 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    // - is set in init() - as announced via change event here - notifies View_Home - via binding - model is ready
    // - also various other classes check this prop - should probably be renamed isModelInitialized
    private function initTargetLanguageBasedDataIfReady():void {
+      Log.debug("MainModel.initTargetLanguageBasedDataIfReady()");
       if (Constant_MentorTypeSpecific.MENTOR_TYPE__CODE != Constant_MentorTypes.MENTOR_TYPE_CODE__UNIVERSAL) {
          // This isn't "universal" mentor type, which means that the target language is specified in this constant...
          _currentTargetLanguageId = getLanguageIdFromIso639_3Code(Constant_MentorTypeSpecific.LANGUAGE__DEFAULT__TARGET__ISO639_3_CODE);
          _appStatePersistenceManager.persistTargetLanguageId(_currentTargetLanguageId);
       }
-      if (_currentTargetLanguageId == -1)
+      if (_currentTargetLanguageId == -1) {
+         Log.debug("MainModel.initTargetLanguageBasedDataIfReady() - target language not selected");
          return;
-      if (!_isDBDataInitialized)
+      }
+      if (!_isDBDataInitialized) {
+         Log.debug("MainModel.initTargetLanguageBasedDataIfReady() - DB data not initialized yet");
          return;
+      }
       _currentTargetLanguageVO = getLanguageVOFromID(_currentTargetLanguageId);
       if (isRecommendedLibraryInfoFromRootConfigFileAvailable()) {
+         Log.debug("MainModel.initTargetLanguageBasedDataIfReady() - root config file info loaded");
          _currentTargetLanguageVO.hasRecommendedLibraries = doesLanguageHaveRecommendedLibrariesBasedOnRootConfigFile(_currentTargetLanguageVO.iso639_3Code);
          isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
+      }
+      else {
+         Log.debug("MainModel.initTargetLanguageBasedDataIfReady() - root config file info not yet loaded");
       }
       loadLanguageResourceXML();
       _isTargetLanguageInitialized = true;
@@ -1733,6 +1739,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    private function onLoadConfigDataComplete(techReport:ConfigFileInfoTechReport):void {
       Log.debug("MainModel.onLoadConfigDataComplete()");
       if (Utils_AIR.appVersionNumber < configFileInfo.requiredMinimumVersion) {
+         Log.debug("MainModel.onLoadConfigDataComplete() - appVersionNumber < required version - we'll wipe all data and force an update");
          // We wipe data to ensure that when the new version is installed a new DB file is created, and the user starts from a clean slate.
          _appStatePersistenceManager.wipeData();
          Utils_File.deleteDirectory(Utils_AIR.applicationStorageDirectory);
@@ -1791,6 +1798,7 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
    }
 
    private function updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile():void {
+      Log.debug("MainModel.updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile()")
       /// Language VOs start with their hasRecommendedLibraries props set to false, so, for now we'll only update those where this prop should be true
       /// Eventually, we should update all VOs, as we'll have situations like a) a library has become non-recommended, b) a user switches native language (?)
       var matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage:Boolean = false;
@@ -1804,16 +1812,22 @@ public class MainModel extends EventDispatcher implements IManagedSingleton {
             matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage = true;
          }
       }
+      //
+      // The above loop only looks at the languages for which rec'd libs are available - and, obviously, the current target language may not be included in this list, so ...
+      //
       if (matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage) {
+         Log.debug("MainModel.updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile() - matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage is true")
          updateCurrentTargetLanguageVO_hasRecommendedLibraries(true);
          isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
       }
       else {
          if (_currentTargetLanguageVO) {
-            updateCurrentTargetLanguageVO_hasRecommendedLibraries(false);    // This was almost surely already false - this code is here more to communicate intent to humans (that's you :) than to actually do anything
+            Log.debug("MainModel.updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile() - matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage is false, and _currentTargetLanguageVO exists")
+            updateCurrentTargetLanguageVO_hasRecommendedLibraries(false);    /// This was almost surely already false - this code is here more to communicate intent to humans (that's you :) than to actually do anything
             isRecommendedLibraryInfoUpdatedForCurrentTargetLanguage = true;
          }
          else {
+            Log.debug("MainModel.updateLanguageVOsWithHasRecommendedLibrariesInfoFromRootConfigFile() - matchFoundBetweenRecommendedLibrariesInfoAndCurrentTargetLanguage is false, but no _currentTargetLanguageVO exists")
             // We haven't really determined anything at this point
          }
       }
