@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Brightworks, Inc.
+    Copyright 2021 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
@@ -32,11 +32,11 @@ public class TextDisplayTypeVO extends VO implements IVO {
 
    public var typeName:String; // e.g. "textTargetLanguagePhonetic"
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _id:int;
 
@@ -52,11 +52,11 @@ public class TextDisplayTypeVO extends VO implements IVO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function TextDisplayTypeVO() {
       super();

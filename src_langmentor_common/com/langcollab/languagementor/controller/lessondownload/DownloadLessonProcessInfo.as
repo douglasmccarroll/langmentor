@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Brightworks, Inc.
+Copyright 2021 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -26,7 +26,7 @@ public class DownloadLessonProcessInfo implements IDisposable {
    // Some of this info is needed to download and save files.
    // Some is needed to create a LessonVersionVO.
    // Some is needed to report success and failure.
-   // So this object is used both to send info into the process, and 
+   // So this object is used both to send info into the process, and
    // to send info back out as well.
    public var chunks:XML;
    public var contentProviderId:String;
@@ -61,7 +61,7 @@ public class DownloadLessonProcessInfo implements IDisposable {
       Log.debug("DownloadLessonProcessInfo constructor - class has XML props");
    }
 
-   // We store these (for successful downloads) in LessonDownloadController's successfulDownloadInfoList... props 
+   // We store these (for successful downloads) in LessonDownloadController's successfulDownloadInfoList... props
    // for the duration of the session. They should only be disposed when data is wiped
    public function dispose():void {
       if (_isDisposed)

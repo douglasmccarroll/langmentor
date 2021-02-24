@@ -1,6 +1,6 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <!--
-Copyright 2020 Brightworks, Inc.
+Copyright 2021 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -65,7 +65,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
          var textArea:TextArea;
          textArea = new TextArea();
          textArea.percentWidth = 100;
-         textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2020 - Brightworks, Inc.";
+         textArea.text = "Language Mentor®\nVersion " + Utils_LangCollab.appVersion + "\nCopyright 2009-2021 - Brightworks, Inc.";
          textArea.editable = false;
          textArea.selectable = false;
          textArea.setStyle("skinClass", TextAreaSkin);

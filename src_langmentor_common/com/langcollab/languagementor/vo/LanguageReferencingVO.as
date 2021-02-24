@@ -1,5 +1,5 @@
 /*
-	Copyright 2020 Brightworks, Inc.
+	Copyright 2021 Brightworks, Inc.
 
 	This file is part of Language Mentor.
 
@@ -22,11 +22,11 @@ import com.brightworks.vo.VO;
 import flash.events.Event;
 
 public class LanguageReferencingVO extends VO {
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Getters & Setters
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    private var _languageId:int;
 
@@ -42,11 +42,11 @@ public class LanguageReferencingVO extends VO {
       }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    //
    //          Public Methods
    //
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    public function LanguageReferencingVO() {
       super();

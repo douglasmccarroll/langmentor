@@ -1,5 +1,5 @@
 /*
-   Copyright 2020 Brightworks, Inc.
+   Copyright 2021 Brightworks, Inc.
 
    This file is part of Language Mentor.
 

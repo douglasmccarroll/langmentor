@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Brightworks, Inc.
+Copyright 2021 Brightworks, Inc.
 
 This file is part of Language Mentor.
 
@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-    Copyright 2020 Brightworks, Inc.
+    Copyright 2021 Brightworks, Inc.
 
     This file is part of Language Mentor.
 
