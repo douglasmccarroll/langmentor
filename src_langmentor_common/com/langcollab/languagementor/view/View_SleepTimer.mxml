@@ -75,7 +75,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onViewActivate():void {
-         textDisplayLabel.text = "How many minutes would you like " + Constant_MentorTypeSpecific.APP_NAME__FULL + " to continue before going to sleep?";
+         textDisplayLabel.text = "How many minutes should " + Constant_MentorTypeSpecific.APP_NAME__FULL + " wait before going to sleep?";
       }
 
       private function reportUserActivity():void {

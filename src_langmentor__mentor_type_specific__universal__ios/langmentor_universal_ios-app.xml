@@ -7,8 +7,8 @@
 
    <name>Language Mentor</name>
 
-   <versionNumber>1.53.12</versionNumber>
-   <versionLabel>1.53.12</versionLabel>
+   <versionNumber>1.53.16</versionNumber>
+   <versionLabel>1.53.16</versionLabel>
 
    <initialWindow>
       <!-- In Flash Builder & IntelliJ, this is set automatically. -->
@@ -91,10 +91,8 @@
 
    <extensions>
       <extensionID>com.distriqt.Application</extensionID>
-      <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.Scanner</extensionID>
-      <extensionID>com.distriqt.Volume</extensionID>
    </extensions>
 </application>

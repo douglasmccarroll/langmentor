@@ -7,8 +7,8 @@
 
    <name>Chinese LangMentor</name>
 
-   <versionNumber>1.53.11</versionNumber>
-   <versionLabel>1.53.11</versionLabel>
+   <versionNumber>1.53.15</versionNumber>
+   <versionLabel>1.53.15</versionLabel>
 
    <initialWindow>
       <!-- The main SWF or HTML file of the application. -->
@@ -79,10 +79,8 @@
       <extensionID>androidx.core</extensionID>
       <extensionID>androidx.vectordrawable</extensionID>
       <extensionID>com.distriqt.Application</extensionID>
-      <extensionID>com.distriqt.ApplicationRater</extensionID>
       <extensionID>com.distriqt.Core</extensionID>
       <extensionID>com.distriqt.Dialog</extensionID>
       <extensionID>com.distriqt.Scanner</extensionID>
-      <extensionID>com.distriqt.Volume</extensionID>
    </extensions>
 </application>

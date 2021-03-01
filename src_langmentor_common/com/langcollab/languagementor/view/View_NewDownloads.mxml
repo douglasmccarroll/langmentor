@@ -149,7 +149,7 @@ along with Language Mentor.  If not, see <http://www.gnu.org/licenses/>.
             viewletGroup.addElement(widget);
             viewletGroup.addElement(new Spacer());
             widget = new UIWidget_Viewlet__Text();
-            widget.text = Constant_MentorTypeSpecific.APP_NAME__SHORT + " has downloaded these new lessons. For a complete listing of downloaded lessons please see the Select Lessons screen.";
+            widget.text = Constant_MentorTypeSpecific.APP_NAME__SHORT + " has downloaded these new lessons. For a complete listing of downloaded lessons please go to Select Lessons.";
             viewletGroup.addElement(widget);
             viewletGroup.addElement(new Spacer());
             displayLibraryAndLessonInfo(lessonDownloadController.successfulDownloadInfoList_NewDownloads);

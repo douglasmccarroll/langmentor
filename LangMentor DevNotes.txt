@@ -2,10 +2,10 @@
 ////  = consider doing before next release
 ///   = check occasionally...
 
-	  
-****************************************************************************************
-                                Trouble-shooting
-****************************************************************************************
+
+***************************************************************************
+                    Trouble-shooting
+***************************************************************************
 
 In general
 **********
@@ -16,18 +16,17 @@ Lessons not downloading
 ***********************
 Are other lessons downloading from library?
   Yes
-    Breakpoint Command_DownloadLibraryInfo.processDownloadedLessonListFilesData(). This is where we decide 
-    which lessons to actually download.
+    Breakpoint Command_DownloadLibraryInfo.processDownloadedLessonListFilesData(). This is where we decide which lessons to actually download.
   No
-    Modify the debug blocks in FileSetDownloader.onDownloadComplete() and FileSetDownloader.onDownloadFailure() 
+    Modify the debug blocks in FileSetDownloader.onDownloadComplete() and FileSetDownloader.onDownloadFailure()
     and breakpoint them to confirm that the lesson list is downloading. If it is, goto "Yes".
 
 
 
 
-****************************************************************************************
-                                    Reference
-****************************************************************************************
+***************************************************************************
+                        Reference
+***************************************************************************
 
 
 Audio Playback
@@ -71,7 +70,7 @@ Update 20150519: We're starting to move from ErrorReport to TechReport classes. 
 
 Many of our classes have corresponding ErrorReport classes. For example, FileDownloader has a corresponding FileDownloaderErrorReport class. This allows us to pass out detailed error info to client code. The client code may simply pass the info into a Log method, or may add it to its own ErrorReport class and pass the assembled info out to its client.
 
-This works well for getting needed information to our Log methods, which convert these somewhat complex instances into readable, hierarchally formatted strings, and make them available to you, the developer. 
+This works well for getting needed information to our Log methods, which convert these somewhat complex instances into readable, hierarchally formatted strings, and make them available to you, the developer.
 
 Convention: A class's ErrorReport class should always be named [TheClassName] + "ErrorReport"
 
@@ -79,7 +78,7 @@ Convention: Classes that have corresponding ErrorReport instances should store t
 
 Disposing of ErrorReport instances presents special challenges. It doesn't work to have the 'reported upon' class's dispose() method call its ErrorReport instance's dispose method, because that instance may need to be used after the reported upon class is disposed. Reported upon classes shouldn't dispose their own ErrorReport instances. Instead the reported upon class's dispose() method should simply set "errorReport = null;". ErrorReport classes should be constructed with special attention to avoiding circular references, as we can't assume that their dispose() method will be called. Client code can dispose ErrorReports if you are sure that they won't be needed any more. But, if you're not sure, don't do so - instead rely on normal garbage collection.
 
-When reported upon classes call their fault() callback they should pass their ErrorReport into it. Client code can use the ErrorReport when it is passed to them in this manner, or access the reporteded upon instance's public errorReport prop, or both. The reported upon class doesn't know when its ErrorReport will be used, so it should update it with useful info as it becomes available. 
+When reported upon classes call their fault() callback they should pass their ErrorReport into it. Client code can use the ErrorReport when it is passed to them in this manner, or access the reporteded upon instance's public errorReport prop, or both. The reported upon class doesn't know when its ErrorReport will be used, so it should update it with useful info as it becomes available.
 
 
 Font Issues
@@ -94,8 +93,8 @@ See section in ProgNotes.txt
 
 Languages & Localization
 ************************
-We use ISO639-3 3-character language codes. 
-We can’t use locale resource files for all language-dependent strings, because Flex’s localization allows us to specify only one – ‘local’ – language. LangCollab routinely uses two languages – native and target – so we need a way to say, “get the foo string for currTargetLanguage”, etc. 
+We use ISO639-3 3-character language codes.
+We can’t use locale resource files for all language-dependent strings, because Flex’s localization allows us to specify only one – ‘local’ – language. LangCollab routinely uses two languages – native and target – so we need a way to say, “get the foo string for currTargetLanguage”, etc.
 
 
 Learning Modes
@@ -136,7 +135,7 @@ Process:
     	    onLessonListFilesDownloadComplete()
 		    processDownloadedLessonListFilesData()
 		      Looks at FileSetDownloaderFilesInfo.fileInfoList which contains 0-2 FileSetDownloaderFileInfo instances
-		      Passes FileSetDownloaderFileInfo.fileData to validateAndPopulateLessonListXML() 
+		      Passes FileSetDownloaderFileInfo.fileData to validateAndPopulateLessonListXML()
 			  Which sets _lessonListXML_SingleLanguage and/or _lessonListXML_DualLanguage
 			  Looks at each <lesson> node
 			    Checks LessonDownloadController.isLessonEligibleForDownloading()
@@ -150,7 +149,7 @@ Process:
 			  Checks chunk/file consistency
 		      Creates LessonDownloadInfo_Lesson instances
 		      Stores them in _lessonDownloadInfo_Repository.index_LessonIds_To_LessonDownloadInfo_Lessons
-		      Stores _lessonDownloadInfo_Repository in 
+		      Stores _lessonDownloadInfo_Repository in
 		        lessonDownloadController.lessonDownloadInfo_Repositories.index_repositoryFolderURL_to_lessonDownloadInfo_repository
 	  startLessonDownloadProcess()
 	    Read info from LessonDownloadInfo_Lesson instances to DownloadLessonProcessInfo instances
@@ -189,11 +188,11 @@ Process:
 		  reportComplete()
 
 
-XML Files: Lesson info download process 
+XML Files: Lesson info download process
 ***************************************
 
 Notes:
-1. We have to distinguish between what information we report to the user, and what authors will want to see. Info that will only be of interest to the latter is added to error reports, then logged as info() in Command_InitLessonDownloader.reportResults(). 
+1. We have to distinguish between what information we report to the user, and what authors will want to see. Info that will only be of interest to the latter is added to error reports, then logged as info() in Command_InitLessonDownloader.reportResults().
 2. At present we simply download all new (undownloaded) lessons. Soon, we'll evolve this...
 3. TLC maintains both single and dual language-specific files in order to allow LangMentor to efficiently download all applicable info for a given native-target language pair, but as we look at these files and determine which repositories we should check we don't keep track of which type of lessons - i.e. single and/or dual language - each repository contains. The repositories themselves are the authoritative source for this information. In other words, single and dual language-specific files are divided into single and dual only to improve efficiency, the info they contain is only intended to direct LangMentor to the correct repositories for the user, and LangMentor doesn't really 'think' about single language vs. dual language lessons until it gets to the repositories.
 4. When it gets to the repositories it follows the same approach, i.e. the language_mentor_repository.xml file's info is only treated as info on where to look for lessons. The individual lesson XML files are the authoritative source on information regarding whether a lesson is single or dual language.  language_mentor_repository.xml lists single and dual language info separately because we might want to change this approach in the future, and because it improves efficiency slightly but, at least at present, this isn't really necessary - LangMentor could instead simply always look for lesson list files in both types of folder.
@@ -206,13 +205,13 @@ Process:
     - On complete or failure, call processDownloadedLanguageSpecificInfoFilesData().
     - 'failure' indicates that one or both files weren't successfully downloaded - this may concern us
 	  but it shouldn't concern users, so we add info to the error report, but don't report it to the user.
-	- At this point we don't worry about whether the user wants single language files or not. Instead, we 
+	- At this point we don't worry about whether the user wants single language files or not. Instead, we
       gather info for all suggested repositories.
     - Use validateAndPopulateLanguageSpecificInfoFileXML_Single() and/or validateAndPopulateLanguageSpecificInfoFileXML_Dual()
       to confirm that XML is valid.
     - If not, don't use data from file; note problem in error report; don't report to user.
     - Combine all suggested repositories - single/dual/user-entered - into one list. We don't need to know which
-      repositories have single/dual lessons - that is discovered later. 
+      repositories have single/dual lessons - that is discovered later.
 3. For each repository, use Command_DownloadRepositoryInfo to do the following:
     a. Download language_mentor_repository.xml
 	    - On failure, retry multiple times.
@@ -243,12 +242,12 @@ Process:
     b. checkIfDone() sees if all Command_DownloadRepositoryInfos have reported, if so it calls reportResults().
     c. onTimeoutTimerComplete() also calls reportResults().
     d. reportResults() calls fault() if there have been any problems (even those we won't report to users); otherwise result().
-    
+
 
 
 XML Files: language_mentor_info.xml
 ***********************************
- 
+
 Are we concerned about bandwidth? I don't think so. If we have ten million active users who re-download language_mentor_info.xml once a week, and language_mentor_info.xml is 100K (it's currently 2K), this amounts to 1 GB of data per week. Lessons are, by far, the bigger problem.
 
 We'll only be downloading one language_mentor_info.xml file for now, but should design domain to handle multiple language_mentor_info.xml sources.
@@ -257,5 +256,3 @@ The Language Collaborative's language_mentor_info.xml file will be the authorita
 Some table(s) should have an infoSource field.
 
 We may want to allow users to specify which infoSource is authoritative.
-
-           

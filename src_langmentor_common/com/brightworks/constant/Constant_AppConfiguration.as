@@ -22,7 +22,7 @@ import com.langcollab.languagementor.constant.Constant_MentorTypeSpecific;
 
 public class Constant_AppConfiguration {
 
-   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.BETA;      /////
+   public static const APP_RELEASE_TYPE:String = Constant_ReleaseType.PRODUCTION;      /////
 
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__ANDROID:Number = 10;
    public static const BANDWIDTH_LIMITING__MEGABYTES_ALLOWED_PER_TIME_PERIOD__DESKTOP:Number = 100;
