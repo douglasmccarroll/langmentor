@@ -202,13 +202,13 @@ public class View_SelectMode extends View_Base implements IDisposable {
       _isListComponentInstantiated = true;
       if (model.currentLearningModeId == 0) {
          Utils_ANEs.showAlert_OkayButton(
-               "Each learning mode presents audio in a specific sequence. For example, the " +
+               "Each learning mode presents audio in a specific sequence.\n\nFor example, the " +
                model.getLearningModeDisplayNameFromLabelToken("NativeTargetTarget") +
                " mode plays " +
                model.getCurrentNativeLanguageDisplayName_InCurrentNativeLanguage() +
                " audio, then plays " +
                model.getCurrentTargetLanguageDisplayName_InCurrentNativeLanguage() +
-               " audio twice, for each chunk. This, BTW, is a good mode for familiarizing yourself with new content.\n\nWe suggest that you experiment with various modes, and learn what works best for you."
+               " audio twice, for each chunk.\n\nThis, BTW, is a good mode for familiarizing yourself with new content.\n\nWe suggest that you experiment with various modes, and learn what works best for you."
          ); /// Localize
       }
    }
