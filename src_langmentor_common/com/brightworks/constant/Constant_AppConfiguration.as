@@ -40,5 +40,6 @@ public class Constant_AppConfiguration {
    public static const REQUIRED_SCREEN_RESOLUTION__Y:uint = 480;
    public static const USER_ACTION_REQUIRED_WAIT_INTERVAL:Number = 400;
 
+
 }
 }
